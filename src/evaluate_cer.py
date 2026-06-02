@@ -118,10 +118,49 @@ def parse_args() -> argparse.Namespace:
 
 
 def read_existing_rows(path: Path) -> list[dict[str, Any]]:
+    rows: list[dict[str, Any]] = []
     if not path.exists():
-        return []
-    with path.open("r", newline="", encoding="utf-8") as f:
-        return list(csv.DictReader(f))
+        return rows
+
+    if path.suffix.lower() == ".csv":
+        with path.open("r", newline="", encoding="utf-8-sig") as f:
+            try:
+                csv_rows = list(csv.DictReader(f))
+            except csv.Error as exc:
+                print(f"warning: failed to parse CSV {path.relative_to(PROJECT_ROOT)}: {exc}")
+                csv_rows = []
+        rows.extend(csv_rows)
+        return rows
+
+    if path.suffix.lower() == ".json":
+        try:
+            payload = json.loads(path.read_text(encoding="utf-8-sig"))
+        except json.JSONDecodeError as exc:
+            print(f"warning: failed to parse JSON {path.relative_to(PROJECT_ROOT)}: {exc}")
+            return rows
+        if isinstance(payload, list):
+            rows.extend(item for item in payload if isinstance(item, dict))
+        elif isinstance(payload, dict):
+            maybe_rows = payload.get("rows")
+            if isinstance(maybe_rows, list):
+                rows.extend(item for item in maybe_rows if isinstance(item, dict))
+            else:
+                rows.append(payload)
+        return rows
+
+    return rows
+
+
+def sanitize_existing_rows(rows: list[dict[str, Any]]) -> list[dict[str, Any]]:
+    cleaned: list[dict[str, Any]] = []
+    for idx, row in enumerate(rows):
+        case_id = str(row.get("case_id", "")).strip()
+        method = str(row.get("method", "")).strip()
+        if not case_id or not method:
+            print(f"warning: skipping bad existing row at index {idx}: {row}")
+            continue
+        cleaned.append(row)
+    return cleaned
 
 
 def upsert_row(rows: list[dict[str, Any]], row: dict[str, Any]) -> list[dict[str, Any]]:
@@ -132,7 +171,7 @@ def upsert_row(rows: list[dict[str, Any]], row: dict[str, Any]) -> list[dict[str
         if (str(existing.get("case_id")), str(existing.get("method"))) != key
     ]
     filtered.append(row)
-    return sorted(filtered, key=lambda item: (str(item["case_id"]), str(item["method"])))
+    return sorted(filtered, key=lambda item: (str(item.get("case_id", "")), str(item.get("method", ""))))
 
 
 def rows_for_case(case_id: str) -> list[dict[str, Any]]:
@@ -190,6 +229,18 @@ def main() -> None:
         cases = [args.case]
 
     rows = read_existing_rows(PROJECT_ROOT / "results" / "tables" / "cer_results.csv")
+    rows = sanitize_existing_rows(rows)
+    legacy_json_path = PROJECT_ROOT / "results" / "tables" / "cer_results.json"
+    legacy_rows = sanitize_existing_rows(read_existing_rows(legacy_json_path))
+    existing_keys = {
+        (str(row.get("case_id", "")), str(row.get("method", "")))
+        for row in rows
+    }
+    for row in legacy_rows:
+        key = (str(row.get("case_id", "")), str(row.get("method", "")))
+        if key not in existing_keys:
+            rows.append(row)
+            existing_keys.add(key)
     for case_id in cases:
         for row in rows_for_case(case_id):
             rows = upsert_row(rows, row)
