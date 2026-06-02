@@ -1,1 +1,140 @@
-"""CER evaluation module placeholder for Stage 6."""
+from __future__ import annotations
+
+import argparse
+import csv
+import json
+import re
+from pathlib import Path
+from typing import Any
+
+from .config import PROJECT_ROOT, load_config
+
+
+CSV_COLUMNS = [
+    "case_id",
+    "method",
+    "reference_type",
+    "hypothesis_path",
+    "reference_length",
+    "hypothesis_length",
+    "edit_distance",
+    "cer",
+]
+
+
+def load_reference(case_id: str) -> dict[str, Any]:
+    path = PROJECT_ROOT / "references" / "reference_transcripts.json"
+    if not path.exists():
+        raise FileNotFoundError(f"Missing reference file: {path.relative_to(PROJECT_ROOT)}")
+    data = json.loads(path.read_text(encoding="utf-8"))
+    if case_id not in data:
+        raise KeyError(
+            f"Missing verified reference for case '{case_id}' in references/reference_transcripts.json"
+        )
+    reference = data[case_id]
+    if reference.get("status") != "verified_reference":
+        raise ValueError(f"Reference for case '{case_id}' is not marked as verified_reference")
+    return reference
+
+
+def load_json(path: Path) -> dict[str, Any]:
+    if not path.exists():
+        raise FileNotFoundError(f"Missing transcript: {path.relative_to(PROJECT_ROOT)}")
+    return json.loads(path.read_text(encoding="utf-8"))
+
+
+def normalize_text(text: str) -> str:
+    text = re.sub(r"\[SPEAKER_\d+\]", "", text)
+    text = text.replace("\n", "").replace("\r", "").replace(" ", "")
+    # CER here compares character sequences, so we remove punctuation to avoid
+    # counting punctuation-only differences as character errors.
+    text = re.sub(r"[^\w\u4e00-\u9fff]", "", text)
+    return text
+
+
+def levenshtein_distance(a: str, b: str) -> int:
+    if not a:
+        return len(b)
+    if not b:
+        return len(a)
+    prev = list(range(len(b) + 1))
+    for i, ca in enumerate(a, 1):
+        curr = [i]
+        for j, cb in enumerate(b, 1):
+            insert_cost = curr[j - 1] + 1
+            delete_cost = prev[j] + 1
+            replace_cost = prev[j - 1] + (ca != cb)
+            curr.append(min(insert_cost, delete_cost, replace_cost))
+        prev = curr
+    return prev[-1]
+
+
+def build_row(case_id: str, method: str, reference_text: str, hypothesis_text: str, hypothesis_path: Path) -> dict[str, Any]:
+    ref_norm = normalize_text(reference_text)
+    hyp_norm = normalize_text(hypothesis_text)
+    distance = levenshtein_distance(ref_norm, hyp_norm)
+    reference_length = len(ref_norm)
+    cer = round(distance / reference_length, 6) if reference_length else 0.0
+    return {
+        "case_id": case_id,
+        "method": method,
+        "reference_type": "verified_reference",
+        "hypothesis_path": hypothesis_path.relative_to(PROJECT_ROOT).as_posix(),
+        "reference_length": reference_length,
+        "hypothesis_length": len(hyp_norm),
+        "edit_distance": distance,
+        "cer": cer,
+    }
+
+
+def parse_args() -> argparse.Namespace:
+    parser = argparse.ArgumentParser(description="Evaluate CER for a single case.")
+    parser.add_argument("--case", required=True, help="Audio case id, e.g. NoOverlap")
+    return parser.parse_args()
+
+
+def main() -> None:
+    args = parse_args()
+    _ = load_config()
+    if args.case != "NoOverlap":
+        raise ValueError("This stage only supports case NoOverlap.")
+
+    reference = load_reference(args.case)
+    reference_text = reference.get("full_text", "")
+
+    mixed_path = PROJECT_ROOT / "results" / "transcripts_raw" / f"{args.case}_mixed_whisper.json"
+    separated_path = (
+        PROJECT_ROOT / "results" / "transcripts_speaker" / f"{args.case}_separated_speaker_transcript.json"
+    )
+    mixed = load_json(mixed_path)
+    separated = load_json(separated_path)
+
+    rows = [
+        build_row(args.case, "mixed_whisper", reference_text, mixed.get("text", ""), mixed_path),
+        build_row(
+            args.case,
+            "separated_whisper",
+            reference_text,
+            separated.get("full_text", ""),
+            separated_path,
+        ),
+    ]
+
+    output_dir = PROJECT_ROOT / "results" / "tables"
+    output_dir.mkdir(parents=True, exist_ok=True)
+    csv_path = output_dir / "cer_results.csv"
+    json_path = output_dir / "cer_results.json"
+    with csv_path.open("w", newline="", encoding="utf-8") as f:
+        writer = csv.DictWriter(f, fieldnames=CSV_COLUMNS)
+        writer.writeheader()
+        writer.writerows(rows)
+    json_path.write_text(json.dumps(rows, ensure_ascii=False, indent=2), encoding="utf-8")
+
+    print(f"Wrote CER CSV: {csv_path.relative_to(PROJECT_ROOT)}")
+    print(f"Wrote CER JSON: {json_path.relative_to(PROJECT_ROOT)}")
+    for row in rows:
+        print(f"{row['method']}: CER={row['cer']}")
+
+
+if __name__ == "__main__":
+    main()

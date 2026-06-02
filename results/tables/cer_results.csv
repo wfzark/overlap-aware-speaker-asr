@@ -1,0 +1,3 @@
+case_id,method,reference_type,hypothesis_path,reference_length,hypothesis_length,edit_distance,cer
+NoOverlap,mixed_whisper,verified_reference,results/transcripts_raw/NoOverlap_mixed_whisper.json,278,274,60,0.215827
+NoOverlap,separated_whisper,verified_reference,results/transcripts_speaker/NoOverlap_separated_speaker_transcript.json,278,277,15,0.053957
