@@ -1,0 +1,45 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.venv/
+venv/
+env/
+*.egg-info/
+
+# IDE
+.vscode/
+.idea/
+
+# Model cache
+models/
+checkpoints/
+.cache/
+huggingface/
+torch_cache/
+
+# Runtime outputs
+results/transcripts_raw/*
+results/transcripts_speaker/*
+results/transcripts_corrected/*
+results/summaries/*
+results/tables/*
+results/figures/*
+
+# Keep result folders
+!results/transcripts_raw/.gitkeep
+!results/transcripts_speaker/.gitkeep
+!results/transcripts_corrected/.gitkeep
+!results/summaries/.gitkeep
+!results/tables/.gitkeep
+!results/figures/.gitkeep
+!results/tables/audio_manifest.csv
+
+# Large temporary files
+*.tmp
+*.log
+
+# Environment secrets
+.env
+api_keys.json

@@ -1,0 +1,10 @@
+{
+  "SPEAKER_1": {
+    "possible_role": "正方",
+    "style": "表达较主动，可能提出支持命题的观点。"
+  },
+  "SPEAKER_2": {
+    "possible_role": "反方",
+    "style": "表达较反驳，可能提出反对命题的观点。"
+  }
+}

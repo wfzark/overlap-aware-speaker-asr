@@ -1,0 +1,63 @@
+project:
+  name: overlap-aware-speaker-asr
+  language: zh
+
+paths:
+  mixed_audio_dir: resources/mixed_audio
+  separated_audio_dir: resources/separated_audio
+  snippets_dir: resources/snippets
+  glossary_dir: resources/glossary
+  reference_transcripts: references/reference_transcripts.json
+  results_dir: results
+
+audio_cases:
+  - id: NoOverlap
+    mixed: NoOverlap.wav
+    separated:
+      spk1: NoOverlap_spk1.wav
+      spk2: NoOverlap_spk2.wav
+    overlap_level: 0
+
+  - id: LightOverlap
+    mixed: LightOverlap.wav
+    separated:
+      spk1: LightOverlap_spk1.wav
+      spk2: LightOverlap_spk2.wav
+    overlap_level: 1
+
+  - id: MidOverlap
+    mixed: MidOverlap.wav
+    separated:
+      spk1: MidOverlap_spk1.wav
+      spk2: MidOverlap_spk2.wav
+    overlap_level: 2
+
+  - id: HeavyOverlap
+    mixed: HeavyOverlap.wav
+    separated:
+      spk1: HeavyOverlap_spk1.wav
+      spk2: HeavyOverlap_spk2.wav
+    overlap_level: 3
+
+  - id: OppositeOverlap
+    mixed: OppositeOverlap.wav
+    separated:
+      spk1: OppositeOverlap_spk1.wav
+      spk2: OppositeOverlap_spk2.wav
+    overlap_level: 4
+
+asr:
+  whisper_model: small
+  language: zh
+  device: auto
+
+llm:
+  provider: openai_compatible
+  temperature: 0.1
+  use_rag: true
+
+evaluation:
+  use_cer: true
+  use_speaker_accuracy: true
+  use_term_error_rate: true
+  use_rouge_l: true

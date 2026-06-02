@@ -1,0 +1,22 @@
+[
+  {
+    "term": "正方",
+    "aliases": ["pro", "affirmative side", "支持方"],
+    "description": "辩论中支持命题的一方。"
+  },
+  {
+    "term": "反方",
+    "aliases": ["con", "negative side", "反对方"],
+    "description": "辩论中反对命题的一方。"
+  },
+  {
+    "term": "交叉发言",
+    "aliases": ["overlap", "cross-talk", "抢话"],
+    "description": "两名或多名说话人同时发言的现象。"
+  },
+  {
+    "term": "说话人归属",
+    "aliases": ["speaker attribution", "speaker assignment"],
+    "description": "判断一句话属于哪位说话人的任务。"
+  }
+]
