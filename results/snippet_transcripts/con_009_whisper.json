@@ -1,0 +1,15 @@
+{
+  "snippet_id": "con_009",
+  "audio_path": "resources/snippets/con_009.wav",
+  "model": "whisper-small",
+  "language": "zh",
+  "text": "總睡晚睡",
+  "segments": [
+    {
+      "start": 0.0,
+      "end": 1.4,
+      "text": "總睡晚睡"
+    }
+  ],
+  "runtime_sec": 0.183
+}

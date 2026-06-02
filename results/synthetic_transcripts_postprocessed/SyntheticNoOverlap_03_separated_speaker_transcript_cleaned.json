@@ -1,0 +1,23 @@
+{
+  "sample_id": "SyntheticNoOverlap_03",
+  "tier": "SyntheticNoOverlap",
+  "method": "duplicate_suppression",
+  "source_path": "results/synthetic_transcripts_speaker/SyntheticNoOverlap_03_separated_speaker_transcript.json",
+  "cleaned_segments": [
+    {
+      "speaker": "SPEAKER_1",
+      "start": 0.0,
+      "end": 2.0,
+      "text": "我往这里再稍微解释一下"
+    },
+    {
+      "speaker": "SPEAKER_2",
+      "start": 0.0,
+      "end": 2.0,
+      "text": "好我先聊完 都帅玩齊"
+    }
+  ],
+  "cleaned_full_text": "[SPEAKER_1] 我往这里再稍微解释一下\n[SPEAKER_2] 好我先聊完 都帅玩齊",
+  "removed_segments": [],
+  "removed_count": 0
+}

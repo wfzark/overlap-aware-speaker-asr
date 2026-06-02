@@ -1,0 +1,22 @@
+{
+  "sample_id": "SyntheticMidOverlap_01",
+  "tier": "SyntheticMidOverlap",
+  "audio_path": "resources/synthetic_overlap/audio/SyntheticMidOverlap/SyntheticMidOverlap_01_mixed.wav",
+  "mode": "mixed",
+  "model": "whisper-small",
+  "language": "zh",
+  "text": "他让你在那个时间段里拥有了你帮是要 那他是怎么缓解我们的空虚的",
+  "segments": [
+    {
+      "start": 0.0,
+      "end": 3.08,
+      "text": "他让你在那个时间段里拥有了"
+    },
+    {
+      "start": 3.08,
+      "end": 5.88,
+      "text": "你帮是要 那他是怎么缓解我们的空虚的"
+    }
+  ],
+  "runtime_sec": 0.818
+}

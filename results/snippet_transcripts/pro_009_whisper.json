@@ -1,0 +1,15 @@
+{
+  "snippet_id": "pro_009",
+  "audio_path": "resources/snippets/pro_009.wav",
+  "model": "whisper-small",
+  "language": "zh",
+  "text": "那你个人的生活空间必定也就这么点",
+  "segments": [
+    {
+      "start": 0.0,
+      "end": 3.32,
+      "text": "那你个人的生活空间必定也就这么点"
+    }
+  ],
+  "runtime_sec": 0.324
+}

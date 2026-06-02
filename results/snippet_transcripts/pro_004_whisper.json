@@ -1,0 +1,15 @@
+{
+  "snippet_id": "pro_004",
+  "audio_path": "resources/snippets/pro_004.wav",
+  "model": "whisper-small",
+  "language": "zh",
+  "text": "只在讲的熬夜所谓的熬夜就是晚睡晚起是吧",
+  "segments": [
+    {
+      "start": 0.0,
+      "end": 4.24,
+      "text": "只在讲的熬夜所谓的熬夜就是晚睡晚起是吧"
+    }
+  ],
+  "runtime_sec": 0.447
+}

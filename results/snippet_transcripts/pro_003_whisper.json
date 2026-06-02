@@ -1,0 +1,15 @@
+{
+  "snippet_id": "pro_003",
+  "audio_path": "resources/snippets/pro_003.wav",
+  "model": "whisper-small",
+  "language": "zh",
+  "text": "因為有一個前提性的問題沒有討論",
+  "segments": [
+    {
+      "start": 0.0,
+      "end": 2.44,
+      "text": "因為有一個前提性的問題沒有討論"
+    }
+  ],
+  "runtime_sec": 0.299
+}

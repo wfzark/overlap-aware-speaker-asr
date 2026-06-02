@@ -1,0 +1,15 @@
+{
+  "snippet_id": "con_008",
+  "audio_path": "resources/snippets/con_008.wav",
+  "model": "whisper-small",
+  "language": "zh",
+  "text": "因为你可以为了身体建立方式",
+  "segments": [
+    {
+      "start": 0.0,
+      "end": 2.0,
+      "text": "因为你可以为了身体建立方式"
+    }
+  ],
+  "runtime_sec": 0.28
+}

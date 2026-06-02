@@ -1,0 +1,17 @@
+{
+  "sample_id": "SyntheticMidOverlap_04",
+  "tier": "SyntheticMidOverlap",
+  "audio_path": "resources/synthetic_overlap/audio/SyntheticMidOverlap/SyntheticMidOverlap_04_mixed.wav",
+  "mode": "mixed",
+  "model": "whisper-small",
+  "language": "zh",
+  "text": "其实不落分也是一种要求",
+  "segments": [
+    {
+      "start": 0.0,
+      "end": 2.0,
+      "text": "其实不落分也是一种要求"
+    }
+  ],
+  "runtime_sec": 0.347
+}

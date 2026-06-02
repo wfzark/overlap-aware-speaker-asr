@@ -1,0 +1,17 @@
+{
+  "sample_id": "SyntheticOppositeOverlap_01",
+  "tier": "SyntheticOppositeOverlap",
+  "audio_path": "resources/synthetic_overlap/audio/SyntheticOppositeOverlap/SyntheticOppositeOverlap_01_spk1.wav",
+  "mode": "separated_spk1",
+  "model": "whisper-small",
+  "language": "zh",
+  "text": "他让你在那个时间段里拥有了自己",
+  "segments": [
+    {
+      "start": 0.0,
+      "end": 4.0,
+      "text": "他让你在那个时间段里拥有了自己"
+    }
+  ],
+  "runtime_sec": 0.385
+}

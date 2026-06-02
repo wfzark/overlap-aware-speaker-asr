@@ -1,0 +1,17 @@
+{
+  "sample_id": "SyntheticLightOverlap_01",
+  "tier": "SyntheticLightOverlap",
+  "audio_path": "resources/synthetic_overlap/audio/SyntheticLightOverlap/SyntheticLightOverlap_01_spk2.wav",
+  "mode": "separated_spk2",
+  "model": "whisper-small",
+  "language": "zh",
+  "text": "你方式要 那它是怎么缓解我们的空虚的",
+  "segments": [
+    {
+      "start": 0.0,
+      "end": 5.0,
+      "text": "你方式要 那它是怎么缓解我们的空虚的"
+    }
+  ],
+  "runtime_sec": 0.445
+}

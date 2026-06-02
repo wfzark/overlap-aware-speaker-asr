@@ -1,0 +1,23 @@
+{
+  "sample_id": "SyntheticOppositeOverlap_04",
+  "tier": "SyntheticOppositeOverlap",
+  "method": "duplicate_suppression",
+  "source_path": "results/synthetic_transcripts_speaker/SyntheticOppositeOverlap_04_separated_speaker_transcript.json",
+  "cleaned_segments": [
+    {
+      "speaker": "SPEAKER_1",
+      "start": 0.0,
+      "end": 2.0,
+      "text": "其实不落分也是一种"
+    },
+    {
+      "speaker": "SPEAKER_2",
+      "start": 0.0,
+      "end": 2.0,
+      "text": "上班的時間必定也晚"
+    }
+  ],
+  "cleaned_full_text": "[SPEAKER_1] 其实不落分也是一种\n[SPEAKER_2] 上班的時間必定也晚",
+  "removed_segments": [],
+  "removed_count": 0
+}

@@ -1,0 +1,15 @@
+{
+  "snippet_id": "pro_002",
+  "audio_path": "resources/snippets/pro_002.wav",
+  "model": "whisper-small",
+  "language": "zh",
+  "text": "没问题没问题 先不着急",
+  "segments": [
+    {
+      "start": 0.0,
+      "end": 1.26,
+      "text": "没问题没问题 先不着急"
+    }
+  ],
+  "runtime_sec": 0.262
+}

@@ -1,0 +1,15 @@
+{
+  "snippet_id": "con_004",
+  "audio_path": "resources/snippets/con_004.wav",
+  "model": "whisper-small",
+  "language": "zh",
+  "text": "其实不落分也是一种",
+  "segments": [
+    {
+      "start": 0.0,
+      "end": 2.0,
+      "text": "其实不落分也是一种"
+    }
+  ],
+  "runtime_sec": 0.236
+}

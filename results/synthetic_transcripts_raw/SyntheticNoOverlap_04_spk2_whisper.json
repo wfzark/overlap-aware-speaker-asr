@@ -1,0 +1,17 @@
+{
+  "sample_id": "SyntheticNoOverlap_04",
+  "tier": "SyntheticNoOverlap",
+  "audio_path": "resources/synthetic_overlap/audio/SyntheticNoOverlap/SyntheticNoOverlap_04_spk2.wav",
+  "mode": "separated_spk2",
+  "model": "whisper-small",
+  "language": "zh",
+  "text": "上班的时间必定也晚",
+  "segments": [
+    {
+      "start": 0.0,
+      "end": 2.0,
+      "text": "上班的时间必定也晚"
+    }
+  ],
+  "runtime_sec": 0.274
+}

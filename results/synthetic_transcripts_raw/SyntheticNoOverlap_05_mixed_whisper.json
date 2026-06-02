@@ -1,0 +1,22 @@
+{
+  "sample_id": "SyntheticNoOverlap_05",
+  "tier": "SyntheticNoOverlap",
+  "audio_path": "resources/synthetic_overlap/audio/SyntheticNoOverlap/SyntheticNoOverlap_05_mixed.wav",
+  "mode": "mixed",
+  "model": "whisper-small",
+  "language": "zh",
+  "text": "我刚觉得晚睡晚起少夜那你个人的生活空间必定也就这么点",
+  "segments": [
+    {
+      "start": 0.0,
+      "end": 2.0,
+      "text": "我刚觉得晚睡晚起少夜"
+    },
+    {
+      "start": 3.0,
+      "end": 6.0,
+      "text": "那你个人的生活空间必定也就这么点"
+    }
+  ],
+  "runtime_sec": 0.57
+}

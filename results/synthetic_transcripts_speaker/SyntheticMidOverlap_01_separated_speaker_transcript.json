@@ -1,0 +1,25 @@
+{
+  "sample_id": "SyntheticMidOverlap_01",
+  "tier": "SyntheticMidOverlap",
+  "method": "separated_tracks_whisper",
+  "model": "whisper-small",
+  "language": "zh",
+  "segments": [
+    {
+      "speaker": "SPEAKER_1",
+      "start": 0.0,
+      "end": 4.0,
+      "text": "他让你在那个时间段里拥有了自己"
+    },
+    {
+      "speaker": "SPEAKER_2",
+      "start": 0.0,
+      "end": 5.84,
+      "text": "你方式要 那它是怎么缓解我们的空虚的"
+    }
+  ],
+  "full_text": "[SPEAKER_1] 他让你在那个时间段里拥有了自己\n[SPEAKER_2] 你方式要 那它是怎么缓解我们的空虚的",
+  "runtime_sec_total": 1.031,
+  "spk1_runtime_sec": 0.445,
+  "spk2_runtime_sec": 0.586
+}

@@ -1,0 +1,17 @@
+{
+  "sample_id": "SyntheticHeavyOverlap_05",
+  "tier": "SyntheticHeavyOverlap",
+  "audio_path": "resources/synthetic_overlap/audio/SyntheticHeavyOverlap/SyntheticHeavyOverlap_05_mixed.wav",
+  "mode": "mixed",
+  "model": "whisper-small",
+  "language": "zh",
+  "text": "刚觉得晚睡晚起爽意",
+  "segments": [
+    {
+      "start": 0.0,
+      "end": 2.0,
+      "text": "刚觉得晚睡晚起爽意"
+    }
+  ],
+  "runtime_sec": 0.357
+}

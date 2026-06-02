@@ -1,0 +1,17 @@
+{
+  "sample_id": "SyntheticOppositeOverlap_05",
+  "tier": "SyntheticOppositeOverlap",
+  "audio_path": "resources/synthetic_overlap/audio/SyntheticOppositeOverlap/SyntheticOppositeOverlap_05_mixed.wav",
+  "mode": "mixed",
+  "model": "whisper-small",
+  "language": "zh",
+  "text": "我刚觉得晚睡晚睡的生活感必定也就这么点",
+  "segments": [
+    {
+      "start": 0.0,
+      "end": 3.44,
+      "text": "我刚觉得晚睡晚睡的生活感必定也就这么点"
+    }
+  ],
+  "runtime_sec": 0.481
+}

@@ -1,0 +1,15 @@
+{
+  "snippet_id": "con_006",
+  "audio_path": "resources/snippets/con_006.wav",
+  "model": "whisper-small",
+  "language": "zh",
+  "text": "晚睡早起也算好夜了",
+  "segments": [
+    {
+      "start": 0.0,
+      "end": 2.0,
+      "text": "晚睡早起也算好夜了"
+    }
+  ],
+  "runtime_sec": 0.299
+}

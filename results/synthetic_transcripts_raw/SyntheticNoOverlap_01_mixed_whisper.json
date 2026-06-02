@@ -1,0 +1,22 @@
+{
+  "sample_id": "SyntheticNoOverlap_01",
+  "tier": "SyntheticNoOverlap",
+  "audio_path": "resources/synthetic_overlap/audio/SyntheticNoOverlap/SyntheticNoOverlap_01_mixed.wav",
+  "mode": "mixed",
+  "model": "whisper-small",
+  "language": "zh",
+  "text": "他让你在那个时间段里拥有了自己你方式要,那他是怎么缓解我们的空虚的",
+  "segments": [
+    {
+      "start": 0.0,
+      "end": 3.84,
+      "text": "他让你在那个时间段里拥有了自己"
+    },
+    {
+      "start": 3.84,
+      "end": 7.0,
+      "text": "你方式要,那他是怎么缓解我们的空虚的"
+    }
+  ],
+  "runtime_sec": 1.255
+}

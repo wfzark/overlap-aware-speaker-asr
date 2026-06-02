@@ -1,0 +1,22 @@
+{
+  "sample_id": "SyntheticHeavyOverlap_02",
+  "tier": "SyntheticHeavyOverlap",
+  "audio_path": "resources/synthetic_overlap/audio/SyntheticHeavyOverlap/SyntheticHeavyOverlap_02_mixed.wav",
+  "mode": "mixed",
+  "model": "whisper-small",
+  "language": "zh",
+  "text": "哪怕自己是一個刷斗的問題因為有一個前提性的問題沒有討論",
+  "segments": [
+    {
+      "start": 0.0,
+      "end": 2.0,
+      "text": "哪怕自己是一個刷斗的問題"
+    },
+    {
+      "start": 2.0,
+      "end": 4.0,
+      "text": "因為有一個前提性的問題沒有討論"
+    }
+  ],
+  "runtime_sec": 0.684
+}

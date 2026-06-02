@@ -1,0 +1,17 @@
+{
+  "sample_id": "SyntheticNoOverlap_02",
+  "tier": "SyntheticNoOverlap",
+  "audio_path": "resources/synthetic_overlap/audio/SyntheticNoOverlap/SyntheticNoOverlap_02_spk1.wav",
+  "mode": "separated_spk1",
+  "model": "whisper-small",
+  "language": "zh",
+  "text": "哪怕自己是刷抖音的自己",
+  "segments": [
+    {
+      "start": 0.0,
+      "end": 3.0,
+      "text": "哪怕自己是刷抖音的自己"
+    }
+  ],
+  "runtime_sec": 0.366
+}

@@ -1,0 +1,25 @@
+{
+  "sample_id": "SyntheticHeavyOverlap_04",
+  "tier": "SyntheticHeavyOverlap",
+  "method": "separated_tracks_whisper",
+  "model": "whisper-small",
+  "language": "zh",
+  "segments": [
+    {
+      "speaker": "SPEAKER_1",
+      "start": 0.0,
+      "end": 2.0,
+      "text": "其实不落分也是一种"
+    },
+    {
+      "speaker": "SPEAKER_2",
+      "start": 0.0,
+      "end": 2.0,
+      "text": "上班的时间必定也晚"
+    }
+  ],
+  "full_text": "[SPEAKER_1] 其实不落分也是一种\n[SPEAKER_2] 上班的时间必定也晚",
+  "runtime_sec_total": 0.651,
+  "spk1_runtime_sec": 0.299,
+  "spk2_runtime_sec": 0.352
+}

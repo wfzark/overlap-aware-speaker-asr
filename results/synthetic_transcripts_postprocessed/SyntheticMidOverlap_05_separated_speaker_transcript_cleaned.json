@@ -1,0 +1,23 @@
+{
+  "sample_id": "SyntheticMidOverlap_05",
+  "tier": "SyntheticMidOverlap",
+  "method": "duplicate_suppression",
+  "source_path": "results/synthetic_transcripts_speaker/SyntheticMidOverlap_05_separated_speaker_transcript.json",
+  "cleaned_segments": [
+    {
+      "speaker": "SPEAKER_1",
+      "start": 0.0,
+      "end": 2.12,
+      "text": "当觉得晚睡晚起少夜"
+    },
+    {
+      "speaker": "SPEAKER_2",
+      "start": 0.0,
+      "end": 4.48,
+      "text": "那你个人的生活空间必定也就这么点"
+    }
+  ],
+  "cleaned_full_text": "[SPEAKER_1] 当觉得晚睡晚起少夜\n[SPEAKER_2] 那你个人的生活空间必定也就这么点",
+  "removed_segments": [],
+  "removed_count": 0
+}

@@ -1,0 +1,22 @@
+{
+  "sample_id": "SyntheticLightOverlap_04",
+  "tier": "SyntheticLightOverlap",
+  "audio_path": "resources/synthetic_overlap/audio/SyntheticLightOverlap/SyntheticLightOverlap_04_mixed.wav",
+  "mode": "mixed",
+  "model": "whisper-small",
+  "language": "zh",
+  "text": "其实不落分也是一种药上班的时间必定也晚",
+  "segments": [
+    {
+      "start": 0.0,
+      "end": 2.0,
+      "text": "其实不落分也是一种药"
+    },
+    {
+      "start": 2.0,
+      "end": 4.0,
+      "text": "上班的时间必定也晚"
+    }
+  ],
+  "runtime_sec": 0.598
+}

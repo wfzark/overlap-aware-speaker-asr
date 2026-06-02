@@ -1,0 +1,23 @@
+{
+  "sample_id": "SyntheticOppositeOverlap_02",
+  "tier": "SyntheticOppositeOverlap",
+  "method": "duplicate_suppression",
+  "source_path": "results/synthetic_transcripts_speaker/SyntheticOppositeOverlap_02_separated_speaker_transcript.json",
+  "cleaned_segments": [
+    {
+      "speaker": "SPEAKER_1",
+      "start": 0.0,
+      "end": 3.0,
+      "text": "哪怕自己是刷抖音的自己"
+    },
+    {
+      "speaker": "SPEAKER_2",
+      "start": 0.0,
+      "end": 3.0,
+      "text": "因为有一个前提性的问题没有讨论"
+    }
+  ],
+  "cleaned_full_text": "[SPEAKER_1] 哪怕自己是刷抖音的自己\n[SPEAKER_2] 因为有一个前提性的问题没有讨论",
+  "removed_segments": [],
+  "removed_count": 0
+}

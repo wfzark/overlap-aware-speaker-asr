@@ -1,0 +1,15 @@
+{
+  "snippet_id": "pro_008",
+  "audio_path": "resources/snippets/pro_008.wav",
+  "model": "whisper-small",
+  "language": "zh",
+  "text": "你下班的時間必定也晚",
+  "segments": [
+    {
+      "start": 0.0,
+      "end": 2.56,
+      "text": "你下班的時間必定也晚"
+    }
+  ],
+  "runtime_sec": 0.259
+}

@@ -1,0 +1,15 @@
+{
+  "snippet_id": "pro_012",
+  "audio_path": "resources/snippets/pro_012.wav",
+  "model": "whisper-small",
+  "language": "zh",
+  "text": "跟8点睡6点起午",
+  "segments": [
+    {
+      "start": 0.0,
+      "end": 2.26,
+      "text": "跟8点睡6点起午"
+    }
+  ],
+  "runtime_sec": 0.238
+}

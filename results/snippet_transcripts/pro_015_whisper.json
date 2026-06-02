@@ -1,0 +1,15 @@
+{
+  "snippet_id": "pro_015",
+  "audio_path": "resources/snippets/pro_015.wav",
+  "model": "whisper-small",
+  "language": "zh",
+  "text": "我多了两个小时",
+  "segments": [
+    {
+      "start": 0.0,
+      "end": 1.04,
+      "text": "我多了两个小时"
+    }
+  ],
+  "runtime_sec": 0.227
+}

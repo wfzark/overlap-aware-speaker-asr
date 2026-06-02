@@ -1,0 +1,15 @@
+{
+  "snippet_id": "pro_006",
+  "audio_path": "resources/snippets/pro_006.wav",
+  "model": "whisper-small",
+  "language": "zh",
+  "text": "既然你是晚睡晚起",
+  "segments": [
+    {
+      "start": 0.0,
+      "end": 2.0,
+      "text": "既然你是晚睡晚起"
+    }
+  ],
+  "runtime_sec": 0.256
+}

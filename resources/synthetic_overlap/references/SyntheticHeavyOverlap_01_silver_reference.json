@@ -1,0 +1,39 @@
+{
+  "sample_id": "SyntheticHeavyOverlap_01",
+  "tier": "SyntheticHeavyOverlap",
+  "overlap_level": 3,
+  "overlap_ratio": 0.5,
+  "status": "silver_reference",
+  "reference_type": "silver_reference",
+  "source_files": [
+    "con_001.wav",
+    "pro_001.wav"
+  ],
+  "source_transcripts": [
+    "results/snippet_transcripts/con_001_whisper.json",
+    "results/snippet_transcripts/pro_001_whisper.json"
+  ],
+  "speaker_1_label": "con",
+  "speaker_2_label": "pro",
+  "speaker_1_source": "con_001.wav",
+  "speaker_2_source": "pro_001.wav",
+  "speaker_1_text": "他让你在那个时间段里拥有了自己",
+  "speaker_2_text": "你方式要,那它是怎么缓解我们的空虚的",
+  "turns": [
+    {
+      "speaker": "SPEAKER_1",
+      "source": "con_001.wav",
+      "text": "他让你在那个时间段里拥有了自己",
+      "start_order": 0
+    },
+    {
+      "speaker": "SPEAKER_2",
+      "source": "pro_001.wav",
+      "text": "你方式要,那它是怎么缓解我们的空虚的",
+      "start_order": 1
+    }
+  ],
+  "full_text": "[SPEAKER_1] 他让你在那个时间段里拥有了自己\n[SPEAKER_2] 你方式要,那它是怎么缓解我们的空虚的",
+  "text": "[SPEAKER_1] 他让你在那个时间段里拥有了自己\n[SPEAKER_2] 你方式要,那它是怎么缓解我们的空虚的",
+  "notes": "Silver reference built from Whisper transcriptions of source snippets."
+}

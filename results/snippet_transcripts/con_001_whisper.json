@@ -1,0 +1,15 @@
+{
+  "snippet_id": "con_001",
+  "audio_path": "resources/snippets/con_001.wav",
+  "model": "whisper-small",
+  "language": "zh",
+  "text": "他让你在那个时间段里拥有了自己",
+  "segments": [
+    {
+      "start": 0.0,
+      "end": 3.8,
+      "text": "他让你在那个时间段里拥有了自己"
+    }
+  ],
+  "runtime_sec": 2.584
+}

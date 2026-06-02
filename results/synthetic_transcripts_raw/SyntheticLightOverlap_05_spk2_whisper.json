@@ -1,0 +1,17 @@
+{
+  "sample_id": "SyntheticLightOverlap_05",
+  "tier": "SyntheticLightOverlap",
+  "audio_path": "resources/synthetic_overlap/audio/SyntheticLightOverlap/SyntheticLightOverlap_05_spk2.wav",
+  "mode": "separated_spk2",
+  "model": "whisper-small",
+  "language": "zh",
+  "text": "那你个人的生活空间必定也就这么点",
+  "segments": [
+    {
+      "start": 0.0,
+      "end": 5.0,
+      "text": "那你个人的生活空间必定也就这么点"
+    }
+  ],
+  "runtime_sec": 0.447
+}

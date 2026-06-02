@@ -1,0 +1,17 @@
+{
+  "sample_id": "SyntheticOppositeOverlap_03",
+  "tier": "SyntheticOppositeOverlap",
+  "audio_path": "resources/synthetic_overlap/audio/SyntheticOppositeOverlap/SyntheticOppositeOverlap_03_spk1.wav",
+  "mode": "separated_spk1",
+  "model": "whisper-small",
+  "language": "zh",
+  "text": "我往这里再稍微解释一下",
+  "segments": [
+    {
+      "start": 0.0,
+      "end": 2.0,
+      "text": "我往这里再稍微解释一下"
+    }
+  ],
+  "runtime_sec": 0.376
+}

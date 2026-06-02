@@ -54,4 +54,10 @@ It does not run ASR.
 It does not run LLM correction.
 It does not compute CER.
 
+## Silver Reference and Evaluation Scope
+
+The synthetic benchmark uses silver references derived from Whisper transcripts of the source snippets. That means the synthetic result is a stability check, not a gold evaluation.
+
+The five manually verified benchmark cases remain the primary gold benchmark for the project. Synthetic results are supplementary evidence used to test whether the adaptive router still behaves sensibly on a larger and more varied sample set.
+
 That keeps the benchmark-generation step lightweight and reproducible.

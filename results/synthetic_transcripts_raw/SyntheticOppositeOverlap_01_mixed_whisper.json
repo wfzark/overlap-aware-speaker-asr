@@ -1,0 +1,22 @@
+{
+  "sample_id": "SyntheticOppositeOverlap_01",
+  "tier": "SyntheticOppositeOverlap",
+  "audio_path": "resources/synthetic_overlap/audio/SyntheticOppositeOverlap/SyntheticOppositeOverlap_01_mixed.wav",
+  "mode": "mixed",
+  "model": "whisper-small",
+  "language": "zh",
+  "text": "哦 他让你在那个身边断断的用户你方式要 他是怎么远接我们的空虚的",
+  "segments": [
+    {
+      "start": 0.0,
+      "end": 3.0,
+      "text": "哦 他让你在那个身边断断的用户"
+    },
+    {
+      "start": 3.0,
+      "end": 5.0,
+      "text": "你方式要 他是怎么远接我们的空虚的"
+    }
+  ],
+  "runtime_sec": 0.804
+}

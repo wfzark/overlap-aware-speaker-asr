@@ -1,0 +1,15 @@
+{
+  "snippet_id": "con_002",
+  "audio_path": "resources/snippets/con_002.wav",
+  "model": "whisper-small",
+  "language": "zh",
+  "text": "哪怕自己是刷抖音的自己",
+  "segments": [
+    {
+      "start": 0.0,
+      "end": 3.0,
+      "text": "哪怕自己是刷抖音的自己"
+    }
+  ],
+  "runtime_sec": 0.307
+}

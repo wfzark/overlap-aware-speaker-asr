@@ -1,0 +1,17 @@
+{
+  "sample_id": "SyntheticLightOverlap_02",
+  "tier": "SyntheticLightOverlap",
+  "audio_path": "resources/synthetic_overlap/audio/SyntheticLightOverlap/SyntheticLightOverlap_02_spk2.wav",
+  "mode": "separated_spk2",
+  "model": "whisper-small",
+  "language": "zh",
+  "text": "我会把你当成一个人",
+  "segments": [
+    {
+      "start": 0.0,
+      "end": 2.0,
+      "text": "我会把你当成一个人"
+    }
+  ],
+  "runtime_sec": 0.32
+}

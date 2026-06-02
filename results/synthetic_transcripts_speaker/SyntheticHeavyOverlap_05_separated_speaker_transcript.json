@@ -1,0 +1,25 @@
+{
+  "sample_id": "SyntheticHeavyOverlap_05",
+  "tier": "SyntheticHeavyOverlap",
+  "method": "separated_tracks_whisper",
+  "model": "whisper-small",
+  "language": "zh",
+  "segments": [
+    {
+      "speaker": "SPEAKER_1",
+      "start": 0.0,
+      "end": 2.12,
+      "text": "当觉得晚睡晚起少夜"
+    },
+    {
+      "speaker": "SPEAKER_2",
+      "start": 0.0,
+      "end": 4.0,
+      "text": "那你个人的生活空间必定也就这么点"
+    }
+  ],
+  "full_text": "[SPEAKER_1] 当觉得晚睡晚起少夜\n[SPEAKER_2] 那你个人的生活空间必定也就这么点",
+  "runtime_sec_total": 0.757,
+  "spk1_runtime_sec": 0.317,
+  "spk2_runtime_sec": 0.44
+}

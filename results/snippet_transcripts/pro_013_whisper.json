@@ -1,0 +1,15 @@
+{
+  "snippet_id": "pro_013",
+  "audio_path": "resources/snippets/pro_013.wav",
+  "model": "whisper-small",
+  "language": "zh",
+  "text": "我的个人可以支配的",
+  "segments": [
+    {
+      "start": 0.0,
+      "end": 2.0,
+      "text": "我的个人可以支配的"
+    }
+  ],
+  "runtime_sec": 0.229
+}

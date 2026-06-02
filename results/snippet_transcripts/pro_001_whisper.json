@@ -1,0 +1,15 @@
+{
+  "snippet_id": "pro_001",
+  "audio_path": "resources/snippets/pro_001.wav",
+  "model": "whisper-small",
+  "language": "zh",
+  "text": "你方式要,那它是怎么缓解我们的空虚的",
+  "segments": [
+    {
+      "start": 0.0,
+      "end": 3.0,
+      "text": "你方式要,那它是怎么缓解我们的空虚的"
+    }
+  ],
+  "runtime_sec": 0.402
+}

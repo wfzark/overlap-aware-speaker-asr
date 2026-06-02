@@ -1,0 +1,15 @@
+{
+  "snippet_id": "pro_014",
+  "audio_path": "resources/snippets/pro_014.wav",
+  "model": "whisper-small",
+  "language": "zh",
+  "text": "日常時間是一致的沒錯吧",
+  "segments": [
+    {
+      "start": 0.0,
+      "end": 2.0,
+      "text": "日常時間是一致的沒錯吧"
+    }
+  ],
+  "runtime_sec": 0.278
+}

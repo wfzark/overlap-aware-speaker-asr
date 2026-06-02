@@ -1,0 +1,17 @@
+{
+  "sample_id": "SyntheticNoOverlap_03",
+  "tier": "SyntheticNoOverlap",
+  "audio_path": "resources/synthetic_overlap/audio/SyntheticNoOverlap/SyntheticNoOverlap_03_spk1.wav",
+  "mode": "separated_spk1",
+  "model": "whisper-small",
+  "language": "zh",
+  "text": "我往这里再稍微解释一下",
+  "segments": [
+    {
+      "start": 0.0,
+      "end": 2.0,
+      "text": "我往这里再稍微解释一下"
+    }
+  ],
+  "runtime_sec": 0.368
+}

@@ -1,0 +1,181 @@
+{
+  "sample_id": "SyntheticNoOverlap_02",
+  "tier": "SyntheticNoOverlap",
+  "method": "separated_tracks_whisper",
+  "model": "whisper-small",
+  "language": "zh",
+  "segments": [
+    {
+      "speaker": "SPEAKER_2",
+      "start": 0.0,
+      "end": 2.0,
+      "text": "这次的计划是什么呢"
+    },
+    {
+      "speaker": "SPEAKER_1",
+      "start": 0.0,
+      "end": 3.0,
+      "text": "哪怕自己是刷抖音的自己"
+    },
+    {
+      "speaker": "SPEAKER_2",
+      "start": 2.0,
+      "end": 3.0,
+      "text": "我看了一遍"
+    },
+    {
+      "speaker": "SPEAKER_2",
+      "start": 3.0,
+      "end": 4.0,
+      "text": "我看了一遍"
+    },
+    {
+      "speaker": "SPEAKER_2",
+      "start": 4.0,
+      "end": 5.0,
+      "text": "我看了一遍"
+    },
+    {
+      "speaker": "SPEAKER_2",
+      "start": 5.0,
+      "end": 6.0,
+      "text": "我看了一遍"
+    },
+    {
+      "speaker": "SPEAKER_2",
+      "start": 6.0,
+      "end": 7.0,
+      "text": "我看了一遍"
+    },
+    {
+      "speaker": "SPEAKER_2",
+      "start": 7.0,
+      "end": 8.0,
+      "text": "我看了一遍"
+    },
+    {
+      "speaker": "SPEAKER_2",
+      "start": 8.0,
+      "end": 9.0,
+      "text": "我看了一遍"
+    },
+    {
+      "speaker": "SPEAKER_2",
+      "start": 9.0,
+      "end": 10.0,
+      "text": "我看了一遍"
+    },
+    {
+      "speaker": "SPEAKER_2",
+      "start": 10.0,
+      "end": 11.0,
+      "text": "我看了一遍"
+    },
+    {
+      "speaker": "SPEAKER_2",
+      "start": 11.0,
+      "end": 12.0,
+      "text": "我看了一遍"
+    },
+    {
+      "speaker": "SPEAKER_2",
+      "start": 12.0,
+      "end": 13.0,
+      "text": "我看了一遍"
+    },
+    {
+      "speaker": "SPEAKER_2",
+      "start": 13.0,
+      "end": 14.0,
+      "text": "我看了一遍"
+    },
+    {
+      "speaker": "SPEAKER_2",
+      "start": 14.0,
+      "end": 15.0,
+      "text": "我看了一遍"
+    },
+    {
+      "speaker": "SPEAKER_2",
+      "start": 15.0,
+      "end": 16.0,
+      "text": "我看了一遍"
+    },
+    {
+      "speaker": "SPEAKER_2",
+      "start": 16.0,
+      "end": 17.0,
+      "text": "我看了一遍"
+    },
+    {
+      "speaker": "SPEAKER_2",
+      "start": 17.0,
+      "end": 18.0,
+      "text": "我看了一遍"
+    },
+    {
+      "speaker": "SPEAKER_2",
+      "start": 18.0,
+      "end": 19.0,
+      "text": "我看了一遍"
+    },
+    {
+      "speaker": "SPEAKER_2",
+      "start": 19.0,
+      "end": 20.0,
+      "text": "我看了一遍"
+    },
+    {
+      "speaker": "SPEAKER_2",
+      "start": 20.0,
+      "end": 21.0,
+      "text": "我看了一遍"
+    },
+    {
+      "speaker": "SPEAKER_2",
+      "start": 21.0,
+      "end": 22.0,
+      "text": "我看了一遍"
+    },
+    {
+      "speaker": "SPEAKER_2",
+      "start": 22.0,
+      "end": 23.0,
+      "text": "我看了一遍"
+    },
+    {
+      "speaker": "SPEAKER_2",
+      "start": 23.0,
+      "end": 24.0,
+      "text": "我看了一遍"
+    },
+    {
+      "speaker": "SPEAKER_2",
+      "start": 24.0,
+      "end": 25.0,
+      "text": "我看了一遍"
+    },
+    {
+      "speaker": "SPEAKER_2",
+      "start": 25.0,
+      "end": 26.0,
+      "text": "我看了一遍"
+    },
+    {
+      "speaker": "SPEAKER_2",
+      "start": 26.0,
+      "end": 27.0,
+      "text": "我看了一遍"
+    },
+    {
+      "speaker": "SPEAKER_2",
+      "start": 27.0,
+      "end": 28.0,
+      "text": "我看了一遍"
+    }
+  ],
+  "full_text": "[SPEAKER_2] 这次的计划是什么呢\n[SPEAKER_1] 哪怕自己是刷抖音的自己\n[SPEAKER_2] 我看了一遍\n[SPEAKER_2] 我看了一遍\n[SPEAKER_2] 我看了一遍\n[SPEAKER_2] 我看了一遍\n[SPEAKER_2] 我看了一遍\n[SPEAKER_2] 我看了一遍\n[SPEAKER_2] 我看了一遍\n[SPEAKER_2] 我看了一遍\n[SPEAKER_2] 我看了一遍\n[SPEAKER_2] 我看了一遍\n[SPEAKER_2] 我看了一遍\n[SPEAKER_2] 我看了一遍\n[SPEAKER_2] 我看了一遍\n[SPEAKER_2] 我看了一遍\n[SPEAKER_2] 我看了一遍\n[SPEAKER_2] 我看了一遍\n[SPEAKER_2] 我看了一遍\n[SPEAKER_2] 我看了一遍\n[SPEAKER_2] 我看了一遍\n[SPEAKER_2] 我看了一遍\n[SPEAKER_2] 我看了一遍\n[SPEAKER_2] 我看了一遍\n[SPEAKER_2] 我看了一遍\n[SPEAKER_2] 我看了一遍\n[SPEAKER_2] 我看了一遍\n[SPEAKER_2] 我看了一遍",
+  "runtime_sec_total": 4.497,
+  "spk1_runtime_sec": 0.366,
+  "spk2_runtime_sec": 4.131
+}

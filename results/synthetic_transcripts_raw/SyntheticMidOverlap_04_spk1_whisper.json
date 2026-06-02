@@ -1,0 +1,17 @@
+{
+  "sample_id": "SyntheticMidOverlap_04",
+  "tier": "SyntheticMidOverlap",
+  "audio_path": "resources/synthetic_overlap/audio/SyntheticMidOverlap/SyntheticMidOverlap_04_spk1.wav",
+  "mode": "separated_spk1",
+  "model": "whisper-small",
+  "language": "zh",
+  "text": "其实不落分也是一种",
+  "segments": [
+    {
+      "start": 0.0,
+      "end": 2.0,
+      "text": "其实不落分也是一种"
+    }
+  ],
+  "runtime_sec": 0.283
+}

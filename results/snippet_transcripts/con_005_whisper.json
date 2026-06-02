@@ -1,0 +1,15 @@
+{
+  "snippet_id": "con_005",
+  "audio_path": "resources/snippets/con_005.wav",
+  "model": "whisper-small",
+  "language": "zh",
+  "text": "刚觉得晚睡晚起少夜",
+  "segments": [
+    {
+      "start": 0.0,
+      "end": 2.12,
+      "text": "刚觉得晚睡晚起少夜"
+    }
+  ],
+  "runtime_sec": 0.251
+}

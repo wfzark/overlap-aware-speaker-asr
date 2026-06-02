@@ -1,0 +1,17 @@
+{
+  "sample_id": "SyntheticMidOverlap_03",
+  "tier": "SyntheticMidOverlap",
+  "audio_path": "resources/synthetic_overlap/audio/SyntheticMidOverlap/SyntheticMidOverlap_03_spk2.wav",
+  "mode": "separated_spk2",
+  "model": "whisper-small",
+  "language": "zh",
+  "text": "好我先聊完",
+  "segments": [
+    {
+      "start": 0.0,
+      "end": 3.0,
+      "text": "好我先聊完"
+    }
+  ],
+  "runtime_sec": 0.257
+}

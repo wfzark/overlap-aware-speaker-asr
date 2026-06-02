@@ -1,0 +1,15 @@
+{
+  "snippet_id": "con_003",
+  "audio_path": "resources/snippets/con_003.wav",
+  "model": "whisper-small",
+  "language": "zh",
+  "text": "我往这里再稍微解释一下",
+  "segments": [
+    {
+      "start": 0.0,
+      "end": 1.8,
+      "text": "我往这里再稍微解释一下"
+    }
+  ],
+  "runtime_sec": 0.288
+}

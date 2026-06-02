@@ -1,0 +1,25 @@
+{
+  "sample_id": "SyntheticHeavyOverlap_03",
+  "tier": "SyntheticHeavyOverlap",
+  "method": "separated_tracks_whisper",
+  "model": "whisper-small",
+  "language": "zh",
+  "segments": [
+    {
+      "speaker": "SPEAKER_1",
+      "start": 0.0,
+      "end": 2.0,
+      "text": "我往这里再稍微解释一下"
+    },
+    {
+      "speaker": "SPEAKER_2",
+      "start": 0.0,
+      "end": 2.0,
+      "text": "好我先聊完"
+    }
+  ],
+  "full_text": "[SPEAKER_1] 我往这里再稍微解释一下\n[SPEAKER_2] 好我先聊完",
+  "runtime_sec_total": 0.684,
+  "spk1_runtime_sec": 0.395,
+  "spk2_runtime_sec": 0.289
+}

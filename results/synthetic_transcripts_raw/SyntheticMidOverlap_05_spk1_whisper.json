@@ -1,0 +1,17 @@
+{
+  "sample_id": "SyntheticMidOverlap_05",
+  "tier": "SyntheticMidOverlap",
+  "audio_path": "resources/synthetic_overlap/audio/SyntheticMidOverlap/SyntheticMidOverlap_05_spk1.wav",
+  "mode": "separated_spk1",
+  "model": "whisper-small",
+  "language": "zh",
+  "text": "当觉得晚睡晚起少夜",
+  "segments": [
+    {
+      "start": 0.0,
+      "end": 2.12,
+      "text": "当觉得晚睡晚起少夜"
+    }
+  ],
+  "runtime_sec": 0.361
+}

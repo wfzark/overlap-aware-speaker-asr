@@ -1,0 +1,22 @@
+{
+  "sample_id": "SyntheticMidOverlap_02",
+  "tier": "SyntheticMidOverlap",
+  "audio_path": "resources/synthetic_overlap/audio/SyntheticMidOverlap/SyntheticMidOverlap_02_mixed.wav",
+  "mode": "mixed",
+  "model": "whisper-small",
+  "language": "zh",
+  "text": "哪怕這個自己是一個刷抖音的自己因為有一個前提性的問題沒有討論",
+  "segments": [
+    {
+      "start": 0.0,
+      "end": 2.6,
+      "text": "哪怕這個自己是一個刷抖音的自己"
+    },
+    {
+      "start": 2.6,
+      "end": 4.6,
+      "text": "因為有一個前提性的問題沒有討論"
+    }
+  ],
+  "runtime_sec": 0.753
+}

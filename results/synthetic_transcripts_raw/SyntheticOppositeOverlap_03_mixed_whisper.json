@@ -1,0 +1,17 @@
+{
+  "sample_id": "SyntheticOppositeOverlap_03",
+  "tier": "SyntheticOppositeOverlap",
+  "audio_path": "resources/synthetic_overlap/audio/SyntheticOppositeOverlap/SyntheticOppositeOverlap_03_mixed.wav",
+  "mode": "mixed",
+  "model": "whisper-small",
+  "language": "zh",
+  "text": "我先去找晚期",
+  "segments": [
+    {
+      "start": 0.0,
+      "end": 2.36,
+      "text": "我先去找晚期"
+    }
+  ],
+  "runtime_sec": 0.286
+}

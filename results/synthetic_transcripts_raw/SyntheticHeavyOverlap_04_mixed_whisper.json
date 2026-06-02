@@ -1,0 +1,22 @@
+{
+  "sample_id": "SyntheticHeavyOverlap_04",
+  "tier": "SyntheticHeavyOverlap",
+  "audio_path": "resources/synthetic_overlap/audio/SyntheticHeavyOverlap/SyntheticHeavyOverlap_04_mixed.wav",
+  "mode": "mixed",
+  "model": "whisper-small",
+  "language": "zh",
+  "text": "其实不落分一致上半年没完毕定也晚",
+  "segments": [
+    {
+      "start": 0.0,
+      "end": 1.4,
+      "text": "其实不落分一致"
+    },
+    {
+      "start": 1.4,
+      "end": 3.0,
+      "text": "上半年没完毕定也晚"
+    }
+  ],
+  "runtime_sec": 0.548
+}

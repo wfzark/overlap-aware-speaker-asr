@@ -1,0 +1,15 @@
+{
+  "snippet_id": "pro_005",
+  "audio_path": "resources/snippets/pro_005.wav",
+  "model": "whisper-small",
+  "language": "zh",
+  "text": "好我先聊完 都帅玩起",
+  "segments": [
+    {
+      "start": 0.0,
+      "end": 2.0,
+      "text": "好我先聊完 都帅玩起"
+    }
+  ],
+  "runtime_sec": 0.285
+}

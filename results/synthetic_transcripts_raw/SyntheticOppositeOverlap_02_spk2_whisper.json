@@ -1,0 +1,17 @@
+{
+  "sample_id": "SyntheticOppositeOverlap_02",
+  "tier": "SyntheticOppositeOverlap",
+  "audio_path": "resources/synthetic_overlap/audio/SyntheticOppositeOverlap/SyntheticOppositeOverlap_02_spk2.wav",
+  "mode": "separated_spk2",
+  "model": "whisper-small",
+  "language": "zh",
+  "text": "因为有一个前提性的问题没有讨论",
+  "segments": [
+    {
+      "start": 0.0,
+      "end": 3.0,
+      "text": "因为有一个前提性的问题没有讨论"
+    }
+  ],
+  "runtime_sec": 0.465
+}
