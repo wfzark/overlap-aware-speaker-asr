@@ -43,3 +43,6 @@ results/figures/*
 # Environment secrets
 .env
 api_keys.json
+
+# Temporary chat upload bundles
+chat_upload/
