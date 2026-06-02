@@ -197,5 +197,214 @@
       }
     ],
     "notes": "LLM-assisted draft manually verified by team."
+  },
+  "LightOverlap": {
+    "case_id": "LightOverlap",
+    "status": "verified_reference",
+    "source_files": [
+      "LightOverlap.wav",
+      "LightOverlap_spk1.wav",
+      "LightOverlap_spk2.wav",
+      "LightOverlap_mixed_whisper.json",
+      "LightOverlap_spk1_whisper.json",
+      "LightOverlap_spk2_whisper.json",
+      "LightOverlap_separated_speaker_transcript.json"
+    ],
+    "full_text": "[SPEAKER_1] 你方是要，那它是怎么缓解我们的空虚的？\n[SPEAKER_2] 它让你在那个时间段里拥有了自己。\n[SPEAKER_1] 没问题，没问题，先不着急。\n[SPEAKER_2] 哪怕这个自己是一个刷抖音的自己。\n[SPEAKER_2] 我方这里再稍微解释一下。\n[SPEAKER_1] 因为有一个前提性的问题没有讨论。\n[SPEAKER_1] 现在讲的熬夜，所谓的熬夜就是晚睡晚起，是吧？\n[SPEAKER_2] 其实布洛芬也是一种毒药。\n[SPEAKER_1] 好，我先聊晚睡晚起。\n[SPEAKER_2] 我方觉得晚睡晚起也是熬夜。\n[SPEAKER_2] 晚睡早起也是熬夜了。\n[SPEAKER_1] 既然你是晚睡晚起。\n[SPEAKER_1] 你上班的时间必定也晚。\n[SPEAKER_2] 因为你可以早睡早起。\n[SPEAKER_1] 你下班的时间必定也晚。\n[SPEAKER_2] 因为你可以为了身体健康。\n[SPEAKER_1] 那你个人的生活空间必定也就这么点。\n[SPEAKER_2] 早睡晚起。\n[SPEAKER_1] 你是怎么多出额外的时间来过自己的生活的？\n[SPEAKER_2] 不太一致。\n[SPEAKER_2] 我可以给你解释。\n[SPEAKER_1] 我的意思是，两点睡十点起。\n[SPEAKER_2] 你没有多两个小时。\n[SPEAKER_2] 但是你自己的时候是多两个小时。\n[SPEAKER_2] 我可以给你解释。",
+    "speaker_1_text": "你方是要，那它是怎么缓解我们的空虚的？没问题，没问题，先不着急。因为有一个前提性的问题没有讨论。现在讲的熬夜，所谓的熬夜就是晚睡晚起，是吧？好，我先聊晚睡晚起。既然你是晚睡晚起。你上班的时间必定也晚。你下班的时间必定也晚。那你个人的生活空间必定也就这么点。你是怎么多出额外的时间来过自己的生活的？我的意思是，两点睡十点起。",
+    "speaker_2_text": "它让你在那个时间段里拥有了自己。哪怕这个自己是一个刷抖音的自己。我方这里再稍微解释一下。其实布洛芬也是一种毒药。我方觉得晚睡晚起也是熬夜。晚睡早起也是熬夜了。因为你可以早睡早起。因为你可以为了身体健康。早睡晚起。不太一致。我可以给你解释。你没有多两个小时。但是你自己的时候是多两个小时。我可以给你解释。",
+    "segments": [
+      {
+        "speaker": "SPEAKER_1",
+        "start": 0.0,
+        "end": 3.0,
+        "text": "你方是要，那它是怎么缓解我们的空虚的？",
+        "needs_check": true,
+        "note": "ASR 输出为“你方式要/他”，按 NoOverlap verified reference 与辩论语境暂校为“你方是要/它”。"
+      },
+      {
+        "speaker": "SPEAKER_2",
+        "start": 0.0,
+        "end": 6.4,
+        "text": "它让你在那个时间段里拥有了自己。",
+        "needs_check": false
+      },
+      {
+        "speaker": "SPEAKER_1",
+        "start": 6.4,
+        "end": 8.0,
+        "text": "没问题，没问题，先不着急。",
+        "needs_check": false
+      },
+      {
+        "speaker": "SPEAKER_2",
+        "start": 6.4,
+        "end": 10.24,
+        "text": "哪怕这个自己是一个刷抖音的自己。",
+        "needs_check": false
+      },
+      {
+        "speaker": "SPEAKER_2",
+        "start": 10.24,
+        "end": 14.64,
+        "text": "我方这里再稍微解释一下。",
+        "needs_check": true,
+        "note": "spk2 ASR 为“我往这里”，mixed/NoOverlap reference 支持“我方这里”。"
+      },
+      {
+        "speaker": "SPEAKER_1",
+        "start": 11.0,
+        "end": 13.0,
+        "text": "因为有一个前提性的问题没有讨论。",
+        "needs_check": false
+      },
+      {
+        "speaker": "SPEAKER_1",
+        "start": 15.0,
+        "end": 19.0,
+        "text": "现在讲的熬夜，所谓的熬夜就是晚睡晚起，是吧？",
+        "needs_check": true,
+        "note": "ASR 为“实在讲的熬夜”，按 NoOverlap verified reference 暂校为“现在讲的熬夜”。"
+      },
+      {
+        "speaker": "SPEAKER_2",
+        "start": 14.64,
+        "end": 20.28,
+        "text": "其实布洛芬也是一种毒药。",
+        "needs_check": true,
+        "note": "LightOverlap ASR 为“部落分/部落分义”，结合你已人工确认的 NoOverlap 句子暂校为“布洛芬也是一种毒药”。"
+      },
+      {
+        "speaker": "SPEAKER_1",
+        "start": 21.0,
+        "end": 23.0,
+        "text": "好，我先聊晚睡晚起。",
+        "needs_check": false
+      },
+      {
+        "speaker": "SPEAKER_2",
+        "start": 20.28,
+        "end": 24.8,
+        "text": "我方觉得晚睡晚起也是熬夜。",
+        "needs_check": true,
+        "note": "spk2 ASR 为“刚觉得”，按辩论语境与 NoOverlap reference 暂校为“我方觉得”。"
+      },
+      {
+        "speaker": "SPEAKER_2",
+        "start": 24.8,
+        "end": 28.72,
+        "text": "晚睡早起也是熬夜了。",
+        "needs_check": false
+      },
+      {
+        "speaker": "SPEAKER_1",
+        "start": 25.0,
+        "end": 27.0,
+        "text": "既然你是晚睡晚起。",
+        "needs_check": false
+      },
+      {
+        "speaker": "SPEAKER_1",
+        "start": 27.0,
+        "end": 31.0,
+        "text": "你上班的时间必定也晚。",
+        "needs_check": false
+      },
+      {
+        "speaker": "SPEAKER_2",
+        "start": 28.72,
+        "end": 30.72,
+        "text": "因为你可以早睡早起。",
+        "needs_check": false
+      },
+      {
+        "speaker": "SPEAKER_1",
+        "start": 31.0,
+        "end": 35.0,
+        "text": "你下班的时间必定也晚。",
+        "needs_check": false
+      },
+      {
+        "speaker": "SPEAKER_2",
+        "start": 30.72,
+        "end": 32.72,
+        "text": "因为你可以为了身体健康。",
+        "needs_check": false
+      },
+      {
+        "speaker": "SPEAKER_1",
+        "start": 35.0,
+        "end": 39.0,
+        "text": "那你个人的生活空间必定也就这么点。",
+        "needs_check": false
+      },
+      {
+        "speaker": "SPEAKER_2",
+        "start": 32.72,
+        "end": 34.72,
+        "text": "早睡晚起。",
+        "needs_check": true,
+        "note": "spk2 ASR 为“早睡晚睡”，mixed/NoOverlap reference 支持“早睡晚起”。"
+      },
+      {
+        "speaker": "SPEAKER_1",
+        "start": 39.0,
+        "end": 43.0,
+        "text": "你是怎么多出额外的时间来过自己的生活的？",
+        "needs_check": false
+      },
+      {
+        "speaker": "SPEAKER_2",
+        "start": 36.72,
+        "end": 38.72,
+        "text": "不太一致。",
+        "needs_check": false
+      },
+      {
+        "speaker": "SPEAKER_2",
+        "start": 38.72,
+        "end": 40.72,
+        "text": "我可以给你解释。",
+        "needs_check": false
+      },
+      {
+        "speaker": "SPEAKER_1",
+        "start": 43.0,
+        "end": 47.0,
+        "text": "我的意思是，两点睡十点起。",
+        "needs_check": true,
+        "note": "ASR 多次输出“2点10点起”，按 NoOverlap reference 暂校为“两点睡十点起”。后面重复的“2点10点起”疑似尾部 hallucination，不纳入 reference。"
+      },
+      {
+        "speaker": "SPEAKER_2",
+        "start": 40.72,
+        "end": 42.72,
+        "text": "你没有多两个小时。",
+        "needs_check": false
+      },
+      {
+        "speaker": "SPEAKER_2",
+        "start": 42.72,
+        "end": 44.72,
+        "text": "但是你自己的时候是多两个小时。",
+        "needs_check": true,
+        "note": "NoOverlap reference 中为“但是你自己的时候是多两个”，LightOverlap spk2 明确识别出“多两个小时”，需人工复听确认是否保留“小时”。"
+      },
+      {
+        "speaker": "SPEAKER_2",
+        "start": 44.72,
+        "end": 46.72,
+        "text": "我可以给你解释。",
+        "needs_check": false
+      }
+    ],
+    "excluded_asr_artifacts": [
+      {
+        "text": "我可以解释 / 2点10点起 的尾部多次重复",
+        "reason": "spk1/spk2 separated ASR 在 46.72s 之后出现多次重复，mixed transcript 与 NoOverlap reference 不支持这些重复，暂判为 separation/ASR tail hallucination，未纳入 reference。",
+        "needs_human_verification": true
+      }
+    ],
+    "notes": "LLM-assisted draft manually verified by team."
   }
 }
