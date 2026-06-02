@@ -1,0 +1,102 @@
+[
+  {
+    "case_id": "HeavyOverlap",
+    "method": "separated_whisper",
+    "direct_speaker_macro_cer": 0.110821,
+    "swapped_speaker_macro_cer": 0.92388,
+    "cpcer_lite": 0.110821,
+    "best_mapping": "direct",
+    "speaker_assignment_gap": 0.0,
+    "observation": "cpCER-lite compares direct and swapped speaker assignments and keeps the better one. Direct mapping is already best, suggesting speaker assignment is consistent."
+  },
+  {
+    "case_id": "HeavyOverlap",
+    "method": "separated_whisper_cleaned",
+    "direct_speaker_macro_cer": 0.146535,
+    "swapped_speaker_macro_cer": 0.908955,
+    "cpcer_lite": 0.146535,
+    "best_mapping": "direct",
+    "speaker_assignment_gap": 0.0,
+    "observation": "cpCER-lite compares direct and swapped speaker assignments and keeps the better one. Direct mapping is already best, suggesting speaker assignment is consistent. Cleaning removed 1 segments, which can affect speaker content balance."
+  },
+  {
+    "case_id": "LightOverlap",
+    "method": "separated_whisper",
+    "direct_speaker_macro_cer": 0.19417,
+    "swapped_speaker_macro_cer": 1.017789,
+    "cpcer_lite": 0.19417,
+    "best_mapping": "direct",
+    "speaker_assignment_gap": 0.0,
+    "observation": "cpCER-lite compares direct and swapped speaker assignments and keeps the better one. Direct mapping is already best, suggesting speaker assignment is consistent."
+  },
+  {
+    "case_id": "LightOverlap",
+    "method": "separated_whisper_cleaned",
+    "direct_speaker_macro_cer": 0.135164,
+    "swapped_speaker_macro_cer": 0.928692,
+    "cpcer_lite": 0.135164,
+    "best_mapping": "direct",
+    "speaker_assignment_gap": 0.0,
+    "observation": "cpCER-lite compares direct and swapped speaker assignments and keeps the better one. Direct mapping is already best, suggesting speaker assignment is consistent. Cleaning removed 6 segments, which can affect speaker content balance."
+  },
+  {
+    "case_id": "MidOverlap",
+    "method": "separated_whisper",
+    "direct_speaker_macro_cer": 0.175908,
+    "swapped_speaker_macro_cer": 0.975303,
+    "cpcer_lite": 0.175908,
+    "best_mapping": "direct",
+    "speaker_assignment_gap": 0.0,
+    "observation": "cpCER-lite compares direct and swapped speaker assignments and keeps the better one. Direct mapping is already best, suggesting speaker assignment is consistent."
+  },
+  {
+    "case_id": "MidOverlap",
+    "method": "separated_whisper_cleaned",
+    "direct_speaker_macro_cer": 0.16862,
+    "swapped_speaker_macro_cer": 0.905274,
+    "cpcer_lite": 0.16862,
+    "best_mapping": "direct",
+    "speaker_assignment_gap": 0.0,
+    "observation": "cpCER-lite compares direct and swapped speaker assignments and keeps the better one. Direct mapping is already best, suggesting speaker assignment is consistent. Cleaning removed 4 segments, which can affect speaker content balance."
+  },
+  {
+    "case_id": "NoOverlap",
+    "method": "separated_whisper",
+    "direct_speaker_macro_cer": 0.054312,
+    "swapped_speaker_macro_cer": 0.91813,
+    "cpcer_lite": 0.054312,
+    "best_mapping": "direct",
+    "speaker_assignment_gap": 0.0,
+    "observation": "cpCER-lite compares direct and swapped speaker assignments and keeps the better one. Direct mapping is already best, suggesting speaker assignment is consistent."
+  },
+  {
+    "case_id": "NoOverlap",
+    "method": "separated_whisper_cleaned",
+    "direct_speaker_macro_cer": 0.089278,
+    "swapped_speaker_macro_cer": 0.899612,
+    "cpcer_lite": 0.089278,
+    "best_mapping": "direct",
+    "speaker_assignment_gap": 0.0,
+    "observation": "cpCER-lite compares direct and swapped speaker assignments and keeps the better one. Direct mapping is already best, suggesting speaker assignment is consistent. Cleaning removed 1 segments, which can affect speaker content balance."
+  },
+  {
+    "case_id": "OppositeOverlap",
+    "method": "separated_whisper",
+    "direct_speaker_macro_cer": 0.047479,
+    "swapped_speaker_macro_cer": 0.909664,
+    "cpcer_lite": 0.047479,
+    "best_mapping": "direct",
+    "speaker_assignment_gap": 0.0,
+    "observation": "cpCER-lite compares direct and swapped speaker assignments and keeps the better one. Direct mapping is already best, suggesting speaker assignment is consistent."
+  },
+  {
+    "case_id": "OppositeOverlap",
+    "method": "separated_whisper_cleaned",
+    "direct_speaker_macro_cer": 0.083193,
+    "swapped_speaker_macro_cer": 0.894958,
+    "cpcer_lite": 0.083193,
+    "best_mapping": "direct",
+    "speaker_assignment_gap": 0.0,
+    "observation": "cpCER-lite compares direct and swapped speaker assignments and keeps the better one. Direct mapping is already best, suggesting speaker assignment is consistent. Cleaning removed 1 segments, which can affect speaker content balance."
+  }
+]

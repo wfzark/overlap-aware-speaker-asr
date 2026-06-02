@@ -71,3 +71,20 @@
 - oracle_best: 0.082239
 - rule_router_v1: 0.350902
 - feature_router_v2: 0.167553
+
+## cpCER-lite
+
+- cpCER-lite checks whether a speaker transcript looks better under direct or swapped speaker assignment.
+- A large assignment gap means the transcript may have good content but the speakers are mapped incorrectly.
+
+### Average cpCER-lite
+
+- separated_whisper: 0.116538
+- separated_whisper_cleaned: 0.124558
+
+### Largest assignment gap
+
+- HeavyOverlap / separated_whisper: 0.0
+
+- Detailed cpCER-lite table: results/figures/cpcer_lite_summary.md
+- cpCER-lite plot: results/figures/cpcer_lite_by_case.png
