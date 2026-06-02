@@ -30,23 +30,63 @@
     "cer": 0.382143
   },
   {
+    "case_id": "MidOverlap",
+    "method": "mixed_whisper",
+    "reference_type": "verified_reference",
+    "hypothesis_path": "results/transcripts_raw/MidOverlap_mixed_whisper.json",
+    "reference_length": 285,
+    "hypothesis_length": 273,
+    "edit_distance": 51,
+    "cer": 0.178947
+  },
+  {
+    "case_id": "MidOverlap",
+    "method": "separated_whisper",
+    "reference_type": "verified_reference",
+    "hypothesis_path": "results/transcripts_speaker/MidOverlap_separated_speaker_transcript.json",
+    "reference_length": 285,
+    "hypothesis_length": 301,
+    "edit_distance": 78,
+    "cer": 0.273684
+  },
+  {
+    "case_id": "MidOverlap",
+    "method": "separated_whisper_cleaned",
+    "reference_type": "verified_reference",
+    "hypothesis_path": "results/transcripts_postprocessed/MidOverlap_separated_speaker_transcript_cleaned.json",
+    "reference_length": 285,
+    "hypothesis_length": 270,
+    "edit_distance": 59,
+    "cer": 0.207018
+  },
+  {
     "case_id": "NoOverlap",
     "method": "mixed_whisper",
     "reference_type": "verified_reference",
     "hypothesis_path": "results/transcripts_raw/NoOverlap_mixed_whisper.json",
-    "reference_length": "278",
-    "hypothesis_length": "274",
-    "edit_distance": "60",
-    "cer": "0.215827"
+    "reference_length": 278,
+    "hypothesis_length": 274,
+    "edit_distance": 60,
+    "cer": 0.215827
   },
   {
     "case_id": "NoOverlap",
     "method": "separated_whisper",
     "reference_type": "verified_reference",
     "hypothesis_path": "results/transcripts_speaker/NoOverlap_separated_speaker_transcript.json",
-    "reference_length": "278",
-    "hypothesis_length": "277",
-    "edit_distance": "15",
-    "cer": "0.053957"
+    "reference_length": 278,
+    "hypothesis_length": 277,
+    "edit_distance": 15,
+    "cer": 0.053957
+  },
+  {
+    "case_id": "NoOverlap",
+    "method": "separated_whisper_cleaned",
+    "reference_type": "verified_reference",
+    "hypothesis_path": "results/transcripts_postprocessed/NoOverlap_separated_speaker_transcript_cleaned.json",
+    "reference_length": 278,
+    "hypothesis_length": 267,
+    "edit_distance": 25,
+    "cer": 0.089928
   }
 ]
