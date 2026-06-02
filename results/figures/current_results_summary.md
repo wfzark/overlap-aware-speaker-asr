@@ -88,3 +88,12 @@
 
 - Detailed cpCER-lite table: results/figures/cpcer_lite_summary.md
 - cpCER-lite plot: results/figures/cpcer_lite_by_case.png
+
+## Post-hoc Risk Detection and Selective Repair
+
+- cpCER-lite did not find a speaker swap problem in the verified gold cases; direct speaker assignment was always best.
+- The remaining errors are mostly content-level insertion and repetition issues, not speaker permutation issues.
+- The risk-aware selector is reference-free: it only uses transcript stability signals to pick a final output.
+- Ground-truth CER is reserved for after-the-fact evaluation and is never used for selection.
+
+- Detailed risk-aware summary: results/figures/risk_aware_selection_summary.md

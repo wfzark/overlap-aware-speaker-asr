@@ -1,0 +1,72 @@
+[
+  {
+    "case_id": "NoOverlap",
+    "overlap_level": 0,
+    "base_router_method": "separated_whisper",
+    "final_selected_method": "separated_whisper",
+    "risk_level": "medium",
+    "risk_reasons": "method_disagreement_risk",
+    "recommended_action": "base separated output is stable enough",
+    "text_length_ratio": 2.167857,
+    "duplicate_removed_count": 1,
+    "speaker_length_imbalance": 0.113333,
+    "method_disagreement_score": 0.538715,
+    "notes": "Reference-free selector uses only transcript stability signals; CER is reserved for evaluation. Base routers agree on this case."
+  },
+  {
+    "case_id": "LightOverlap",
+    "overlap_level": 1,
+    "base_router_method": "mixed_whisper",
+    "final_selected_method": "mixed_whisper",
+    "risk_level": "high",
+    "risk_reasons": "repetition_hallucination_risk;length_inflation_risk;method_disagreement_risk",
+    "recommended_action": "keep mixed output because separated looks risky",
+    "text_length_ratio": 2.555556,
+    "duplicate_removed_count": 6,
+    "speaker_length_imbalance": 0.018519,
+    "method_disagreement_score": 0.608696,
+    "notes": "Reference-free selector uses only transcript stability signals; CER is reserved for evaluation. Base routers agree on this case."
+  },
+  {
+    "case_id": "MidOverlap",
+    "overlap_level": 2,
+    "base_router_method": "mixed_whisper",
+    "final_selected_method": "mixed_whisper",
+    "risk_level": "high",
+    "risk_reasons": "repetition_hallucination_risk;length_inflation_risk;method_disagreement_risk",
+    "recommended_action": "keep mixed output because separated looks risky",
+    "text_length_ratio": 2.55036,
+    "duplicate_removed_count": 4,
+    "speaker_length_imbalance": 0.044586,
+    "method_disagreement_score": 0.607898,
+    "notes": "Reference-free selector uses only transcript stability signals; CER is reserved for evaluation. Base routers agree on this case."
+  },
+  {
+    "case_id": "HeavyOverlap",
+    "overlap_level": 3,
+    "base_router_method": "separated_whisper",
+    "final_selected_method": "separated_whisper_cleaned",
+    "risk_level": "medium",
+    "risk_reasons": "length_inflation_risk;method_disagreement_risk",
+    "recommended_action": "repair separated output with cleaned transcript",
+    "text_length_ratio": 2.468,
+    "duplicate_removed_count": 1,
+    "speaker_length_imbalance": 0.082192,
+    "method_disagreement_score": 0.594814,
+    "notes": "Reference-free selector uses only transcript stability signals; CER is reserved for evaluation. Base routers agree on this case."
+  },
+  {
+    "case_id": "OppositeOverlap",
+    "overlap_level": 4,
+    "base_router_method": "separated_whisper",
+    "final_selected_method": "separated_whisper_cleaned",
+    "risk_level": "medium",
+    "risk_reasons": "length_inflation_risk;method_disagreement_risk",
+    "recommended_action": "repair separated output with cleaned transcript",
+    "text_length_ratio": 3.259259,
+    "duplicate_removed_count": 1,
+    "speaker_length_imbalance": 0.075862,
+    "method_disagreement_score": 0.693182,
+    "notes": "Reference-free selector uses only transcript stability signals; CER is reserved for evaluation. Base routers agree on this case."
+  }
+]
