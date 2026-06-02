@@ -33,9 +33,15 @@ def resolve_audio_path(config: dict[str, Any], case: dict[str, Any], mode: str) 
     paths = config["paths"]
     if mode == "mixed":
         return PROJECT_ROOT / paths["mixed_audio_dir"] / case["mixed"]
-    if mode == "separated":
-        raise NotImplementedError("Separated transcription is intentionally deferred.")
     raise ValueError(f"Unsupported mode: {mode}")
+
+
+def resolve_separated_audio_paths(config: dict[str, Any], case: dict[str, Any]) -> list[tuple[str, Path]]:
+    separated_dir = PROJECT_ROOT / config["paths"]["separated_audio_dir"]
+    return [
+        ("separated_spk1", separated_dir / case["separated"]["spk1"]),
+        ("separated_spk2", separated_dir / case["separated"]["spk2"]),
+    ]
 
 
 def transcribe_audio(audio_path: Path, model_name: str, language: str) -> dict[str, Any]:
@@ -76,10 +82,12 @@ def write_transcript(
 ) -> Path:
     output_dir = PROJECT_ROOT / "results" / "transcripts_raw"
     output_dir.mkdir(parents=True, exist_ok=True)
-    output_path = output_dir / f"{case_id}_{mode}_whisper.json"
+    output_mode = mode.replace("separated_", "")
+    output_path = output_dir / f"{case_id}_{output_mode}_whisper.json"
     payload = {
         "case_id": case_id,
         "audio_path": audio_path.relative_to(PROJECT_ROOT).as_posix(),
+        "mode": mode,
         "model": f"whisper-{model_name}",
         "language": language,
         "text": result["text"],
@@ -107,21 +115,26 @@ def main() -> None:
     case = find_case(config, args.case)
     model_name = get_model_name(config, args.model)
     language = config.get("asr", {}).get("language", "zh")
-    audio_path = resolve_audio_path(config, case, args.mode)
-    if not audio_path.exists():
-        raise FileNotFoundError(f"Audio file does not exist: {audio_path}")
 
-    result = transcribe_audio(audio_path, model_name, language)
-    output_path = write_transcript(
-        case_id=case["id"],
-        audio_path=audio_path,
-        model_name=model_name,
-        language=language,
-        result=result,
-        mode=args.mode,
-    )
-    print(f"Wrote transcript: {output_path.relative_to(PROJECT_ROOT)}")
-    print(f"Runtime: {result['runtime_sec']}s")
+    if args.mode == "mixed":
+        audio_jobs = [("mixed", resolve_audio_path(config, case, args.mode))]
+    else:
+        audio_jobs = resolve_separated_audio_paths(config, case)
+
+    for mode, audio_path in audio_jobs:
+        if not audio_path.exists():
+            raise FileNotFoundError(f"Audio file does not exist: {audio_path}")
+        result = transcribe_audio(audio_path, model_name, language)
+        output_path = write_transcript(
+            case_id=case["id"],
+            audio_path=audio_path,
+            model_name=model_name,
+            language=language,
+            result=result,
+            mode=mode,
+        )
+        print(f"Wrote transcript: {output_path.relative_to(PROJECT_ROOT)}")
+        print(f"{mode} runtime: {result['runtime_sec']}s")
 
 
 if __name__ == "__main__":
