@@ -1,0 +1,40 @@
+{
+  "sample_id": "SyntheticMidOverlap_test_07",
+  "tier": "SyntheticMidOverlap",
+  "split": "test",
+  "overlap_level": 2,
+  "overlap_ratio": 0.4263,
+  "status": "silver_reference",
+  "reference_type": "silver_reference",
+  "source_files": [
+    "con_006.wav",
+    "pro_003.wav"
+  ],
+  "source_transcripts": [
+    "results/snippet_transcripts/con_006_whisper.json",
+    "results/snippet_transcripts/pro_003_whisper.json"
+  ],
+  "speaker_1_label": "con",
+  "speaker_2_label": "pro",
+  "speaker_1_source": "con_006.wav",
+  "speaker_2_source": "pro_003.wav",
+  "speaker_1_text": "晚睡早起也算好夜了",
+  "speaker_2_text": "因為有一個前提性的問題沒有討論",
+  "turns": [
+    {
+      "speaker": "SPEAKER_1",
+      "source": "con_006.wav",
+      "text": "晚睡早起也算好夜了",
+      "start_order": 0
+    },
+    {
+      "speaker": "SPEAKER_2",
+      "source": "pro_003.wav",
+      "text": "因為有一個前提性的問題沒有討論",
+      "start_order": 1
+    }
+  ],
+  "full_text": "[SPEAKER_1] 晚睡早起也算好夜了\n[SPEAKER_2] 因為有一個前提性的問題沒有討論",
+  "text": "[SPEAKER_1] 晚睡早起也算好夜了\n[SPEAKER_2] 因為有一個前提性的問題沒有討論",
+  "notes": "Silver reference built from Whisper transcriptions of source snippets."
+}

@@ -1,0 +1,40 @@
+{
+  "sample_id": "SyntheticNoOverlap_test_02",
+  "tier": "SyntheticNoOverlap",
+  "split": "test",
+  "overlap_level": 0,
+  "overlap_ratio": 0.0,
+  "status": "silver_reference",
+  "reference_type": "silver_reference",
+  "source_files": [
+    "con_001.wav",
+    "pro_008.wav"
+  ],
+  "source_transcripts": [
+    "results/snippet_transcripts/con_001_whisper.json",
+    "results/snippet_transcripts/pro_008_whisper.json"
+  ],
+  "speaker_1_label": "con",
+  "speaker_2_label": "pro",
+  "speaker_1_source": "con_001.wav",
+  "speaker_2_source": "pro_008.wav",
+  "speaker_1_text": "他让你在那个时间段里拥有了自己",
+  "speaker_2_text": "你下班的時間必定也晚",
+  "turns": [
+    {
+      "speaker": "SPEAKER_1",
+      "source": "con_001.wav",
+      "text": "他让你在那个时间段里拥有了自己",
+      "start_order": 0
+    },
+    {
+      "speaker": "SPEAKER_2",
+      "source": "pro_008.wav",
+      "text": "你下班的時間必定也晚",
+      "start_order": 1
+    }
+  ],
+  "full_text": "[SPEAKER_1] 他让你在那个时间段里拥有了自己\n[SPEAKER_2] 你下班的時間必定也晚",
+  "text": "[SPEAKER_1] 他让你在那个时间段里拥有了自己\n[SPEAKER_2] 你下班的時間必定也晚",
+  "notes": "Silver reference built from Whisper transcriptions of source snippets."
+}

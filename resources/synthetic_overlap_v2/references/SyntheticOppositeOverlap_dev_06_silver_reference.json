@@ -1,0 +1,40 @@
+{
+  "sample_id": "SyntheticOppositeOverlap_dev_06",
+  "tier": "SyntheticOppositeOverlap",
+  "split": "dev",
+  "overlap_level": 4,
+  "overlap_ratio": 0.8316,
+  "status": "silver_reference",
+  "reference_type": "silver_reference",
+  "source_files": [
+    "con_006.wav",
+    "pro_011.wav"
+  ],
+  "source_transcripts": [
+    "results/snippet_transcripts/con_006_whisper.json",
+    "results/snippet_transcripts/pro_011_whisper.json"
+  ],
+  "speaker_1_label": "con",
+  "speaker_2_label": "pro",
+  "speaker_1_source": "con_006.wav",
+  "speaker_2_source": "pro_011.wav",
+  "speaker_1_text": "晚睡早起也算好夜了",
+  "speaker_2_text": "我的意思是2点睡10点起",
+  "turns": [
+    {
+      "speaker": "SPEAKER_1",
+      "source": "con_006.wav",
+      "text": "晚睡早起也算好夜了",
+      "start_order": 0
+    },
+    {
+      "speaker": "SPEAKER_2",
+      "source": "pro_011.wav",
+      "text": "我的意思是2点睡10点起",
+      "start_order": 1
+    }
+  ],
+  "full_text": "[SPEAKER_1] 晚睡早起也算好夜了\n[SPEAKER_2] 我的意思是2点睡10点起",
+  "text": "[SPEAKER_1] 晚睡早起也算好夜了\n[SPEAKER_2] 我的意思是2点睡10点起",
+  "notes": "Silver reference built from Whisper transcriptions of source snippets."
+}

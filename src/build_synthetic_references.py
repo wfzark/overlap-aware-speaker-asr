@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import argparse
 import csv
 import json
 from pathlib import Path
@@ -23,6 +24,17 @@ TIER_TO_LEVEL = {
     "SyntheticHeavyOverlap": 3,
     "SyntheticOppositeOverlap": 4,
 }
+
+
+def parse_args() -> argparse.Namespace:
+    parser = argparse.ArgumentParser(description="Build silver references for synthetic overlap benchmarks.")
+    parser.add_argument(
+        "--dataset",
+        choices=["synthetic_overlap", "synthetic_overlap_v2"],
+        default="synthetic_overlap",
+        help="Synthetic benchmark dataset to process.",
+    )
+    return parser.parse_args()
 
 
 def read_csv_rows(path: Path) -> list[dict[str, Any]]:
@@ -55,24 +67,31 @@ def load_snippet_text(snippet_name: str) -> tuple[str, dict[str, Any]]:
 
 def build_turns(con_source: str, pro_source: str, con_text: str, pro_text: str) -> list[dict[str, Any]]:
     return [
-        {
-            "speaker": "SPEAKER_1",
-            "source": con_source,
-            "text": con_text,
-            "start_order": 0,
-        },
-        {
-            "speaker": "SPEAKER_2",
-            "source": pro_source,
-            "text": pro_text,
-            "start_order": 1,
-        },
+        {"speaker": "SPEAKER_1", "source": con_source, "text": con_text, "start_order": 0},
+        {"speaker": "SPEAKER_2", "source": pro_source, "text": pro_text, "start_order": 1},
     ]
 
 
-def build_silver_reference(row: dict[str, Any]) -> tuple[dict[str, Any], str]:
+def dataset_paths(dataset: str) -> tuple[Path, Path, str]:
+    if dataset == "synthetic_overlap":
+        return (
+            PROJECT_ROOT / "results" / "tables" / "synthetic_manifest.csv",
+            PROJECT_ROOT / "resources" / "synthetic_overlap" / "references",
+            "synthetic_overlap",
+        )
+    if dataset == "synthetic_overlap_v2":
+        return (
+            PROJECT_ROOT / "results" / "tables" / "synthetic_split_manifest.csv",
+            PROJECT_ROOT / "resources" / "synthetic_overlap_v2" / "references",
+            "synthetic_overlap_v2",
+        )
+    raise ValueError(f"Unsupported dataset: {dataset}")
+
+
+def build_silver_reference(row: dict[str, Any], reference_dir: Path) -> tuple[dict[str, Any], str]:
     sample_id = str(row["sample_id"])
     tier = str(row["tier"])
+    split = str(row.get("split", "")).strip()
     con_source = str(row["con_source"])
     pro_source = str(row["pro_source"])
     con_text, con_payload = load_snippet_text(con_source)
@@ -80,21 +99,26 @@ def build_silver_reference(row: dict[str, Any]) -> tuple[dict[str, Any], str]:
 
     turns = build_turns(con_source, pro_source, con_text, pro_text)
     full_text = "\n".join(f"[{turn['speaker']}] {turn['text']}" for turn in turns)
-    silver_path = (
-        PROJECT_ROOT / "resources" / "synthetic_overlap" / "references" / f"{sample_id}_silver_reference.json"
-    )
+    silver_path = reference_dir / f"{sample_id}_silver_reference.json"
     silver_path.parent.mkdir(parents=True, exist_ok=True)
     payload = {
         "sample_id": sample_id,
         "tier": tier,
+        "split": split,
         "overlap_level": TIER_TO_LEVEL.get(tier, 0),
         "overlap_ratio": float(row.get("overlap_ratio", 0.0)),
         "status": "silver_reference",
         "reference_type": "silver_reference",
         "source_files": [con_source, pro_source],
         "source_transcripts": [
-            con_payload.get("transcript_path", snippet_transcript_path(Path(con_source).stem).relative_to(PROJECT_ROOT).as_posix()),
-            pro_payload.get("transcript_path", snippet_transcript_path(Path(pro_source).stem).relative_to(PROJECT_ROOT).as_posix()),
+            con_payload.get(
+                "transcript_path",
+                snippet_transcript_path(Path(con_source).stem).relative_to(PROJECT_ROOT).as_posix(),
+            ),
+            pro_payload.get(
+                "transcript_path",
+                snippet_transcript_path(Path(pro_source).stem).relative_to(PROJECT_ROOT).as_posix(),
+            ),
         ],
         "speaker_1_label": "con",
         "speaker_2_label": "pro",
@@ -112,13 +136,14 @@ def build_silver_reference(row: dict[str, Any]) -> tuple[dict[str, Any], str]:
 
 
 def main() -> None:
+    args = parse_args()
     _ = load_config()
-    manifest_path = PROJECT_ROOT / "results" / "tables" / "synthetic_manifest.csv"
+    manifest_path, reference_dir, _ = dataset_paths(args.dataset)
     rows = read_csv_rows(manifest_path)
     updated_rows: list[dict[str, Any]] = []
 
     for row in rows:
-        payload, silver_rel_path = build_silver_reference(row)
+        payload, silver_rel_path = build_silver_reference(row, reference_dir)
         placeholder_rel_path = str(row.get("reference_path", "")).strip()
         updated = dict(row)
         updated["reference_status"] = "silver_reference"

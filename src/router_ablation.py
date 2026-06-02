@@ -11,6 +11,7 @@ from .adaptive_router import select_method as v1_select_method
 from .adaptive_router_v2 import choose_method_v2 as v2_choose_method
 from .config import PROJECT_ROOT, load_config
 from .evaluate_cer import normalize_text
+from .router_ablation_split import main as run_split_ablation
 
 
 GOLD_DECISION_COLUMNS = [
@@ -73,6 +74,17 @@ STRATEGIES = [
     "length_plus_repetition",
     "v2_full_features",
 ]
+
+
+def parse_args() -> argparse.Namespace:
+    parser = argparse.ArgumentParser(description="Router feature ablation analysis.")
+    parser.add_argument(
+        "--dataset",
+        choices=["all", "synthetic_overlap_v2"],
+        default="all",
+        help="Use 'synthetic_overlap_v2' for the held-out split benchmark.",
+    )
+    return parser.parse_args()
 
 
 def read_csv_rows(path: Path) -> list[dict[str, Any]]:
@@ -547,6 +559,11 @@ def render_summary_md(gold_summary: list[dict[str, Any]], synthetic_summary: lis
 
 
 def main() -> None:
+    args = parse_args()
+    if args.dataset == "synthetic_overlap_v2":
+        run_split_ablation()
+        return
+
     gold_entries = load_gold_inputs()
     synthetic_entries = load_synthetic_inputs()
 

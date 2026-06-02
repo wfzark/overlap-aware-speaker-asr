@@ -26,6 +26,7 @@ results/transcripts_corrected/*
 results/summaries/*
 results/tables/*
 results/figures/*
+results/synthetic_overlap_v2/
 
 # Keep result folders
 !results/transcripts_raw/.gitkeep
@@ -35,6 +36,9 @@ results/figures/*
 !results/tables/.gitkeep
 !results/figures/.gitkeep
 !results/tables/audio_manifest.csv
+
+# Large synthetic benchmark assets
+resources/synthetic_overlap_v2/audio/
 
 # Large temporary files
 *.tmp

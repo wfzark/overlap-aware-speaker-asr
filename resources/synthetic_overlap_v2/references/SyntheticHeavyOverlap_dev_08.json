@@ -1,0 +1,27 @@
+{
+  "sample_id": "SyntheticHeavyOverlap_dev_08",
+  "tier": "SyntheticHeavyOverlap",
+  "split": "dev",
+  "overlap_level": "SyntheticHeavyOverlap",
+  "overlap_ratio": 0.5737,
+  "reference_type": "synthetic_placeholder",
+  "status": "draft",
+  "source_files": [
+    "con_008.wav",
+    "pro_015.wav"
+  ],
+  "speaker_1_label": "con",
+  "speaker_2_label": "pro",
+  "speaker_1_source": "con_008.wav",
+  "speaker_2_source": "pro_015.wav",
+  "mixed_audio_path": "resources/synthetic_overlap_v2/audio/SyntheticHeavyOverlap/SyntheticHeavyOverlap_dev_08_mixed.wav",
+  "spk1_audio_path": "resources/synthetic_overlap_v2/audio/SyntheticHeavyOverlap/SyntheticHeavyOverlap_dev_08_spk1.wav",
+  "spk2_audio_path": "resources/synthetic_overlap_v2/audio/SyntheticHeavyOverlap/SyntheticHeavyOverlap_dev_08_spk2.wav",
+  "speaker_1_text": "",
+  "speaker_2_text": "",
+  "full_text": "",
+  "text": "",
+  "notes": "Synthetic benchmark generated from snippets. Transcripts are pending.",
+  "peak_scale": 0.95,
+  "mixed_duration_sec": 2.1591
+}

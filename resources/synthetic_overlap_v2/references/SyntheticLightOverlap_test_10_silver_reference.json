@@ -1,0 +1,40 @@
+{
+  "sample_id": "SyntheticLightOverlap_test_10",
+  "tier": "SyntheticLightOverlap",
+  "split": "test",
+  "overlap_level": 1,
+  "overlap_ratio": 0.2,
+  "status": "silver_reference",
+  "reference_type": "silver_reference",
+  "source_files": [
+    "con_009.wav",
+    "pro_009.wav"
+  ],
+  "source_transcripts": [
+    "results/snippet_transcripts/con_009_whisper.json",
+    "results/snippet_transcripts/pro_009_whisper.json"
+  ],
+  "speaker_1_label": "con",
+  "speaker_2_label": "pro",
+  "speaker_1_source": "con_009.wav",
+  "speaker_2_source": "pro_009.wav",
+  "speaker_1_text": "總睡晚睡",
+  "speaker_2_text": "那你个人的生活空间必定也就这么点",
+  "turns": [
+    {
+      "speaker": "SPEAKER_1",
+      "source": "con_009.wav",
+      "text": "總睡晚睡",
+      "start_order": 0
+    },
+    {
+      "speaker": "SPEAKER_2",
+      "source": "pro_009.wav",
+      "text": "那你个人的生活空间必定也就这么点",
+      "start_order": 1
+    }
+  ],
+  "full_text": "[SPEAKER_1] 總睡晚睡\n[SPEAKER_2] 那你个人的生活空间必定也就这么点",
+  "text": "[SPEAKER_1] 總睡晚睡\n[SPEAKER_2] 那你个人的生活空间必定也就这么点",
+  "notes": "Silver reference built from Whisper transcriptions of source snippets."
+}

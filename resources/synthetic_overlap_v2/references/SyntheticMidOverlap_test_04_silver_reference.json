@@ -1,0 +1,40 @@
+{
+  "sample_id": "SyntheticMidOverlap_test_04",
+  "tier": "SyntheticMidOverlap",
+  "split": "test",
+  "overlap_level": 2,
+  "overlap_ratio": 0.4026,
+  "status": "silver_reference",
+  "reference_type": "silver_reference",
+  "source_files": [
+    "con_003.wav",
+    "pro_012.wav"
+  ],
+  "source_transcripts": [
+    "results/snippet_transcripts/con_003_whisper.json",
+    "results/snippet_transcripts/pro_012_whisper.json"
+  ],
+  "speaker_1_label": "con",
+  "speaker_2_label": "pro",
+  "speaker_1_source": "con_003.wav",
+  "speaker_2_source": "pro_012.wav",
+  "speaker_1_text": "我往这里再稍微解释一下",
+  "speaker_2_text": "跟8点睡6点起午",
+  "turns": [
+    {
+      "speaker": "SPEAKER_1",
+      "source": "con_003.wav",
+      "text": "我往这里再稍微解释一下",
+      "start_order": 0
+    },
+    {
+      "speaker": "SPEAKER_2",
+      "source": "pro_012.wav",
+      "text": "跟8点睡6点起午",
+      "start_order": 1
+    }
+  ],
+  "full_text": "[SPEAKER_1] 我往这里再稍微解释一下\n[SPEAKER_2] 跟8点睡6点起午",
+  "text": "[SPEAKER_1] 我往这里再稍微解释一下\n[SPEAKER_2] 跟8点睡6点起午",
+  "notes": "Silver reference built from Whisper transcriptions of source snippets."
+}

@@ -1,0 +1,40 @@
+{
+  "sample_id": "SyntheticOppositeOverlap_test_05",
+  "tier": "SyntheticOppositeOverlap",
+  "split": "test",
+  "overlap_level": 4,
+  "overlap_ratio": 0.8884,
+  "status": "silver_reference",
+  "reference_type": "silver_reference",
+  "source_files": [
+    "con_004.wav",
+    "pro_014.wav"
+  ],
+  "source_transcripts": [
+    "results/snippet_transcripts/con_004_whisper.json",
+    "results/snippet_transcripts/pro_014_whisper.json"
+  ],
+  "speaker_1_label": "con",
+  "speaker_2_label": "pro",
+  "speaker_1_source": "con_004.wav",
+  "speaker_2_source": "pro_014.wav",
+  "speaker_1_text": "其实不落分也是一种",
+  "speaker_2_text": "日常時間是一致的沒錯吧",
+  "turns": [
+    {
+      "speaker": "SPEAKER_1",
+      "source": "con_004.wav",
+      "text": "其实不落分也是一种",
+      "start_order": 0
+    },
+    {
+      "speaker": "SPEAKER_2",
+      "source": "pro_014.wav",
+      "text": "日常時間是一致的沒錯吧",
+      "start_order": 1
+    }
+  ],
+  "full_text": "[SPEAKER_1] 其实不落分也是一种\n[SPEAKER_2] 日常時間是一致的沒錯吧",
+  "text": "[SPEAKER_1] 其实不落分也是一种\n[SPEAKER_2] 日常時間是一致的沒錯吧",
+  "notes": "Silver reference built from Whisper transcriptions of source snippets."
+}

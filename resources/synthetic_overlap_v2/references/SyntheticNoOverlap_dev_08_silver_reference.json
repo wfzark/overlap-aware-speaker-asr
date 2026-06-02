@@ -1,0 +1,40 @@
+{
+  "sample_id": "SyntheticNoOverlap_dev_08",
+  "tier": "SyntheticNoOverlap",
+  "split": "dev",
+  "overlap_level": 0,
+  "overlap_ratio": 0.0,
+  "status": "silver_reference",
+  "reference_type": "silver_reference",
+  "source_files": [
+    "con_008.wav",
+    "pro_015.wav"
+  ],
+  "source_transcripts": [
+    "results/snippet_transcripts/con_008_whisper.json",
+    "results/snippet_transcripts/pro_015_whisper.json"
+  ],
+  "speaker_1_label": "con",
+  "speaker_2_label": "pro",
+  "speaker_1_source": "con_008.wav",
+  "speaker_2_source": "pro_015.wav",
+  "speaker_1_text": "因为你可以为了身体建立方式",
+  "speaker_2_text": "我多了两个小时",
+  "turns": [
+    {
+      "speaker": "SPEAKER_1",
+      "source": "con_008.wav",
+      "text": "因为你可以为了身体建立方式",
+      "start_order": 0
+    },
+    {
+      "speaker": "SPEAKER_2",
+      "source": "pro_015.wav",
+      "text": "我多了两个小时",
+      "start_order": 1
+    }
+  ],
+  "full_text": "[SPEAKER_1] 因为你可以为了身体建立方式\n[SPEAKER_2] 我多了两个小时",
+  "text": "[SPEAKER_1] 因为你可以为了身体建立方式\n[SPEAKER_2] 我多了两个小时",
+  "notes": "Silver reference built from Whisper transcriptions of source snippets."
+}

@@ -1,0 +1,290 @@
+[
+  {
+    "scope": "ALL",
+    "strategy": "fixed_mixed_whisper",
+    "average_cer": 0.465715,
+    "sample_count": 100
+  },
+  {
+    "scope": "ALL",
+    "strategy": "fixed_separated_whisper",
+    "average_cer": 0.401869,
+    "sample_count": 100
+  },
+  {
+    "scope": "ALL",
+    "strategy": "fixed_separated_whisper_cleaned",
+    "average_cer": 0.179021,
+    "sample_count": 100
+  },
+  {
+    "scope": "ALL",
+    "strategy": "oracle_best",
+    "average_cer": 0.111828,
+    "sample_count": 100
+  },
+  {
+    "scope": "ALL",
+    "strategy": "v1_overlap_only",
+    "average_cer": 0.390725,
+    "sample_count": 100
+  },
+  {
+    "scope": "ALL",
+    "strategy": "v2_full_features",
+    "average_cer": 0.285187,
+    "sample_count": 100
+  },
+  {
+    "scope": "DEV",
+    "strategy": "fixed_mixed_whisper",
+    "average_cer": 0.4867,
+    "sample_count": 50
+  },
+  {
+    "scope": "DEV",
+    "strategy": "fixed_separated_whisper",
+    "average_cer": 0.367072,
+    "sample_count": 50
+  },
+  {
+    "scope": "DEV",
+    "strategy": "fixed_separated_whisper_cleaned",
+    "average_cer": 0.172804,
+    "sample_count": 50
+  },
+  {
+    "scope": "DEV",
+    "strategy": "oracle_best",
+    "average_cer": 0.108476,
+    "sample_count": 50
+  },
+  {
+    "scope": "DEV",
+    "strategy": "v1_overlap_only",
+    "average_cer": 0.4201,
+    "sample_count": 50
+  },
+  {
+    "scope": "DEV",
+    "strategy": "v2_full_features",
+    "average_cer": 0.235049,
+    "sample_count": 50
+  },
+  {
+    "scope": "TEST",
+    "strategy": "fixed_mixed_whisper",
+    "average_cer": 0.44473,
+    "sample_count": 50
+  },
+  {
+    "scope": "TEST",
+    "strategy": "fixed_separated_whisper",
+    "average_cer": 0.436666,
+    "sample_count": 50
+  },
+  {
+    "scope": "TEST",
+    "strategy": "fixed_separated_whisper_cleaned",
+    "average_cer": 0.185238,
+    "sample_count": 50
+  },
+  {
+    "scope": "TEST",
+    "strategy": "oracle_best",
+    "average_cer": 0.115181,
+    "sample_count": 50
+  },
+  {
+    "scope": "TEST",
+    "strategy": "v1_overlap_only",
+    "average_cer": 0.36135,
+    "sample_count": 50
+  },
+  {
+    "scope": "TEST",
+    "strategy": "v2_full_features",
+    "average_cer": 0.335326,
+    "sample_count": 50
+  },
+  {
+    "scope": "SyntheticHeavyOverlap",
+    "strategy": "fixed_mixed_whisper",
+    "average_cer": 0.740711,
+    "sample_count": 20
+  },
+  {
+    "scope": "SyntheticHeavyOverlap",
+    "strategy": "fixed_separated_whisper",
+    "average_cer": 0.288975,
+    "sample_count": 20
+  },
+  {
+    "scope": "SyntheticHeavyOverlap",
+    "strategy": "fixed_separated_whisper_cleaned",
+    "average_cer": 0.173261,
+    "sample_count": 20
+  },
+  {
+    "scope": "SyntheticHeavyOverlap",
+    "strategy": "oracle_best",
+    "average_cer": 0.129898,
+    "sample_count": 20
+  },
+  {
+    "scope": "SyntheticHeavyOverlap",
+    "strategy": "v1_overlap_only",
+    "average_cer": 0.288975,
+    "sample_count": 20
+  },
+  {
+    "scope": "SyntheticHeavyOverlap",
+    "strategy": "v2_full_features",
+    "average_cer": 0.288975,
+    "sample_count": 20
+  },
+  {
+    "scope": "SyntheticLightOverlap",
+    "strategy": "fixed_mixed_whisper",
+    "average_cer": 0.26131,
+    "sample_count": 20
+  },
+  {
+    "scope": "SyntheticLightOverlap",
+    "strategy": "fixed_separated_whisper",
+    "average_cer": 0.346618,
+    "sample_count": 20
+  },
+  {
+    "scope": "SyntheticLightOverlap",
+    "strategy": "fixed_separated_whisper_cleaned",
+    "average_cer": 0.163761,
+    "sample_count": 20
+  },
+  {
+    "scope": "SyntheticLightOverlap",
+    "strategy": "oracle_best",
+    "average_cer": 0.063109,
+    "sample_count": 20
+  },
+  {
+    "scope": "SyntheticLightOverlap",
+    "strategy": "v1_overlap_only",
+    "average_cer": 0.26131,
+    "sample_count": 20
+  },
+  {
+    "scope": "SyntheticLightOverlap",
+    "strategy": "v2_full_features",
+    "average_cer": 0.26131,
+    "sample_count": 20
+  },
+  {
+    "scope": "SyntheticMidOverlap",
+    "strategy": "fixed_mixed_whisper",
+    "average_cer": 0.405127,
+    "sample_count": 20
+  },
+  {
+    "scope": "SyntheticMidOverlap",
+    "strategy": "fixed_separated_whisper",
+    "average_cer": 0.375541,
+    "sample_count": 20
+  },
+  {
+    "scope": "SyntheticMidOverlap",
+    "strategy": "fixed_separated_whisper_cleaned",
+    "average_cer": 0.179826,
+    "sample_count": 20
+  },
+  {
+    "scope": "SyntheticMidOverlap",
+    "strategy": "oracle_best",
+    "average_cer": 0.108403,
+    "sample_count": 20
+  },
+  {
+    "scope": "SyntheticMidOverlap",
+    "strategy": "v1_overlap_only",
+    "average_cer": 0.405127,
+    "sample_count": 20
+  },
+  {
+    "scope": "SyntheticMidOverlap",
+    "strategy": "v2_full_features",
+    "average_cer": 0.405127,
+    "sample_count": 20
+  },
+  {
+    "scope": "SyntheticNoOverlap",
+    "strategy": "fixed_mixed_whisper",
+    "average_cer": 0.298837,
+    "sample_count": 20
+  },
+  {
+    "scope": "SyntheticNoOverlap",
+    "strategy": "fixed_separated_whisper",
+    "average_cer": 0.826526,
+    "sample_count": 20
+  },
+  {
+    "scope": "SyntheticNoOverlap",
+    "strategy": "fixed_separated_whisper_cleaned",
+    "average_cer": 0.20657,
+    "sample_count": 20
+  },
+  {
+    "scope": "SyntheticNoOverlap",
+    "strategy": "oracle_best",
+    "average_cer": 0.099889,
+    "sample_count": 20
+  },
+  {
+    "scope": "SyntheticNoOverlap",
+    "strategy": "v1_overlap_only",
+    "average_cer": 0.826526,
+    "sample_count": 20
+  },
+  {
+    "scope": "SyntheticNoOverlap",
+    "strategy": "v2_full_features",
+    "average_cer": 0.298837,
+    "sample_count": 20
+  },
+  {
+    "scope": "SyntheticOppositeOverlap",
+    "strategy": "fixed_mixed_whisper",
+    "average_cer": 0.622589,
+    "sample_count": 20
+  },
+  {
+    "scope": "SyntheticOppositeOverlap",
+    "strategy": "fixed_separated_whisper",
+    "average_cer": 0.171687,
+    "sample_count": 20
+  },
+  {
+    "scope": "SyntheticOppositeOverlap",
+    "strategy": "fixed_separated_whisper_cleaned",
+    "average_cer": 0.171687,
+    "sample_count": 20
+  },
+  {
+    "scope": "SyntheticOppositeOverlap",
+    "strategy": "oracle_best",
+    "average_cer": 0.157841,
+    "sample_count": 20
+  },
+  {
+    "scope": "SyntheticOppositeOverlap",
+    "strategy": "v1_overlap_only",
+    "average_cer": 0.171687,
+    "sample_count": 20
+  },
+  {
+    "scope": "SyntheticOppositeOverlap",
+    "strategy": "v2_full_features",
+    "average_cer": 0.171687,
+    "sample_count": 20
+  }
+]

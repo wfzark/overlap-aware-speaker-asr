@@ -1,0 +1,642 @@
+[
+  {
+    "scope": "ALL",
+    "strategy": "fixed_mixed_whisper",
+    "average_cer": 0.465715,
+    "gap_to_oracle": 0.353887,
+    "sample_count": 100,
+    "notes": "Ablation strategy."
+  },
+  {
+    "scope": "ALL",
+    "strategy": "fixed_separated_whisper",
+    "average_cer": 0.401869,
+    "gap_to_oracle": 0.290041,
+    "sample_count": 100,
+    "notes": "Ablation strategy."
+  },
+  {
+    "scope": "ALL",
+    "strategy": "fixed_separated_whisper_cleaned",
+    "average_cer": 0.179021,
+    "gap_to_oracle": 0.067193,
+    "sample_count": 100,
+    "notes": "Ablation strategy."
+  },
+  {
+    "scope": "ALL",
+    "strategy": "oracle_best",
+    "average_cer": 0.111828,
+    "gap_to_oracle": 0.0,
+    "sample_count": 100,
+    "notes": "Oracle upper bound only; not deployable."
+  },
+  {
+    "scope": "ALL",
+    "strategy": "v1_overlap_only",
+    "average_cer": 0.390725,
+    "gap_to_oracle": 0.278897,
+    "sample_count": 100,
+    "notes": "v1 overlap-only baseline."
+  },
+  {
+    "scope": "ALL",
+    "strategy": "length_ratio_only",
+    "average_cer": 0.41636,
+    "gap_to_oracle": 0.304532,
+    "sample_count": 100,
+    "notes": "Ablation strategy."
+  },
+  {
+    "scope": "ALL",
+    "strategy": "repetition_only",
+    "average_cer": 0.249877,
+    "gap_to_oracle": 0.138049,
+    "sample_count": 100,
+    "notes": "Ablation strategy."
+  },
+  {
+    "scope": "ALL",
+    "strategy": "removed_count_only",
+    "average_cer": 0.249877,
+    "gap_to_oracle": 0.138049,
+    "sample_count": 100,
+    "notes": "Ablation strategy."
+  },
+  {
+    "scope": "ALL",
+    "strategy": "length_plus_repetition",
+    "average_cer": 0.43621,
+    "gap_to_oracle": 0.324382,
+    "sample_count": 100,
+    "notes": "Ablation strategy."
+  },
+  {
+    "scope": "ALL",
+    "strategy": "v2_full_features",
+    "average_cer": 0.285187,
+    "gap_to_oracle": 0.173359,
+    "sample_count": 100,
+    "notes": "Full feature router v2."
+  },
+  {
+    "scope": "DEV",
+    "strategy": "fixed_mixed_whisper",
+    "average_cer": 0.4867,
+    "gap_to_oracle": 0.378224,
+    "sample_count": 50,
+    "notes": "Ablation strategy."
+  },
+  {
+    "scope": "DEV",
+    "strategy": "fixed_separated_whisper",
+    "average_cer": 0.367072,
+    "gap_to_oracle": 0.258596,
+    "sample_count": 50,
+    "notes": "Ablation strategy."
+  },
+  {
+    "scope": "DEV",
+    "strategy": "fixed_separated_whisper_cleaned",
+    "average_cer": 0.172804,
+    "gap_to_oracle": 0.064328,
+    "sample_count": 50,
+    "notes": "Ablation strategy."
+  },
+  {
+    "scope": "DEV",
+    "strategy": "oracle_best",
+    "average_cer": 0.108476,
+    "gap_to_oracle": 0.0,
+    "sample_count": 50,
+    "notes": "Oracle upper bound only; not deployable."
+  },
+  {
+    "scope": "DEV",
+    "strategy": "v1_overlap_only",
+    "average_cer": 0.4201,
+    "gap_to_oracle": 0.311624,
+    "sample_count": 50,
+    "notes": "v1 overlap-only baseline."
+  },
+  {
+    "scope": "DEV",
+    "strategy": "length_ratio_only",
+    "average_cer": 0.38799,
+    "gap_to_oracle": 0.279514,
+    "sample_count": 50,
+    "notes": "Ablation strategy."
+  },
+  {
+    "scope": "DEV",
+    "strategy": "repetition_only",
+    "average_cer": 0.225832,
+    "gap_to_oracle": 0.117356,
+    "sample_count": 50,
+    "notes": "Ablation strategy."
+  },
+  {
+    "scope": "DEV",
+    "strategy": "removed_count_only",
+    "average_cer": 0.225832,
+    "gap_to_oracle": 0.117356,
+    "sample_count": 50,
+    "notes": "Ablation strategy."
+  },
+  {
+    "scope": "DEV",
+    "strategy": "length_plus_repetition",
+    "average_cer": 0.408834,
+    "gap_to_oracle": 0.300358,
+    "sample_count": 50,
+    "notes": "Ablation strategy."
+  },
+  {
+    "scope": "DEV",
+    "strategy": "v2_full_features",
+    "average_cer": 0.235049,
+    "gap_to_oracle": 0.126573,
+    "sample_count": 50,
+    "notes": "Full feature router v2."
+  },
+  {
+    "scope": "TEST",
+    "strategy": "fixed_mixed_whisper",
+    "average_cer": 0.44473,
+    "gap_to_oracle": 0.329549,
+    "sample_count": 50,
+    "notes": "Ablation strategy."
+  },
+  {
+    "scope": "TEST",
+    "strategy": "fixed_separated_whisper",
+    "average_cer": 0.436666,
+    "gap_to_oracle": 0.321485,
+    "sample_count": 50,
+    "notes": "Ablation strategy."
+  },
+  {
+    "scope": "TEST",
+    "strategy": "fixed_separated_whisper_cleaned",
+    "average_cer": 0.185238,
+    "gap_to_oracle": 0.070057,
+    "sample_count": 50,
+    "notes": "Ablation strategy."
+  },
+  {
+    "scope": "TEST",
+    "strategy": "oracle_best",
+    "average_cer": 0.115181,
+    "gap_to_oracle": 0.0,
+    "sample_count": 50,
+    "notes": "Oracle upper bound only; not deployable."
+  },
+  {
+    "scope": "TEST",
+    "strategy": "v1_overlap_only",
+    "average_cer": 0.36135,
+    "gap_to_oracle": 0.246169,
+    "sample_count": 50,
+    "notes": "v1 overlap-only baseline."
+  },
+  {
+    "scope": "TEST",
+    "strategy": "length_ratio_only",
+    "average_cer": 0.44473,
+    "gap_to_oracle": 0.329549,
+    "sample_count": 50,
+    "notes": "Ablation strategy."
+  },
+  {
+    "scope": "TEST",
+    "strategy": "repetition_only",
+    "average_cer": 0.273921,
+    "gap_to_oracle": 0.15874,
+    "sample_count": 50,
+    "notes": "Ablation strategy."
+  },
+  {
+    "scope": "TEST",
+    "strategy": "removed_count_only",
+    "average_cer": 0.273921,
+    "gap_to_oracle": 0.15874,
+    "sample_count": 50,
+    "notes": "Ablation strategy."
+  },
+  {
+    "scope": "TEST",
+    "strategy": "length_plus_repetition",
+    "average_cer": 0.463587,
+    "gap_to_oracle": 0.348406,
+    "sample_count": 50,
+    "notes": "Ablation strategy."
+  },
+  {
+    "scope": "TEST",
+    "strategy": "v2_full_features",
+    "average_cer": 0.335326,
+    "gap_to_oracle": 0.220145,
+    "sample_count": 50,
+    "notes": "Full feature router v2."
+  },
+  {
+    "scope": "SyntheticHeavyOverlap",
+    "strategy": "fixed_mixed_whisper",
+    "average_cer": 0.740711,
+    "gap_to_oracle": 0.610813,
+    "sample_count": 20,
+    "notes": "Ablation strategy."
+  },
+  {
+    "scope": "SyntheticHeavyOverlap",
+    "strategy": "fixed_separated_whisper",
+    "average_cer": 0.288975,
+    "gap_to_oracle": 0.159077,
+    "sample_count": 20,
+    "notes": "Ablation strategy."
+  },
+  {
+    "scope": "SyntheticHeavyOverlap",
+    "strategy": "fixed_separated_whisper_cleaned",
+    "average_cer": 0.173261,
+    "gap_to_oracle": 0.043363,
+    "sample_count": 20,
+    "notes": "Ablation strategy."
+  },
+  {
+    "scope": "SyntheticHeavyOverlap",
+    "strategy": "oracle_best",
+    "average_cer": 0.129898,
+    "gap_to_oracle": 0.0,
+    "sample_count": 20,
+    "notes": "Oracle upper bound only; not deployable."
+  },
+  {
+    "scope": "SyntheticHeavyOverlap",
+    "strategy": "v1_overlap_only",
+    "average_cer": 0.288975,
+    "gap_to_oracle": 0.159077,
+    "sample_count": 20,
+    "notes": "v1 overlap-only baseline."
+  },
+  {
+    "scope": "SyntheticHeavyOverlap",
+    "strategy": "length_ratio_only",
+    "average_cer": 0.493937,
+    "gap_to_oracle": 0.364039,
+    "sample_count": 20,
+    "notes": "Ablation strategy."
+  },
+  {
+    "scope": "SyntheticHeavyOverlap",
+    "strategy": "repetition_only",
+    "average_cer": 0.173261,
+    "gap_to_oracle": 0.043363,
+    "sample_count": 20,
+    "notes": "Ablation strategy."
+  },
+  {
+    "scope": "SyntheticHeavyOverlap",
+    "strategy": "removed_count_only",
+    "average_cer": 0.173261,
+    "gap_to_oracle": 0.043363,
+    "sample_count": 20,
+    "notes": "Ablation strategy."
+  },
+  {
+    "scope": "SyntheticHeavyOverlap",
+    "strategy": "length_plus_repetition",
+    "average_cer": 0.498222,
+    "gap_to_oracle": 0.368324,
+    "sample_count": 20,
+    "notes": "Ablation strategy."
+  },
+  {
+    "scope": "SyntheticHeavyOverlap",
+    "strategy": "v2_full_features",
+    "average_cer": 0.288975,
+    "gap_to_oracle": 0.159077,
+    "sample_count": 20,
+    "notes": "Full feature router v2."
+  },
+  {
+    "scope": "SyntheticLightOverlap",
+    "strategy": "fixed_mixed_whisper",
+    "average_cer": 0.26131,
+    "gap_to_oracle": 0.198201,
+    "sample_count": 20,
+    "notes": "Ablation strategy."
+  },
+  {
+    "scope": "SyntheticLightOverlap",
+    "strategy": "fixed_separated_whisper",
+    "average_cer": 0.346618,
+    "gap_to_oracle": 0.283509,
+    "sample_count": 20,
+    "notes": "Ablation strategy."
+  },
+  {
+    "scope": "SyntheticLightOverlap",
+    "strategy": "fixed_separated_whisper_cleaned",
+    "average_cer": 0.163761,
+    "gap_to_oracle": 0.100652,
+    "sample_count": 20,
+    "notes": "Ablation strategy."
+  },
+  {
+    "scope": "SyntheticLightOverlap",
+    "strategy": "oracle_best",
+    "average_cer": 0.063109,
+    "gap_to_oracle": 0.0,
+    "sample_count": 20,
+    "notes": "Oracle upper bound only; not deployable."
+  },
+  {
+    "scope": "SyntheticLightOverlap",
+    "strategy": "v1_overlap_only",
+    "average_cer": 0.26131,
+    "gap_to_oracle": 0.198201,
+    "sample_count": 20,
+    "notes": "v1 overlap-only baseline."
+  },
+  {
+    "scope": "SyntheticLightOverlap",
+    "strategy": "length_ratio_only",
+    "average_cer": 0.26131,
+    "gap_to_oracle": 0.198201,
+    "sample_count": 20,
+    "notes": "Ablation strategy."
+  },
+  {
+    "scope": "SyntheticLightOverlap",
+    "strategy": "repetition_only",
+    "average_cer": 0.282738,
+    "gap_to_oracle": 0.219629,
+    "sample_count": 20,
+    "notes": "Ablation strategy."
+  },
+  {
+    "scope": "SyntheticLightOverlap",
+    "strategy": "removed_count_only",
+    "average_cer": 0.282738,
+    "gap_to_oracle": 0.219629,
+    "sample_count": 20,
+    "notes": "Ablation strategy."
+  },
+  {
+    "scope": "SyntheticLightOverlap",
+    "strategy": "length_plus_repetition",
+    "average_cer": 0.282738,
+    "gap_to_oracle": 0.219629,
+    "sample_count": 20,
+    "notes": "Ablation strategy."
+  },
+  {
+    "scope": "SyntheticLightOverlap",
+    "strategy": "v2_full_features",
+    "average_cer": 0.26131,
+    "gap_to_oracle": 0.198201,
+    "sample_count": 20,
+    "notes": "Full feature router v2."
+  },
+  {
+    "scope": "SyntheticMidOverlap",
+    "strategy": "fixed_mixed_whisper",
+    "average_cer": 0.405127,
+    "gap_to_oracle": 0.296724,
+    "sample_count": 20,
+    "notes": "Ablation strategy."
+  },
+  {
+    "scope": "SyntheticMidOverlap",
+    "strategy": "fixed_separated_whisper",
+    "average_cer": 0.375541,
+    "gap_to_oracle": 0.267138,
+    "sample_count": 20,
+    "notes": "Ablation strategy."
+  },
+  {
+    "scope": "SyntheticMidOverlap",
+    "strategy": "fixed_separated_whisper_cleaned",
+    "average_cer": 0.179826,
+    "gap_to_oracle": 0.071423,
+    "sample_count": 20,
+    "notes": "Ablation strategy."
+  },
+  {
+    "scope": "SyntheticMidOverlap",
+    "strategy": "oracle_best",
+    "average_cer": 0.108403,
+    "gap_to_oracle": 0.0,
+    "sample_count": 20,
+    "notes": "Oracle upper bound only; not deployable."
+  },
+  {
+    "scope": "SyntheticMidOverlap",
+    "strategy": "v1_overlap_only",
+    "average_cer": 0.405127,
+    "gap_to_oracle": 0.296724,
+    "sample_count": 20,
+    "notes": "v1 overlap-only baseline."
+  },
+  {
+    "scope": "SyntheticMidOverlap",
+    "strategy": "length_ratio_only",
+    "average_cer": 0.405127,
+    "gap_to_oracle": 0.296724,
+    "sample_count": 20,
+    "notes": "Ablation strategy."
+  },
+  {
+    "scope": "SyntheticMidOverlap",
+    "strategy": "repetition_only",
+    "average_cer": 0.415127,
+    "gap_to_oracle": 0.306724,
+    "sample_count": 20,
+    "notes": "Ablation strategy."
+  },
+  {
+    "scope": "SyntheticMidOverlap",
+    "strategy": "removed_count_only",
+    "average_cer": 0.415127,
+    "gap_to_oracle": 0.306724,
+    "sample_count": 20,
+    "notes": "Ablation strategy."
+  },
+  {
+    "scope": "SyntheticMidOverlap",
+    "strategy": "length_plus_repetition",
+    "average_cer": 0.415127,
+    "gap_to_oracle": 0.306724,
+    "sample_count": 20,
+    "notes": "Ablation strategy."
+  },
+  {
+    "scope": "SyntheticMidOverlap",
+    "strategy": "v2_full_features",
+    "average_cer": 0.405127,
+    "gap_to_oracle": 0.296724,
+    "sample_count": 20,
+    "notes": "Full feature router v2."
+  },
+  {
+    "scope": "SyntheticNoOverlap",
+    "strategy": "fixed_mixed_whisper",
+    "average_cer": 0.298837,
+    "gap_to_oracle": 0.198948,
+    "sample_count": 20,
+    "notes": "Ablation strategy."
+  },
+  {
+    "scope": "SyntheticNoOverlap",
+    "strategy": "fixed_separated_whisper",
+    "average_cer": 0.826526,
+    "gap_to_oracle": 0.726637,
+    "sample_count": 20,
+    "notes": "Ablation strategy."
+  },
+  {
+    "scope": "SyntheticNoOverlap",
+    "strategy": "fixed_separated_whisper_cleaned",
+    "average_cer": 0.20657,
+    "gap_to_oracle": 0.106681,
+    "sample_count": 20,
+    "notes": "Ablation strategy."
+  },
+  {
+    "scope": "SyntheticNoOverlap",
+    "strategy": "oracle_best",
+    "average_cer": 0.099889,
+    "gap_to_oracle": 0.0,
+    "sample_count": 20,
+    "notes": "Oracle upper bound only; not deployable."
+  },
+  {
+    "scope": "SyntheticNoOverlap",
+    "strategy": "v1_overlap_only",
+    "average_cer": 0.826526,
+    "gap_to_oracle": 0.726637,
+    "sample_count": 20,
+    "notes": "v1 overlap-only baseline."
+  },
+  {
+    "scope": "SyntheticNoOverlap",
+    "strategy": "length_ratio_only",
+    "average_cer": 0.298837,
+    "gap_to_oracle": 0.198948,
+    "sample_count": 20,
+    "notes": "Ablation strategy."
+  },
+  {
+    "scope": "SyntheticNoOverlap",
+    "strategy": "repetition_only",
+    "average_cer": 0.20657,
+    "gap_to_oracle": 0.106681,
+    "sample_count": 20,
+    "notes": "Ablation strategy."
+  },
+  {
+    "scope": "SyntheticNoOverlap",
+    "strategy": "removed_count_only",
+    "average_cer": 0.20657,
+    "gap_to_oracle": 0.106681,
+    "sample_count": 20,
+    "notes": "Ablation strategy."
+  },
+  {
+    "scope": "SyntheticNoOverlap",
+    "strategy": "length_plus_repetition",
+    "average_cer": 0.362375,
+    "gap_to_oracle": 0.262486,
+    "sample_count": 20,
+    "notes": "Ablation strategy."
+  },
+  {
+    "scope": "SyntheticNoOverlap",
+    "strategy": "v2_full_features",
+    "average_cer": 0.298837,
+    "gap_to_oracle": 0.198948,
+    "sample_count": 20,
+    "notes": "Full feature router v2."
+  },
+  {
+    "scope": "SyntheticOppositeOverlap",
+    "strategy": "fixed_mixed_whisper",
+    "average_cer": 0.622589,
+    "gap_to_oracle": 0.464748,
+    "sample_count": 20,
+    "notes": "Ablation strategy."
+  },
+  {
+    "scope": "SyntheticOppositeOverlap",
+    "strategy": "fixed_separated_whisper",
+    "average_cer": 0.171687,
+    "gap_to_oracle": 0.013846,
+    "sample_count": 20,
+    "notes": "Ablation strategy."
+  },
+  {
+    "scope": "SyntheticOppositeOverlap",
+    "strategy": "fixed_separated_whisper_cleaned",
+    "average_cer": 0.171687,
+    "gap_to_oracle": 0.013846,
+    "sample_count": 20,
+    "notes": "Ablation strategy."
+  },
+  {
+    "scope": "SyntheticOppositeOverlap",
+    "strategy": "oracle_best",
+    "average_cer": 0.157841,
+    "gap_to_oracle": 0.0,
+    "sample_count": 20,
+    "notes": "Oracle upper bound only; not deployable."
+  },
+  {
+    "scope": "SyntheticOppositeOverlap",
+    "strategy": "v1_overlap_only",
+    "average_cer": 0.171687,
+    "gap_to_oracle": 0.013846,
+    "sample_count": 20,
+    "notes": "v1 overlap-only baseline."
+  },
+  {
+    "scope": "SyntheticOppositeOverlap",
+    "strategy": "length_ratio_only",
+    "average_cer": 0.622589,
+    "gap_to_oracle": 0.464748,
+    "sample_count": 20,
+    "notes": "Ablation strategy."
+  },
+  {
+    "scope": "SyntheticOppositeOverlap",
+    "strategy": "repetition_only",
+    "average_cer": 0.171687,
+    "gap_to_oracle": 0.013846,
+    "sample_count": 20,
+    "notes": "Ablation strategy."
+  },
+  {
+    "scope": "SyntheticOppositeOverlap",
+    "strategy": "removed_count_only",
+    "average_cer": 0.171687,
+    "gap_to_oracle": 0.013846,
+    "sample_count": 20,
+    "notes": "Ablation strategy."
+  },
+  {
+    "scope": "SyntheticOppositeOverlap",
+    "strategy": "length_plus_repetition",
+    "average_cer": 0.622589,
+    "gap_to_oracle": 0.464748,
+    "sample_count": 20,
+    "notes": "Ablation strategy."
+  },
+  {
+    "scope": "SyntheticOppositeOverlap",
+    "strategy": "v2_full_features",
+    "average_cer": 0.171687,
+    "gap_to_oracle": 0.013846,
+    "sample_count": 20,
+    "notes": "Full feature router v2."
+  }
+]

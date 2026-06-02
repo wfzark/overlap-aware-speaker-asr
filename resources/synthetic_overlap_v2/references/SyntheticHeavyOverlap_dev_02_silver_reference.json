@@ -1,0 +1,40 @@
+{
+  "sample_id": "SyntheticHeavyOverlap_dev_02",
+  "tier": "SyntheticHeavyOverlap",
+  "split": "dev",
+  "overlap_level": 3,
+  "overlap_ratio": 0.5105,
+  "status": "silver_reference",
+  "reference_type": "silver_reference",
+  "source_files": [
+    "con_002.wav",
+    "pro_003.wav"
+  ],
+  "source_transcripts": [
+    "results/snippet_transcripts/con_002_whisper.json",
+    "results/snippet_transcripts/pro_003_whisper.json"
+  ],
+  "speaker_1_label": "con",
+  "speaker_2_label": "pro",
+  "speaker_1_source": "con_002.wav",
+  "speaker_2_source": "pro_003.wav",
+  "speaker_1_text": "哪怕自己是刷抖音的自己",
+  "speaker_2_text": "因為有一個前提性的問題沒有討論",
+  "turns": [
+    {
+      "speaker": "SPEAKER_1",
+      "source": "con_002.wav",
+      "text": "哪怕自己是刷抖音的自己",
+      "start_order": 0
+    },
+    {
+      "speaker": "SPEAKER_2",
+      "source": "pro_003.wav",
+      "text": "因為有一個前提性的問題沒有討論",
+      "start_order": 1
+    }
+  ],
+  "full_text": "[SPEAKER_1] 哪怕自己是刷抖音的自己\n[SPEAKER_2] 因為有一個前提性的問題沒有討論",
+  "text": "[SPEAKER_1] 哪怕自己是刷抖音的自己\n[SPEAKER_2] 因為有一個前提性的問題沒有討論",
+  "notes": "Silver reference built from Whisper transcriptions of source snippets."
+}
