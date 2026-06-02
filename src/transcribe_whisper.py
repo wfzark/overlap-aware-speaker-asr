@@ -22,6 +22,23 @@ MIXED_BENCHMARK_COLUMNS = [
     "text_preview",
     "transcript_path",
 ]
+SEPARATED_BENCHMARK_COLUMNS = [
+    "case_id",
+    "overlap_level",
+    "model",
+    "spk1_audio_path",
+    "spk2_audio_path",
+    "spk1_runtime_sec",
+    "spk2_runtime_sec",
+    "runtime_sec_total",
+    "spk1_segments_count",
+    "spk2_segments_count",
+    "merged_segments_count",
+    "spk1_text_length",
+    "spk2_text_length",
+    "full_text_length",
+    "speaker_transcript_path",
+]
 
 
 def find_case(config: dict[str, Any], case_id: str) -> dict[str, Any]:
@@ -131,6 +148,16 @@ def read_json(path: Path) -> dict[str, Any]:
     return json.loads(path.read_text(encoding="utf-8"))
 
 
+def load_whisper_model(model_name: str) -> Any:
+    import whisper
+
+    return whisper.load_model(model_name)
+
+
+def get_transcript_text_length(transcript: dict[str, Any], key: str = "text") -> int:
+    return len(transcript.get(key, ""))
+
+
 def build_mixed_benchmark_rows(config: dict[str, Any]) -> list[dict[str, Any]]:
     rows: list[dict[str, Any]] = []
     for case in get_audio_cases(config):
@@ -190,8 +217,6 @@ def main() -> None:
         if args.mode == "mixed":
             audio_jobs = [("mixed", resolve_audio_path(config, case, args.mode))]
         else:
-            if args.case == "all":
-                raise ValueError("--case all is only supported for --mode mixed in this stage.")
             audio_jobs = resolve_separated_audio_paths(config, case)
 
         for mode, audio_path in audio_jobs:
@@ -202,9 +227,7 @@ def main() -> None:
                 print(f"skip existing transcript: {output_path.relative_to(PROJECT_ROOT)}")
                 continue
             if model is None:
-                import whisper
-
-                model = whisper.load_model(model_name)
+                model = load_whisper_model(model_name)
             result = transcribe_audio(model, audio_path, language)
             output_path = write_transcript(
                 case_id=case["id"],

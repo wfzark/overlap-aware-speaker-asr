@@ -35,6 +35,12 @@ def find_case(config: dict[str, Any], case_id: str) -> dict[str, Any]:
     raise ValueError(f"Unknown audio case: {case_id}")
 
 
+def select_cases(config: dict[str, Any], case_id: str) -> list[dict[str, Any]]:
+    if case_id == "all":
+        return get_audio_cases(config)
+    return [find_case(config, case_id)]
+
+
 def read_json(path: Path) -> dict[str, Any]:
     if not path.exists():
         raise FileNotFoundError(f"Required file does not exist: {path.relative_to(PROJECT_ROOT)}")
@@ -117,12 +123,13 @@ def parse_args() -> argparse.Namespace:
 def main() -> None:
     args = parse_args()
     config = load_config()
-    case = find_case(config, args.case)
-    row = build_row(case)
+    cases = select_cases(config, args.case)
 
     csv_path = PROJECT_ROOT / "results" / "tables" / "mixed_vs_separated_comparison.csv"
     json_path = PROJECT_ROOT / "results" / "tables" / "mixed_vs_separated_comparison.json"
-    rows = upsert_row(read_existing_rows(csv_path), row)
+    rows = read_existing_rows(csv_path)
+    for case in cases:
+        rows = upsert_row(rows, build_row(case))
     write_csv(rows, csv_path)
     write_json(rows, json_path)
 
