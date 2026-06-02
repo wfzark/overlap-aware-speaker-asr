@@ -1,5 +1,25 @@
 [
   {
+    "case_id": "LightOverlap",
+    "method": "mixed_whisper",
+    "reference_type": "verified_reference",
+    "hypothesis_path": "results/transcripts_raw/LightOverlap_mixed_whisper.json",
+    "reference_length": 280,
+    "hypothesis_length": 282,
+    "edit_distance": 59,
+    "cer": 0.210714
+  },
+  {
+    "case_id": "LightOverlap",
+    "method": "separated_whisper",
+    "reference_type": "verified_reference",
+    "hypothesis_path": "results/transcripts_speaker/LightOverlap_separated_speaker_transcript.json",
+    "reference_length": 280,
+    "hypothesis_length": 315,
+    "edit_distance": 133,
+    "cer": 0.475
+  },
+  {
     "case_id": "NoOverlap",
     "method": "mixed_whisper",
     "reference_type": "verified_reference",

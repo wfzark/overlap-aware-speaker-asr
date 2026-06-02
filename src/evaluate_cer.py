@@ -37,6 +37,18 @@ def load_reference(case_id: str) -> dict[str, Any]:
     return reference
 
 
+def list_verified_cases() -> list[str]:
+    path = PROJECT_ROOT / "references" / "reference_transcripts.json"
+    if not path.exists():
+        raise FileNotFoundError(f"Missing reference file: {path.relative_to(PROJECT_ROOT)}")
+    data = json.loads(path.read_text(encoding="utf-8"))
+    return [
+        case_id
+        for case_id, reference in data.items()
+        if reference.get("status") == "verified_reference"
+    ]
+
+
 def load_json(path: Path) -> dict[str, Any]:
     if not path.exists():
         raise FileNotFoundError(f"Missing transcript: {path.relative_to(PROJECT_ROOT)}")
@@ -88,37 +100,64 @@ def build_row(case_id: str, method: str, reference_text: str, hypothesis_text: s
 
 
 def parse_args() -> argparse.Namespace:
-    parser = argparse.ArgumentParser(description="Evaluate CER for a single case.")
-    parser.add_argument("--case", required=True, help="Audio case id, e.g. NoOverlap")
+    parser = argparse.ArgumentParser(description="Evaluate CER for one or more verified cases.")
+    parser.add_argument("--case", required=True, help="Audio case id, e.g. NoOverlap, LightOverlap, or all")
     return parser.parse_args()
 
 
-def main() -> None:
-    args = parse_args()
-    _ = load_config()
-    if args.case != "NoOverlap":
-        raise ValueError("This stage only supports case NoOverlap.")
+def read_existing_rows(path: Path) -> list[dict[str, Any]]:
+    if not path.exists():
+        return []
+    with path.open("r", newline="", encoding="utf-8") as f:
+        return list(csv.DictReader(f))
 
-    reference = load_reference(args.case)
+
+def upsert_row(rows: list[dict[str, Any]], row: dict[str, Any]) -> list[dict[str, Any]]:
+    key = (str(row["case_id"]), str(row["method"]))
+    filtered = [
+        existing
+        for existing in rows
+        if (str(existing.get("case_id")), str(existing.get("method"))) != key
+    ]
+    filtered.append(row)
+    return sorted(filtered, key=lambda item: (str(item["case_id"]), str(item["method"])))
+
+
+def rows_for_case(case_id: str) -> list[dict[str, Any]]:
+    reference = load_reference(case_id)
     reference_text = reference.get("full_text", "")
 
-    mixed_path = PROJECT_ROOT / "results" / "transcripts_raw" / f"{args.case}_mixed_whisper.json"
+    mixed_path = PROJECT_ROOT / "results" / "transcripts_raw" / f"{case_id}_mixed_whisper.json"
     separated_path = (
-        PROJECT_ROOT / "results" / "transcripts_speaker" / f"{args.case}_separated_speaker_transcript.json"
+        PROJECT_ROOT / "results" / "transcripts_speaker" / f"{case_id}_separated_speaker_transcript.json"
     )
     mixed = load_json(mixed_path)
     separated = load_json(separated_path)
 
-    rows = [
-        build_row(args.case, "mixed_whisper", reference_text, mixed.get("text", ""), mixed_path),
+    return [
+        build_row(case_id, "mixed_whisper", reference_text, mixed.get("text", ""), mixed_path),
         build_row(
-            args.case,
+            case_id,
             "separated_whisper",
             reference_text,
             separated.get("full_text", ""),
             separated_path,
         ),
     ]
+
+
+def main() -> None:
+    args = parse_args()
+    _ = load_config()
+    if args.case == "all":
+        cases = list_verified_cases()
+    else:
+        cases = [args.case]
+
+    rows = read_existing_rows(PROJECT_ROOT / "results" / "tables" / "cer_results.csv")
+    for case_id in cases:
+        for row in rows_for_case(case_id):
+            rows = upsert_row(rows, row)
 
     output_dir = PROJECT_ROOT / "results" / "tables"
     output_dir.mkdir(parents=True, exist_ok=True)
