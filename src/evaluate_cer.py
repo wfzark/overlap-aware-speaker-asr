@@ -64,6 +64,22 @@ def normalize_text(text: str) -> str:
     return text
 
 
+def compute_cer(reference_text: str, hypothesis_text: str) -> dict[str, Any]:
+    ref_norm = normalize_text(reference_text)
+    hyp_norm = normalize_text(hypothesis_text)
+    distance = levenshtein_distance(ref_norm, hyp_norm)
+    reference_length = len(ref_norm)
+    cer = round(distance / reference_length, 6) if reference_length else 0.0
+    return {
+        "normalized_reference": ref_norm,
+        "normalized_hypothesis": hyp_norm,
+        "reference_length": reference_length,
+        "hypothesis_length": len(hyp_norm),
+        "edit_distance": distance,
+        "cer": cer,
+    }
+
+
 def levenshtein_distance(a: str, b: str) -> int:
     if not a:
         return len(b)
@@ -82,20 +98,16 @@ def levenshtein_distance(a: str, b: str) -> int:
 
 
 def build_row(case_id: str, method: str, reference_text: str, hypothesis_text: str, hypothesis_path: Path) -> dict[str, Any]:
-    ref_norm = normalize_text(reference_text)
-    hyp_norm = normalize_text(hypothesis_text)
-    distance = levenshtein_distance(ref_norm, hyp_norm)
-    reference_length = len(ref_norm)
-    cer = round(distance / reference_length, 6) if reference_length else 0.0
+    metrics = compute_cer(reference_text, hypothesis_text)
     return {
         "case_id": case_id,
         "method": method,
         "reference_type": "verified_reference",
         "hypothesis_path": hypothesis_path.relative_to(PROJECT_ROOT).as_posix(),
-        "reference_length": reference_length,
-        "hypothesis_length": len(hyp_norm),
-        "edit_distance": distance,
-        "cer": cer,
+        "reference_length": metrics["reference_length"],
+        "hypothesis_length": metrics["hypothesis_length"],
+        "edit_distance": metrics["edit_distance"],
+        "cer": metrics["cer"],
     }
 
 
