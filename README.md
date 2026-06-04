@@ -1,6 +1,6 @@
-# When Should We Separate? Boundary-aware, Compute-aware, and Speaker-aware Adaptive ASR for Overlapping Speech
+# When Should We Separate? Boundary-aware, Compute-aware, Speaker-aware, and Agent-augmented ASR for Overlapping Speech
 
-We study when speech separation helps or hurts multi-speaker ASR, and we build adaptive routing and risk-aware evaluation tools for speaker-attributed transcription.
+We study when speech separation helps or hurts multi-speaker ASR, and we build adaptive routing, risk-aware evaluation, and agent-friendly research infrastructure for speaker-attributed transcription.
 
 ## What This Project Is
 
@@ -10,6 +10,7 @@ We study when speech separation helps or hurts multi-speaker ASR, and we build a
 - speaker-aware evaluation
 - synthetic robustness validation
 - risk-aware selection
+- agentic research workspace
 
 ## What This Project Is Not
 
@@ -53,6 +54,18 @@ We study when speech separation helps or hurts multi-speaker ASR, and we build a
 - `cpCER-lite` did not find speaker swap as the dominant error source in the five gold cases.
 - Feature-based router v2 is more stable than overlap-only v1 on synthetic validation.
 - The risk-aware selector is an explainability and deployability layer, not the best-CER result.
+- The repository is now also framed as an open-ended agentic research workspace for ambitious extensions.
+
+## Beyond the Baseline: Open Challenge Directions
+
+- Separation Phase Diagram
+- Compute-aware Cascaded Recognition
+- Speaker Profile / Voiceprint Risk Detection
+- Agentic LLM Transcript Critic
+- External Mini Validation
+- GitHub Demo Excellence
+
+The stable baseline is complete, but this repository is designed as an open-ended agentic research playground. Future contributors are encouraged to attempt ambitious extensions while keeping gold/silver/experimental results clearly separated.
 
 ## How to Reproduce
 
@@ -91,8 +104,9 @@ python -m src.project_harness
 - `resources/`: migrated audio inputs, snippets, and synthetic assets
 - `src/`: experiment scripts and analysis utilities
 - `results/`: generated transcripts, tables, figures, and summaries
-- `docs/`: project docs, stage notes, skills, and maintenance guidance
+- `docs/`: project docs, stage notes, skills, governance, and maintenance guidance
 - `chat_upload/`: local-only upload bundles for draft preparation
+- `backups/`: local-only backup outputs
 
 ## Documentation Map
 
@@ -102,18 +116,23 @@ New contributors should read these files before modifying code:
 - [docs/project_state.md](docs/project_state.md)
 - [docs/roadmap.md](docs/roadmap.md)
 - [docs/maintenance_harness.md](docs/maintenance_harness.md)
-- [docs/markdown_audit.md](docs/markdown_audit.md)
 - [docs/README.md](docs/README.md)
+- [docs/ambitious_research_agenda.md](docs/ambitious_research_agenda.md)
+- [docs/agent_challenge_board.md](docs/agent_challenge_board.md)
+- [docs/experiment_proposal_template.md](docs/experiment_proposal_template.md)
 - [docs/skills/README.md](docs/skills/README.md)
+- [docs/markdown_audit.md](docs/markdown_audit.md)
 
 ## Project Maintenance and Future Skills
 
-The skill cards are not model-training prompts. They are small research and maintenance guides for future work:
+The skill cards are not model-training prompts. They are challenge cards for future work:
 
 - [Skill 01: Separation Phase Diagram](docs/skills/skill_01_separation_phase_diagram.md)
-- [Skill 02: Compute-aware Cascade](docs/skills/skill_02_compute_aware_cascade.md)
+- [Skill 02: Compute-aware Cascaded Recognition](docs/skills/skill_02_compute_aware_cascade.md)
 - [Skill 03: Speaker Profile / Voiceprint-assisted Risk Detection](docs/skills/skill_03_speaker_profile_voiceprint.md)
 - [Skill 04: MeetEval / cpWER Compatibility Plan](docs/skills/skill_04_meeteval_compatibility.md)
+- [Skill 05: Agentic LLM Transcript Critic](docs/skills/skill_05_agentic_llm_critic.md)
+- [Skill 06: GitHub Demo Excellence](docs/skills/skill_06_github_demo_excellence.md)
 
 Additional maintenance docs:
 
@@ -126,5 +145,5 @@ If you are continuing the project, read the docs above first, then inspect the c
 ## Notes
 
 - The repository keeps verified references for all five benchmark cases.
-- `LLM` and `RAG` are future extensions rather than the core experimental path.
-- The current research focus is adaptive routing, error analysis, speaker-aware evaluation, and stability checking.
+- `LLM` and `RAG` are future extensions rather than the core quantitative path.
+- The current research focus is adaptive routing, error analysis, speaker-aware evaluation, stability checking, and ambitious frontier exploration.

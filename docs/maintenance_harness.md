@@ -1,32 +1,35 @@
 # Maintenance Harness
 
-This document explains how to keep the project maintainable and prevent it from bloating into an unfocused research pile.
+This document describes how to keep the project healthy while still encouraging ambitious experimentation.
 
-## Result Hierarchy
+## Result Labeling Policy
 
-1. Gold results
-2. Synthetic silver results
-3. Held-out synthetic split
-4. Optional future experiments
+- gold
+- silver
+- frontier
+- demo
+- oracle
+- external sanity-check
 
-## Before Adding a New Module, Answer:
+## Experimental Branch Policy
 
-- What research question does it answer?
-- Which existing limitation does it address?
-- What files will it read?
-- What files will it write?
-- Will it modify gold results?
-- Is it reproducible?
-- Who owns it?
+- Stable outputs remain stable.
+- Experimental outputs use versioned paths.
+- High-risk ideas are allowed if they are labeled and documented.
 
-## Naming Conventions
+## Experiment Proposal Template
 
-- Scripts in `src/`
-- Result tables in `results/tables/`
-- Figures in `results/figures/`
-- Docs in `docs/`
-- Skills in `docs/skills/`
-- Experimental audio in `resources/`
+Before starting a new experiment, write:
+
+- Question
+- Hypothesis
+- Method
+- Inputs
+- Outputs
+- Metrics
+- Compute cost
+- Failure modes
+- Owner
 
 ## Reproducibility Policy
 
@@ -35,11 +38,15 @@ This document explains how to keep the project maintainable and prevent it from 
 - Prefer versioned outputs for new experimental branches.
 - Keep synthetic silver separate from gold.
 
+## Innovation Encouragement
+
+Agents are encouraged to attempt difficult extensions. A failed but well-documented experiment is valuable if it clarifies a boundary or failure mode.
+
 ## Documentation Freshness Policy
 
 - Every major stage completion must update `docs/project_state.md`.
 - If the core conclusion changes, update `README.md` and `REPORT.md` together.
-- If a new experimental branch is added, explicitly label it as `gold`, `silver`, or `optional`.
+- If a new experimental branch is added, explicitly label it as `gold`, `silver`, `frontier`, `demo`, or `external`.
 - If a new module is not part of the core line, place it in `docs/skills/` or future work.
 - Do not promote exploratory results directly into a final claim.
 - If contribution records, handoff notes, or backup plans are added, link them from `docs/README.md` and `README.md`.
@@ -59,9 +66,4 @@ python -m src.project_harness
 
 ## Maintenance Goal
 
-The project should remain:
-
-- understandable
-- reproducible
-- extendable by multiple people
-- resistant to scope creep
+Healthy experimentation, not restriction.

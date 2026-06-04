@@ -8,10 +8,6 @@ This folder is the documentation entry point for the project.
 - [docs/project_state.md](project_state.md)
 - [docs/roadmap.md](roadmap.md)
 - [docs/maintenance_harness.md](maintenance_harness.md)
-- [docs/markdown_audit.md](markdown_audit.md)
-- [docs/contributions/README.md](contributions/README.md)
-- [docs/handoff/WUFANGZHOU_HANDOFF.md](handoff/WUFANGZHOU_HANDOFF.md)
-- [docs/backup_plan.md](backup_plan.md)
 - [docs/technical_implementation_plan_v2.md](technical_implementation_plan_v2.md)
 - [REPORT.md](../REPORT.md)
 - [README.md](../README.md)
@@ -32,6 +28,13 @@ This folder is the documentation entry point for the project.
 
 - [docs/skills/README.md](skills/README.md)
 
+## Ambitious Exploration Docs
+
+- [docs/ambitious_research_agenda.md](ambitious_research_agenda.md)
+- [docs/agent_challenge_board.md](agent_challenge_board.md)
+- [docs/experiment_proposal_template.md](experiment_proposal_template.md)
+- [docs/skills/](skills/)
+
 ## Contribution and Handoff
 
 - [docs/contributions/README.md](contributions/README.md)
@@ -51,4 +54,4 @@ This folder is the documentation entry point for the project.
 
 ## New Contributor Rule
 
-New contributors should read AGENTS.md, docs/project_state.md, and docs/roadmap.md before modifying code.
+New contributors should read AGENTS.md, docs/project_state.md, docs/ambitious_research_agenda.md, and docs/agent_challenge_board.md before proposing new experiments.

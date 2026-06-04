@@ -2,9 +2,9 @@
 
 ## Current Status
 
-The core technical work is mostly complete. The repository now has a coherent research story centered on adaptive routing, speaker-aware evaluation, and robustness checks.
+The core technical work is complete. The repository now has a stable baseline and a clear path toward more ambitious agentic exploration.
 
-## What Is Already Done
+## Phase 0: Stable Baseline Completed
 
 - Gold benchmark and references
 - ASR baselines
@@ -13,39 +13,56 @@ The core technical work is mostly complete. The repository now has a coherent re
 - Adaptive routing
 - Synthetic validation
 - Risk-aware selection
-- Context and maintenance docs
-- Docs index and markdown audit
+- Documentation and maintenance structure
 
-## What Should Not Be Expanded Further
+## Phase 1: Final Packaging
 
-- Do not add new ASR models without a clear research need.
-- Do not rerun gold results casually.
-- Do not turn LLM/RAG into the central quantitative line again.
-- Do not keep stacking side branches that do not answer the core question.
-- Do not present synthetic silver results as gold.
+- Final REPORT.md
+- Final README.md
+- Contribution records
+- Handoff notes
+- Backup plan
 
-## Recommended Next Work
+## Phase 2: Boundary Exploration
 
-1. Final `REPORT.md`
-2. Final `README.md`
-3. Streamlit demo
-4. Presentation / video script
-5. Contribution / maintenance polish
-6. Separation phase diagram
-7. Compute-aware cascade
-8. Speaker profile / voiceprint exploration
-9. MeetEval compatibility discussion
-10. External mini validation
+- Separation phase diagram
+- error boundary analysis
+- overlap regime exploration
 
-## Suggested Team Ownership
+## Phase 3: Compute-aware Cascade
 
-- Technical lead: existing core pipeline owner
-- Report owner: documentation lead
-- README / reproducibility owner: maintenance lead
-- Demo owner: interface / UX lead
-- Literature / external benchmark owner: evaluation lead
-- Presentation / video owner: communication lead
+- cheap route vs stronger route
+- runtime-aware selection
+- risk-triggered repair tiers
 
-## Maintenance Principle
+## Phase 4: Speaker Profile / Voiceprint
 
-Any new module should first be framed as a research question, a scope boundary, and a reproducible output plan. If it does not answer a clear question, it should stay out of the core pipeline and move into a skill card or future work note.
+- known-speaker enrollment
+- speaker attribution risk detection
+- contaminated track detection
+
+## Phase 5: Agentic LLM Critic and Repair
+
+- transcript critique
+- repair suggestion loops
+- uncertainty-aware review
+
+## Phase 6: External Mini Validation
+
+- small sanity check on an external dataset
+- license/source documented
+- gold/silver separation preserved
+
+## Phase 7: Demo and Public-facing GitHub Excellence
+
+- Streamlit demo
+- presentation / video polish
+- architecture diagrams
+- onboarding clarity
+
+## Healthy Project Principles
+
+- New experiments should be isolated.
+- Stable results should not be overwritten.
+- Gold / silver / experimental / demo labels must be clear.
+- Every ambitious module needs an owner and output path.

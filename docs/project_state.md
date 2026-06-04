@@ -4,7 +4,15 @@ This document is for future Codex / AI coding agents so they can resume work wit
 
 ## Current Project Title
 
-**When Should We Separate? Boundary-aware, Compute-aware, and Speaker-aware Adaptive ASR for Overlapping Speech**
+**When Should We Separate? Boundary-aware, Compute-aware, Speaker-aware, and Agent-augmented ASR for Overlapping Speech**
+
+## Teacher Feedback and Direction Shift
+
+- The core technical baseline is complete.
+- Future agents are encouraged to explore the frontier, not just maintain the baseline.
+- The project direction has therefore shifted from a maintenance-only mindset to a stable baseline + ambitious frontier exploration mindset.
+- The stable baseline remains preserved.
+- Future agents may explore phase diagrams, compute-aware cascades, voiceprint ideas, LLM critic loops, external mini validation, and demo excellence.
 
 ## Completed Stages
 
@@ -33,6 +41,9 @@ This document is for future Codex / AI coding agents so they can resume work wit
 - contribution records
 - handoff notes
 - backup plan
+- ambitious research agenda
+- challenge board
+- experiment proposal template
 
 ## Current Core Findings
 
@@ -143,14 +154,15 @@ This document is for future Codex / AI coding agents so they can resume work wit
 
 ## What Should Happen Next
 
-The next stage is not another experimental detour. It should focus on:
+The next stage is not another maintenance loop. It should focus on:
 
 - final REPORT.md polish
 - README polish
 - Streamlit demo
 - presentation / video script
 - contribution / maintenance clarity
-- optional skills exploration
+- ambitious exploration docs
+- experimental frontier work
 
 ## How to Resume Work
 

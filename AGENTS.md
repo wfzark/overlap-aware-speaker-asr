@@ -1,223 +1,108 @@
-# Project Context for Future Agents
+# Agent Operating Charter
 
 ## Mission
-This repository studies the question:
 
-**When should we separate? Adaptive routing and speaker-aware evaluation for overlapping speech ASR.**
+This repository is now an ambitious agentic research workspace. The stable baseline is complete, and future agents are encouraged to explore challenging extensions, new pipelines, new evaluations, and high-risk/high-reward ideas.
 
-The core research question is:
+The stable baseline should remain preserved, but future work should not be reduced to maintenance only. The project is designed to support creative, boundary-pushing experimentation within clear research boundaries.
 
-> Speech separation is useful, but not universally beneficial.
+## Stable Baseline vs Experimental Frontier
 
-We compare three output families:
+### Stable baseline
 
-1. `mixed_whisper`
-2. `separated_whisper`
-3. `separated_whisper_cleaned`
-
-The goal is to decide when each output is the safest final choice for overlapping-speech ASR.
-
-## Hard Rules for Agents
-
-- Do not use ground-truth CER or `reference_transcripts.json` as routing input.
-- References and CER are for evaluation only.
-- Do not overwrite verified references unless explicitly requested.
-- Do not rerun ASR unless explicitly requested.
-- Do not modify existing result tables unless the requested stage requires recomputation.
-- Do not introduce new heavy ASR models without approval.
-- Do not treat synthetic silver results as gold evaluation.
-- Keep gold and synthetic evaluations clearly separated.
-- Prefer adding new result files over overwriting existing ones.
-
-## Current Best Quantitative Result
-
-### Gold benchmark
-
-- `router_v2 average CER = 0.120042`
-- `oracle best average CER = 0.120042`
-
-### Synthetic original 25
-
-- `v1 = 0.350902`
-- `v2 = 0.167553`
-- `oracle = 0.082239`
-
-### Synthetic split held-out test
-
-- `v1 = 0.361350`
-- `v2 = 0.335326`
-- `oracle = 0.115181`
-
-## Current Interpretation
-
-- `v1` looks perfect on gold but is unstable on synthetic.
-- `v2` fixes part of the `v1` instability, especially `SyntheticNoOverlap`.
-- Ablation shows repetition / removed_count are more useful than `length_ratio` alone.
-- `cpCER-lite` shows no speaker permutation mismatch in gold cases.
-- `risk_aware_selector` is a deployability and explainability layer, not the primary best-CER result.
-
-## Important Result Hierarchy
-
-### Gold benchmark
-
-- 5 manually verified cases.
-- Main quantitative result.
-
-### Synthetic silver benchmark
-
-- Supplementary robustness validation.
-- Not gold evaluation.
-
-### Held-out synthetic split
-
-- Used to test router robustness.
-- Do not tune rules on held-out test results.
-
-## Completed Work
-
-- Stage 1 project skeleton
-- mixed Whisper baseline
-- separated speaker-track ASR
-- duplicate suppression
-- 5 verified gold references
-- global CER
-- error type analysis
-- adaptive router v1
+- 5 gold benchmark cases
+- verified references
+- mixed / separated / cleaned ASR
+- CER evaluation
+- error analysis
+- router v1 / v2
 - speaker-aware CER
-- synthetic overlap benchmark
-- synthetic silver evaluation
-- router v2
-- synthetic audit
-- router ablation
-- held-out synthetic split validation
 - cpCER-lite
+- synthetic validation
 - risk-aware selector
 
-## Gold Benchmark Final CER Table
+### Experimental frontier
 
-### NoOverlap
+- separation phase diagram
+- compute-aware cascaded recognition
+- speaker profile / voiceprint learning
+- external benchmark mini validation
+- MeetEval / cpWER compatibility
+- local Ollama / LLM correction and critic agent
+- multi-agent ASR critic / repair loop
+- self-evaluating transcript agent
+- active learning / uncertainty-driven manual review
+- stronger ASR model comparison
+- demo / visualization / GitHub presentation polish
 
-- `mixed_whisper: 0.215827`
-- `separated_whisper: 0.053957`
-- `separated_whisper_cleaned: 0.089928`
-- `best: separated_whisper`
+## New Rule Philosophy
 
-### LightOverlap
+Protect stable results, expand through new branches.
 
-- `mixed_whisper: 0.210714`
-- `separated_whisper: 0.475000`
-- `separated_whisper_cleaned: 0.382143`
-- `best: mixed_whisper`
+Preserve:
 
-### MidOverlap
+- Do not overwrite verified references.
+- Do not use ground-truth CER as deployable routing input.
+- Do not mix gold and synthetic results without labeling.
+- Do not silently overwrite result tables.
+- Do not claim silver results as gold.
 
-- `mixed_whisper: 0.178947`
-- `separated_whisper: 0.273684`
-- `separated_whisper_cleaned: 0.207018`
-- `best: mixed_whisper`
+Encourage:
 
-### HeavyOverlap
+- Add bold experimental modules when they answer a clear research question.
+- Run stronger models if runtime and hardware are documented.
+- Add external datasets if licensing and source are documented.
+- Use LLM/agentic workflows if outputs are clearly marked as qualitative unless evaluated.
+- Create new experimental result directories rather than modifying stable outputs.
 
-- `mixed_whisper: 0.386861`
-- `separated_whisper: 0.109489`
-- `separated_whisper_cleaned: 0.145985`
-- `best: separated_whisper`
+## Result Labels
 
-### OppositeOverlap
+Every experiment or output should be labeled as one of:
 
-- `mixed_whisper: 0.518116`
-- `separated_whisper: 0.047101`
-- `separated_whisper_cleaned: 0.083333`
-- `best: separated_whisper`
+- stable/gold
+- synthetic/silver
+- experimental/frontier
+- qualitative/demo
+- external/sanity-check
+- oracle/analysis-only
 
-### Averages
+## Agent Challenge Modes
 
-- `fixed mixed: 0.302093`
-- `fixed separated: 0.191846`
-- `fixed cleaned: 0.181681`
-- `router_v2: 0.120042`
-- `oracle best: 0.120042`
+Future agents are encouraged to choose an explicit mode and mention it in the commit message or the relevant docs.
 
-## Error Type Findings
+### Mode A: Conservative Reproduction
 
-- `LightOverlap` separated degradation is mainly insertion + repetition.
-- `MidOverlap` separated degradation is also insertion + repetition.
-- `HeavyOverlap` and `OppositeOverlap` benefit strongly from separation.
-- Duplicate suppression helps Light/Mid but is not universally better.
+- Reproduce existing results
 
-## Speaker-Aware Findings
+### Mode B: Focused Extension
 
-### speaker_macro_cer
+- Add one clear module
 
-- `NoOverlap separated: 0.054312, cleaned: 0.089278`
-- `LightOverlap separated: 0.194170, cleaned: 0.135164`
-- `MidOverlap separated: 0.175908, cleaned: 0.168620`
-- `HeavyOverlap separated: 0.110821, cleaned: 0.146535`
-- `OppositeOverlap separated: 0.047479, cleaned: 0.083193`
+### Mode C: Frontier Exploration
 
-## cpCER-lite
+- Try a risky/high-reward research direction
 
-- No obvious speaker permutation mismatch.
-- `speaker_assignment_gap = 0.0` for all five gold cases.
-- Main errors are content-level, not speaker-swap-level.
+### Mode D: Presentation / Productization
 
-## Synthetic Findings
+- Improve demo, README, visualization, video
 
-### Original 25 synthetic silver
+## Hard Safety Rules
 
-- `v1: 0.350902`
-- `v2: 0.167553`
-- `oracle: 0.082239`
+- Do not overwrite verified references unless explicitly requested.
+- Do not treat synthetic silver as gold evaluation.
+- Do not use CER/reference as routing input.
+- Do not mix experimental outputs into stable result tables without a clear label.
+- Do not add heavyweight modules without a stated research question, owner, and output path.
 
-### Held-out synthetic test
+## Documentation Discipline
 
-- `v1: 0.361350`
-- `v2: 0.335326`
-- `oracle: 0.115181`
+The project should keep its baseline stable, but the docs should continuously point future agents toward the most ambitious useful next step.
 
-### Interpretation
+Recommended docs to read before making a new proposal:
 
-- `v2` improves stability but still has a large gap to oracle.
-- Improvement mainly comes from `SyntheticNoOverlap`.
-- Synthetic results are silver robustness evidence, not gold evaluation.
-
-## Risk-Aware Selector Findings
-
-### Gold final selection
-
-- `NoOverlap -> separated_whisper`
-- `LightOverlap -> mixed_whisper`
-- `MidOverlap -> mixed_whisper`
-- `HeavyOverlap -> separated_whisper_cleaned`
-- `OppositeOverlap -> separated_whisper_cleaned`
-
-### Averages
-
-- `risk_aware_selector: 0.134587`
-- `router_v2: 0.120042`
-- `oracle_best: 0.120042`
-
-### Interpretation
-
-- Risk-aware selector is more conservative and explainable.
-- It is not the primary best-CER result.
-- It provides reference-free risk detection and selective repair.
-
-## Recommended Next Stages
-
-1. Update `REPORT.md` and `README.md` if needed.
-2. Create a Streamlit demo.
-3. Create a final presentation script.
-4. Optional: external mini validation or MeetEval compatibility discussion.
-
-## Commands Commonly Used to Resume Work
-
-```powershell
-python -m src.adaptive_router_v2
-python -m src.evaluate_error_types --case all
-python -m src.evaluate_speaker_cer --case all
-python -m src.evaluate_cpcer_lite --case all
-python -m src.risk_aware_selector --case all
-python -m src.router_ablation
-python -m src.router_ablation_split
-```
+- `docs/project_state.md`
+- `docs/roadmap.md`
+- `docs/maintenance_harness.md`
+- `docs/README.md`
+- `docs/ambitious_research_agenda.md`
+- `docs/agent_challenge_board.md`
