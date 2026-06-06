@@ -30,6 +30,14 @@ TRIAGE_COLUMNS = [
     "next_action",
 ]
 
+METHOD_HANDOFF_COLUMNS = [
+    "dominant_pattern",
+    "first_method_direction",
+    "method_goal",
+    "expected_evidence",
+    "handoff_note",
+]
+
 
 def text_overlap_ratio(left: str, right: str) -> float:
     left_counter = Counter(str(left).strip())
@@ -155,6 +163,44 @@ def build_speaker_profile_triage_lines(rows: list[dict[str, str]]) -> list[str]:
     return lines
 
 
+def build_speaker_profile_method_handoff_rows(rows: list[dict[str, str]]) -> list[dict[str, str]]:
+    if not rows:
+        return []
+
+    triage = rows[0]
+    dominant_pattern = str(triage.get("dominant_pattern", ""))
+    first_method_direction = (
+        "embedding_or_voiceprint_baseline"
+        if dominant_pattern == "swapped_bias"
+        else "stability_check_against_current_signal"
+    )
+    return [
+        {
+            "dominant_pattern": dominant_pattern,
+            "first_method_direction": first_method_direction,
+            "method_goal": "Test a stronger profile method before any attribution claim.",
+            "expected_evidence": "results/tables/speaker_profile_method_receipt.json",
+            "handoff_note": "Current signal is diagnostic only, not speaker-ID success.",
+        }
+    ]
+
+
+def build_speaker_profile_method_handoff_lines(rows: list[dict[str, str]]) -> list[str]:
+    lines = [
+        "# Speaker Profile Method Handoff",
+        "",
+        "This generated packet translates the current profile triage result into a first stronger-method direction. It does not claim voiceprint or speaker-ID success.",
+        "",
+        "| dominant_pattern | first_method_direction | method_goal | expected_evidence | handoff_note |",
+        "| --- | --- | --- | --- | --- |",
+    ]
+    for row in rows:
+        lines.append(
+            f"| {row['dominant_pattern']} | {row['first_method_direction']} | {row['method_goal']} | {row['expected_evidence']} | {row['handoff_note']} |"
+        )
+    return lines
+
+
 def load_snippet_rows(prefix: str) -> list[dict[str, Any]]:
     rows: list[dict[str, Any]] = []
     for path in sorted((PROJECT_ROOT / "results" / "snippet_transcripts").glob(f"{prefix}_*_whisper.json")):
@@ -189,7 +235,7 @@ def load_hypothesis_text(case_id: str) -> dict[str, Any]:
     }
 
 
-def write_outputs(rows: list[dict[str, Any]]) -> tuple[Path, Path, Path, Path, Path, Path]:
+def write_outputs(rows: list[dict[str, Any]]) -> tuple[Path, Path, Path, Path, Path, Path, Path, Path, Path]:
     tables_dir = PROJECT_ROOT / "results" / "tables"
     figures_dir = PROJECT_ROOT / "results" / "figures"
     tables_dir.mkdir(parents=True, exist_ok=True)
@@ -201,6 +247,10 @@ def write_outputs(rows: list[dict[str, Any]]) -> tuple[Path, Path, Path, Path, P
     triage_csv_path = tables_dir / "speaker_profile_triage.csv"
     triage_json_path = tables_dir / "speaker_profile_triage.json"
     triage_md_path = figures_dir / "speaker_profile_triage.md"
+    method_handoff_rows = build_speaker_profile_method_handoff_rows(triage_rows)
+    method_handoff_csv_path = tables_dir / "speaker_profile_method_handoff.csv"
+    method_handoff_json_path = tables_dir / "speaker_profile_method_handoff.json"
+    method_handoff_md_path = figures_dir / "speaker_profile_method_handoff.md"
     with csv_path.open("w", newline="", encoding="utf-8-sig") as f:
         writer = csv.DictWriter(f, fieldnames=CSV_COLUMNS)
         writer.writeheader()
@@ -213,7 +263,26 @@ def write_outputs(rows: list[dict[str, Any]]) -> tuple[Path, Path, Path, Path, P
         writer.writerows(triage_rows)
     triage_json_path.write_text(json.dumps(triage_rows, ensure_ascii=False, indent=2), encoding="utf-8")
     triage_md_path.write_text("\n".join(build_speaker_profile_triage_lines(triage_rows)) + "\n", encoding="utf-8")
-    return csv_path, json_path, md_path, triage_csv_path, triage_json_path, triage_md_path
+    with method_handoff_csv_path.open("w", newline="", encoding="utf-8-sig") as f:
+        writer = csv.DictWriter(f, fieldnames=METHOD_HANDOFF_COLUMNS)
+        writer.writeheader()
+        writer.writerows(method_handoff_rows)
+    method_handoff_json_path.write_text(json.dumps(method_handoff_rows, ensure_ascii=False, indent=2), encoding="utf-8")
+    method_handoff_md_path.write_text(
+        "\n".join(build_speaker_profile_method_handoff_lines(method_handoff_rows)) + "\n",
+        encoding="utf-8",
+    )
+    return (
+        csv_path,
+        json_path,
+        md_path,
+        triage_csv_path,
+        triage_json_path,
+        triage_md_path,
+        method_handoff_csv_path,
+        method_handoff_json_path,
+        method_handoff_md_path,
+    )
 
 
 def main() -> None:
@@ -225,13 +294,26 @@ def main() -> None:
     references = {case_id: load_reference(case_id) for case_id in case_ids}
     hypothesis_texts = {case_id: load_hypothesis_text(case_id) for case_id in case_ids}
     rows = build_similarity_rows(case_ids, profile_texts, references, hypothesis_texts)
-    csv_path, json_path, md_path, triage_csv_path, triage_json_path, triage_md_path = write_outputs(rows)
+    (
+        csv_path,
+        json_path,
+        md_path,
+        triage_csv_path,
+        triage_json_path,
+        triage_md_path,
+        method_handoff_csv_path,
+        method_handoff_json_path,
+        method_handoff_md_path,
+    ) = write_outputs(rows)
     print(f"Wrote speaker profile similarity: {csv_path.relative_to(PROJECT_ROOT)}")
     print(f"Wrote speaker profile JSON: {json_path.relative_to(PROJECT_ROOT)}")
     print(f"Wrote speaker profile summary: {md_path.relative_to(PROJECT_ROOT)}")
     print(f"Wrote speaker profile triage CSV: {triage_csv_path.relative_to(PROJECT_ROOT)}")
     print(f"Wrote speaker profile triage JSON: {triage_json_path.relative_to(PROJECT_ROOT)}")
     print(f"Wrote speaker profile triage note: {triage_md_path.relative_to(PROJECT_ROOT)}")
+    print(f"Wrote speaker profile method handoff CSV: {method_handoff_csv_path.relative_to(PROJECT_ROOT)}")
+    print(f"Wrote speaker profile method handoff JSON: {method_handoff_json_path.relative_to(PROJECT_ROOT)}")
+    print(f"Wrote speaker profile method handoff note: {method_handoff_md_path.relative_to(PROJECT_ROOT)}")
 
 
 if __name__ == "__main__":

@@ -5,6 +5,8 @@ import unittest
 from src.speaker_profile_similarity import (
     build_profile_text,
     build_similarity_rows,
+    build_speaker_profile_method_handoff_lines,
+    build_speaker_profile_method_handoff_rows,
     build_speaker_profile_summary_lines,
     build_speaker_profile_triage_lines,
     build_speaker_profile_triage_rows,
@@ -125,6 +127,46 @@ class SpeakerProfileSimilarityTest(unittest.TestCase):
         self.assertIn("# Speaker Profile Triage", rendered)
         self.assertIn("swapped_bias", rendered)
         self.assertIn("stronger profile method", rendered)
+
+    def test_build_speaker_profile_method_handoff_rows_turn_triage_into_next_method(self) -> None:
+        rows = build_speaker_profile_method_handoff_rows(
+            [
+                {
+                    "dominant_pattern": "swapped_bias",
+                    "case_count": "5",
+                    "swapped_count": "5",
+                    "direct_count": "0",
+                    "average_confidence_gap": "0.413131",
+                    "cleaned_source_count": "4",
+                    "next_action": "Test a stronger profile method before claiming attribution value.",
+                }
+            ]
+        )
+
+        self.assertEqual(len(rows), 1)
+        self.assertEqual(rows[0]["dominant_pattern"], "swapped_bias")
+        self.assertEqual(rows[0]["first_method_direction"], "embedding_or_voiceprint_baseline")
+        self.assertIn("speaker_profile_method_receipt.json", rows[0]["expected_evidence"])
+        self.assertIn("not speaker-id success", rows[0]["handoff_note"].lower())
+
+    def test_build_speaker_profile_method_handoff_lines_render_packet(self) -> None:
+        lines = build_speaker_profile_method_handoff_lines(
+            [
+                {
+                    "dominant_pattern": "swapped_bias",
+                    "first_method_direction": "embedding_or_voiceprint_baseline",
+                    "method_goal": "Test a stronger profile method before any attribution claim.",
+                    "expected_evidence": "results/tables/speaker_profile_method_receipt.json",
+                    "handoff_note": "Current signal is diagnostic only, not speaker-ID success.",
+                }
+            ]
+        )
+        rendered = "\n".join(lines)
+
+        self.assertIn("# Speaker Profile Method Handoff", rendered)
+        self.assertIn("embedding_or_voiceprint_baseline", rendered)
+        self.assertIn("speaker_profile_method_receipt.json", rendered)
+        self.assertIn("diagnostic only", rendered)
 
 
 if __name__ == "__main__":
