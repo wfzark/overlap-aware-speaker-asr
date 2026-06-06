@@ -193,9 +193,59 @@ cpCER-lite did not find speaker permutation mismatch in the five gold cases. The
 
 The risk-aware selector is deliberately conservative and explainable. It is not the best-CER result, but it is useful as a deployment-oriented final selector.
 
+### 5.10 Compute-aware Cascade Frontier
+
+The repository now includes an `experimental/frontier` compute-aware cascade analysis layer. This layer does not change any stable gold benchmark references or use CER as an input signal. Instead, it scores already-fixed route choices using observed runtime fields, route-normalized RTF, and held-out synthetic-split robustness views.
+
+#### Gold compute-aware view
+
+| strategy | average CER | relative cost vs fixed separated |
+| --- | ---: | ---: |
+| router_v2_costed | 0.120042 | 0.929533 |
+| risk_aware_costed | 0.134587 | 0.929533 |
+| budget_cascade | 0.134587 | 0.929533 |
+
+Key observations:
+
+- `router_v2_costed` is the strongest gold adaptive route.
+- The committed gold cascade tables are fully backed by observed runtime rather than proxy fallback.
+- Under the joint CER/cost Pareto view, the gold frontier reduces to `fixed_mixed_whisper` and `router_v2_costed`.
+
+#### Held-out synthetic split cascade validation
+
+| strategy | average CER | relative cost vs fixed separated |
+| --- | ---: | ---: |
+| router_v2_synthetic_costed | 0.285187 | 0.704888 |
+| budget_cascade | 0.367582 | 0.854921 |
+| cleaned_preferred_cascade | 0.249877 | 0.945686 |
+
+Key observations:
+
+- `router_v2_synthetic_costed` is the best balanced synthetic-split route.
+- `fixed_separated_whisper_cleaned` remains the strongest synthetic-split accuracy-first route.
+- `budget_cascade` is cheaper than always separated, but it degrades more sharply on held-out synthetic split.
+
+#### Decision-support layer
+
+The frontier work now includes:
+
+- runtime provenance audits
+- route-normalized RTF audits
+- Pareto frontier classification
+- profile-based recommendation cards
+- cross-dataset robustness gap comparisons
+- family-level recommendation stability
+- a consolidated decision matrix
+
+This turns the cascade from a single offline plot into a small decision-support stack. The current evidence suggests:
+
+- `router_v2` is the cleanest default balanced family.
+- `fixed_mixed_whisper` is the most stable cost-first choice.
+- `fixed_separated_whisper_cleaned` is the most robust accuracy-first alternative across gold and held-out synthetic split.
+
 ## 6. Results and Discussion
 
-The project leads to seven main findings:
+The project leads to eight main findings:
 
 1. Speech separation is useful, but not universally beneficial.
 2. The main degradation in `LightOverlap` and `MidOverlap` is caused by insertion and repetition hallucination.
@@ -203,9 +253,12 @@ The project leads to seven main findings:
 4. Router v1 is fragile outside the small gold benchmark, while router v2 is more stable.
 5. Synthetic silver validation is valuable for exposing overfitting, but it is not gold evaluation.
 6. Speaker-aware and permutation-aware evaluation reveal behaviors that global CER alone does not show.
-7. The repository now supports a second, broader interpretation: the stable baseline is complete, and the project can also serve as an agentic research workspace for ambitious extensions.
+7. Compute-aware cascade analysis is now strong enough to support deployment-style trade-off discussion, not just raw CER comparison.
+8. The repository now supports a second, broader interpretation: the stable baseline is complete, and the project can also serve as an agentic research workspace for ambitious extensions.
 
 The strongest practical conclusion is that a system should separate selectively, not blindly. A mixed transcript is safer in some overlap regimes, while separated or cleaned separated output is better in others.
+
+The newer frontier conclusion is more specific: once selective separation is accepted, the next question is no longer only "which route wins CER?" but also "which route family is stable across operating points?" The current evidence favors `router_v2` as the default balanced family, `fixed_mixed_whisper` as the cheapest stable fallback, and `fixed_separated_whisper_cleaned` as the strongest robustness-oriented accuracy path.
 
 ## 7. Limitations
 
@@ -230,8 +283,8 @@ The stable baseline opens a path toward more ambitious agentic ASR systems:
 6. Learned router from synthetic split
 7. Demo-oriented ASR intelligence system
 
-The most interesting future work will be the work that clarifies a boundary, exposes a failure mode, or tests an idea that is intentionally a little risky.
+The compute-aware line is now beyond a placeholder idea: the immediate next step is a controlled hardware/runtime benchmark that can replace repository-local runtime comparisons with stronger deployment evidence. After that, the most interesting future work will still be the work that clarifies a boundary, exposes a failure mode, or tests an idea that is intentionally a little risky.
 
 ## 9. Conclusion
 
-This project establishes a stable experimental baseline and opens a path toward more ambitious agentic ASR systems. Mixed ASR is safer under light overlap, separated ASR is stronger under heavier overlap, and duplicate suppression can reduce repetition without fully solving separated hallucinations. Router_v2 matches the oracle-best average CER on the gold benchmark, while synthetic validation and risk-aware selection help explain where the system remains fragile and where further exploration may be most valuable.
+This project establishes a stable experimental baseline and opens a path toward more ambitious agentic ASR systems. Mixed ASR is safer under light overlap, separated ASR is stronger under heavier overlap, and duplicate suppression can reduce repetition without fully solving separated hallucinations. Router_v2 matches the oracle-best average CER on the gold benchmark, while synthetic validation and risk-aware selection help explain where the system remains fragile and where further exploration may be most valuable. The newer compute-aware frontier work adds a practical decision layer on top: it shows that `router_v2` is the cleanest balanced default, `fixed_mixed_whisper` is the most stable cost-first option, and `fixed_separated_whisper_cleaned` remains a strong robustness-oriented accuracy choice when cross-dataset stability matters.
