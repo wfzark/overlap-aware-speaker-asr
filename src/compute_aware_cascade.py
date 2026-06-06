@@ -278,6 +278,18 @@ BENCHMARK_EXECUTION_QUEUE_COLUMNS = [
     "queue_reason",
 ]
 
+BENCHMARK_SESSION_LEDGER_COLUMNS = [
+    "queue_rank",
+    "plan_step_id",
+    "phase",
+    "dataset_scope",
+    "session_type",
+    "priority_bucket",
+    "evidence_anchor",
+    "todo_field_count",
+    "completion_note",
+]
+
 
 def build_benchmark_packet_lines(
     readiness_rows: list[dict[str, Any]],
@@ -287,6 +299,7 @@ def build_benchmark_packet_lines(
     status_rows: list[dict[str, Any]],
     execution_summary_rows: list[dict[str, Any]],
     execution_queue_rows: list[dict[str, Any]],
+    session_ledger_rows: list[dict[str, Any]],
 ) -> list[str]:
     lines = [
         "# Cascade Benchmark Handoff Packet",
@@ -325,6 +338,12 @@ def build_benchmark_packet_lines(
         lines.append(
             f"- rank {row.get('queue_rank', '')}: `{row.get('plan_step_id', '')}` / `{row.get('priority_bucket', '')}` / "
             f"blocker `{row.get('blocking_category', '')}` / next `{row.get('next_action', '')}` / reason `{row.get('queue_reason', '')}`"
+        )
+    lines.extend(["", "## Session Ledger", ""])
+    for row in session_ledger_rows:
+        lines.append(
+            f"- rank {row.get('queue_rank', '')}: `{row.get('plan_step_id', '')}` / session `{row.get('session_type', '')}` / "
+            f"evidence `{row.get('evidence_anchor', '')}` / completion `{row.get('completion_note', '')}`"
         )
     lines.extend(["", "## Execution Status", ""])
     for row in status_rows:
@@ -515,6 +534,80 @@ def build_benchmark_execution_queue_lines(rows: list[dict[str, Any]]) -> list[st
     return lines
 
 
+def build_benchmark_session_ledger_rows(
+    queue_rows: list[dict[str, Any]],
+    manifest_rows: list[dict[str, Any]],
+) -> list[dict[str, Any]]:
+    tracked_fields = [
+        "hardware_label",
+        "device",
+        "repeat_count",
+        "warmup_count",
+        "batch_shape",
+        "timing_notes",
+        "source_timing_manifest",
+        "refresh_command",
+        "diff_review_notes",
+        "cross_dataset_scope",
+        "consistency_notes",
+    ]
+    manifest_lookup = {
+        str(row.get("plan_step_id", "")): row
+        for row in manifest_rows
+    }
+    rows: list[dict[str, Any]] = []
+    for queue_row in queue_rows:
+        plan_step_id = str(queue_row.get("plan_step_id", ""))
+        manifest_row = manifest_lookup.get(plan_step_id, {})
+        todo_fields = [
+            field
+            for field in tracked_fields
+            if str(manifest_row.get(field, "")).strip() == "TODO"
+        ]
+        rows.append(
+            {
+                "queue_rank": queue_row.get("queue_rank", ""),
+                "plan_step_id": plan_step_id,
+                "phase": queue_row.get("phase", ""),
+                "dataset_scope": queue_row.get("dataset_scope", ""),
+                "session_type": manifest_row.get("session_type", ""),
+                "priority_bucket": queue_row.get("priority_bucket", ""),
+                "evidence_anchor": ";".join(todo_fields),
+                "todo_field_count": len(todo_fields),
+                "completion_note": f"{queue_row.get('next_action', '')} -> {manifest_row.get('acceptance_check', '')}",
+            }
+        )
+    return sorted(rows, key=lambda row: to_int(row.get("queue_rank")))
+
+
+def build_benchmark_session_ledger_lines(rows: list[dict[str, Any]]) -> list[str]:
+    lines = [
+        "# Cascade Benchmark Session Ledger",
+        "",
+        "This generated ledger connects the ordered execution queue to the evidence that each benchmark session must leave behind.",
+        "",
+        "| queue_rank | plan_step_id | phase | dataset_scope | session_type | priority_bucket | evidence_anchor | todo_field_count | completion_note |",
+        "| ---: | --- | --- | --- | --- | --- | --- | ---: | --- |",
+    ]
+    for row in rows:
+        lines.append(
+            f"| {row['queue_rank']} | {row['plan_step_id']} | {row['phase']} | {row['dataset_scope']} | {row['session_type']} | "
+            f"{row['priority_bucket']} | {row['evidence_anchor']} | {row['todo_field_count']} | {row['completion_note']} |"
+        )
+    return lines
+
+
+def write_benchmark_session_ledger_outputs(
+    rows: list[dict[str, Any]],
+    csv_path: Path,
+    json_path: Path,
+    summary_path: Path,
+) -> None:
+    write_csv_json(rows, csv_path, json_path, BENCHMARK_SESSION_LEDGER_COLUMNS)
+    summary_path.parent.mkdir(parents=True, exist_ok=True)
+    summary_path.write_text("\n".join(build_benchmark_session_ledger_lines(rows)) + "\n", encoding="utf-8")
+
+
 def write_benchmark_execution_queue_outputs(
     rows: list[dict[str, Any]],
     csv_path: Path,
@@ -545,6 +638,7 @@ def write_benchmark_packet_output(
     status_rows: list[dict[str, Any]],
     execution_summary_rows: list[dict[str, Any]],
     execution_queue_rows: list[dict[str, Any]],
+    session_ledger_rows: list[dict[str, Any]],
     output_path: Path,
 ) -> None:
     output_path.parent.mkdir(parents=True, exist_ok=True)
@@ -558,6 +652,7 @@ def write_benchmark_packet_output(
                 status_rows,
                 execution_summary_rows,
                 execution_queue_rows,
+                session_ledger_rows,
             )
         )
         + "\n",
@@ -1728,6 +1823,7 @@ def build_artifact_index_rows() -> list[dict[str, Any]]:
         ("cross_dataset_benchmark_status", "cross_dataset", "experimental/frontier", "report", "results/figures/cascade_benchmark_status.md", "python -m src.compute_aware_cascade --dataset synthetic_split", "Phase-by-phase benchmark status board showing template completeness and pending execution gaps."),
         ("cross_dataset_benchmark_execution_summary", "cross_dataset", "experimental/frontier", "report", "results/figures/cascade_benchmark_execution_summary.md", "python -m src.compute_aware_cascade --dataset synthetic_split", "Execution-summary rollup showing blocker totals, readiness by phase, and recommended next actions."),
         ("cross_dataset_benchmark_execution_queue", "cross_dataset", "experimental/frontier", "report", "results/figures/cascade_benchmark_execution_queue.md", "python -m src.compute_aware_cascade --dataset synthetic_split", "Ordered benchmark execution queue showing which pending step should run or review next."),
+        ("cross_dataset_benchmark_session_ledger", "cross_dataset", "experimental/frontier", "report", "results/figures/cascade_benchmark_session_ledger.md", "python -m src.compute_aware_cascade --dataset synthetic_split", "Session ledger linking each queued benchmark step to its required evidence anchor and completion note."),
         ("cross_dataset_benchmark_handoff_packet", "cross_dataset", "experimental/frontier", "report", "results/figures/cascade_benchmark_handoff_packet.md", "python -m src.compute_aware_cascade --dataset synthetic_split", "Single-entry benchmark handoff packet consolidating readiness, plan, checklist, manifest template, and status board."),
     ]
     rows = [
@@ -2385,6 +2481,13 @@ def main() -> None:
     benchmark_execution_queue_csv = PROJECT_ROOT / "results" / "tables" / "cascade_benchmark_execution_queue.csv"
     benchmark_execution_queue_json = PROJECT_ROOT / "results" / "tables" / "cascade_benchmark_execution_queue.json"
     benchmark_execution_queue_md = PROJECT_ROOT / "results" / "figures" / "cascade_benchmark_execution_queue.md"
+    benchmark_session_ledger_rows = build_benchmark_session_ledger_rows(
+        benchmark_execution_queue_rows,
+        benchmark_manifest_template_rows,
+    )
+    benchmark_session_ledger_csv = PROJECT_ROOT / "results" / "tables" / "cascade_benchmark_session_ledger.csv"
+    benchmark_session_ledger_json = PROJECT_ROOT / "results" / "tables" / "cascade_benchmark_session_ledger.json"
+    benchmark_session_ledger_md = PROJECT_ROOT / "results" / "figures" / "cascade_benchmark_session_ledger.md"
     benchmark_packet_md = PROJECT_ROOT / "results" / "figures" / "cascade_benchmark_handoff_packet.md"
     profile_playbook_csv = PROJECT_ROOT / "results" / "tables" / "cascade_profile_playbook.csv"
     profile_playbook_json = PROJECT_ROOT / "results" / "tables" / "cascade_profile_playbook.json"
@@ -2571,6 +2674,12 @@ def main() -> None:
             benchmark_execution_queue_json,
             benchmark_execution_queue_md,
         )
+        write_benchmark_session_ledger_outputs(
+            benchmark_session_ledger_rows,
+            benchmark_session_ledger_csv,
+            benchmark_session_ledger_json,
+            benchmark_session_ledger_md,
+        )
         write_benchmark_packet_output(
             benchmark_readiness_rows,
             benchmark_plan_rows,
@@ -2579,6 +2688,7 @@ def main() -> None:
             benchmark_status_rows,
             benchmark_execution_summary_rows,
             benchmark_execution_queue_rows,
+            benchmark_session_ledger_rows,
             benchmark_packet_md,
         )
         profile_playbook_rows = build_profile_playbook_rows(decision_matrix_rows)
@@ -2664,6 +2774,7 @@ def main() -> None:
     print(f"Wrote cascade benchmark status: {benchmark_status_csv.relative_to(PROJECT_ROOT)}")
     print(f"Wrote cascade benchmark execution summary: {benchmark_execution_summary_csv.relative_to(PROJECT_ROOT)}")
     print(f"Wrote cascade benchmark execution queue: {benchmark_execution_queue_csv.relative_to(PROJECT_ROOT)}")
+    print(f"Wrote cascade benchmark session ledger: {benchmark_session_ledger_csv.relative_to(PROJECT_ROOT)}")
     print(f"Wrote cascade benchmark handoff packet: {benchmark_packet_md.relative_to(PROJECT_ROOT)}")
     if wrote_profile_playbook:
         print(f"Wrote cascade profile playbook: {profile_playbook_csv.relative_to(PROJECT_ROOT)}")
