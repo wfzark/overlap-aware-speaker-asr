@@ -16,6 +16,8 @@ from src.compute_aware_cascade import (
     build_benchmark_execution_queue_rows,
     build_benchmark_dependency_graph_lines,
     build_benchmark_dependency_graph_rows,
+    build_benchmark_blocker_matrix_lines,
+    build_benchmark_blocker_matrix_rows,
     build_benchmark_session_ledger_lines,
     build_benchmark_session_ledger_rows,
     build_benchmark_status_lines,
@@ -1037,6 +1039,71 @@ class ComputeAwareCascadeTest(unittest.TestCase):
         self.assertIn("blocked_by_predecessor", rendered)
         self.assertIn("timing-backed surface outputs", rendered)
 
+    def test_build_benchmark_blocker_matrix_rows_join_status_queue_and_dependency(self) -> None:
+        status_rows = [
+            {
+                "plan_step_id": "phase3_gold_surface_refresh",
+                "phase": "surface",
+                "dataset_scope": "gold",
+                "execution_status": "template_only",
+                "readiness_signal": "pending_execution",
+                "pending_field_count": 3,
+                "blocking_category": "artifact_refresh_missing",
+                "next_action": "refresh_timing_backed_artifacts",
+            }
+        ]
+        queue_rows = [
+            {
+                "queue_rank": 3,
+                "plan_step_id": "phase3_gold_surface_refresh",
+                "priority_bucket": "next_after_runtime",
+                "queue_reason": "artifact_refresh_missing with 3 pending fields",
+            }
+        ]
+        dependency_rows = [
+            {
+                "plan_step_id": "phase3_gold_surface_refresh",
+                "depends_on_step": "phase2_synthetic_runtime_foundation",
+                "dependency_status": "blocked_by_predecessor",
+                "unlocks_step": "phase4_synthetic_surface_refresh",
+            }
+        ]
+
+        rows = build_benchmark_blocker_matrix_rows(status_rows, queue_rows, dependency_rows)
+
+        self.assertEqual(rows[0]["plan_step_id"], "phase3_gold_surface_refresh")
+        self.assertEqual(rows[0]["queue_rank"], 3)
+        self.assertEqual(rows[0]["priority_bucket"], "next_after_runtime")
+        self.assertEqual(rows[0]["blocking_category"], "artifact_refresh_missing")
+        self.assertEqual(rows[0]["dependency_status"], "blocked_by_predecessor")
+        self.assertEqual(rows[0]["severity_band"], "medium")
+        self.assertEqual(rows[0]["matrix_note"], "next_after_runtime / blocked_by_predecessor / 3 pending fields")
+
+    def test_build_benchmark_blocker_matrix_lines_render_joined_triage_view(self) -> None:
+        rows = [
+            {
+                "plan_step_id": "phase3_gold_surface_refresh",
+                "phase": "surface",
+                "dataset_scope": "gold",
+                "queue_rank": 3,
+                "priority_bucket": "next_after_runtime",
+                "blocking_category": "artifact_refresh_missing",
+                "dependency_status": "blocked_by_predecessor",
+                "pending_field_count": 3,
+                "severity_band": "medium",
+                "matrix_note": "next_after_runtime / blocked_by_predecessor / 3 pending fields",
+            }
+        ]
+
+        lines = build_benchmark_blocker_matrix_lines(rows)
+        rendered = "\n".join(lines)
+
+        self.assertIn("# Cascade Benchmark Blocker Matrix", rendered)
+        self.assertIn("phase3_gold_surface_refresh", rendered)
+        self.assertIn("artifact_refresh_missing", rendered)
+        self.assertIn("blocked_by_predecessor", rendered)
+        self.assertIn("next_after_runtime / blocked_by_predecessor / 3 pending fields", rendered)
+
     def test_build_artifact_index_rows_include_benchmark_status_board(self) -> None:
         rows = build_artifact_index_rows()
         status_row = next(row for row in rows if row["artifact_id"] == "cross_dataset_benchmark_status")
@@ -1146,6 +1213,20 @@ class ComputeAwareCascadeTest(unittest.TestCase):
                 "dependency_note": "phase1_gold_runtime_foundation unlocks the first gold surface refresh step.",
             }
         ]
+        blocker_matrix_rows = [
+            {
+                "plan_step_id": "phase1_gold_runtime_foundation",
+                "phase": "foundation",
+                "dataset_scope": "gold",
+                "queue_rank": 1,
+                "priority_bucket": "do_now",
+                "blocking_category": "runtime_capture_missing",
+                "dependency_status": "root",
+                "pending_field_count": 4,
+                "severity_band": "high",
+                "matrix_note": "do_now / root / 4 pending fields",
+            }
+        ]
 
         lines = build_benchmark_packet_lines(
             readiness_rows,
@@ -1157,6 +1238,7 @@ class ComputeAwareCascadeTest(unittest.TestCase):
             execution_queue_rows,
             session_ledger_rows,
             dependency_graph_rows,
+            blocker_matrix_rows,
         )
         rendered = "\n".join(lines)
 
@@ -1166,6 +1248,7 @@ class ComputeAwareCascadeTest(unittest.TestCase):
         self.assertIn("## Execution Queue", rendered)
         self.assertIn("## Session Ledger", rendered)
         self.assertIn("## Dependency Graph", rendered)
+        self.assertIn("## Blocker Matrix", rendered)
         self.assertIn("## Execution Status", rendered)
         self.assertIn("phase1_gold_runtime_foundation", rendered)
         self.assertIn("runtime_capture_missing", rendered)
@@ -1173,6 +1256,7 @@ class ComputeAwareCascadeTest(unittest.TestCase):
         self.assertIn("do_now", rendered)
         self.assertIn("hardware_label;device;repeat_count;warmup_count", rendered)
         self.assertIn("phase1_gold_runtime_foundation unlocks the first gold surface refresh step.", rendered)
+        self.assertIn("do_now / root / 4 pending fields", rendered)
         self.assertIn("hardware_label;device;repeat_count;warmup_count", rendered)
         self.assertIn("Manifest template fields: hardware_label, device, repeat_count, warmup_count", rendered)
 

@@ -303,6 +303,19 @@ BENCHMARK_DEPENDENCY_GRAPH_COLUMNS = [
     "dependency_note",
 ]
 
+BENCHMARK_BLOCKER_MATRIX_COLUMNS = [
+    "plan_step_id",
+    "phase",
+    "dataset_scope",
+    "queue_rank",
+    "priority_bucket",
+    "blocking_category",
+    "dependency_status",
+    "pending_field_count",
+    "severity_band",
+    "matrix_note",
+]
+
 
 def build_benchmark_packet_lines(
     readiness_rows: list[dict[str, Any]],
@@ -314,6 +327,7 @@ def build_benchmark_packet_lines(
     execution_queue_rows: list[dict[str, Any]],
     session_ledger_rows: list[dict[str, Any]],
     dependency_graph_rows: list[dict[str, Any]],
+    blocker_matrix_rows: list[dict[str, Any]],
 ) -> list[str]:
     lines = [
         "# Cascade Benchmark Handoff Packet",
@@ -364,6 +378,12 @@ def build_benchmark_packet_lines(
         lines.append(
             f"- `{row.get('plan_step_id', '')}` depends on `{row.get('depends_on_step', '')}` / status `{row.get('dependency_status', '')}` / "
             f"unlocks `{row.get('unlocks_step', '')}` / note `{row.get('dependency_note', '')}`"
+        )
+    lines.extend(["", "## Blocker Matrix", ""])
+    for row in blocker_matrix_rows:
+        lines.append(
+            f"- `{row.get('plan_step_id', '')}` / blocker `{row.get('blocking_category', '')}` / priority `{row.get('priority_bucket', '')}` / "
+            f"dependency `{row.get('dependency_status', '')}` / severity `{row.get('severity_band', '')}` / note `{row.get('matrix_note', '')}`"
         )
     lines.extend(["", "## Execution Status", ""])
     for row in status_rows:
@@ -671,6 +691,72 @@ def build_benchmark_dependency_graph_lines(rows: list[dict[str, Any]]) -> list[s
     return lines
 
 
+def build_benchmark_blocker_matrix_rows(
+    status_rows: list[dict[str, Any]],
+    queue_rows: list[dict[str, Any]],
+    dependency_rows: list[dict[str, Any]],
+) -> list[dict[str, Any]]:
+    queue_lookup = {str(row.get("plan_step_id", "")): row for row in queue_rows}
+    dependency_lookup = {str(row.get("plan_step_id", "")): row for row in dependency_rows}
+    rows: list[dict[str, Any]] = []
+    for status_row in status_rows:
+        plan_step_id = str(status_row.get("plan_step_id", ""))
+        queue_row = queue_lookup.get(plan_step_id, {})
+        dependency_row = dependency_lookup.get(plan_step_id, {})
+        pending_field_count = to_int(status_row.get("pending_field_count"))
+        priority_bucket = str(queue_row.get("priority_bucket", ""))
+        if priority_bucket == "do_now" or pending_field_count >= 4:
+            severity_band = "high"
+        elif pending_field_count >= 2:
+            severity_band = "medium"
+        else:
+            severity_band = "low"
+        dependency_status = str(dependency_row.get("dependency_status", ""))
+        rows.append(
+            {
+                "plan_step_id": plan_step_id,
+                "phase": status_row.get("phase", ""),
+                "dataset_scope": status_row.get("dataset_scope", ""),
+                "queue_rank": queue_row.get("queue_rank", ""),
+                "priority_bucket": priority_bucket,
+                "blocking_category": status_row.get("blocking_category", ""),
+                "dependency_status": dependency_status,
+                "pending_field_count": pending_field_count,
+                "severity_band": severity_band,
+                "matrix_note": f"{priority_bucket} / {dependency_status} / {pending_field_count} pending fields",
+            }
+        )
+    return sorted(rows, key=lambda row: (to_int(row.get("queue_rank")), str(row.get("plan_step_id", ""))))
+
+
+def build_benchmark_blocker_matrix_lines(rows: list[dict[str, Any]]) -> list[str]:
+    lines = [
+        "# Cascade Benchmark Blocker Matrix",
+        "",
+        "This generated blocker matrix consolidates blocker type, queue priority, dependency state, and pending-field scale.",
+        "",
+        "| plan_step_id | phase | dataset_scope | queue_rank | priority_bucket | blocking_category | dependency_status | pending_field_count | severity_band | matrix_note |",
+        "| --- | --- | --- | ---: | --- | --- | --- | ---: | --- | --- |",
+    ]
+    for row in rows:
+        lines.append(
+            f"| {row['plan_step_id']} | {row['phase']} | {row['dataset_scope']} | {row['queue_rank']} | {row['priority_bucket']} | "
+            f"{row['blocking_category']} | {row['dependency_status']} | {row['pending_field_count']} | {row['severity_band']} | {row['matrix_note']} |"
+        )
+    return lines
+
+
+def write_benchmark_blocker_matrix_outputs(
+    rows: list[dict[str, Any]],
+    csv_path: Path,
+    json_path: Path,
+    summary_path: Path,
+) -> None:
+    write_csv_json(rows, csv_path, json_path, BENCHMARK_BLOCKER_MATRIX_COLUMNS)
+    summary_path.parent.mkdir(parents=True, exist_ok=True)
+    summary_path.write_text("\n".join(build_benchmark_blocker_matrix_lines(rows)) + "\n", encoding="utf-8")
+
+
 def write_benchmark_dependency_graph_outputs(
     rows: list[dict[str, Any]],
     csv_path: Path,
@@ -725,6 +811,7 @@ def write_benchmark_packet_output(
     execution_queue_rows: list[dict[str, Any]],
     session_ledger_rows: list[dict[str, Any]],
     dependency_graph_rows: list[dict[str, Any]],
+    blocker_matrix_rows: list[dict[str, Any]],
     output_path: Path,
 ) -> None:
     output_path.parent.mkdir(parents=True, exist_ok=True)
@@ -740,6 +827,7 @@ def write_benchmark_packet_output(
                 execution_queue_rows,
                 session_ledger_rows,
                 dependency_graph_rows,
+                blocker_matrix_rows,
             )
         )
         + "\n",
@@ -1912,6 +2000,7 @@ def build_artifact_index_rows() -> list[dict[str, Any]]:
         ("cross_dataset_benchmark_execution_queue", "cross_dataset", "experimental/frontier", "report", "results/figures/cascade_benchmark_execution_queue.md", "python -m src.compute_aware_cascade --dataset synthetic_split", "Ordered benchmark execution queue showing which pending step should run or review next."),
         ("cross_dataset_benchmark_session_ledger", "cross_dataset", "experimental/frontier", "report", "results/figures/cascade_benchmark_session_ledger.md", "python -m src.compute_aware_cascade --dataset synthetic_split", "Session ledger linking each queued benchmark step to its required evidence anchor and completion note."),
         ("cross_dataset_benchmark_dependency_graph", "cross_dataset", "experimental/frontier", "report", "results/figures/cascade_benchmark_dependency_graph.md", "python -m src.compute_aware_cascade --dataset synthetic_split", "Dependency graph showing which benchmark step unlocks or blocks downstream benchmark steps."),
+        ("cross_dataset_benchmark_blocker_matrix", "cross_dataset", "experimental/frontier", "report", "results/figures/cascade_benchmark_blocker_matrix.md", "python -m src.compute_aware_cascade --dataset synthetic_split", "Matrix view consolidating blocker type, queue priority, dependency state, and pending-field scale."),
         ("cross_dataset_benchmark_handoff_packet", "cross_dataset", "experimental/frontier", "report", "results/figures/cascade_benchmark_handoff_packet.md", "python -m src.compute_aware_cascade --dataset synthetic_split", "Single-entry benchmark handoff packet consolidating readiness, plan, checklist, manifest template, and status board."),
     ]
     rows = [
@@ -2583,6 +2672,14 @@ def main() -> None:
     benchmark_dependency_graph_csv = PROJECT_ROOT / "results" / "tables" / "cascade_benchmark_dependency_graph.csv"
     benchmark_dependency_graph_json = PROJECT_ROOT / "results" / "tables" / "cascade_benchmark_dependency_graph.json"
     benchmark_dependency_graph_md = PROJECT_ROOT / "results" / "figures" / "cascade_benchmark_dependency_graph.md"
+    benchmark_blocker_matrix_rows = build_benchmark_blocker_matrix_rows(
+        benchmark_status_rows,
+        benchmark_execution_queue_rows,
+        benchmark_dependency_graph_rows,
+    )
+    benchmark_blocker_matrix_csv = PROJECT_ROOT / "results" / "tables" / "cascade_benchmark_blocker_matrix.csv"
+    benchmark_blocker_matrix_json = PROJECT_ROOT / "results" / "tables" / "cascade_benchmark_blocker_matrix.json"
+    benchmark_blocker_matrix_md = PROJECT_ROOT / "results" / "figures" / "cascade_benchmark_blocker_matrix.md"
     benchmark_packet_md = PROJECT_ROOT / "results" / "figures" / "cascade_benchmark_handoff_packet.md"
     profile_playbook_csv = PROJECT_ROOT / "results" / "tables" / "cascade_profile_playbook.csv"
     profile_playbook_json = PROJECT_ROOT / "results" / "tables" / "cascade_profile_playbook.json"
@@ -2781,6 +2878,12 @@ def main() -> None:
             benchmark_dependency_graph_json,
             benchmark_dependency_graph_md,
         )
+        write_benchmark_blocker_matrix_outputs(
+            benchmark_blocker_matrix_rows,
+            benchmark_blocker_matrix_csv,
+            benchmark_blocker_matrix_json,
+            benchmark_blocker_matrix_md,
+        )
         write_benchmark_packet_output(
             benchmark_readiness_rows,
             benchmark_plan_rows,
@@ -2791,6 +2894,7 @@ def main() -> None:
             benchmark_execution_queue_rows,
             benchmark_session_ledger_rows,
             benchmark_dependency_graph_rows,
+            benchmark_blocker_matrix_rows,
             benchmark_packet_md,
         )
         profile_playbook_rows = build_profile_playbook_rows(decision_matrix_rows)
@@ -2878,6 +2982,7 @@ def main() -> None:
     print(f"Wrote cascade benchmark execution queue: {benchmark_execution_queue_csv.relative_to(PROJECT_ROOT)}")
     print(f"Wrote cascade benchmark session ledger: {benchmark_session_ledger_csv.relative_to(PROJECT_ROOT)}")
     print(f"Wrote cascade benchmark dependency graph: {benchmark_dependency_graph_csv.relative_to(PROJECT_ROOT)}")
+    print(f"Wrote cascade benchmark blocker matrix: {benchmark_blocker_matrix_csv.relative_to(PROJECT_ROOT)}")
     print(f"Wrote cascade benchmark handoff packet: {benchmark_packet_md.relative_to(PROJECT_ROOT)}")
     if wrote_profile_playbook:
         print(f"Wrote cascade profile playbook: {profile_playbook_csv.relative_to(PROJECT_ROOT)}")
