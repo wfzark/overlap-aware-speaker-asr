@@ -9,6 +9,7 @@ from src.compute_aware_cascade import (
     choose_cleaned_preferred_method,
     compute_method_cost,
     choose_budget_cascade_method,
+    summarize_runtime_sources,
 )
 
 
@@ -102,6 +103,30 @@ class ComputeAwareCascadeTest(unittest.TestCase):
         self.assertEqual(all_cleaned_preferred["selected_method_mix"], "separated_whisper:1;separated_whisper_cleaned:1")
         self.assertEqual(test_router["sample_count"], 1)
         self.assertEqual(test_router["average_compute_cost"], 3.2)
+
+    def test_summarize_runtime_sources_counts_proxy_fallbacks(self) -> None:
+        cases = [
+            {"case_id": "A", "overlap_level": 0, "risk_level": "low"},
+            {"case_id": "B", "overlap_level": 3, "risk_level": "high"},
+        ]
+        runtime_lookup = {
+            "A": {"mixed_runtime_sec": 1.0, "separated_runtime_sec": 2.0, "cleaned_runtime_sec": 2.1},
+            "B": {"mixed_runtime_sec": 1.2, "separated_runtime_sec": 0.0, "cleaned_runtime_sec": 0.0},
+        }
+        decisions = {
+            "router_v2_costed": {"A": "mixed_whisper", "B": "separated_whisper"},
+            "risk_aware_costed": {"A": "mixed_whisper", "B": "manual_review"},
+        }
+
+        rows = summarize_runtime_sources(cases, ["router_v2_costed", "risk_aware_costed"], decisions, runtime_lookup)
+        router_row = next(row for row in rows if row["strategy"] == "router_v2_costed")
+        risk_row = next(row for row in rows if row["strategy"] == "risk_aware_costed")
+
+        self.assertEqual(router_row["observed_runtime_count"], 1)
+        self.assertEqual(router_row["proxy_runtime_count"], 1)
+        self.assertEqual(router_row["manual_review_count"], 0)
+        self.assertEqual(risk_row["manual_review_count"], 1)
+        self.assertEqual(risk_row["proxy_runtime_count"], 1)
 
 
 if __name__ == "__main__":

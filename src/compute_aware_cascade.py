@@ -67,6 +67,18 @@ SYNTHETIC_PERFORMANCE_COLUMNS = [
     "notes",
 ]
 
+RUNTIME_AUDIT_COLUMNS = [
+    "dataset",
+    "scope",
+    "strategy",
+    "observed_runtime_count",
+    "proxy_runtime_count",
+    "manual_review_count",
+    "case_count",
+    "observed_runtime_ratio",
+    "notes",
+]
+
 
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description="Compute-aware cascade evaluation.")
@@ -120,6 +132,17 @@ def compute_method_cost(method: str, runtime_row: dict[str, Any]) -> float:
         if observed > 0:
             return observed
     return DEFAULT_COST_PROXY.get(method, DEFAULT_COST_PROXY["manual_review"])
+
+
+def has_observed_runtime(method: str, runtime_row: dict[str, Any]) -> bool:
+    runtime_field = {
+        "mixed_whisper": "mixed_runtime_sec",
+        "separated_whisper": "separated_runtime_sec",
+        "separated_whisper_cleaned": "cleaned_runtime_sec",
+    }.get(method)
+    if not runtime_field:
+        return False
+    return to_float(runtime_row.get(runtime_field)) > 0
 
 
 def choose_budget_cascade_method(overlap_level: int, risk_level: str) -> str:
@@ -300,6 +323,61 @@ def build_synthetic_scope_rows(
         separated_cost = separated_costs.get(str(row["scope"]))
         row["relative_cost_vs_fixed_separated"] = (
             round(to_float(row["average_compute_cost"]) / separated_cost, 6) if separated_cost else ""
+        )
+    return rows
+
+
+def summarize_runtime_sources(
+    cases: list[dict[str, Any]],
+    strategies: list[str],
+    decisions: dict[str, dict[str, str]],
+    runtime_lookup: dict[str, dict[str, Any]],
+    scope: str = "ALL",
+    dataset_label: str = "gold",
+) -> list[dict[str, Any]]:
+    rows: list[dict[str, Any]] = []
+    case_count = len(cases)
+    for strategy in strategies:
+        observed_runtime_count = 0
+        proxy_runtime_count = 0
+        manual_review_count = 0
+        for case in cases:
+            case_id = str(case.get("case_id", "")).strip()
+            if strategy == "cleaned_preferred_cascade":
+                method = choose_cleaned_preferred_method(
+                    to_int(case.get("overlap_level")),
+                    to_int(case.get("duplicate_removed_count")),
+                )
+            elif strategy == "budget_cascade":
+                risk_level = str(case.get("risk_level", "")).strip()
+                if not risk_level:
+                    risk_level = "high" if to_int(case.get("duplicate_removed_count")) > 0 or to_int(case.get("overlap_level")) >= 3 else "low"
+                method = choose_budget_cascade_method(to_int(case.get("overlap_level")), risk_level)
+            elif strategy in decisions:
+                method = decisions.get(strategy, {}).get(case_id, "manual_review")
+            else:
+                method = select_strategy_method(strategy, case, {})
+
+            if method == "manual_review":
+                manual_review_count += 1
+                proxy_runtime_count += 1
+            elif has_observed_runtime(method, runtime_lookup.get(case_id, {})):
+                observed_runtime_count += 1
+            else:
+                proxy_runtime_count += 1
+
+        rows.append(
+            {
+                "dataset": dataset_label,
+                "scope": scope,
+                "strategy": strategy,
+                "observed_runtime_count": observed_runtime_count,
+                "proxy_runtime_count": proxy_runtime_count,
+                "manual_review_count": manual_review_count,
+                "case_count": case_count,
+                "observed_runtime_ratio": round(observed_runtime_count / case_count, 6) if case_count else 0.0,
+                "notes": "Observed runtime count reflects selected methods with dataset runtime fields available; all other selected methods fall back to proxy cost.",
+            }
         )
     return rows
 
@@ -517,6 +595,32 @@ def render_synthetic_summary(rows: list[dict[str, Any]], output_path: Path, figu
     output_path.write_text("\n".join(lines) + "\n", encoding="utf-8")
 
 
+def render_runtime_audit_summary(rows: list[dict[str, Any]], output_path: Path) -> None:
+    lines = [
+        "# Cascade Runtime Provenance Audit",
+        "",
+        "This audit shows whether each selected route used observed runtime fields or fell back to proxy cost.",
+        "",
+    ]
+    grouped_scopes = []
+    seen: set[tuple[str, str]] = set()
+    for row in rows:
+        key = (str(row["dataset"]), str(row["scope"]))
+        if key not in seen:
+            seen.add(key)
+            grouped_scopes.append(key)
+    for dataset, scope in grouped_scopes:
+        lines.extend([f"## {dataset} / {scope}", "", "| strategy | observed_runtime_count | proxy_runtime_count | manual_review_count | observed_runtime_ratio |", "| --- | ---: | ---: | ---: | ---: |"])
+        for row in rows:
+            if str(row["dataset"]) == dataset and str(row["scope"]) == scope:
+                lines.append(
+                    f"| {row['strategy']} | {row['observed_runtime_count']} | {row['proxy_runtime_count']} | {row['manual_review_count']} | {row['observed_runtime_ratio']} |"
+                )
+        lines.append("")
+    output_path.parent.mkdir(parents=True, exist_ok=True)
+    output_path.write_text("\n".join(lines) + "\n", encoding="utf-8")
+
+
 def set_pixel(pixels: bytearray, width: int, height: int, x: int, y: int, color: tuple[int, int, int]) -> None:
     if 0 <= x < width and 0 <= y < height:
         idx = (y * width + x) * 3
@@ -655,33 +759,87 @@ def render_tradeoff_figure(rows: list[dict[str, Any]], output_path: Path) -> Non
     plt.close(fig)
 
 
+def write_runtime_audit_outputs(
+    rows: list[dict[str, Any]],
+    csv_path: Path,
+    json_path: Path,
+    summary_path: Path,
+) -> None:
+    write_csv_json(rows, csv_path, json_path, RUNTIME_AUDIT_COLUMNS)
+    render_runtime_audit_summary(rows, summary_path)
+
+
 def main() -> None:
     args = parse_args()
     if args.dataset == "synthetic_split":
+        cases = load_synthetic_split_cases()
+        decisions = load_synthetic_split_decisions()
+        runtime_lookup = load_synthetic_split_runtime_lookup()
         rows = build_synthetic_scope_rows(
-            load_synthetic_split_cases(),
-            load_synthetic_split_decisions(),
+            cases,
+            decisions,
             load_synthetic_split_cer_lookup(),
-            load_synthetic_split_runtime_lookup(),
+            runtime_lookup,
         )
         table_csv = PROJECT_ROOT / "results" / "tables" / "synthetic_split_cascade_performance.csv"
         table_json = PROJECT_ROOT / "results" / "tables" / "synthetic_split_cascade_performance.json"
         figure_path = PROJECT_ROOT / "results" / "figures" / "synthetic_split_cer_runtime_tradeoff.png"
         summary_path = PROJECT_ROOT / "results" / "figures" / "synthetic_split_cascade_summary.md"
+        runtime_audit_csv = PROJECT_ROOT / "results" / "tables" / "synthetic_split_cascade_runtime_audit.csv"
+        runtime_audit_json = PROJECT_ROOT / "results" / "tables" / "synthetic_split_cascade_runtime_audit.json"
+        runtime_audit_md = PROJECT_ROOT / "results" / "figures" / "synthetic_split_cascade_runtime_audit.md"
 
         write_csv_json(rows, table_csv, table_json, SYNTHETIC_PERFORMANCE_COLUMNS)
         render_tradeoff_figure([row for row in rows if str(row["scope"]) == "ALL"], figure_path)
         render_synthetic_summary(rows, summary_path, figure_path)
+        runtime_rows: list[dict[str, Any]] = []
+        runtime_rows.extend(
+            summarize_runtime_sources(
+                cases,
+                SYNTHETIC_STRATEGIES,
+                decisions,
+                runtime_lookup,
+                scope="ALL",
+                dataset_label="synthetic_split",
+            )
+        )
+        for split in sorted({str(case.get("split", "")).strip() for case in cases if str(case.get("split", "")).strip()}):
+            runtime_rows.extend(
+                summarize_runtime_sources(
+                    [case for case in cases if str(case.get("split", "")).strip() == split],
+                    SYNTHETIC_STRATEGIES,
+                    decisions,
+                    runtime_lookup,
+                    scope=split.upper(),
+                    dataset_label="synthetic_split",
+                )
+            )
+        write_runtime_audit_outputs(runtime_rows, runtime_audit_csv, runtime_audit_json, runtime_audit_md)
     else:
-        rows = build_strategy_rows(load_gold_cases(), load_decisions(), load_cer_lookup(), load_runtime_lookup())
+        cases = load_gold_cases()
+        decisions = load_decisions()
+        runtime_lookup = load_runtime_lookup()
+        rows = build_strategy_rows(cases, decisions, load_cer_lookup(), runtime_lookup)
         table_csv = PROJECT_ROOT / "results" / "tables" / "cascade_performance.csv"
         table_json = PROJECT_ROOT / "results" / "tables" / "cascade_performance.json"
         figure_path = PROJECT_ROOT / "results" / "figures" / "cer_runtime_tradeoff.png"
         summary_path = PROJECT_ROOT / "results" / "figures" / "compute_aware_cascade_summary.md"
+        runtime_audit_csv = PROJECT_ROOT / "results" / "tables" / "cascade_runtime_audit.csv"
+        runtime_audit_json = PROJECT_ROOT / "results" / "tables" / "cascade_runtime_audit.json"
+        runtime_audit_md = PROJECT_ROOT / "results" / "figures" / "cascade_runtime_audit.md"
 
         write_csv_json(rows, table_csv, table_json, PERFORMANCE_COLUMNS)
         render_tradeoff_figure(rows, figure_path)
         render_summary(rows, summary_path, figure_path)
+        runtime_rows = summarize_runtime_sources(
+            cases,
+            STRATEGIES,
+            decisions,
+            runtime_lookup,
+            scope="ALL",
+            dataset_label="gold",
+        )
+        write_runtime_audit_outputs(runtime_rows, runtime_audit_csv, runtime_audit_json, runtime_audit_md)
 
     print(f"Wrote cascade performance: {table_csv.relative_to(PROJECT_ROOT)}")
     print(f"Wrote cascade JSON: {table_json.relative_to(PROJECT_ROOT)}")
