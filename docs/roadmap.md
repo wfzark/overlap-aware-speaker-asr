@@ -193,10 +193,16 @@ Update: a generated benchmark completion dashboard now turns the phase checks in
 - Summary view: `results/figures/cascade_benchmark_completion_dashboard.md`
 - This shows the current start step, dominant blocker family, and pending phase count in one place for quick progress scanning.
 
+Update: a generated benchmark operator brief now turns the pending-state overview into a plain-language operator note.
+
+- Benchmark operator brief: `results/tables/cascade_benchmark_operator_brief.csv`
+- Summary view: `results/figures/cascade_benchmark_operator_brief.md`
+- This shows the single benchmark step to run now, the evidence to collect, and the urgency note without opening the wider stack first.
+
 Update: a generated benchmark handoff packet now turns the execution stack into a single benchmark entrypoint.
 
 - Handoff packet: `results/figures/cascade_benchmark_handoff_packet.md`
-- This lets future contributors start from one note before diving into readiness, plan, checklist, manifest, execution-summary, execution-queue, session-ledger, dependency-graph, blocker-matrix, runbook-card, milestone-card, phase-checkpoint-card, completion-dashboard, and status details.
+- This lets future contributors start from one note before diving into readiness, plan, checklist, manifest, execution-summary, execution-queue, session-ledger, dependency-graph, blocker-matrix, runbook-card, milestone-card, phase-checkpoint-card, completion-dashboard, operator-brief, and status details.
 
 Remaining stretch work:
 
