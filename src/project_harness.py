@@ -186,6 +186,39 @@ def build_frontier_execution_queue_lines(rows: list[dict[str, str]]) -> list[str
     return lines
 
 
+def build_frontier_focus_card_rows(rows: list[dict[str, str]]) -> list[dict[str, str]]:
+    if not rows:
+        return []
+    head = rows[0]
+    return [
+        {
+            "queue_order": str(head.get("queue_order", "")),
+            "current_frontier": str(head.get("frontier_id", "")),
+            "entry_artifact": str(head.get("entry_artifact", "")),
+            "current_action": str(head.get("why_now", "")),
+        }
+    ]
+
+
+def build_frontier_focus_card_lines(rows: list[dict[str, str]]) -> list[str]:
+    lines = [
+        "# Frontier Focus Card",
+        "",
+        "This generated card highlights the single current breadth-first frontier starting point.",
+        "",
+    ]
+    for row in rows:
+        lines.extend(
+            [
+                f"- Queue order: `{row['queue_order']}`",
+                f"- Current frontier: `{row['current_frontier']}`",
+                f"- Entry artifact: `{row['entry_artifact']}`",
+                f"- Current action: {row['current_action']}",
+            ]
+        )
+    return lines
+
+
 def build_report() -> dict[str, object]:
     missing_core = [path for path in CORE_FILES if not exists(path)]
     gold_status = inspect_gold_cases()
@@ -279,14 +312,32 @@ def write_frontier_queue(frontier_status: list[dict[str, str]]) -> tuple[Path, P
     return json_path, md_path
 
 
+def write_frontier_focus_card(frontier_status: list[dict[str, str]]) -> tuple[Path, Path]:
+    tables_dir = PROJECT_ROOT / "results" / "tables"
+    figures_dir = PROJECT_ROOT / "results" / "figures"
+    tables_dir.mkdir(parents=True, exist_ok=True)
+    figures_dir.mkdir(parents=True, exist_ok=True)
+
+    queue_rows = build_frontier_execution_queue_rows(frontier_status)
+    focus_rows = build_frontier_focus_card_rows(queue_rows)
+    json_path = tables_dir / "frontier_focus_card.json"
+    md_path = figures_dir / "frontier_focus_card.md"
+    json_path.write_text(json.dumps(focus_rows, ensure_ascii=False, indent=2), encoding="utf-8")
+    md_path.write_text("\n".join(build_frontier_focus_card_lines(focus_rows)) + "\n", encoding="utf-8")
+    return json_path, md_path
+
+
 def main() -> None:
     report = build_report()
     json_path, md_path = write_report(report)
     queue_json_path, queue_md_path = write_frontier_queue(report["frontier_status"])
+    focus_json_path, focus_md_path = write_frontier_focus_card(report["frontier_status"])
     print(f"Wrote harness report: {json_path.relative_to(PROJECT_ROOT)}")
     print(f"Wrote harness summary: {md_path.relative_to(PROJECT_ROOT)}")
     print(f"Wrote frontier queue JSON: {queue_json_path.relative_to(PROJECT_ROOT)}")
     print(f"Wrote frontier queue note: {queue_md_path.relative_to(PROJECT_ROOT)}")
+    print(f"Wrote frontier focus JSON: {focus_json_path.relative_to(PROJECT_ROOT)}")
+    print(f"Wrote frontier focus note: {focus_md_path.relative_to(PROJECT_ROOT)}")
     print(f"gold_cases_present: {all(report['gold_cases'].values())}")
     print(f"gold_and_synthetic_separated: {report['gold_and_synthetic_separated']}")
 

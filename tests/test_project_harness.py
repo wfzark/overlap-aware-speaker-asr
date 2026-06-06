@@ -5,6 +5,8 @@ import unittest
 from src.project_harness import (
     build_frontier_execution_queue_lines,
     build_frontier_execution_queue_rows,
+    build_frontier_focus_card_lines,
+    build_frontier_focus_card_rows,
     build_report,
 )
 
@@ -80,6 +82,48 @@ class ProjectHarnessTest(unittest.TestCase):
         self.assertIn("# Frontier Execution Queue", rendered)
         self.assertIn("meeteval_compatibility", rendered)
         self.assertIn("entry_artifact", rendered)
+
+    def test_build_frontier_focus_card_rows_pick_queue_head(self) -> None:
+        rows = build_frontier_focus_card_rows(
+            [
+                {
+                    "queue_order": "1",
+                    "frontier_id": "meeteval_compatibility",
+                    "status": "documented_skill",
+                    "entry_artifact": "MeetEval readiness card",
+                    "why_now": "Use the readiness card to stage one narrow dry run before claiming any benchmark bridge.",
+                },
+                {
+                    "queue_order": "2",
+                    "frontier_id": "external_validation",
+                    "status": "documented_skill",
+                    "entry_artifact": "external sanity-check prioritization card",
+                    "why_now": "Use the prioritization card to map one tiny sanity-check slice without claiming a completed benchmark.",
+                },
+            ]
+        )
+
+        self.assertEqual(len(rows), 1)
+        self.assertEqual(rows[0]["current_frontier"], "meeteval_compatibility")
+        self.assertEqual(rows[0]["queue_order"], "1")
+        self.assertIn("dry run", rows[0]["current_action"])
+
+    def test_build_frontier_focus_card_lines_render_brief(self) -> None:
+        lines = build_frontier_focus_card_lines(
+            [
+                {
+                    "queue_order": "1",
+                    "current_frontier": "meeteval_compatibility",
+                    "entry_artifact": "MeetEval readiness card",
+                    "current_action": "Use the readiness card to stage one narrow dry run before claiming any benchmark bridge.",
+                }
+            ]
+        )
+        rendered = "\n".join(lines)
+
+        self.assertIn("# Frontier Focus Card", rendered)
+        self.assertIn("meeteval_compatibility", rendered)
+        self.assertIn("MeetEval readiness card", rendered)
 
 
 if __name__ == "__main__":
