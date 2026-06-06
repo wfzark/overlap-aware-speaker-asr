@@ -493,6 +493,7 @@ The skill cards are not model-training prompts. They are challenge cards for fut
 - [Skill 04: MeetEval / cpWER Compatibility Plan](docs/skills/skill_04_meeteval_compatibility.md)
 - [Skill 05: Agentic LLM Transcript Critic](docs/skills/skill_05_agentic_llm_critic.md)
 - [Skill 06: GitHub Demo Excellence](docs/skills/skill_06_github_demo_excellence.md)
+- [Skill 07: External Mini Validation](docs/skills/skill_07_external_validation.md)
 
 Additional maintenance docs:
 
