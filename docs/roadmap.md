@@ -187,10 +187,16 @@ Update: a generated benchmark phase checkpoint card now turns the progress bound
 - Summary view: `results/figures/cascade_benchmark_phase_checkpoint_card.md`
 - This shows each phase's blocker, next action, and completion signal without reopening the larger packet.
 
+Update: a generated benchmark completion dashboard now turns the phase checks into a top-level pending-state overview.
+
+- Benchmark completion dashboard: `results/tables/cascade_benchmark_completion_dashboard.csv`
+- Summary view: `results/figures/cascade_benchmark_completion_dashboard.md`
+- This shows the current start step, dominant blocker family, and pending phase count in one place for quick progress scanning.
+
 Update: a generated benchmark handoff packet now turns the execution stack into a single benchmark entrypoint.
 
 - Handoff packet: `results/figures/cascade_benchmark_handoff_packet.md`
-- This lets future contributors start from one note before diving into readiness, plan, checklist, manifest, execution-summary, execution-queue, session-ledger, dependency-graph, blocker-matrix, runbook-card, milestone-card, phase-checkpoint-card, and status details.
+- This lets future contributors start from one note before diving into readiness, plan, checklist, manifest, execution-summary, execution-queue, session-ledger, dependency-graph, blocker-matrix, runbook-card, milestone-card, phase-checkpoint-card, completion-dashboard, and status details.
 
 Remaining stretch work:
 
