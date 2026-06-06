@@ -8,6 +8,10 @@ When does speech separation help, and when does it hurt?
 
 The benchmark already shows that separation is helpful in some overlap regimes and harmful in others. This skill turns that observation into a systematic curve over overlap ratio.
 
+## Current queue position
+
+Not in the current frontier queue. Treat this as a later research-extension card after the current queue head and the other breadth-first handoffs are clearer.
+
 ## Challenge level
 
 Level 3: Research Extension
