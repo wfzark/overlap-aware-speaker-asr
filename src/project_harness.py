@@ -62,8 +62,8 @@ FRONTIER_SKILLS = [
     {
         "frontier_id": "meeteval_compatibility",
         "evidence_path": "docs/skills/skill_04_meeteval_compatibility.md",
-        "expected_output": "MeetEval-compatible export",
-        "next_step": "Document the export path before claiming any benchmark bridge.",
+        "expected_output": "MeetEval readiness card",
+        "next_step": "Use the readiness card to stage one narrow dry run before claiming any benchmark bridge.",
     },
     {
         "frontier_id": "llm_critic",

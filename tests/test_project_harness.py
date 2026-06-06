@@ -23,6 +23,8 @@ class ProjectHarnessTest(unittest.TestCase):
         self.assertIn("demo_excellence", by_id)
         self.assertEqual(by_id["speaker_profile"]["status"], "documented_skill")
         self.assertEqual(by_id["meeteval_compatibility"]["evidence_path"], "docs/skills/skill_04_meeteval_compatibility.md")
+        self.assertIn("readiness", by_id["meeteval_compatibility"]["expected_output"])
+        self.assertIn("dry run", by_id["meeteval_compatibility"]["next_step"])
         self.assertIn("queue", by_id["llm_critic"]["expected_output"])
         self.assertIn("review queue", by_id["llm_critic"]["next_step"])
         self.assertIn("prioritization", by_id["external_validation"]["expected_output"])
