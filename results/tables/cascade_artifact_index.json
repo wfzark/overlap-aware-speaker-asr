@@ -63,6 +63,15 @@
     "intended_use": "Dependency graph showing which benchmark step unlocks or blocks downstream benchmark steps."
   },
   {
+    "artifact_id": "cross_dataset_benchmark_evidence_receipt",
+    "dataset": "cross_dataset",
+    "label": "experimental/frontier",
+    "artifact_group": "report",
+    "artifact_path": "results/figures/cascade_benchmark_evidence_receipt.md",
+    "generator_command": "python -m src.compute_aware_cascade --dataset synthetic_split",
+    "intended_use": "Receipt-style writeback guide for the current benchmark step covering evidence, completion signal, and follow-up."
+  },
+  {
     "artifact_id": "cross_dataset_benchmark_execution_queue",
     "dataset": "cross_dataset",
     "label": "experimental/frontier",

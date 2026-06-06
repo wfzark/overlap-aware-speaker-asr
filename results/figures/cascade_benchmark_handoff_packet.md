@@ -88,6 +88,10 @@ This generated packet consolidates the benchmark readiness scaffold, staged plan
 
 - step `phase1_gold_runtime_foundation` / action `collect_controlled_runtime` / session `timing_capture` / evidence `hardware_label;device;repeat_count;warmup_count;batch_shape;timing_notes` / note `Run phase1_gold_runtime_foundation now; it is blocked by runtime_capture_missing and carries high urgency.`
 
+## Evidence Receipt
+
+- step `phase1_gold_runtime_foundation` / action `collect_controlled_runtime` / evidence `hardware_label;device;repeat_count;warmup_count;batch_shape;timing_notes` / completion `Gold runtime foundation artifacts are rebuilt from controlled timing.` / follow-up `collect_controlled_runtime -> Gold runtime foundation artifacts are rebuilt from controlled timing.` / note `After phase1_gold_runtime_foundation, write back the evidence payload and confirm the foundation completion signal.`
+
 ## Execution Status
 
 - step 1: `phase1_gold_runtime_foundation` is `template_only` / `pending_execution` with missing `hardware_label;device;repeat_count;warmup_count;batch_shape;timing_notes`
