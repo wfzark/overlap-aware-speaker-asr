@@ -70,6 +70,10 @@ This generated packet consolidates the benchmark readiness scaffold, staged plan
 
 - start `phase1_gold_runtime_foundation` / action `collect_controlled_runtime` / session `timing_capture` / evidence `hardware_label;device;repeat_count;warmup_count;batch_shape;timing_notes` / urgency `high` / note `Start with phase1_gold_runtime_foundation because it is do_now and root.`
 
+## Milestone Card
+
+- current `phase1_gold_runtime_foundation` / next milestone `phase2_synthetic_runtime_foundation` / remaining phases `3` / urgency `high` / note `phase1_gold_runtime_foundation unlocks phase2_synthetic_runtime_foundation and leaves 3 pending phases.`
+
 ## Execution Status
 
 - step 1: `phase1_gold_runtime_foundation` is `template_only` / `pending_execution` with missing `hardware_label;device;repeat_count;warmup_count;batch_shape;timing_notes`
