@@ -233,6 +233,11 @@ Current MeetEval readiness result:
 - `results/figures/meeteval_readiness.md` now turns that compatibility bridge into a narrow dry-run handoff card
 - This still does not claim MeetEval or cpWER execution: it records that the export is ready for a diagnostic follow-up while also surfacing that cleaned fallback remains common in the current bridge
 
+Current MeetEval dry run handoff result:
+
+- `results/figures/meeteval_dry_run_handoff.md` now turns that readiness card into a one-row execution handoff packet
+- This remains strictly pre-evaluation coordination: it recommends a single verified-case dry run, records the cleaned-fallback blocker, and names the expected evidence writeback without claiming that MeetEval or cpWER has already been run
+
 Current speaker profile result:
 
 - `results/figures/speaker_profile_risk_summary.md` now provides a lightweight text-profile overlap report that compares direct vs swapped alignment and currently exposes a useful failure mode rather than a speaker-ID success claim

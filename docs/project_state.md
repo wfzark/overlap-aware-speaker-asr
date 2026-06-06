@@ -444,6 +444,12 @@ MeetEval readiness bridge:
 - `results/tables/meeteval_readiness.csv`
 - This bridge now turns the compatibility export into a small handoff card for a narrow dry run. It still does not claim MeetEval execution, and it makes the current limitation visible by recording that cleaned fallback remains common across the exported cases.
 
+MeetEval dry run handoff bridge:
+
+- `results/figures/meeteval_dry_run_handoff.md`
+- `results/tables/meeteval_dry_run_handoff.csv`
+- This bridge now turns the readiness state into a single next-step packet. It still does not claim that MeetEval or cpWER has been executed; it only specifies the first recommended slice, the dominant blocker, and the evidence file that a future dry run should leave behind.
+
 Speaker profile similarity bridge:
 
 - `results/figures/speaker_profile_risk_summary.md`

@@ -299,6 +299,12 @@ Update: `meeteval_compatibility` now also has a readiness handoff card.
 - Summary view: `results/figures/meeteval_readiness.md`
 - This keeps the scope narrow: it says the export is ready for a diagnostic dry run, while also recording that cleaned fallback remains common and therefore the bridge is not yet a clean raw-transcript benchmark story.
 
+Update: `meeteval_compatibility` now also has a dry-run handoff packet.
+
+- Handoff table: `results/tables/meeteval_dry_run_handoff.csv`
+- Handoff view: `results/figures/meeteval_dry_run_handoff.md`
+- This is still a coordination artifact rather than an evaluation result: it translates readiness into a single recommended first slice, blocker, and evidence target so the next contributor can run one narrow diagnostic step without overstating progress.
+
 Update: `speaker_profile` now has a first lightweight risk-signal artifact.
 
 - Profile summary: `results/figures/speaker_profile_risk_summary.md`
