@@ -2,7 +2,11 @@ from __future__ import annotations
 
 import unittest
 
-from src.project_harness import build_report
+from src.project_harness import (
+    build_frontier_execution_queue_lines,
+    build_frontier_execution_queue_rows,
+    build_report,
+)
 
 
 class ProjectHarnessTest(unittest.TestCase):
@@ -33,6 +37,49 @@ class ProjectHarnessTest(unittest.TestCase):
         self.assertIn("tiny sanity-check slice", by_id["external_validation"]["next_step"])
         self.assertIn("walkthrough", by_id["demo_excellence"]["expected_output"])
         self.assertIn("demo walk", by_id["demo_excellence"]["next_step"].lower())
+
+    def test_build_frontier_execution_queue_rows_prioritize_actionable_handoffs(self) -> None:
+        rows = build_frontier_execution_queue_rows(
+            [
+                {
+                    "frontier_id": "speaker_profile",
+                    "status": "documented_skill",
+                    "evidence_path": "docs/skills/skill_03_speaker_profile_voiceprint.md",
+                    "expected_output": "speaker profile triage card",
+                    "next_step": "Use the triage card to justify a stronger profile method while keeping the signal scoped to risk detection.",
+                },
+                {
+                    "frontier_id": "meeteval_compatibility",
+                    "status": "documented_skill",
+                    "evidence_path": "docs/skills/skill_04_meeteval_compatibility.md",
+                    "expected_output": "MeetEval readiness card",
+                    "next_step": "Use the readiness card to stage one narrow dry run before claiming any benchmark bridge.",
+                },
+            ]
+        )
+
+        self.assertEqual(rows[0]["queue_order"], "1")
+        self.assertEqual(rows[0]["frontier_id"], "meeteval_compatibility")
+        self.assertIn("dry run", rows[0]["why_now"])
+        self.assertEqual(rows[1]["frontier_id"], "speaker_profile")
+
+    def test_build_frontier_execution_queue_lines_render_table(self) -> None:
+        lines = build_frontier_execution_queue_lines(
+            [
+                {
+                    "queue_order": "1",
+                    "frontier_id": "meeteval_compatibility",
+                    "status": "documented_skill",
+                    "entry_artifact": "MeetEval readiness card",
+                    "why_now": "A narrow dry run is now staged without claiming completed evaluation.",
+                }
+            ]
+        )
+        rendered = "\n".join(lines)
+
+        self.assertIn("# Frontier Execution Queue", rendered)
+        self.assertIn("meeteval_compatibility", rendered)
+        self.assertIn("entry_artifact", rendered)
 
 
 if __name__ == "__main__":

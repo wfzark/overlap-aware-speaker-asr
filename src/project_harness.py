@@ -140,6 +140,52 @@ def build_frontier_status_rows() -> list[dict[str, str]]:
     return rows
 
 
+def frontier_priority(frontier_id: str) -> int:
+    priority_order = {
+        "meeteval_compatibility": 1,
+        "external_validation": 2,
+        "speaker_profile": 3,
+        "llm_critic": 4,
+        "demo_excellence": 5,
+    }
+    return priority_order.get(frontier_id, 99)
+
+
+def build_frontier_execution_queue_rows(rows: list[dict[str, str]]) -> list[dict[str, str]]:
+    sorted_rows = sorted(rows, key=lambda row: (frontier_priority(str(row.get("frontier_id", ""))), str(row.get("frontier_id", ""))))
+    queue_rows: list[dict[str, str]] = []
+    for index, row in enumerate(sorted_rows, start=1):
+        frontier_id = str(row.get("frontier_id", ""))
+        next_step = str(row.get("next_step", ""))
+        why_now = next_step
+        queue_rows.append(
+            {
+                "queue_order": str(index),
+                "frontier_id": frontier_id,
+                "status": str(row.get("status", "")),
+                "entry_artifact": str(row.get("expected_output", "")),
+                "why_now": why_now,
+            }
+        )
+    return queue_rows
+
+
+def build_frontier_execution_queue_lines(rows: list[dict[str, str]]) -> list[str]:
+    lines = [
+        "# Frontier Execution Queue",
+        "",
+        "This generated queue orders the next breadth-first frontier moves without claiming that the queued work has already been completed.",
+        "",
+        "| queue_order | frontier_id | status | entry_artifact | why_now |",
+        "| --- | --- | --- | --- | --- |",
+    ]
+    for row in rows:
+        lines.append(
+            f"| {row['queue_order']} | {row['frontier_id']} | {row['status']} | {row['entry_artifact']} | {row['why_now']} |"
+        )
+    return lines
+
+
 def build_report() -> dict[str, object]:
     missing_core = [path for path in CORE_FILES if not exists(path)]
     gold_status = inspect_gold_cases()
@@ -219,11 +265,28 @@ def write_report(report: dict[str, object]) -> tuple[Path, Path]:
     return json_path, md_path
 
 
+def write_frontier_queue(frontier_status: list[dict[str, str]]) -> tuple[Path, Path]:
+    tables_dir = PROJECT_ROOT / "results" / "tables"
+    figures_dir = PROJECT_ROOT / "results" / "figures"
+    tables_dir.mkdir(parents=True, exist_ok=True)
+    figures_dir.mkdir(parents=True, exist_ok=True)
+
+    queue_rows = build_frontier_execution_queue_rows(frontier_status)
+    json_path = tables_dir / "frontier_execution_queue.json"
+    md_path = figures_dir / "frontier_execution_queue.md"
+    json_path.write_text(json.dumps(queue_rows, ensure_ascii=False, indent=2), encoding="utf-8")
+    md_path.write_text("\n".join(build_frontier_execution_queue_lines(queue_rows)) + "\n", encoding="utf-8")
+    return json_path, md_path
+
+
 def main() -> None:
     report = build_report()
     json_path, md_path = write_report(report)
+    queue_json_path, queue_md_path = write_frontier_queue(report["frontier_status"])
     print(f"Wrote harness report: {json_path.relative_to(PROJECT_ROOT)}")
     print(f"Wrote harness summary: {md_path.relative_to(PROJECT_ROOT)}")
+    print(f"Wrote frontier queue JSON: {queue_json_path.relative_to(PROJECT_ROOT)}")
+    print(f"Wrote frontier queue note: {queue_md_path.relative_to(PROJECT_ROOT)}")
     print(f"gold_cases_present: {all(report['gold_cases'].values())}")
     print(f"gold_and_synthetic_separated: {report['gold_and_synthetic_separated']}")
 
