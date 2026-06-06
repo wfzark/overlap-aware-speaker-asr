@@ -443,6 +443,12 @@ Frontier receipt map:
 - `results/tables/frontier_receipt_map.json`
 - This map now broadens that receipt-aware layer across every current frontier. It still does not claim any executed frontier work; it simply lets the next contributor scan queue order, prerequisite artifacts, and receipt targets for the whole breadth-first set in one place.
 
+Frontier parallel picklist:
+
+- `results/figures/frontier_parallel_picklist.md`
+- `results/tables/frontier_parallel_picklist.json`
+- This picklist now turns that same breadth-first set into a parallel-friendly pickup view. It still does not claim any executed frontier work; it simply lets the next contributor see which artifact to open and where to write back for each current frontier without changing queue order.
+
 Benchmark frontier bridge:
 
 - `results/figures/cascade_benchmark_frontier_bridge.md`
