@@ -317,6 +317,12 @@ Update: the project harness now also includes a frontier handoff packet.
 - Summary view: `results/figures/frontier_handoff_packet.md`
 - This keeps the breadth-first layer moving with less ambiguity: it points the current queue head directly at the next artifact and expected evidence target while remaining coordination-only.
 
+Update: the project harness now also includes a frontier receipt packet.
+
+- Frontier receipt packet: `results/tables/frontier_receipt_packet.json`
+- Summary view: `results/figures/frontier_receipt_packet.md`
+- This keeps the same coordination thread intact while making the writeback target more explicit: it points the current queue head at the prerequisite artifact and receipt slot without implying that the frontier step has already happened.
+
 Update: `meeteval_compatibility` now has a first concrete bridge artifact.
 
 - Compatibility note: `results/figures/meeteval_compatibility_note.md`

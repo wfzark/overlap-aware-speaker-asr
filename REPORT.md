@@ -312,6 +312,8 @@ That queue is now also easier to scan at a glance: `results/figures/frontier_foc
 
 That queue head is now also easier to hand off without file-hopping: `results/figures/frontier_handoff_packet.md` points the current frontier directly at its next artifact and expected evidence target. This still adds no new research claim. It is a tiny coordination convenience, but one that makes the breadth-first workflow more executable for the next contributor.
 
+That queue head is now also easier to close out cleanly: `results/figures/frontier_receipt_packet.md` pushes the same coordination thread one step further down to the receipt layer. This still adds no new research claim. Its value is organizational: it reduces the last bit of ambiguity between the artifact to open now and the receipt target that should eventually capture what happened.
+
 That breadth-first push now also includes a first concrete `meeteval_compatibility` bridge: `results/figures/meeteval_compatibility_note.md` plus JSONL exports for verified reference segments and speaker-attributed hypothesis segments. This is intentionally framed as a compatibility scaffold rather than a completed MeetEval / cpWER result, but it turns that frontier from a pure idea into a reusable artifact.
 
 That bridge is now also easier to hand off: `results/figures/meeteval_readiness.md` adds a narrow dry-run readiness card. It still does not claim that MeetEval has been executed. Instead, it makes the current state more honest and more usable at the same time by showing that the export is ready for a diagnostic next step while also exposing that cleaned fallback still dominates the current hypothesis mix.

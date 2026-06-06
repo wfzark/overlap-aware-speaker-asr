@@ -431,6 +431,12 @@ Frontier handoff packet:
 - `results/tables/frontier_handoff_packet.json`
 - This packet now points that same queue head directly at its next artifact and expected evidence target. It is still a coordination layer only, not a claim that the queued frontier work has already been executed.
 
+Frontier receipt packet:
+
+- `results/figures/frontier_receipt_packet.md`
+- `results/tables/frontier_receipt_packet.json`
+- This packet now pushes the same coordination layer one step further down to the receipt level. It still does not claim any executed frontier work; it only shows which prerequisite artifact should be opened first and which receipt target should eventually receive the writeback.
+
 Benchmark frontier bridge:
 
 - `results/figures/cascade_benchmark_frontier_bridge.md`
