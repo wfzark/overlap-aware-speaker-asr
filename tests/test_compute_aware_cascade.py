@@ -5,6 +5,8 @@ import unittest
 from src.compute_aware_cascade import (
     DEFAULT_COST_PROXY,
     build_strategy_rows,
+    build_synthetic_scope_rows,
+    choose_cleaned_preferred_method,
     compute_method_cost,
     choose_budget_cascade_method,
 )
@@ -59,6 +61,47 @@ class ComputeAwareCascadeTest(unittest.TestCase):
         self.assertEqual(risk_row["automatic_coverage"], 0.5)
         self.assertEqual(risk_row["sample_count"], 1)
         self.assertEqual(risk_row["average_cer"], 0.1)
+
+    def test_cleaned_preferred_method_uses_reference_free_signals(self) -> None:
+        self.assertEqual(choose_cleaned_preferred_method(3, 0), "separated_whisper_cleaned")
+        self.assertEqual(choose_cleaned_preferred_method(1, 2), "separated_whisper_cleaned")
+        self.assertEqual(choose_cleaned_preferred_method(2, 0), "mixed_whisper")
+        self.assertEqual(choose_cleaned_preferred_method(0, 0), "separated_whisper")
+
+    def test_build_synthetic_scope_rows_adds_split_breakdown(self) -> None:
+        cases = [
+            {"case_id": "dev_a", "split": "dev", "tier": "SyntheticNoOverlap", "overlap_level": 0, "duplicate_removed_count": 0},
+            {"case_id": "test_b", "split": "test", "tier": "SyntheticHeavyOverlap", "overlap_level": 3, "duplicate_removed_count": 1},
+        ]
+        decisions = {
+            "router_v2_synthetic_costed": {"dev_a": "mixed_whisper", "test_b": "separated_whisper_cleaned"},
+        }
+        cer_lookup = {
+            ("dev_a", "mixed_whisper"): 0.2,
+            ("dev_a", "separated_whisper"): 0.1,
+            ("dev_a", "separated_whisper_cleaned"): 0.1,
+            ("test_b", "mixed_whisper"): 0.6,
+            ("test_b", "separated_whisper"): 0.3,
+            ("test_b", "separated_whisper_cleaned"): 0.15,
+        }
+        runtime_lookup = {
+            "dev_a": {"mixed_runtime_sec": 1.0, "separated_runtime_sec": 2.0, "cleaned_runtime_sec": 2.2},
+            "test_b": {"mixed_runtime_sec": 1.5, "separated_runtime_sec": 3.0, "cleaned_runtime_sec": 3.2},
+        }
+
+        rows = build_synthetic_scope_rows(cases, decisions, cer_lookup, runtime_lookup)
+
+        all_cleaned_preferred = next(
+            row for row in rows if row["scope"] == "ALL" and row["strategy"] == "cleaned_preferred_cascade"
+        )
+        test_router = next(
+            row for row in rows if row["scope"] == "TEST" and row["strategy"] == "router_v2_synthetic_costed"
+        )
+
+        self.assertEqual(all_cleaned_preferred["average_cer"], 0.125)
+        self.assertEqual(all_cleaned_preferred["selected_method_mix"], "separated_whisper:1;separated_whisper_cleaned:1")
+        self.assertEqual(test_router["sample_count"], 1)
+        self.assertEqual(test_router["average_compute_cost"], 3.2)
 
 
 if __name__ == "__main__":

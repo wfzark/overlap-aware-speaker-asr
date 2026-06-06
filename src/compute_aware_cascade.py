@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import argparse
 import csv
 import json
 import struct
@@ -28,6 +29,15 @@ STRATEGIES = [
     "budget_cascade",
 ]
 
+SYNTHETIC_STRATEGIES = [
+    "fixed_mixed_whisper",
+    "fixed_separated_whisper",
+    "fixed_separated_whisper_cleaned",
+    "router_v2_synthetic_costed",
+    "budget_cascade",
+    "cleaned_preferred_cascade",
+]
+
 PERFORMANCE_COLUMNS = [
     "strategy",
     "label",
@@ -41,6 +51,32 @@ PERFORMANCE_COLUMNS = [
     "selected_method_mix",
     "notes",
 ]
+
+SYNTHETIC_PERFORMANCE_COLUMNS = [
+    "scope",
+    "strategy",
+    "label",
+    "average_cer",
+    "average_compute_cost",
+    "relative_cost_vs_fixed_separated",
+    "automatic_coverage",
+    "manual_review_count",
+    "sample_count",
+    "case_count",
+    "selected_method_mix",
+    "notes",
+]
+
+
+def parse_args() -> argparse.Namespace:
+    parser = argparse.ArgumentParser(description="Compute-aware cascade evaluation.")
+    parser.add_argument(
+        "--dataset",
+        choices=["gold", "synthetic_split"],
+        default="gold",
+        help="Dataset scope to evaluate.",
+    )
+    return parser.parse_args()
 
 
 def to_float(value: Any) -> float:
@@ -93,6 +129,14 @@ def choose_budget_cascade_method(overlap_level: int, risk_level: str) -> str:
         return "mixed_whisper"
     if risk_level in {"medium", "high"}:
         return "separated_whisper_cleaned"
+    return "separated_whisper"
+
+
+def choose_cleaned_preferred_method(overlap_level: int, duplicate_removed_count: int) -> str:
+    if overlap_level >= 3 or duplicate_removed_count > 0:
+        return "separated_whisper_cleaned"
+    if overlap_level in (1, 2):
+        return "mixed_whisper"
     return "separated_whisper"
 
 
@@ -179,6 +223,87 @@ def build_strategy_rows(
     return rows
 
 
+def build_synthetic_scope_rows(
+    cases: list[dict[str, Any]],
+    decisions: dict[str, dict[str, str]],
+    cer_lookup: dict[tuple[str, str], float],
+    runtime_lookup: dict[str, dict[str, Any]],
+) -> list[dict[str, Any]]:
+    rows: list[dict[str, Any]] = []
+    scopes: list[tuple[str, list[dict[str, Any]]]] = [("ALL", cases)]
+    for split in sorted({str(case.get("split", "")).strip() for case in cases if str(case.get("split", "")).strip()}):
+        scopes.append((split.upper(), [case for case in cases if str(case.get("split", "")).strip() == split]))
+    for tier in sorted({str(case.get("tier", "")).strip() for case in cases if str(case.get("tier", "")).strip()}):
+        scopes.append((tier, [case for case in cases if str(case.get("tier", "")).strip() == tier]))
+
+    for scope, scoped_cases in scopes:
+        case_count = len(scoped_cases)
+        for strategy in SYNTHETIC_STRATEGIES:
+            cer_values: list[float] = []
+            costs: list[float] = []
+            method_counts: dict[str, int] = {}
+            manual_review_count = 0
+
+            for case in scoped_cases:
+                case_id = str(case.get("case_id", "")).strip()
+                overlap_level = to_int(case.get("overlap_level"))
+                duplicate_removed_count = to_int(case.get("duplicate_removed_count"))
+                if strategy == "cleaned_preferred_cascade":
+                    method = choose_cleaned_preferred_method(overlap_level, duplicate_removed_count)
+                elif strategy == "budget_cascade":
+                    risk_level = "high" if duplicate_removed_count > 0 or overlap_level >= 3 else "low"
+                    method = choose_budget_cascade_method(overlap_level, risk_level)
+                elif strategy == "router_v2_synthetic_costed":
+                    method = decisions.get(strategy, {}).get(case_id, "manual_review")
+                else:
+                    method = select_strategy_method(strategy, case, {})
+
+                method_counts[method] = method_counts.get(method, 0) + 1
+                costs.append(compute_method_cost(method, runtime_lookup.get(case_id, {})))
+
+                if method == "manual_review":
+                    manual_review_count += 1
+                    continue
+                cer = cer_lookup.get((case_id, method))
+                if cer is not None:
+                    cer_values.append(cer)
+
+            automatic_count = case_count - manual_review_count
+            rows.append(
+                {
+                    "scope": scope,
+                    "strategy": strategy,
+                    "label": "synthetic/silver",
+                    "average_cer": round(sum(cer_values) / len(cer_values), 6) if cer_values else "",
+                    "average_compute_cost": round(sum(costs) / len(costs), 6) if costs else 0.0,
+                    "relative_cost_vs_fixed_separated": "",
+                    "automatic_coverage": round(automatic_count / case_count, 6) if case_count else 0.0,
+                    "manual_review_count": manual_review_count,
+                    "sample_count": len(cer_values),
+                    "case_count": case_count,
+                    "selected_method_mix": ";".join(
+                        f"{method}:{method_counts[method]}" for method in sorted(method_counts)
+                    ),
+                    "notes": (
+                        "Synthetic split cascade validation; route selection uses overlap, duplicate-removal, or existing "
+                        "reference-free routing outputs. CER is evaluation-only."
+                    ),
+                }
+            )
+
+    separated_costs = {
+        row["scope"]: to_float(row["average_compute_cost"])
+        for row in rows
+        if row["strategy"] == "fixed_separated_whisper"
+    }
+    for row in rows:
+        separated_cost = separated_costs.get(str(row["scope"]))
+        row["relative_cost_vs_fixed_separated"] = (
+            round(to_float(row["average_compute_cost"]) / separated_cost, 6) if separated_cost else ""
+        )
+    return rows
+
+
 def load_gold_cases() -> list[dict[str, Any]]:
     config = load_config()
     risk_rows = {str(row["case_id"]): row for row in read_csv_rows(PROJECT_ROOT / "results" / "tables" / "risk_aware_selection.csv")}
@@ -239,6 +364,64 @@ def load_runtime_lookup() -> dict[str, dict[str, Any]]:
     return lookup
 
 
+def load_synthetic_split_cases() -> list[dict[str, Any]]:
+    manifest_rows = read_csv_rows(PROJECT_ROOT / "results" / "tables" / "synthetic_split_manifest.csv")
+    decision_rows = read_csv_rows(PROJECT_ROOT / "results" / "tables" / "synthetic_split_routing_decisions.csv")
+    duplicate_lookup: dict[str, int] = {}
+    for row in decision_rows:
+        sample_id = str(row.get("sample_id", "")).strip()
+        if sample_id and sample_id not in duplicate_lookup:
+            duplicate_lookup[sample_id] = to_int(row.get("duplicate_removed_count"))
+    return [
+        {
+            "case_id": str(row.get("sample_id", "")).strip(),
+            "split": str(row.get("split", "")).strip(),
+            "tier": str(row.get("tier", "")).strip(),
+            "overlap_level": to_int(row.get("overlap_level_numeric")),
+            "duplicate_removed_count": duplicate_lookup.get(str(row.get("sample_id", "")).strip(), 0),
+        }
+        for row in manifest_rows
+        if str(row.get("sample_id", "")).strip()
+    ]
+
+
+def load_synthetic_split_decisions() -> dict[str, dict[str, str]]:
+    rows = read_csv_rows(PROJECT_ROOT / "results" / "tables" / "synthetic_split_routing_decisions.csv")
+    return {
+        "router_v2_synthetic_costed": {
+            str(row.get("sample_id", "")).strip(): str(row.get("selected_method", "")).strip()
+            for row in rows
+            if str(row.get("sample_id", "")).strip() and str(row.get("strategy", "")).strip() == "v2_full_features"
+        }
+    }
+
+
+def load_synthetic_split_cer_lookup() -> dict[tuple[str, str], float]:
+    lookup: dict[tuple[str, str], float] = {}
+    for row in read_csv_rows(PROJECT_ROOT / "results" / "tables" / "synthetic_split_cer_results.csv"):
+        case_id = str(row.get("sample_id", "")).strip()
+        method = str(row.get("method", "")).strip()
+        if case_id and method:
+            lookup[(case_id, method)] = to_float(row.get("cer"))
+    return lookup
+
+
+def load_synthetic_split_runtime_lookup() -> dict[str, dict[str, Any]]:
+    lookup: dict[str, dict[str, Any]] = {}
+    for row in read_csv_rows(PROJECT_ROOT / "results" / "tables" / "synthetic_split_routing_decisions.csv"):
+        if str(row.get("strategy", "")).strip() != "v2_full_features":
+            continue
+        case_id = str(row.get("sample_id", "")).strip()
+        if not case_id:
+            continue
+        lookup[case_id] = {
+            "mixed_runtime_sec": to_float(row.get("mixed_runtime_sec")),
+            "separated_runtime_sec": to_float(row.get("separated_runtime_sec")),
+            "cleaned_runtime_sec": to_float(row.get("cleaned_runtime_sec")) or to_float(row.get("separated_runtime_sec")),
+        }
+    return lookup
+
+
 def render_summary(rows: list[dict[str, Any]], output_path: Path, figure_path: Path) -> None:
     lines = [
         "# Compute-aware Cascade Summary",
@@ -275,6 +458,61 @@ def render_summary(rows: list[dict[str, Any]], output_path: Path, figure_path: P
         "",
         "The runtime values are useful for comparing routes inside this repository, but they are not a universal hardware benchmark.",
     ]
+    output_path.parent.mkdir(parents=True, exist_ok=True)
+    output_path.write_text("\n".join(lines) + "\n", encoding="utf-8")
+
+
+def render_synthetic_summary(rows: list[dict[str, Any]], output_path: Path, figure_path: Path) -> None:
+    perf_map = {(str(row["scope"]), str(row["strategy"])): row for row in rows}
+    lines = [
+        "# Synthetic Split Compute-aware Cascade Summary",
+        "",
+        "## Label",
+        "",
+        "- synthetic/silver",
+        "- experimental/frontier",
+        "",
+        "## Interpretation",
+        "",
+        "- This is a held-out synthetic split cascade validation using silver references.",
+        "- Route selection uses overlap, duplicate-removal signals, or existing reference-free router v2 decisions.",
+        "- CER is used only after each strategy has fixed its selected method.",
+        "- Runtime values come from existing synthetic routing tables and are repository-local cost signals only.",
+        "",
+    ]
+    for scope in ["ALL", "DEV", "TEST"]:
+        lines.extend([f"## {scope}", "", "| strategy | average_cer | average_compute_cost | relative_cost_vs_fixed_separated | method_mix |", "| --- | ---: | ---: | ---: | --- |"])
+        for strategy in SYNTHETIC_STRATEGIES:
+            row = perf_map.get((scope, strategy))
+            if row:
+                lines.append(
+                    f"| {strategy} | {row['average_cer']} | {row['average_compute_cost']} | {row['relative_cost_vs_fixed_separated']} | {row['selected_method_mix']} |"
+                )
+        lines.append("")
+    tier_scopes = sorted({str(row["scope"]) for row in rows if str(row["scope"]) not in {"ALL", "DEV", "TEST"}})
+    if tier_scopes:
+        lines.extend(["## Tier Breakdown", ""])
+        for scope in tier_scopes:
+            lines.extend([f"### {scope}", "", "| strategy | average_cer | average_compute_cost | sample_count |", "| --- | ---: | ---: | ---: |"])
+            for strategy in SYNTHETIC_STRATEGIES:
+                row = perf_map.get((scope, strategy))
+                if row:
+                    lines.append(
+                        f"| {strategy} | {row['average_cer']} | {row['average_compute_cost']} | {row['sample_count']} |"
+                    )
+            lines.append("")
+    lines.extend(
+        [
+            "## Outputs",
+            "",
+            "- Table: `results/tables/synthetic_split_cascade_performance.csv`",
+            f"- Figure: `{figure_path.relative_to(PROJECT_ROOT).as_posix()}`",
+            "",
+            "## Caution",
+            "",
+            "These results are silver validation evidence and must not be promoted to gold benchmark claims.",
+        ]
+    )
     output_path.parent.mkdir(parents=True, exist_ok=True)
     output_path.write_text("\n".join(lines) + "\n", encoding="utf-8")
 
@@ -418,17 +656,32 @@ def render_tradeoff_figure(rows: list[dict[str, Any]], output_path: Path) -> Non
 
 
 def main() -> None:
-    cases = load_gold_cases()
-    rows = build_strategy_rows(cases, load_decisions(), load_cer_lookup(), load_runtime_lookup())
+    args = parse_args()
+    if args.dataset == "synthetic_split":
+        rows = build_synthetic_scope_rows(
+            load_synthetic_split_cases(),
+            load_synthetic_split_decisions(),
+            load_synthetic_split_cer_lookup(),
+            load_synthetic_split_runtime_lookup(),
+        )
+        table_csv = PROJECT_ROOT / "results" / "tables" / "synthetic_split_cascade_performance.csv"
+        table_json = PROJECT_ROOT / "results" / "tables" / "synthetic_split_cascade_performance.json"
+        figure_path = PROJECT_ROOT / "results" / "figures" / "synthetic_split_cer_runtime_tradeoff.png"
+        summary_path = PROJECT_ROOT / "results" / "figures" / "synthetic_split_cascade_summary.md"
 
-    table_csv = PROJECT_ROOT / "results" / "tables" / "cascade_performance.csv"
-    table_json = PROJECT_ROOT / "results" / "tables" / "cascade_performance.json"
-    figure_path = PROJECT_ROOT / "results" / "figures" / "cer_runtime_tradeoff.png"
-    summary_path = PROJECT_ROOT / "results" / "figures" / "compute_aware_cascade_summary.md"
+        write_csv_json(rows, table_csv, table_json, SYNTHETIC_PERFORMANCE_COLUMNS)
+        render_tradeoff_figure([row for row in rows if str(row["scope"]) == "ALL"], figure_path)
+        render_synthetic_summary(rows, summary_path, figure_path)
+    else:
+        rows = build_strategy_rows(load_gold_cases(), load_decisions(), load_cer_lookup(), load_runtime_lookup())
+        table_csv = PROJECT_ROOT / "results" / "tables" / "cascade_performance.csv"
+        table_json = PROJECT_ROOT / "results" / "tables" / "cascade_performance.json"
+        figure_path = PROJECT_ROOT / "results" / "figures" / "cer_runtime_tradeoff.png"
+        summary_path = PROJECT_ROOT / "results" / "figures" / "compute_aware_cascade_summary.md"
 
-    write_csv_json(rows, table_csv, table_json, PERFORMANCE_COLUMNS)
-    render_tradeoff_figure(rows, figure_path)
-    render_summary(rows, summary_path, figure_path)
+        write_csv_json(rows, table_csv, table_json, PERFORMANCE_COLUMNS)
+        render_tradeoff_figure(rows, figure_path)
+        render_summary(rows, summary_path, figure_path)
 
     print(f"Wrote cascade performance: {table_csv.relative_to(PROJECT_ROOT)}")
     print(f"Wrote cascade JSON: {table_json.relative_to(PROJECT_ROOT)}")
