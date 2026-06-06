@@ -30,6 +30,7 @@ If you are picking up a new frontier task, start with the queue head and then mo
 5. `demo_excellence`
 
 The current queue is coordination-only. It does not imply that any frontier step has already been completed.
+Not every frontier item has a dedicated skill card yet; `external_validation` is still tracked from the roadmap and project-state layer.
 
 ## Skill Cards
 
