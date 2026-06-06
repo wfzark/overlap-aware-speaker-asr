@@ -39,6 +39,14 @@ DRY_RUN_HANDOFF_COLUMNS = [
     "handoff_note",
 ]
 
+DRY_RUN_RECEIPT_COLUMNS = [
+    "execution_status",
+    "run_scope",
+    "expected_inputs",
+    "expected_outputs",
+    "writeback_note",
+]
+
 
 def load_reference_payload(case_id: str) -> dict[str, Any]:
     payload = load_reference(case_id)
@@ -215,11 +223,43 @@ def build_meeteval_dry_run_handoff_lines(rows: list[dict[str, str]]) -> list[str
     return lines
 
 
+def build_meeteval_dry_run_receipt_rows(handoff_rows: list[dict[str, str]]) -> list[dict[str, str]]:
+    if not handoff_rows:
+        return []
+
+    handoff = handoff_rows[0]
+    return [
+        {
+            "execution_status": "template_only",
+            "run_scope": str(handoff.get("recommended_slice", "")),
+            "expected_inputs": "results/tables/meeteval_reference_segments.jsonl; results/tables/meeteval_hypothesis_segments.jsonl",
+            "expected_outputs": "Diagnostic export-path confirmation and a narrow run note.",
+            "writeback_note": "MeetEval / cpWER has not been executed yet; fill this receipt only after the first dry run.",
+        }
+    ]
+
+
+def build_meeteval_dry_run_receipt_lines(rows: list[dict[str, str]]) -> list[str]:
+    lines = [
+        "# MeetEval Dry Run Receipt",
+        "",
+        "This generated receipt is a template-only writeback target for the first narrow dry run. It does not claim that MeetEval or cpWER has been executed.",
+        "",
+        "| execution_status | run_scope | expected_inputs | expected_outputs | writeback_note |",
+        "| --- | --- | --- | --- | --- |",
+    ]
+    for row in rows:
+        lines.append(
+            f"| {row['execution_status']} | {row['run_scope']} | {row['expected_inputs']} | {row['expected_outputs']} | {row['writeback_note']} |"
+        )
+    return lines
+
+
 def write_outputs(
     rows: list[dict[str, Any]],
     reference_lines: list[str],
     hypothesis_lines: list[str],
-) -> tuple[Path, Path, Path, Path, Path, Path, Path, Path, Path, Path, Path]:
+) -> tuple[Path, Path, Path, Path, Path, Path, Path, Path, Path, Path, Path, Path, Path]:
     tables_dir = PROJECT_ROOT / "results" / "tables"
     figures_dir = PROJECT_ROOT / "results" / "figures"
     tables_dir.mkdir(parents=True, exist_ok=True)
@@ -238,6 +278,9 @@ def write_outputs(
     dry_run_handoff_csv_path = tables_dir / "meeteval_dry_run_handoff.csv"
     dry_run_handoff_json_path = tables_dir / "meeteval_dry_run_handoff.json"
     dry_run_handoff_note_path = figures_dir / "meeteval_dry_run_handoff.md"
+    dry_run_receipt_rows = build_meeteval_dry_run_receipt_rows(dry_run_handoff_rows)
+    dry_run_receipt_json_path = tables_dir / "meeteval_dry_run_receipt.json"
+    dry_run_receipt_note_path = figures_dir / "meeteval_dry_run_receipt.md"
 
     with csv_path.open("w", newline="", encoding="utf-8-sig") as f:
         writer = csv.DictWriter(f, fieldnames=SUMMARY_COLUMNS)
@@ -262,6 +305,11 @@ def write_outputs(
         "\n".join(build_meeteval_dry_run_handoff_lines(dry_run_handoff_rows)) + "\n",
         encoding="utf-8",
     )
+    dry_run_receipt_json_path.write_text(json.dumps(dry_run_receipt_rows, ensure_ascii=False, indent=2), encoding="utf-8")
+    dry_run_receipt_note_path.write_text(
+        "\n".join(build_meeteval_dry_run_receipt_lines(dry_run_receipt_rows)) + "\n",
+        encoding="utf-8",
+    )
     return (
         csv_path,
         json_path,
@@ -274,6 +322,8 @@ def write_outputs(
         dry_run_handoff_csv_path,
         dry_run_handoff_json_path,
         dry_run_handoff_note_path,
+        dry_run_receipt_json_path,
+        dry_run_receipt_note_path,
     )
 
 
@@ -303,6 +353,8 @@ def main() -> None:
         dry_run_handoff_csv_path,
         dry_run_handoff_json_path,
         dry_run_handoff_note_path,
+        dry_run_receipt_json_path,
+        dry_run_receipt_note_path,
     ) = write_outputs(rows, reference_lines, hypothesis_lines)
     print(f"Wrote MeetEval summary: {csv_path.relative_to(PROJECT_ROOT)}")
     print(f"Wrote MeetEval JSON: {json_path.relative_to(PROJECT_ROOT)}")
@@ -315,6 +367,8 @@ def main() -> None:
     print(f"Wrote MeetEval dry run handoff CSV: {dry_run_handoff_csv_path.relative_to(PROJECT_ROOT)}")
     print(f"Wrote MeetEval dry run handoff JSON: {dry_run_handoff_json_path.relative_to(PROJECT_ROOT)}")
     print(f"Wrote MeetEval dry run handoff note: {dry_run_handoff_note_path.relative_to(PROJECT_ROOT)}")
+    print(f"Wrote MeetEval dry run receipt JSON: {dry_run_receipt_json_path.relative_to(PROJECT_ROOT)}")
+    print(f"Wrote MeetEval dry run receipt note: {dry_run_receipt_note_path.relative_to(PROJECT_ROOT)}")
 
 
 if __name__ == "__main__":

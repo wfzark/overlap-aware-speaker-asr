@@ -8,6 +8,8 @@ from src.export_meeteval_compatibility import (
     build_meeteval_compatibility_rows,
     build_meeteval_dry_run_handoff_lines,
     build_meeteval_dry_run_handoff_rows,
+    build_meeteval_dry_run_receipt_lines,
+    build_meeteval_dry_run_receipt_rows,
     build_meeteval_readiness_lines,
     build_meeteval_readiness_rows,
     build_meeteval_segment_lines,
@@ -178,6 +180,47 @@ class MeetEvalCompatibilityTest(unittest.TestCase):
         self.assertIn("cleaned_fallback_dominant", rendered)
         self.assertIn("single_verified_case", rendered)
         self.assertIn("meeteval_dry_run_receipt.json", rendered)
+
+    def test_build_meeteval_dry_run_receipt_rows_create_template_evidence_target(self) -> None:
+        rows = build_meeteval_dry_run_receipt_rows(
+            [
+                {
+                    "bridge_status": "ready_for_dry_run",
+                    "source_mix": "cleaned_fallback_dominant",
+                    "recommended_slice": "single_verified_case",
+                    "dry_run_goal": "Run one narrow diagnostic pass to validate the export path before any broader MeetEval or cpWER claim.",
+                    "primary_blocker": "Cleaned fallback still dominates the current hypothesis mix, so the first dry run should stay diagnostic.",
+                    "expected_evidence": "results/tables/meeteval_dry_run_receipt.json",
+                    "handoff_note": "MeetEval / cpWER has not been run yet; this card only frames the first dry run.",
+                }
+            ]
+        )
+
+        self.assertEqual(len(rows), 1)
+        self.assertEqual(rows[0]["execution_status"], "template_only")
+        self.assertEqual(rows[0]["run_scope"], "single_verified_case")
+        self.assertIn("meeteval_reference_segments.jsonl", rows[0]["expected_inputs"])
+        self.assertIn("diagnostic", rows[0]["expected_outputs"].lower())
+        self.assertIn("not been executed", rows[0]["writeback_note"].lower())
+
+    def test_build_meeteval_dry_run_receipt_lines_render_template(self) -> None:
+        lines = build_meeteval_dry_run_receipt_lines(
+            [
+                {
+                    "execution_status": "template_only",
+                    "run_scope": "single_verified_case",
+                    "expected_inputs": "results/tables/meeteval_reference_segments.jsonl; results/tables/meeteval_hypothesis_segments.jsonl",
+                    "expected_outputs": "Diagnostic export-path confirmation and a narrow run note.",
+                    "writeback_note": "MeetEval / cpWER has not been executed yet; fill this receipt only after the first dry run.",
+                }
+            ]
+        )
+        rendered = "\n".join(lines)
+
+        self.assertIn("# MeetEval Dry Run Receipt", rendered)
+        self.assertIn("template_only", rendered)
+        self.assertIn("single_verified_case", rendered)
+        self.assertIn("not been executed yet", rendered)
 
 
 if __name__ == "__main__":
