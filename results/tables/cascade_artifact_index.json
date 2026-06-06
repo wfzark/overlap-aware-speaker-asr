@@ -36,6 +36,15 @@
     "intended_use": "Execution checklist for recording benchmark session metadata and acceptance checks."
   },
   {
+    "artifact_id": "cross_dataset_benchmark_execution_queue",
+    "dataset": "cross_dataset",
+    "label": "experimental/frontier",
+    "artifact_group": "report",
+    "artifact_path": "results/figures/cascade_benchmark_execution_queue.md",
+    "generator_command": "python -m src.compute_aware_cascade --dataset synthetic_split",
+    "intended_use": "Ordered benchmark execution queue showing which pending step should run or review next."
+  },
+  {
     "artifact_id": "cross_dataset_benchmark_execution_summary",
     "dataset": "cross_dataset",
     "label": "experimental/frontier",

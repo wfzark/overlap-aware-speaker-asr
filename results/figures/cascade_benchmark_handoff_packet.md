@@ -34,6 +34,14 @@ This generated packet consolidates the benchmark readiness scaffold, staged plan
 - `surface`: `pending_execution` with `2/2` template-only steps, `6` pending fields, blocker `artifact_refresh_missing`, next `refresh_timing_backed_artifacts`, datasets `gold;synthetic_split`
 - `cross_dataset`: `pending_execution` with `1/1` template-only steps, `4` pending fields, blocker `derived_refresh_missing`, next `refresh_cross_dataset_stack`, datasets `cross_dataset`
 
+## Execution Queue
+
+- rank 1: `phase1_gold_runtime_foundation` / `do_now` / blocker `runtime_capture_missing` / next `collect_controlled_runtime` / reason `runtime_capture_missing with 6 pending fields`
+- rank 2: `phase2_synthetic_runtime_foundation` / `do_now` / blocker `runtime_capture_missing` / next `collect_controlled_runtime` / reason `runtime_capture_missing with 6 pending fields`
+- rank 3: `phase3_gold_surface_refresh` / `next_after_runtime` / blocker `artifact_refresh_missing` / next `refresh_timing_backed_artifacts` / reason `artifact_refresh_missing with 3 pending fields`
+- rank 4: `phase4_synthetic_surface_refresh` / `next_after_runtime` / blocker `artifact_refresh_missing` / next `refresh_timing_backed_artifacts` / reason `artifact_refresh_missing with 3 pending fields`
+- rank 5: `phase5_cross_dataset_refresh` / `next_after_runtime` / blocker `derived_refresh_missing` / next `refresh_cross_dataset_stack` / reason `derived_refresh_missing with 4 pending fields`
+
 ## Execution Status
 
 - step 1: `phase1_gold_runtime_foundation` is `template_only` / `pending_execution` with missing `hardware_label;device;repeat_count;warmup_count;batch_shape;timing_notes`
