@@ -107,6 +107,12 @@ Current robustness gap result:
 - strongest adaptive shared route: `router_v2` with `cer_gap_vs_gold = 0.165145`
 - `budget_cascade` degrades more on synthetic split, with `cer_gap_vs_gold = 0.232995`
 
+Current recommendation stability result:
+
+- `cost_first` is fully stable across the audited scopes with `consensus_ratio = 1.0`
+- `balanced` has `consensus_ratio = 0.75`, splitting between `router_v2_costed` and `router_v2_synthetic_costed`
+- `accuracy_first` also has `consensus_ratio = 0.75`, splitting between `router_v2_costed` and `fixed_separated_whisper_cleaned`
+
 ## Core Findings
 
 - Speech separation is useful, but not universally beneficial.
@@ -163,6 +169,7 @@ python -m src.project_harness
 - [Cascade Pareto frontier audit](results/figures/cascade_pareto.md)
 - [Cascade recommendation card](results/figures/cascade_recommendations.md)
 - [Cascade robustness gap audit](results/figures/cascade_robustness_gap.md)
+- [Cascade recommendation stability audit](results/figures/cascade_recommendation_stability.md)
 - [Synthetic split cascade summary](results/figures/synthetic_split_cascade_summary.md)
 - [Synthetic split cascade trade-off figure](results/figures/synthetic_split_cer_runtime_tradeoff.png)
 - [Synthetic split cascade runtime audit](results/figures/synthetic_split_cascade_runtime_audit.md)

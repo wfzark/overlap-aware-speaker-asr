@@ -78,6 +78,11 @@ Update: robustness gap audit now compares gold and held-out synthetic split dire
 - Cross-dataset gap audit: `results/tables/cascade_robustness_gap.csv`
 - Current evidence suggests `router_v2` is the strongest shared adaptive route, while `budget_cascade` is less robust on held-out synthetic split.
 
+Update: recommendation stability audit now checks whether deployment guidance is consistent across scopes.
+
+- Stability audit: `results/tables/cascade_recommendation_stability.csv`
+- Current evidence shows `cost_first` is the most stable profile, while `balanced` and `accuracy_first` vary between gold and synthetic settings.
+
 Remaining stretch work:
 
 - replace proxy costs with a controlled hardware/runtime benchmark

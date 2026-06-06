@@ -61,6 +61,7 @@ This folder is the documentation entry point for the project.
 - [results/figures/cascade_pareto.md](../results/figures/cascade_pareto.md)
 - [results/figures/cascade_recommendations.md](../results/figures/cascade_recommendations.md)
 - [results/figures/cascade_robustness_gap.md](../results/figures/cascade_robustness_gap.md)
+- [results/figures/cascade_recommendation_stability.md](../results/figures/cascade_recommendation_stability.md)
 - [results/figures/synthetic_split_cascade_summary.md](../results/figures/synthetic_split_cascade_summary.md)
 - [results/figures/synthetic_split_cer_runtime_tradeoff.png](../results/figures/synthetic_split_cer_runtime_tradeoff.png)
 - [results/figures/synthetic_split_cascade_runtime_audit.md](../results/figures/synthetic_split_cascade_runtime_audit.md)

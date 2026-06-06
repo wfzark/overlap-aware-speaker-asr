@@ -208,6 +208,13 @@ Robustness gap audit:
 - Best shared cross-dataset stability currently comes from `fixed_separated_whisper_cleaned` with `cer_gap_vs_gold -0.00266`.
 - Among adaptive shared routes, `router_v2` is more stable than `budget_cascade` on the held-out synthetic split `ALL` view.
 
+Recommendation stability audit:
+
+- `results/tables/cascade_recommendation_stability.csv`
+- `results/figures/cascade_recommendation_stability.md`
+- `cost_first` is fully stable across gold and synthetic `ALL/DEV/TEST`, always selecting `fixed_mixed_whisper`.
+- `balanced` and `accuracy_first` each show `consensus_ratio 0.75`, indicating useful but not perfect cross-scope recommendation stability.
+
 ## Synthetic Split Cascade Validation
 
 Label: `synthetic/silver` and `experimental/frontier`
