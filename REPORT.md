@@ -310,6 +310,8 @@ To support a broader next phase, the harness now also exposes a generated breadt
 
 That coordination layer is now also more executable: `results/figures/frontier_execution_queue.md` adds a lightweight breadth-first queue across the same frontiers. This is not new model evidence. Its value is organizational: it turns the growing set of frontier handoff cards into one short ordered list so the next contributor can choose the first breadth-first move with less friction.
 
+The current queue head is `meeteval_compatibility`, and the immediate next move is to use the MeetEval readiness path to stage a narrow dry run before the remaining frontier backlog is touched.
+
 That queue is now also easier to scan at a glance: `results/figures/frontier_focus_card.md` compresses the current queue head into a one-card starting point. This is still purely coordination support, but it reduces the time from opening the repository to seeing the current breadth-first priority.
 
 That queue head is now also easier to hand off without file-hopping: `results/figures/frontier_handoff_packet.md` points the current frontier directly at its next artifact and expected evidence target. This still adds no new research claim. It is a tiny coordination convenience, but one that makes the breadth-first workflow more executable for the next contributor.
