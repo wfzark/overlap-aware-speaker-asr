@@ -44,6 +44,7 @@ This document is for future Codex / AI coding agents so they can resume work wit
 - ambitious research agenda
 - challenge board
 - experiment proposal template
+- experimental compute-aware cascade analysis
 
 ## Current Core Findings
 
@@ -56,6 +57,7 @@ This document is for future Codex / AI coding agents so they can resume work wit
 7. Risk-aware selector is a deployability and explainability layer, not the best-CER result.
 8. Synthetic benchmarks are silver robustness validation, not gold evaluation.
 9. LLM/RAG is optional future extension, not the current core quantitative contribution.
+10. The compute-aware cascade is an experimental/frontier cost analysis layer; it evaluates route cost after reference-free decisions are fixed and does not use CER as a routing input.
 
 ## Gold Benchmark Final CER Table
 
@@ -152,6 +154,26 @@ This document is for future Codex / AI coding agents so they can resume work wit
 - `router_v2: 0.120042`
 - `oracle_best: 0.120042`
 
+## Experimental Compute-Aware Cascade Findings
+
+Label: `experimental/frontier`
+
+- `router_v2_costed: average_cer 0.120042, relative_cost_vs_fixed_separated 0.929533`
+- `risk_aware_costed: average_cer 0.134587, relative_cost_vs_fixed_separated 0.929533`
+- `budget_cascade: average_cer 0.134587, relative_cost_vs_fixed_separated 0.929533`
+
+Outputs:
+
+- `results/tables/cascade_performance.csv`
+- `results/figures/compute_aware_cascade_summary.md`
+- `results/figures/cer_runtime_tradeoff.png`
+
+Interpretation:
+
+- This is an offline costed analysis of the five gold cases.
+- It uses observed runtime fields when available and deterministic proxy costs otherwise.
+- CER is reserved for post-decision evaluation only.
+
 ## What Should Happen Next
 
 The next stage is not another maintenance loop. It should focus on:
@@ -174,6 +196,7 @@ python -m src.evaluate_error_types --case all
 python -m src.evaluate_speaker_cer --case all
 python -m src.evaluate_cpcer_lite --case all
 python -m src.risk_aware_selector --case all
+python -m src.compute_aware_cascade
 python -m src.router_ablation
 python -m src.router_ablation_split
 python -m src.project_harness

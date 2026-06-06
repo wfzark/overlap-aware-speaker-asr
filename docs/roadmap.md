@@ -35,6 +35,19 @@ The core technical work is complete. The repository now has a stable baseline an
 - runtime-aware selection
 - risk-triggered repair tiers
 
+Status: an initial `experimental/frontier` offline cascade analysis now exists.
+
+- Script: `python -m src.compute_aware_cascade`
+- Table: `results/tables/cascade_performance.csv`
+- Summary: `results/figures/compute_aware_cascade_summary.md`
+- Figure: `results/figures/cer_runtime_tradeoff.png`
+
+Remaining stretch work:
+
+- replace proxy costs with a controlled hardware/runtime benchmark
+- add synthetic split cascade validation
+- evaluate a true stronger-model fallback when compute budget allows
+
 ## Phase 4: Speaker Profile / Voiceprint
 
 - known-speaker enrollment

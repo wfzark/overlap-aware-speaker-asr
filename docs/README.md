@@ -33,6 +33,8 @@ This folder is the documentation entry point for the project.
 - [docs/ambitious_research_agenda.md](ambitious_research_agenda.md)
 - [docs/agent_challenge_board.md](agent_challenge_board.md)
 - [docs/experiment_proposal_template.md](experiment_proposal_template.md)
+- [docs/superpowers/specs/2026-06-06-compute-aware-cascade-design.md](superpowers/specs/2026-06-06-compute-aware-cascade-design.md)
+- [docs/superpowers/plans/2026-06-06-compute-aware-cascade.md](superpowers/plans/2026-06-06-compute-aware-cascade.md)
 - [docs/skills/](skills/)
 
 ## Contribution and Handoff
@@ -50,6 +52,8 @@ This folder is the documentation entry point for the project.
 - [results/figures/synthetic_routing_summary.md](../results/figures/synthetic_routing_summary.md)
 - [results/figures/synthetic_split_routing_summary.md](../results/figures/synthetic_split_routing_summary.md)
 - [results/figures/risk_aware_selection_summary.md](../results/figures/risk_aware_selection_summary.md)
+- [results/figures/compute_aware_cascade_summary.md](../results/figures/compute_aware_cascade_summary.md)
+- [results/figures/cer_runtime_tradeoff.png](../results/figures/cer_runtime_tradeoff.png)
 - [results/figures/cpcer_lite_summary.md](../results/figures/cpcer_lite_summary.md)
 
 ## New Contributor Rule

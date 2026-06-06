@@ -46,6 +46,16 @@ We study when speech separation helps or hurts multi-speaker ASR, and we build a
 | router_v2 | 0.120042 |
 | oracle_best | 0.120042 |
 
+### Experimental Compute-aware Cascade
+
+| strategy | average CER | relative cost vs fixed separated |
+| --- | ---: | ---: |
+| router_v2_costed | 0.120042 | 0.929533 |
+| risk_aware_costed | 0.134587 | 0.929533 |
+| budget_cascade | 0.134587 | 0.929533 |
+
+This result is labeled `experimental/frontier`. It uses observed runtime fields when available and proxy costs otherwise; CER is used only after each route is fixed.
+
 ## Core Findings
 
 - Speech separation is useful, but not universally beneficial.
@@ -78,6 +88,7 @@ python -m src.evaluate_error_types --case all
 python -m src.evaluate_speaker_cer --case all
 python -m src.evaluate_cpcer_lite --case all
 python -m src.risk_aware_selector --case all
+python -m src.compute_aware_cascade
 python -m src.router_ablation
 python -m src.router_ablation_split
 python -m src.project_harness
@@ -93,6 +104,8 @@ python -m src.project_harness
 - [Speaker-aware summary](results/figures/speaker_cer_summary.md)
 - [cpCER-lite summary](results/figures/cpcer_lite_summary.md)
 - [Risk-aware summary](results/figures/risk_aware_selection_summary.md)
+- [Compute-aware cascade summary](results/figures/compute_aware_cascade_summary.md)
+- [CER/runtime trade-off figure](results/figures/cer_runtime_tradeoff.png)
 - [Router ablation summary](results/figures/router_ablation_summary.md)
 - [Synthetic routing summary](results/figures/synthetic_routing_summary.md)
 - [Synthetic split summary](results/figures/synthetic_split_routing_summary.md)
