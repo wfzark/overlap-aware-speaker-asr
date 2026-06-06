@@ -222,6 +222,11 @@ Current speaker profile result:
 
 - `results/figures/speaker_profile_risk_summary.md` now provides a lightweight text-profile overlap report that compares direct vs swapped alignment and currently exposes a useful failure mode rather than a speaker-ID success claim
 
+Current speaker profile triage result:
+
+- `results/figures/speaker_profile_triage.md` now compresses that per-case signal into one aggregate failure-summary card
+- This triage view still does not claim voiceprint success: it currently records `5/5` `swapped_bias` across the gold cases and recommends trying a stronger profile method before treating attribution as useful
+
 Current llm critic result:
 
 - `results/figures/llm_critic_qualitative_note.md` now provides a qualitative/demo critic bridge that turns structured risk cues into critique, repair direction, and uncertainty notes without claiming verified transcript correction

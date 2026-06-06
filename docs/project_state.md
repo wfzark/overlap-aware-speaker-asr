@@ -432,6 +432,12 @@ Speaker profile similarity bridge:
 - `results/tables/speaker_profile_similarity.csv`
 - This bridge now turns `con/pro` snippet transcripts into a lightweight text-profile overlap signal. The current result is useful mainly because it exposes a failure mode: the simple profile signal prefers swapped alignment across the verified gold cases, which argues for caution rather than confidence.
 
+Speaker profile triage bridge:
+
+- `results/figures/speaker_profile_triage.md`
+- `results/tables/speaker_profile_triage.csv`
+- This bridge now turns the per-case table into an aggregate handoff card. It stays explicitly in the risk-signal lane, records that the current gold set is entirely dominated by `swapped_bias`, and points the next contributor toward trying a stronger profile method rather than overstating attribution quality.
+
 LLM critic qualitative bridge:
 
 - `results/figures/llm_critic_qualitative_note.md`

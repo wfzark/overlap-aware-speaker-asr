@@ -287,6 +287,12 @@ Update: `speaker_profile` now has a first lightweight risk-signal artifact.
 - Table: `results/tables/speaker_profile_similarity.csv`
 - This remains a narrow text-profile bridge rather than a voiceprint result, and its current value is diagnostic: the simple profile signal prefers swapped alignment across the verified gold cases, so it is useful as a warning sign rather than a deployment-ready attribution tool.
 
+Update: `speaker_profile` now also has a triage handoff card.
+
+- Triage card: `results/tables/speaker_profile_triage.csv`
+- Summary view: `results/figures/speaker_profile_triage.md`
+- This keeps the scope deliberately modest: it aggregates the current failure pattern, records that the gold cases currently collapse into `swapped_bias`, and uses that evidence to justify a stronger next profile method rather than any speaker-ID claim.
+
 Update: `llm_critic` now has a first qualitative artifact.
 
 - Critic note: `results/figures/llm_critic_qualitative_note.md`
