@@ -219,6 +219,27 @@ BENCHMARK_CHECKLIST_COLUMNS = [
     "acceptance_check",
 ]
 
+BENCHMARK_MANIFEST_TEMPLATE_COLUMNS = [
+    "plan_step_id",
+    "step_order",
+    "phase",
+    "dataset_scope",
+    "session_type",
+    "command",
+    "acceptance_check",
+    "hardware_label",
+    "device",
+    "repeat_count",
+    "warmup_count",
+    "batch_shape",
+    "timing_notes",
+    "source_timing_manifest",
+    "refresh_command",
+    "diff_review_notes",
+    "cross_dataset_scope",
+    "consistency_notes",
+]
+
 
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description="Compute-aware cascade evaluation.")
@@ -1379,6 +1400,7 @@ def build_artifact_index_rows() -> list[dict[str, Any]]:
         ("cross_dataset_benchmark_readiness", "cross_dataset", "experimental/frontier", "report", "results/figures/cascade_benchmark_readiness.md", "python -m src.compute_aware_cascade --dataset synthetic_split", "Priority-ordered readiness scaffold for replacing repository-local timing with controlled benchmark evidence."),
         ("cross_dataset_benchmark_plan", "cross_dataset", "experimental/frontier", "report", "results/figures/cascade_benchmark_plan.md", "python -m src.compute_aware_cascade --dataset synthetic_split", "Staged benchmark handoff plan derived from the readiness scaffold."),
         ("cross_dataset_benchmark_checklist", "cross_dataset", "experimental/frontier", "report", "results/figures/cascade_benchmark_checklist.md", "python -m src.compute_aware_cascade --dataset synthetic_split", "Execution checklist for recording benchmark session metadata and acceptance checks."),
+        ("cross_dataset_benchmark_manifest_template", "cross_dataset", "experimental/frontier", "report", "results/tables/cascade_benchmark_manifest_template.csv", "python -m src.compute_aware_cascade --dataset synthetic_split", "Fill-in template for benchmark session metadata captured during controlled timing runs."),
     ]
     rows = [
         {
@@ -1770,6 +1792,50 @@ def write_benchmark_checklist_outputs(
     summary_path.write_text("\n".join(build_benchmark_checklist_lines(rows)) + "\n", encoding="utf-8")
 
 
+def build_benchmark_manifest_template_rows(checklist_rows: list[dict[str, Any]]) -> list[dict[str, Any]]:
+    template_fields = [
+        "hardware_label",
+        "device",
+        "repeat_count",
+        "warmup_count",
+        "batch_shape",
+        "timing_notes",
+        "source_timing_manifest",
+        "refresh_command",
+        "diff_review_notes",
+        "cross_dataset_scope",
+        "consistency_notes",
+    ]
+    rows: list[dict[str, Any]] = []
+    for row in checklist_rows:
+        template = {field: "" for field in template_fields}
+        for field in str(row.get("required_metadata", "")).split(";"):
+            key = field.strip()
+            if key in template:
+                template[key] = "TODO"
+        rows.append(
+            {
+                "plan_step_id": row.get("plan_step_id", ""),
+                "step_order": row.get("step_order", ""),
+                "phase": row.get("phase", ""),
+                "dataset_scope": row.get("dataset_scope", ""),
+                "session_type": row.get("session_type", ""),
+                "command": row.get("command", ""),
+                "acceptance_check": row.get("acceptance_check", ""),
+                **template,
+            }
+        )
+    return sorted(rows, key=lambda row: to_int(row.get("step_order")))
+
+
+def write_benchmark_manifest_template_outputs(
+    rows: list[dict[str, Any]],
+    csv_path: Path,
+    json_path: Path,
+) -> None:
+    write_csv_json(rows, csv_path, json_path, BENCHMARK_MANIFEST_TEMPLATE_COLUMNS)
+
+
 def set_pixel(pixels: bytearray, width: int, height: int, x: int, y: int, color: tuple[int, int, int]) -> None:
     if 0 <= x < width and 0 <= y < height:
         idx = (y * width + x) * 3
@@ -1947,6 +2013,9 @@ def main() -> None:
     benchmark_checklist_csv = PROJECT_ROOT / "results" / "tables" / "cascade_benchmark_checklist.csv"
     benchmark_checklist_json = PROJECT_ROOT / "results" / "tables" / "cascade_benchmark_checklist.json"
     benchmark_checklist_md = PROJECT_ROOT / "results" / "figures" / "cascade_benchmark_checklist.md"
+    benchmark_manifest_template_rows = build_benchmark_manifest_template_rows(benchmark_checklist_rows)
+    benchmark_manifest_template_csv = PROJECT_ROOT / "results" / "tables" / "cascade_benchmark_manifest_template.csv"
+    benchmark_manifest_template_json = PROJECT_ROOT / "results" / "tables" / "cascade_benchmark_manifest_template.json"
     profile_playbook_csv = PROJECT_ROOT / "results" / "tables" / "cascade_profile_playbook.csv"
     profile_playbook_json = PROJECT_ROOT / "results" / "tables" / "cascade_profile_playbook.json"
     profile_playbook_md = PROJECT_ROOT / "results" / "figures" / "cascade_profile_playbook.md"
@@ -2109,6 +2178,11 @@ def main() -> None:
             benchmark_checklist_json,
             benchmark_checklist_md,
         )
+        write_benchmark_manifest_template_outputs(
+            benchmark_manifest_template_rows,
+            benchmark_manifest_template_csv,
+            benchmark_manifest_template_json,
+        )
         profile_playbook_rows = build_profile_playbook_rows(decision_matrix_rows)
         write_profile_playbook_outputs(
             profile_playbook_rows,
@@ -2188,6 +2262,7 @@ def main() -> None:
     print(f"Wrote cascade benchmark readiness: {benchmark_readiness_csv.relative_to(PROJECT_ROOT)}")
     print(f"Wrote cascade benchmark plan: {benchmark_plan_csv.relative_to(PROJECT_ROOT)}")
     print(f"Wrote cascade benchmark checklist: {benchmark_checklist_csv.relative_to(PROJECT_ROOT)}")
+    print(f"Wrote cascade benchmark manifest template: {benchmark_manifest_template_csv.relative_to(PROJECT_ROOT)}")
     if wrote_profile_playbook:
         print(f"Wrote cascade profile playbook: {profile_playbook_csv.relative_to(PROJECT_ROOT)}")
 

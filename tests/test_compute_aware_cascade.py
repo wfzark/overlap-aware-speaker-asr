@@ -8,6 +8,7 @@ from src.compute_aware_cascade import (
     build_artifact_index_rows,
     build_benchmark_checklist_lines,
     build_benchmark_checklist_rows,
+    build_benchmark_manifest_template_rows,
     build_profile_playbook_lines,
     build_profile_playbook_rows,
     build_benchmark_readiness_lines,
@@ -622,6 +623,41 @@ class ComputeAwareCascadeTest(unittest.TestCase):
         self.assertIn("phase1_gold_runtime_foundation", rendered)
         self.assertIn("hardware_label;device;repeat_count;warmup_count", rendered)
         self.assertIn("Gold runtime foundation artifacts are rebuilt from controlled timing.", rendered)
+
+    def test_build_benchmark_manifest_template_rows_expand_checklist_metadata_placeholders(self) -> None:
+        checklist_rows = [
+            {
+                "plan_step_id": "phase1_gold_runtime_foundation",
+                "step_order": 1,
+                "phase": "foundation",
+                "dataset_scope": "gold",
+                "command": "python -m src.compute_aware_cascade",
+                "session_type": "timing_capture",
+                "required_metadata": "hardware_label;device;repeat_count;warmup_count",
+                "acceptance_check": "Gold runtime foundation artifacts are rebuilt from controlled timing.",
+            },
+            {
+                "plan_step_id": "phase5_cross_dataset_refresh",
+                "step_order": 5,
+                "phase": "cross_dataset",
+                "dataset_scope": "cross_dataset",
+                "command": "python -m src.compute_aware_cascade --dataset synthetic_split",
+                "session_type": "derived_refresh",
+                "required_metadata": "source_timing_manifest;cross_dataset_scope;refresh_command;consistency_notes",
+                "acceptance_check": "Cross-dataset decision-support artifacts are rebuilt from controlled timing-backed inputs.",
+            },
+        ]
+
+        rows = build_benchmark_manifest_template_rows(checklist_rows)
+        foundation = next(row for row in rows if row["plan_step_id"] == "phase1_gold_runtime_foundation")
+        cross_dataset = next(row for row in rows if row["plan_step_id"] == "phase5_cross_dataset_refresh")
+
+        self.assertEqual(foundation["hardware_label"], "TODO")
+        self.assertEqual(foundation["device"], "TODO")
+        self.assertEqual(foundation["acceptance_check"], "Gold runtime foundation artifacts are rebuilt from controlled timing.")
+        self.assertEqual(cross_dataset["source_timing_manifest"], "TODO")
+        self.assertEqual(cross_dataset["cross_dataset_scope"], "TODO")
+        self.assertTrue(rows == sorted(rows, key=lambda row: row["step_order"]))
 
 
 if __name__ == "__main__":
