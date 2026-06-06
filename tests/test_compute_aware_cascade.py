@@ -9,6 +9,7 @@ from src.compute_aware_cascade import (
     choose_cleaned_preferred_method,
     compute_method_cost,
     choose_budget_cascade_method,
+    summarize_runtime_normalization,
     summarize_runtime_sources,
 )
 
@@ -127,6 +128,39 @@ class ComputeAwareCascadeTest(unittest.TestCase):
         self.assertEqual(router_row["manual_review_count"], 0)
         self.assertEqual(risk_row["manual_review_count"], 1)
         self.assertEqual(risk_row["proxy_runtime_count"], 1)
+
+    def test_summarize_runtime_normalization_uses_selected_audio_duration(self) -> None:
+        cases = [
+            {"case_id": "A", "overlap_level": 0, "risk_level": "low"},
+            {"case_id": "B", "overlap_level": 3, "risk_level": "high"},
+        ]
+        runtime_lookup = {
+            "A": {"mixed_runtime_sec": 1.0, "separated_runtime_sec": 2.0, "cleaned_runtime_sec": 2.2},
+            "B": {"mixed_runtime_sec": 1.5, "separated_runtime_sec": 3.0, "cleaned_runtime_sec": 3.2},
+        }
+        duration_lookup = {
+            "A": {"mixed_duration_sec": 10.0, "separated_duration_sec": 20.0},
+            "B": {"mixed_duration_sec": 5.0, "separated_duration_sec": 10.0},
+        }
+        decisions = {
+            "router_v2_costed": {"A": "mixed_whisper", "B": "separated_whisper"},
+        }
+
+        rows = summarize_runtime_normalization(
+            cases,
+            ["fixed_mixed_whisper", "router_v2_costed"],
+            decisions,
+            runtime_lookup,
+            duration_lookup,
+            scope="ALL",
+            dataset_label="gold",
+        )
+        fixed_row = next(row for row in rows if row["strategy"] == "fixed_mixed_whisper")
+        router_row = next(row for row in rows if row["strategy"] == "router_v2_costed")
+
+        self.assertEqual(fixed_row["average_rtf"], 0.2)
+        self.assertEqual(router_row["average_rtf"], 0.2)
+        self.assertEqual(router_row["duration_source"], "selected_audio")
 
 
 if __name__ == "__main__":

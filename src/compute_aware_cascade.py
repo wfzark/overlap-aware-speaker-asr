@@ -79,6 +79,18 @@ RUNTIME_AUDIT_COLUMNS = [
     "notes",
 ]
 
+RUNTIME_NORMALIZATION_COLUMNS = [
+    "dataset",
+    "scope",
+    "strategy",
+    "average_runtime_sec",
+    "average_selected_audio_duration_sec",
+    "average_rtf",
+    "sample_count",
+    "duration_source",
+    "notes",
+]
+
 
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description="Compute-aware cascade evaluation.")
@@ -382,6 +394,70 @@ def summarize_runtime_sources(
     return rows
 
 
+def selected_duration_sec(method: str, duration_row: dict[str, Any]) -> float:
+    if method == "mixed_whisper":
+        return to_float(duration_row.get("mixed_duration_sec"))
+    if method in {"separated_whisper", "separated_whisper_cleaned"}:
+        return to_float(duration_row.get("separated_duration_sec"))
+    return 0.0
+
+
+def summarize_runtime_normalization(
+    cases: list[dict[str, Any]],
+    strategies: list[str],
+    decisions: dict[str, dict[str, str]],
+    runtime_lookup: dict[str, dict[str, Any]],
+    duration_lookup: dict[str, dict[str, Any]],
+    scope: str = "ALL",
+    dataset_label: str = "gold",
+) -> list[dict[str, Any]]:
+    rows: list[dict[str, Any]] = []
+    for strategy in strategies:
+        runtime_values: list[float] = []
+        duration_values: list[float] = []
+        rtf_values: list[float] = []
+        for case in cases:
+            case_id = str(case.get("case_id", "")).strip()
+            if strategy == "cleaned_preferred_cascade":
+                method = choose_cleaned_preferred_method(
+                    to_int(case.get("overlap_level")),
+                    to_int(case.get("duplicate_removed_count")),
+                )
+            elif strategy == "budget_cascade":
+                risk_level = str(case.get("risk_level", "")).strip()
+                if not risk_level:
+                    risk_level = "high" if to_int(case.get("duplicate_removed_count")) > 0 or to_int(case.get("overlap_level")) >= 3 else "low"
+                method = choose_budget_cascade_method(to_int(case.get("overlap_level")), risk_level)
+            elif strategy in decisions:
+                method = decisions.get(strategy, {}).get(case_id, "manual_review")
+            else:
+                method = select_strategy_method(strategy, case, {})
+
+            if method == "manual_review":
+                continue
+            runtime_sec = compute_method_cost(method, runtime_lookup.get(case_id, {}))
+            duration_sec = selected_duration_sec(method, duration_lookup.get(case_id, {}))
+            if runtime_sec > 0 and duration_sec > 0:
+                runtime_values.append(runtime_sec)
+                duration_values.append(duration_sec)
+                rtf_values.append(runtime_sec / duration_sec)
+
+        rows.append(
+            {
+                "dataset": dataset_label,
+                "scope": scope,
+                "strategy": strategy,
+                "average_runtime_sec": round(sum(runtime_values) / len(runtime_values), 6) if runtime_values else "",
+                "average_selected_audio_duration_sec": round(sum(duration_values) / len(duration_values), 6) if duration_values else "",
+                "average_rtf": round(sum(rtf_values) / len(rtf_values), 6) if rtf_values else "",
+                "sample_count": len(rtf_values),
+                "duration_source": "selected_audio",
+                "notes": "RTF uses the selected route's processed audio duration: mixed uses one stream, separated/cleaned use the combined two-stream duration.",
+            }
+        )
+    return rows
+
+
 def load_gold_cases() -> list[dict[str, Any]]:
     config = load_config()
     risk_rows = {str(row["case_id"]): row for row in read_csv_rows(PROJECT_ROOT / "results" / "tables" / "risk_aware_selection.csv")}
@@ -500,6 +576,37 @@ def load_synthetic_split_runtime_lookup() -> dict[str, dict[str, Any]]:
     return lookup
 
 
+def load_gold_duration_lookup() -> dict[str, dict[str, Any]]:
+    rows = read_csv_rows(PROJECT_ROOT / "results" / "tables" / "audio_manifest.csv")
+    grouped: dict[str, dict[str, float]] = {}
+    for row in rows:
+        case_id = str(row.get("case_id", "")).strip()
+        audio_type = str(row.get("audio_type", "")).strip()
+        duration_sec = to_float(row.get("duration_sec"))
+        if not case_id:
+            continue
+        payload = grouped.setdefault(case_id, {"mixed_duration_sec": 0.0, "separated_duration_sec": 0.0})
+        if audio_type == "mixed":
+            payload["mixed_duration_sec"] = duration_sec
+        elif audio_type in {"separated_spk1", "separated_spk2"}:
+            payload["separated_duration_sec"] += duration_sec
+    return grouped
+
+
+def load_synthetic_split_duration_lookup() -> dict[str, dict[str, Any]]:
+    rows = read_csv_rows(PROJECT_ROOT / "results" / "tables" / "synthetic_split_manifest.csv")
+    lookup: dict[str, dict[str, Any]] = {}
+    for row in rows:
+        case_id = str(row.get("sample_id", "")).strip()
+        mixed_duration_sec = to_float(row.get("mixed_duration_sec"))
+        if case_id:
+            lookup[case_id] = {
+                "mixed_duration_sec": mixed_duration_sec,
+                "separated_duration_sec": round(mixed_duration_sec * 2, 6) if mixed_duration_sec else 0.0,
+            }
+    return lookup
+
+
 def render_summary(rows: list[dict[str, Any]], output_path: Path, figure_path: Path) -> None:
     lines = [
         "# Compute-aware Cascade Summary",
@@ -615,6 +722,32 @@ def render_runtime_audit_summary(rows: list[dict[str, Any]], output_path: Path) 
             if str(row["dataset"]) == dataset and str(row["scope"]) == scope:
                 lines.append(
                     f"| {row['strategy']} | {row['observed_runtime_count']} | {row['proxy_runtime_count']} | {row['manual_review_count']} | {row['observed_runtime_ratio']} |"
+                )
+        lines.append("")
+    output_path.parent.mkdir(parents=True, exist_ok=True)
+    output_path.write_text("\n".join(lines) + "\n", encoding="utf-8")
+
+
+def render_runtime_normalization_summary(rows: list[dict[str, Any]], output_path: Path) -> None:
+    lines = [
+        "# Cascade Runtime Normalization Audit",
+        "",
+        "This audit normalizes selected-route runtime by the selected audio duration to estimate route-specific RTF.",
+        "",
+    ]
+    grouped_scopes = []
+    seen: set[tuple[str, str]] = set()
+    for row in rows:
+        key = (str(row["dataset"]), str(row["scope"]))
+        if key not in seen:
+            seen.add(key)
+            grouped_scopes.append(key)
+    for dataset, scope in grouped_scopes:
+        lines.extend([f"## {dataset} / {scope}", "", "| strategy | average_runtime_sec | average_selected_audio_duration_sec | average_rtf | sample_count |", "| --- | ---: | ---: | ---: | ---: |"])
+        for row in rows:
+            if str(row["dataset"]) == dataset and str(row["scope"]) == scope:
+                lines.append(
+                    f"| {row['strategy']} | {row['average_runtime_sec']} | {row['average_selected_audio_duration_sec']} | {row['average_rtf']} | {row['sample_count']} |"
                 )
         lines.append("")
     output_path.parent.mkdir(parents=True, exist_ok=True)
@@ -769,6 +902,16 @@ def write_runtime_audit_outputs(
     render_runtime_audit_summary(rows, summary_path)
 
 
+def write_runtime_normalization_outputs(
+    rows: list[dict[str, Any]],
+    csv_path: Path,
+    json_path: Path,
+    summary_path: Path,
+) -> None:
+    write_csv_json(rows, csv_path, json_path, RUNTIME_NORMALIZATION_COLUMNS)
+    render_runtime_normalization_summary(rows, summary_path)
+
+
 def main() -> None:
     args = parse_args()
     if args.dataset == "synthetic_split":
@@ -788,6 +931,9 @@ def main() -> None:
         runtime_audit_csv = PROJECT_ROOT / "results" / "tables" / "synthetic_split_cascade_runtime_audit.csv"
         runtime_audit_json = PROJECT_ROOT / "results" / "tables" / "synthetic_split_cascade_runtime_audit.json"
         runtime_audit_md = PROJECT_ROOT / "results" / "figures" / "synthetic_split_cascade_runtime_audit.md"
+        runtime_norm_csv = PROJECT_ROOT / "results" / "tables" / "synthetic_split_cascade_runtime_normalization.csv"
+        runtime_norm_json = PROJECT_ROOT / "results" / "tables" / "synthetic_split_cascade_runtime_normalization.json"
+        runtime_norm_md = PROJECT_ROOT / "results" / "figures" / "synthetic_split_cascade_runtime_normalization.md"
 
         write_csv_json(rows, table_csv, table_json, SYNTHETIC_PERFORMANCE_COLUMNS)
         render_tradeoff_figure([row for row in rows if str(row["scope"]) == "ALL"], figure_path)
@@ -815,6 +961,32 @@ def main() -> None:
                 )
             )
         write_runtime_audit_outputs(runtime_rows, runtime_audit_csv, runtime_audit_json, runtime_audit_md)
+        duration_lookup = load_synthetic_split_duration_lookup()
+        runtime_norm_rows: list[dict[str, Any]] = []
+        runtime_norm_rows.extend(
+            summarize_runtime_normalization(
+                cases,
+                SYNTHETIC_STRATEGIES,
+                decisions,
+                runtime_lookup,
+                duration_lookup,
+                scope="ALL",
+                dataset_label="synthetic_split",
+            )
+        )
+        for split in sorted({str(case.get("split", "")).strip() for case in cases if str(case.get("split", "")).strip()}):
+            runtime_norm_rows.extend(
+                summarize_runtime_normalization(
+                    [case for case in cases if str(case.get("split", "")).strip() == split],
+                    SYNTHETIC_STRATEGIES,
+                    decisions,
+                    runtime_lookup,
+                    duration_lookup,
+                    scope=split.upper(),
+                    dataset_label="synthetic_split",
+                )
+            )
+        write_runtime_normalization_outputs(runtime_norm_rows, runtime_norm_csv, runtime_norm_json, runtime_norm_md)
     else:
         cases = load_gold_cases()
         decisions = load_decisions()
@@ -827,6 +999,9 @@ def main() -> None:
         runtime_audit_csv = PROJECT_ROOT / "results" / "tables" / "cascade_runtime_audit.csv"
         runtime_audit_json = PROJECT_ROOT / "results" / "tables" / "cascade_runtime_audit.json"
         runtime_audit_md = PROJECT_ROOT / "results" / "figures" / "cascade_runtime_audit.md"
+        runtime_norm_csv = PROJECT_ROOT / "results" / "tables" / "cascade_runtime_normalization.csv"
+        runtime_norm_json = PROJECT_ROOT / "results" / "tables" / "cascade_runtime_normalization.json"
+        runtime_norm_md = PROJECT_ROOT / "results" / "figures" / "cascade_runtime_normalization.md"
 
         write_csv_json(rows, table_csv, table_json, PERFORMANCE_COLUMNS)
         render_tradeoff_figure(rows, figure_path)
@@ -840,6 +1015,16 @@ def main() -> None:
             dataset_label="gold",
         )
         write_runtime_audit_outputs(runtime_rows, runtime_audit_csv, runtime_audit_json, runtime_audit_md)
+        runtime_norm_rows = summarize_runtime_normalization(
+            cases,
+            STRATEGIES,
+            decisions,
+            runtime_lookup,
+            load_gold_duration_lookup(),
+            scope="ALL",
+            dataset_label="gold",
+        )
+        write_runtime_normalization_outputs(runtime_norm_rows, runtime_norm_csv, runtime_norm_json, runtime_norm_md)
 
     print(f"Wrote cascade performance: {table_csv.relative_to(PROJECT_ROOT)}")
     print(f"Wrote cascade JSON: {table_json.relative_to(PROJECT_ROOT)}")
