@@ -34,6 +34,7 @@ def build_critic_rows(
         case_id = str(risk_row.get("case_id", ""))
         profile_row = profile_by_case.get(case_id, {})
         risk_flags = str(risk_row.get("risk_flags", ""))
+        risk_level = str(risk_row.get("risk_level", ""))
         recommended_action = str(risk_row.get("recommended_action", ""))
         best_alignment = str(profile_row.get("best_profile_alignment", ""))
         uncertainty_note = (
@@ -41,11 +42,18 @@ def build_critic_rows(
             if best_alignment
             else "No profile alignment signal is available, so attribution remains uncertain."
         )
+        if risk_flags.strip():
+            risk_explanation = f"{risk_flags} suggest unstable separated output and should be treated as a qualitative warning."
+        else:
+            risk_descriptor = risk_level if risk_level.strip() else "unknown"
+            risk_explanation = (
+                f"The selector reports a {risk_descriptor} risk state even without explicit flags, so the current transcript still deserves critic review."
+            )
         rows.append(
             {
                 "case_id": case_id,
                 "label": "qualitative/demo",
-                "risk_explanation": f"{risk_flags} suggest unstable separated output and should be treated as a qualitative warning.",
+                "risk_explanation": risk_explanation,
                 "candidate_repair": f"Try {recommended_action} before treating the current transcript as final.",
                 "uncertainty_note": uncertainty_note,
             }
