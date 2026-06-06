@@ -52,6 +52,39 @@ GOLD_CASES = [
     "OppositeOverlap",
 ]
 
+FRONTIER_SKILLS = [
+    {
+        "frontier_id": "speaker_profile",
+        "evidence_path": "docs/skills/skill_03_speaker_profile_voiceprint.md",
+        "expected_output": "results/tables/speaker_profile_similarity.csv",
+        "next_step": "Document the first output artifact and keep the signal scoped to risk detection.",
+    },
+    {
+        "frontier_id": "meeteval_compatibility",
+        "evidence_path": "docs/skills/skill_04_meeteval_compatibility.md",
+        "expected_output": "MeetEval-compatible export",
+        "next_step": "Document the export path before claiming any benchmark bridge.",
+    },
+    {
+        "frontier_id": "llm_critic",
+        "evidence_path": "docs/skills/skill_05_agentic_llm_critic.md",
+        "expected_output": "qualitative critic output",
+        "next_step": "Label the output as qualitative and define a minimal critic output artifact.",
+    },
+    {
+        "frontier_id": "external_validation",
+        "evidence_path": "docs/ambitious_research_agenda.md",
+        "expected_output": "external sanity-check note",
+        "next_step": "Pick one external dataset, document license/source, and define the first output artifact.",
+    },
+    {
+        "frontier_id": "demo_excellence",
+        "evidence_path": "docs/skills/skill_06_github_demo_excellence.md",
+        "expected_output": "demo-facing figure or note",
+        "next_step": "Define one demo-facing output so the README and figures point to the same story.",
+    },
+]
+
 
 def exists(rel_path: str) -> bool:
     return (PROJECT_ROOT / rel_path).exists()
@@ -91,10 +124,27 @@ def inspect_synthetic_separation() -> dict[str, str]:
     return {"status": "missing"}
 
 
+def build_frontier_status_rows() -> list[dict[str, str]]:
+    rows: list[dict[str, str]] = []
+    for frontier in FRONTIER_SKILLS:
+        evidence_path = str(frontier["evidence_path"])
+        rows.append(
+            {
+                "frontier_id": str(frontier["frontier_id"]),
+                "status": "documented_skill" if exists(evidence_path) else "missing_skill",
+                "evidence_path": evidence_path,
+                "expected_output": str(frontier["expected_output"]),
+                "next_step": str(frontier["next_step"]),
+            }
+        )
+    return rows
+
+
 def build_report() -> dict[str, object]:
     missing_core = [path for path in CORE_FILES if not exists(path)]
     gold_status = inspect_gold_cases()
     synthetic_status = inspect_synthetic_separation()
+    frontier_status = build_frontier_status_rows()
     report = {
         "project_root": ".",
         "core_files_present": len(missing_core) == 0,
@@ -102,6 +152,7 @@ def build_report() -> dict[str, object]:
         "gold_cases": gold_status,
         "synthetic_status": synthetic_status,
         "gold_and_synthetic_separated": synthetic_status["status"] in {"synthetic_overlap", "synthetic_overlap_v2"},
+        "frontier_status": frontier_status,
     }
     return report
 
@@ -147,10 +198,22 @@ def write_report(report: dict[str, object]) -> tuple[Path, Path]:
         f"- status: {report['synthetic_status']['status']}",
         f"- gold_and_synthetic_separated: {report['gold_and_synthetic_separated']}",
         "",
+        "## Frontier Status",
+        "",
+        "| frontier_id | status | evidence_path | expected_output | next_step |",
+        "| --- | --- | --- | --- | --- |",
+    ]
+    for row in report["frontier_status"]:
+        lines.append(
+            f"| {row['frontier_id']} | {row['status']} | {row['evidence_path']} | {row['expected_output']} | {row['next_step']} |"
+        )
+    lines += [
+        "",
         "## Interpretation",
         "",
         "- The repository keeps gold references and synthetic resources separate.",
         "- The core maintenance files are in place for future agents.",
+        "- The frontier status table makes breadth-first experimental directions visible before new code lands.",
     ]
     md_path.write_text("\n".join(lines) + "\n", encoding="utf-8")
     return json_path, md_path
