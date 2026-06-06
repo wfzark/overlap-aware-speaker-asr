@@ -29,6 +29,16 @@ READINESS_COLUMNS = [
     "next_action",
 ]
 
+DRY_RUN_HANDOFF_COLUMNS = [
+    "bridge_status",
+    "source_mix",
+    "recommended_slice",
+    "dry_run_goal",
+    "primary_blocker",
+    "expected_evidence",
+    "handoff_note",
+]
+
 
 def load_reference_payload(case_id: str) -> dict[str, Any]:
     payload = load_reference(case_id)
@@ -159,11 +169,57 @@ def build_meeteval_readiness_lines(rows: list[dict[str, str]]) -> list[str]:
     return lines
 
 
+def build_meeteval_dry_run_handoff_rows(readiness_rows: list[dict[str, str]]) -> list[dict[str, str]]:
+    if not readiness_rows:
+        return []
+
+    readiness = readiness_rows[0]
+    cleaned_fallback_count = int(str(readiness.get("cleaned_fallback_count", "0")) or "0")
+    raw_source_count = int(str(readiness.get("raw_source_count", "0")) or "0")
+    if cleaned_fallback_count > raw_source_count:
+        source_mix = "cleaned_fallback_dominant"
+        primary_blocker = "Cleaned fallback still dominates the current hypothesis mix, so the first dry run should stay diagnostic."
+    elif raw_source_count:
+        source_mix = "raw_source_available"
+        primary_blocker = "Raw separated sources are available, but the bridge still needs a tightly scoped first dry run."
+    else:
+        source_mix = "source_mix_unknown"
+        primary_blocker = "The current source mix is unclear, so the next dry run should start by validating one exported case."
+
+    return [
+        {
+            "bridge_status": str(readiness.get("bridge_status", "")),
+            "source_mix": source_mix,
+            "recommended_slice": "single_verified_case",
+            "dry_run_goal": "Run one narrow diagnostic pass to validate the export path before any broader MeetEval or cpWER claim.",
+            "primary_blocker": primary_blocker,
+            "expected_evidence": "results/tables/meeteval_dry_run_receipt.json",
+            "handoff_note": "MeetEval / cpWER has not been run yet; this card only frames the first dry run.",
+        }
+    ]
+
+
+def build_meeteval_dry_run_handoff_lines(rows: list[dict[str, str]]) -> list[str]:
+    lines = [
+        "# MeetEval Dry Run Handoff",
+        "",
+        "This generated handoff packet translates readiness into a single narrow next step. It does not claim that MeetEval or cpWER has been run.",
+        "",
+        "| bridge_status | source_mix | recommended_slice | dry_run_goal | primary_blocker | expected_evidence | handoff_note |",
+        "| --- | --- | --- | --- | --- | --- | --- |",
+    ]
+    for row in rows:
+        lines.append(
+            f"| {row['bridge_status']} | {row['source_mix']} | {row['recommended_slice']} | {row['dry_run_goal']} | {row['primary_blocker']} | {row['expected_evidence']} | {row['handoff_note']} |"
+        )
+    return lines
+
+
 def write_outputs(
     rows: list[dict[str, Any]],
     reference_lines: list[str],
     hypothesis_lines: list[str],
-) -> tuple[Path, Path, Path, Path, Path, Path, Path, Path]:
+) -> tuple[Path, Path, Path, Path, Path, Path, Path, Path, Path, Path, Path]:
     tables_dir = PROJECT_ROOT / "results" / "tables"
     figures_dir = PROJECT_ROOT / "results" / "figures"
     tables_dir.mkdir(parents=True, exist_ok=True)
@@ -178,6 +234,10 @@ def write_outputs(
     readiness_csv_path = tables_dir / "meeteval_readiness.csv"
     readiness_json_path = tables_dir / "meeteval_readiness.json"
     readiness_note_path = figures_dir / "meeteval_readiness.md"
+    dry_run_handoff_rows = build_meeteval_dry_run_handoff_rows(readiness_rows)
+    dry_run_handoff_csv_path = tables_dir / "meeteval_dry_run_handoff.csv"
+    dry_run_handoff_json_path = tables_dir / "meeteval_dry_run_handoff.json"
+    dry_run_handoff_note_path = figures_dir / "meeteval_dry_run_handoff.md"
 
     with csv_path.open("w", newline="", encoding="utf-8-sig") as f:
         writer = csv.DictWriter(f, fieldnames=SUMMARY_COLUMNS)
@@ -193,6 +253,15 @@ def write_outputs(
         writer.writerows(readiness_rows)
     readiness_json_path.write_text(json.dumps(readiness_rows, ensure_ascii=False, indent=2), encoding="utf-8")
     readiness_note_path.write_text("\n".join(build_meeteval_readiness_lines(readiness_rows)) + "\n", encoding="utf-8")
+    with dry_run_handoff_csv_path.open("w", newline="", encoding="utf-8-sig") as f:
+        writer = csv.DictWriter(f, fieldnames=DRY_RUN_HANDOFF_COLUMNS)
+        writer.writeheader()
+        writer.writerows(dry_run_handoff_rows)
+    dry_run_handoff_json_path.write_text(json.dumps(dry_run_handoff_rows, ensure_ascii=False, indent=2), encoding="utf-8")
+    dry_run_handoff_note_path.write_text(
+        "\n".join(build_meeteval_dry_run_handoff_lines(dry_run_handoff_rows)) + "\n",
+        encoding="utf-8",
+    )
     return (
         csv_path,
         json_path,
@@ -202,6 +271,9 @@ def write_outputs(
         readiness_csv_path,
         readiness_json_path,
         readiness_note_path,
+        dry_run_handoff_csv_path,
+        dry_run_handoff_json_path,
+        dry_run_handoff_note_path,
     )
 
 
@@ -228,6 +300,9 @@ def main() -> None:
         readiness_csv_path,
         readiness_json_path,
         readiness_note_path,
+        dry_run_handoff_csv_path,
+        dry_run_handoff_json_path,
+        dry_run_handoff_note_path,
     ) = write_outputs(rows, reference_lines, hypothesis_lines)
     print(f"Wrote MeetEval summary: {csv_path.relative_to(PROJECT_ROOT)}")
     print(f"Wrote MeetEval JSON: {json_path.relative_to(PROJECT_ROOT)}")
@@ -237,6 +312,9 @@ def main() -> None:
     print(f"Wrote MeetEval readiness CSV: {readiness_csv_path.relative_to(PROJECT_ROOT)}")
     print(f"Wrote MeetEval readiness JSON: {readiness_json_path.relative_to(PROJECT_ROOT)}")
     print(f"Wrote MeetEval readiness note: {readiness_note_path.relative_to(PROJECT_ROOT)}")
+    print(f"Wrote MeetEval dry run handoff CSV: {dry_run_handoff_csv_path.relative_to(PROJECT_ROOT)}")
+    print(f"Wrote MeetEval dry run handoff JSON: {dry_run_handoff_json_path.relative_to(PROJECT_ROOT)}")
+    print(f"Wrote MeetEval dry run handoff note: {dry_run_handoff_note_path.relative_to(PROJECT_ROOT)}")
 
 
 if __name__ == "__main__":

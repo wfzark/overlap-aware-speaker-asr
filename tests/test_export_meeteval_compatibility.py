@@ -6,6 +6,8 @@ import unittest
 from src.export_meeteval_compatibility import (
     build_meeteval_compatibility_lines,
     build_meeteval_compatibility_rows,
+    build_meeteval_dry_run_handoff_lines,
+    build_meeteval_dry_run_handoff_rows,
     build_meeteval_readiness_lines,
     build_meeteval_readiness_rows,
     build_meeteval_segment_lines,
@@ -132,6 +134,50 @@ class MeetEvalCompatibilityTest(unittest.TestCase):
         self.assertIn("# MeetEval Readiness", rendered)
         self.assertIn("ready_for_dry_run", rendered)
         self.assertIn("cleaned fallback is still common", rendered)
+
+    def test_build_meeteval_dry_run_handoff_rows_turn_readiness_into_next_step(self) -> None:
+        rows = build_meeteval_dry_run_handoff_rows(
+            [
+                {
+                    "bridge_status": "ready_for_dry_run",
+                    "case_count": "5",
+                    "raw_source_count": "1",
+                    "cleaned_fallback_count": "4",
+                    "readiness_note": "The bridge is export-complete, but cleaned fallback is still common.",
+                    "next_action": "Use one narrow dry run before claiming any cpWER-style evaluation.",
+                }
+            ]
+        )
+
+        self.assertEqual(len(rows), 1)
+        self.assertEqual(rows[0]["bridge_status"], "ready_for_dry_run")
+        self.assertEqual(rows[0]["source_mix"], "cleaned_fallback_dominant")
+        self.assertEqual(rows[0]["recommended_slice"], "single_verified_case")
+        self.assertIn("diagnostic", rows[0]["dry_run_goal"].lower())
+        self.assertIn("cleaned fallback", rows[0]["primary_blocker"].lower())
+        self.assertIn("meeteval_dry_run", rows[0]["expected_evidence"])
+        self.assertIn("not been run yet", rows[0]["handoff_note"].lower())
+
+    def test_build_meeteval_dry_run_handoff_lines_render_packet(self) -> None:
+        lines = build_meeteval_dry_run_handoff_lines(
+            [
+                {
+                    "bridge_status": "ready_for_dry_run",
+                    "source_mix": "cleaned_fallback_dominant",
+                    "recommended_slice": "single_verified_case",
+                    "dry_run_goal": "Run one narrow diagnostic pass to validate the export path before any broader claim.",
+                    "primary_blocker": "Cleaned fallback still dominates the current hypothesis mix.",
+                    "expected_evidence": "results/tables/meeteval_dry_run_receipt.json",
+                    "handoff_note": "MeetEval / cpWER has not been run yet; this card only frames the first dry run.",
+                }
+            ]
+        )
+        rendered = "\n".join(lines)
+
+        self.assertIn("# MeetEval Dry Run Handoff", rendered)
+        self.assertIn("cleaned_fallback_dominant", rendered)
+        self.assertIn("single_verified_case", rendered)
+        self.assertIn("meeteval_dry_run_receipt.json", rendered)
 
 
 if __name__ == "__main__":
