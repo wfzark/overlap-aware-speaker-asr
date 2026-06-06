@@ -129,6 +129,16 @@ ROBUSTNESS_GAP_COLUMNS = [
     "notes",
 ]
 
+RECOMMENDATION_STABILITY_COLUMNS = [
+    "profile",
+    "distinct_strategy_count",
+    "most_common_strategy",
+    "consensus_ratio",
+    "scope_count",
+    "strategy_set",
+    "notes",
+]
+
 
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description="Compute-aware cascade evaluation.")
@@ -646,6 +656,37 @@ def build_robustness_gap_rows(
     return ranked
 
 
+def build_recommendation_stability_rows(recommendation_rows: list[dict[str, Any]]) -> list[dict[str, Any]]:
+    grouped: dict[str, list[dict[str, Any]]] = {}
+    for row in recommendation_rows:
+        grouped.setdefault(str(row.get("profile", "")), []).append(row)
+
+    rows: list[dict[str, Any]] = []
+    for profile in sorted(grouped):
+        entries = grouped[profile]
+        counts: dict[str, int] = {}
+        for entry in entries:
+            strategy = str(entry.get("recommended_strategy", ""))
+            counts[strategy] = counts.get(strategy, 0) + 1
+        most_common_strategy = min(
+            counts,
+            key=lambda strategy: (-counts[strategy], strategy),
+        )
+        scope_count = len(entries)
+        rows.append(
+            {
+                "profile": profile,
+                "distinct_strategy_count": len(counts),
+                "most_common_strategy": most_common_strategy,
+                "consensus_ratio": round(counts[most_common_strategy] / scope_count, 6) if scope_count else 0.0,
+                "scope_count": scope_count,
+                "strategy_set": ";".join(sorted(counts)),
+                "notes": "Consensus ratio is the share of audited scopes that recommend the most common strategy for this profile.",
+            }
+        )
+    return rows
+
+
 def load_gold_cases() -> list[dict[str, Any]]:
     config = load_config()
     risk_rows = {str(row["case_id"]): row for row in read_csv_rows(PROJECT_ROOT / "results" / "tables" / "risk_aware_selection.csv")}
@@ -1073,6 +1114,33 @@ def write_robustness_gap_outputs(
     render_robustness_gap_summary(rows, summary_path)
 
 
+def render_recommendation_stability_summary(rows: list[dict[str, Any]], output_path: Path) -> None:
+    lines = [
+        "# Cascade Recommendation Stability Audit",
+        "",
+        "This audit checks how often each recommendation profile keeps the same strategy across audited scopes.",
+        "",
+        "| profile | distinct_strategy_count | most_common_strategy | consensus_ratio | scope_count | strategy_set |",
+        "| --- | ---: | --- | ---: | ---: | --- |",
+    ]
+    for row in rows:
+        lines.append(
+            f"| {row['profile']} | {row['distinct_strategy_count']} | {row['most_common_strategy']} | {row['consensus_ratio']} | {row['scope_count']} | {row['strategy_set']} |"
+        )
+    output_path.parent.mkdir(parents=True, exist_ok=True)
+    output_path.write_text("\n".join(lines) + "\n", encoding="utf-8")
+
+
+def write_recommendation_stability_outputs(
+    rows: list[dict[str, Any]],
+    csv_path: Path,
+    json_path: Path,
+    summary_path: Path,
+) -> None:
+    write_csv_json(rows, csv_path, json_path, RECOMMENDATION_STABILITY_COLUMNS)
+    render_recommendation_stability_summary(rows, summary_path)
+
+
 def set_pixel(pixels: bytearray, width: int, height: int, x: int, y: int, color: tuple[int, int, int]) -> None:
     if 0 <= x < width and 0 <= y < height:
         idx = (y * width + x) * 3
@@ -1339,6 +1407,14 @@ def main() -> None:
             PROJECT_ROOT / "results" / "tables" / "cascade_robustness_gap.csv",
             PROJECT_ROOT / "results" / "tables" / "cascade_robustness_gap.json",
             PROJECT_ROOT / "results" / "figures" / "cascade_robustness_gap.md",
+        )
+        gold_recommendation_rows = build_recommendation_rows(gold_pareto_rows)
+        stability_rows = build_recommendation_stability_rows(gold_recommendation_rows + recommendation_rows)
+        write_recommendation_stability_outputs(
+            stability_rows,
+            PROJECT_ROOT / "results" / "tables" / "cascade_recommendation_stability.csv",
+            PROJECT_ROOT / "results" / "tables" / "cascade_recommendation_stability.json",
+            PROJECT_ROOT / "results" / "figures" / "cascade_recommendation_stability.md",
         )
     else:
         cases = load_gold_cases()

@@ -5,6 +5,7 @@ import unittest
 from src.compute_aware_cascade import (
     DEFAULT_COST_PROXY,
     build_recommendation_rows,
+    build_recommendation_stability_rows,
     build_robustness_gap_rows,
     build_strategy_rows,
     build_synthetic_scope_rows,
@@ -196,6 +197,26 @@ class ComputeAwareCascadeTest(unittest.TestCase):
         self.assertEqual(by_profile["accuracy_first"]["recommended_strategy"], "accurate")
         self.assertEqual(by_profile["cost_first"]["recommended_strategy"], "cheap")
         self.assertEqual(by_profile["balanced"]["recommended_strategy"], "balanced")
+
+    def test_build_recommendation_stability_rows_counts_scope_consensus(self) -> None:
+        rows = [
+            {"dataset": "gold", "scope": "ALL", "profile": "balanced", "recommended_strategy": "router"},
+            {"dataset": "synthetic_split", "scope": "ALL", "profile": "balanced", "recommended_strategy": "router"},
+            {"dataset": "synthetic_split", "scope": "DEV", "profile": "balanced", "recommended_strategy": "router"},
+            {"dataset": "synthetic_split", "scope": "TEST", "profile": "balanced", "recommended_strategy": "mixed"},
+            {"dataset": "gold", "scope": "ALL", "profile": "cost_first", "recommended_strategy": "mixed"},
+            {"dataset": "synthetic_split", "scope": "ALL", "profile": "cost_first", "recommended_strategy": "mixed"},
+        ]
+
+        stability = build_recommendation_stability_rows(rows)
+        balanced = next(row for row in stability if row["profile"] == "balanced")
+        cost_first = next(row for row in stability if row["profile"] == "cost_first")
+
+        self.assertEqual(balanced["distinct_strategy_count"], 2)
+        self.assertEqual(balanced["most_common_strategy"], "router")
+        self.assertEqual(balanced["consensus_ratio"], 0.75)
+        self.assertEqual(cost_first["distinct_strategy_count"], 1)
+        self.assertEqual(cost_first["consensus_ratio"], 1.0)
 
     def test_build_robustness_gap_rows_compares_gold_to_synthetic_all(self) -> None:
         gold_rows = [
