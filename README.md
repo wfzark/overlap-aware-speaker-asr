@@ -206,6 +206,11 @@ Current benchmark evidence receipt result:
 
 - `results/figures/cascade_benchmark_evidence_receipt.md` now shows what the current benchmark run must write back, which completion signal closes it, and what follow-up note should remain
 
+Current benchmark receipt bridge result:
+
+- `results/figures/cascade_benchmark_receipt_bridge.md` now links the benchmark handoff packet directly to the benchmark evidence receipt
+- This bridge is still coordination-only: it names the current benchmark step, the prerequisite packet, and the receipt target without claiming that any benchmark execution has already happened
+
 Current benchmark handoff packet result:
 
 - `results/figures/cascade_benchmark_handoff_packet.md` now acts as the single-entry benchmark handoff note across readiness, plan, checklist, manifest template, execution summary, execution queue, session ledger, dependency graph, blocker matrix, runbook card, milestone card, phase checkpoint card, completion dashboard, operator brief, evidence receipt, and status tracking

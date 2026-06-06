@@ -443,6 +443,12 @@ Benchmark frontier bridge:
 - `results/tables/cascade_benchmark_frontier_bridge.csv`
 - This bridge now links the benchmark operator brief back to the broader frontier queue so the runtime-foundation work remains visible inside the breadth-first coordination layer.
 
+Benchmark receipt bridge:
+
+- `results/figures/cascade_benchmark_receipt_bridge.md`
+- `results/tables/cascade_benchmark_receipt_bridge.csv`
+- This bridge now links the benchmark handoff packet directly to the benchmark evidence receipt. It still does not claim any executed benchmark run; it simply shows which packet should be opened first and which receipt target should eventually capture the writeback.
+
 MeetEval compatibility bridge:
 
 - `results/figures/meeteval_compatibility_note.md`

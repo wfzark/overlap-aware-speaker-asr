@@ -264,6 +264,12 @@ Update: a generated benchmark handoff packet now turns the execution stack into 
 - Handoff packet: `results/figures/cascade_benchmark_handoff_packet.md`
 - This lets future contributors start from one note before diving into readiness, plan, checklist, manifest, execution-summary, execution-queue, session-ledger, dependency-graph, blocker-matrix, runbook-card, milestone-card, phase-checkpoint-card, completion-dashboard, operator-brief, evidence-receipt, and status details.
 
+Update: a generated benchmark receipt bridge now connects that entrypoint to the receipt target.
+
+- Benchmark receipt bridge: `results/tables/cascade_benchmark_receipt_bridge.csv`
+- Summary view: `results/figures/cascade_benchmark_receipt_bridge.md`
+- This keeps the benchmark coordination stack easier to finish without overstating progress: it points the current benchmark step from the handoff packet down to the evidence receipt without implying that any timing capture has already happened.
+
 Remaining stretch work:
 
 - replace proxy costs with a controlled hardware/runtime benchmark
