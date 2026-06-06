@@ -58,6 +58,14 @@ This generated packet consolidates the benchmark readiness scaffold, staged plan
 - `phase4_synthetic_surface_refresh` depends on `phase3_gold_surface_refresh` / status `blocked_by_predecessor` / unlocks `phase5_cross_dataset_refresh` / note `Wait for phase3_gold_surface_refresh before phase4_synthetic_surface_refresh can produce timing-backed surface outputs.`
 - `phase5_cross_dataset_refresh` depends on `phase4_synthetic_surface_refresh` / status `blocked_by_predecessor` / unlocks `` / note `Wait for phase4_synthetic_surface_refresh before phase5_cross_dataset_refresh can produce timing-backed cross_dataset outputs.`
 
+## Blocker Matrix
+
+- `phase1_gold_runtime_foundation` / blocker `runtime_capture_missing` / priority `do_now` / dependency `root` / severity `high` / note `do_now / root / 6 pending fields`
+- `phase2_synthetic_runtime_foundation` / blocker `runtime_capture_missing` / priority `do_now` / dependency `blocked_by_predecessor` / severity `high` / note `do_now / blocked_by_predecessor / 6 pending fields`
+- `phase3_gold_surface_refresh` / blocker `artifact_refresh_missing` / priority `next_after_runtime` / dependency `blocked_by_predecessor` / severity `medium` / note `next_after_runtime / blocked_by_predecessor / 3 pending fields`
+- `phase4_synthetic_surface_refresh` / blocker `artifact_refresh_missing` / priority `next_after_runtime` / dependency `blocked_by_predecessor` / severity `medium` / note `next_after_runtime / blocked_by_predecessor / 3 pending fields`
+- `phase5_cross_dataset_refresh` / blocker `derived_refresh_missing` / priority `next_after_runtime` / dependency `blocked_by_predecessor` / severity `high` / note `next_after_runtime / blocked_by_predecessor / 4 pending fields`
+
 ## Execution Status
 
 - step 1: `phase1_gold_runtime_foundation` is `template_only` / `pending_execution` with missing `hardware_label;device;repeat_count;warmup_count;batch_shape;timing_notes`
