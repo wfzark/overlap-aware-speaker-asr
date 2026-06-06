@@ -240,6 +240,11 @@ Remaining stretch work:
 - architecture diagrams
 - onboarding clarity
 
+Update: the project harness now includes a breadth-first frontier status view.
+
+- Harness report: `results/figures/project_harness_report.md`
+- This table makes the current status, evidence path, expected output, and next step visible for `speaker_profile`, `meeteval_compatibility`, `llm_critic`, `external_validation`, and `demo_excellence`.
+
 ## Healthy Project Principles
 
 - New experiments should be isolated.

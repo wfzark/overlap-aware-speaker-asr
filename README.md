@@ -205,6 +205,10 @@ Current benchmark handoff packet result:
 
 - `results/figures/cascade_benchmark_handoff_packet.md` now acts as the single-entry benchmark handoff note across readiness, plan, checklist, manifest template, execution summary, execution queue, session ledger, dependency graph, blocker matrix, runbook card, milestone card, phase checkpoint card, completion dashboard, operator brief, evidence receipt, and status tracking
 
+Current frontier harness breadth result:
+
+- `results/figures/project_harness_report.md` now includes a `frontier_status` table so contributors can see the current breadth-first status of `speaker_profile`, `meeteval_compatibility`, `llm_critic`, `external_validation`, and `demo_excellence`
+
 ## Core Findings
 
 - Speech separation is useful, but not universally beneficial.

@@ -408,6 +408,11 @@ The next stage is not another maintenance loop. It should focus on:
 - ambitious exploration docs
 - experimental frontier work
 
+Frontier harness breadth status:
+
+- `results/figures/project_harness_report.md`
+- The harness report now includes a generated `frontier_status` table covering `speaker_profile`, `meeteval_compatibility`, `llm_critic`, `external_validation`, and `demo_excellence` so breadth-first work can be spread across multiple frontiers.
+
 ## How to Resume Work
 
 Common commands:
