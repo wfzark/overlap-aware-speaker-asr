@@ -108,6 +108,15 @@
     "intended_use": "Priority-ordered readiness scaffold for replacing repository-local timing with controlled benchmark evidence."
   },
   {
+    "artifact_id": "cross_dataset_benchmark_runbook_card",
+    "dataset": "cross_dataset",
+    "label": "experimental/frontier",
+    "artifact_group": "report",
+    "artifact_path": "results/figures/cascade_benchmark_runbook_card.md",
+    "generator_command": "python -m src.compute_aware_cascade --dataset synthetic_split",
+    "intended_use": "One-page runbook card summarizing the first benchmark action, evidence needs, and completion target."
+  },
+  {
     "artifact_id": "cross_dataset_benchmark_session_ledger",
     "dataset": "cross_dataset",
     "label": "experimental/frontier",

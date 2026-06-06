@@ -66,6 +66,10 @@ This generated packet consolidates the benchmark readiness scaffold, staged plan
 - `phase4_synthetic_surface_refresh` / blocker `artifact_refresh_missing` / priority `next_after_runtime` / dependency `blocked_by_predecessor` / severity `medium` / note `next_after_runtime / blocked_by_predecessor / 3 pending fields`
 - `phase5_cross_dataset_refresh` / blocker `derived_refresh_missing` / priority `next_after_runtime` / dependency `blocked_by_predecessor` / severity `high` / note `next_after_runtime / blocked_by_predecessor / 4 pending fields`
 
+## Runbook Card
+
+- start `phase1_gold_runtime_foundation` / action `collect_controlled_runtime` / session `timing_capture` / evidence `hardware_label;device;repeat_count;warmup_count;batch_shape;timing_notes` / urgency `high` / note `Start with phase1_gold_runtime_foundation because it is do_now and root.`
+
 ## Execution Status
 
 - step 1: `phase1_gold_runtime_foundation` is `template_only` / `pending_execution` with missing `hardware_label;device;repeat_count;warmup_count;batch_shape;timing_notes`
