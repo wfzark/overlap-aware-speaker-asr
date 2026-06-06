@@ -163,6 +163,16 @@ DECISION_MATRIX_COLUMNS = [
     "notes",
 ]
 
+ARTIFACT_INDEX_COLUMNS = [
+    "artifact_id",
+    "dataset",
+    "label",
+    "artifact_group",
+    "artifact_path",
+    "generator_command",
+    "intended_use",
+]
+
 
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description="Compute-aware cascade evaluation.")
@@ -1298,6 +1308,80 @@ def write_frontier_report(
     output_path.write_text("\n".join(build_frontier_report_lines(decision_matrix_rows, family_stability_rows, robustness_rows)) + "\n", encoding="utf-8")
 
 
+def build_artifact_index_rows() -> list[dict[str, Any]]:
+    registry = [
+        ("gold_cascade_performance", "gold", "experimental/frontier", "performance", "results/tables/cascade_performance.csv", "python -m src.compute_aware_cascade", "Primary gold compute-aware performance table."),
+        ("gold_cascade_summary", "gold", "experimental/frontier", "summary", "results/figures/compute_aware_cascade_summary.md", "python -m src.compute_aware_cascade", "Narrative summary of the gold cascade trade-off table."),
+        ("gold_tradeoff_figure", "gold", "experimental/frontier", "figure", "results/figures/cer_runtime_tradeoff.png", "python -m src.compute_aware_cascade", "CER versus compute scatter plot for gold strategies."),
+        ("gold_runtime_audit", "gold", "experimental/frontier", "audit", "results/tables/cascade_runtime_audit.csv", "python -m src.compute_aware_cascade", "Observed-runtime versus proxy-runtime provenance audit for gold selections."),
+        ("gold_runtime_normalization", "gold", "experimental/frontier", "audit", "results/tables/cascade_runtime_normalization.csv", "python -m src.compute_aware_cascade", "Selected-route runtime normalization and RTF audit for gold strategies."),
+        ("gold_pareto", "gold", "experimental/frontier", "audit", "results/tables/cascade_pareto.csv", "python -m src.compute_aware_cascade", "CER/compute Pareto frontier audit for gold strategies."),
+        ("gold_recommendations", "gold", "experimental/frontier", "recommendation", "results/tables/cascade_recommendations.csv", "python -m src.compute_aware_cascade", "Deployment-profile recommendation card for gold strategies."),
+        ("gold_frontier_report", "gold", "experimental/frontier", "report", "results/figures/cascade_frontier_report.md", "python -m src.compute_aware_cascade --dataset synthetic_split", "Single-entry frontier report that consolidates the current cascade evidence stack."),
+        ("synthetic_split_cascade_performance", "synthetic_split", "synthetic/silver", "performance", "results/tables/synthetic_split_cascade_performance.csv", "python -m src.compute_aware_cascade --dataset synthetic_split", "Held-out synthetic split cascade performance table."),
+        ("synthetic_split_cascade_summary", "synthetic_split", "synthetic/silver", "summary", "results/figures/synthetic_split_cascade_summary.md", "python -m src.compute_aware_cascade --dataset synthetic_split", "Narrative summary of synthetic split cascade trade-offs."),
+        ("synthetic_split_tradeoff_figure", "synthetic_split", "synthetic/silver", "figure", "results/figures/synthetic_split_cer_runtime_tradeoff.png", "python -m src.compute_aware_cascade --dataset synthetic_split", "CER versus compute scatter plot for synthetic split strategies."),
+        ("synthetic_split_runtime_audit", "synthetic_split", "synthetic/silver", "audit", "results/tables/synthetic_split_cascade_runtime_audit.csv", "python -m src.compute_aware_cascade --dataset synthetic_split", "Observed-runtime versus proxy-runtime provenance audit for synthetic split selections."),
+        ("synthetic_split_runtime_normalization", "synthetic_split", "synthetic/silver", "audit", "results/tables/synthetic_split_cascade_runtime_normalization.csv", "python -m src.compute_aware_cascade --dataset synthetic_split", "Selected-route runtime normalization and RTF audit for synthetic split strategies."),
+        ("synthetic_split_pareto", "synthetic_split", "synthetic/silver", "audit", "results/tables/synthetic_split_cascade_pareto.csv", "python -m src.compute_aware_cascade --dataset synthetic_split", "CER/compute Pareto frontier audit for synthetic split strategies."),
+        ("synthetic_split_recommendations", "synthetic_split", "synthetic/silver", "recommendation", "results/tables/synthetic_split_cascade_recommendations.csv", "python -m src.compute_aware_cascade --dataset synthetic_split", "Deployment-profile recommendation card for synthetic split strategies."),
+        ("cross_dataset_robustness_gap", "cross_dataset", "experimental/frontier", "audit", "results/tables/cascade_robustness_gap.csv", "python -m src.compute_aware_cascade --dataset synthetic_split", "Gold versus synthetic split robustness gap table for shared strategy families."),
+        ("cross_dataset_recommendation_stability", "cross_dataset", "experimental/frontier", "audit", "results/tables/cascade_recommendation_stability.csv", "python -m src.compute_aware_cascade --dataset synthetic_split", "Raw strategy recommendation stability across gold and synthetic scopes."),
+        ("cross_dataset_family_stability", "cross_dataset", "experimental/frontier", "audit", "results/tables/cascade_recommendation_family_stability.csv", "python -m src.compute_aware_cascade --dataset synthetic_split", "Family-level recommendation stability across gold and synthetic scopes."),
+        ("cross_dataset_decision_matrix", "cross_dataset", "experimental/frontier", "report", "results/tables/cascade_decision_matrix.csv", "python -m src.compute_aware_cascade --dataset synthetic_split", "Deployment-facing matrix that merges recommendation and robustness evidence."),
+    ]
+    rows = [
+        {
+            "artifact_id": artifact_id,
+            "dataset": dataset,
+            "label": label,
+            "artifact_group": artifact_group,
+            "artifact_path": artifact_path,
+            "generator_command": generator_command,
+            "intended_use": intended_use,
+        }
+        for artifact_id, dataset, label, artifact_group, artifact_path, generator_command, intended_use in registry
+    ]
+    return sorted(rows, key=lambda row: (str(row["dataset"]), str(row["artifact_group"]), str(row["artifact_id"])))
+
+
+def build_artifact_index_lines(rows: list[dict[str, Any]]) -> list[str]:
+    lines = [
+        "# Cascade Artifact Index",
+        "",
+        "This generated index lists the current compute-aware cascade artifacts, labels, and intended entrypoints.",
+        "",
+    ]
+    datasets = sorted({str(row.get("dataset", "")) for row in rows})
+    for dataset in datasets:
+        lines.extend(
+            [
+                f"## {dataset}",
+                "",
+                "| artifact_id | label | artifact_group | artifact_path | generator_command | intended_use |",
+                "| --- | --- | --- | --- | --- | --- |",
+            ]
+        )
+        for row in rows:
+            if str(row.get("dataset", "")) == dataset:
+                lines.append(
+                    f"| {row['artifact_id']} | {row['label']} | {row['artifact_group']} | {row['artifact_path']} | {row['generator_command']} | {row['intended_use']} |"
+                )
+        lines.append("")
+    return lines
+
+
+def write_artifact_index_outputs(
+    rows: list[dict[str, Any]],
+    csv_path: Path,
+    json_path: Path,
+    summary_path: Path,
+) -> None:
+    write_csv_json(rows, csv_path, json_path, ARTIFACT_INDEX_COLUMNS)
+    summary_path.parent.mkdir(parents=True, exist_ok=True)
+    summary_path.write_text("\n".join(build_artifact_index_lines(rows)) + "\n", encoding="utf-8")
+
+
 def set_pixel(pixels: bytearray, width: int, height: int, x: int, y: int, color: tuple[int, int, int]) -> None:
     if 0 <= x < width and 0 <= y < height:
         idx = (y * width + x) * 3
@@ -1458,6 +1542,10 @@ def write_runtime_normalization_outputs(
 
 def main() -> None:
     args = parse_args()
+    artifact_index_rows = build_artifact_index_rows()
+    artifact_index_csv = PROJECT_ROOT / "results" / "tables" / "cascade_artifact_index.csv"
+    artifact_index_json = PROJECT_ROOT / "results" / "tables" / "cascade_artifact_index.json"
+    artifact_index_md = PROJECT_ROOT / "results" / "figures" / "cascade_artifact_index.md"
     if args.dataset == "synthetic_split":
         cases = load_synthetic_split_cases()
         decisions = load_synthetic_split_decisions()
@@ -1598,6 +1686,7 @@ def main() -> None:
             robustness_rows,
             PROJECT_ROOT / "results" / "figures" / "cascade_frontier_report.md",
         )
+        write_artifact_index_outputs(artifact_index_rows, artifact_index_csv, artifact_index_json, artifact_index_md)
     else:
         cases = load_gold_cases()
         decisions = load_decisions()
@@ -1647,11 +1736,13 @@ def main() -> None:
         write_pareto_outputs(pareto_rows, pareto_csv, pareto_json, pareto_md)
         recommendation_rows = build_recommendation_rows(pareto_rows)
         write_recommendation_outputs(recommendation_rows, recommendation_csv, recommendation_json, recommendation_md)
+        write_artifact_index_outputs(artifact_index_rows, artifact_index_csv, artifact_index_json, artifact_index_md)
 
     print(f"Wrote cascade performance: {table_csv.relative_to(PROJECT_ROOT)}")
     print(f"Wrote cascade JSON: {table_json.relative_to(PROJECT_ROOT)}")
     print(f"Wrote cascade figure: {figure_path.relative_to(PROJECT_ROOT)}")
     print(f"Wrote cascade summary: {summary_path.relative_to(PROJECT_ROOT)}")
+    print(f"Wrote cascade artifact index: {artifact_index_csv.relative_to(PROJECT_ROOT)}")
 
 
 if __name__ == "__main__":

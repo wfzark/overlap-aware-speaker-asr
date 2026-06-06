@@ -4,6 +4,8 @@ import unittest
 
 from src.compute_aware_cascade import (
     build_decision_matrix_rows,
+    build_artifact_index_lines,
+    build_artifact_index_rows,
     build_frontier_report_lines,
     DEFAULT_COST_PROXY,
     build_recommendation_family_stability_rows,
@@ -325,6 +327,55 @@ class ComputeAwareCascadeTest(unittest.TestCase):
         self.assertEqual(len(rows), 1)
         self.assertEqual(rows[0]["strategy"], "router_v2")
         self.assertEqual(rows[0]["cer_gap_vs_gold"], 0.16)
+
+    def test_build_artifact_index_rows_covers_gold_and_synthetic_frontier_outputs(self) -> None:
+        rows = build_artifact_index_rows()
+
+        gold_frontier = next(row for row in rows if row["artifact_id"] == "gold_frontier_report")
+        synthetic_recommendations = next(
+            row for row in rows if row["artifact_id"] == "synthetic_split_recommendations"
+        )
+        gold_performance = next(row for row in rows if row["artifact_id"] == "gold_cascade_performance")
+
+        self.assertEqual(gold_frontier["label"], "experimental/frontier")
+        self.assertEqual(gold_frontier["dataset"], "gold")
+        self.assertEqual(gold_frontier["artifact_path"], "results/figures/cascade_frontier_report.md")
+        self.assertEqual(synthetic_recommendations["label"], "synthetic/silver")
+        self.assertEqual(synthetic_recommendations["dataset"], "synthetic_split")
+        self.assertEqual(gold_performance["label"], "experimental/frontier")
+        self.assertTrue(rows == sorted(rows, key=lambda row: (row["dataset"], row["artifact_group"], row["artifact_id"])))
+
+    def test_build_artifact_index_lines_summarizes_registry_as_markdown(self) -> None:
+        rows = [
+            {
+                "artifact_id": "gold_cascade_performance",
+                "dataset": "gold",
+                "label": "experimental/frontier",
+                "artifact_group": "performance",
+                "artifact_path": "results/tables/cascade_performance.csv",
+                "generator_command": "python -m src.compute_aware_cascade",
+                "intended_use": "Primary gold compute-aware performance table.",
+            },
+            {
+                "artifact_id": "synthetic_split_recommendations",
+                "dataset": "synthetic_split",
+                "label": "synthetic/silver",
+                "artifact_group": "recommendation",
+                "artifact_path": "results/tables/synthetic_split_cascade_recommendations.csv",
+                "generator_command": "python -m src.compute_aware_cascade --dataset synthetic_split",
+                "intended_use": "Synthetic split deployment-profile recommendation card.",
+            },
+        ]
+
+        lines = build_artifact_index_lines(rows)
+        rendered = "\n".join(lines)
+
+        self.assertIn("# Cascade Artifact Index", rendered)
+        self.assertIn("## gold", rendered)
+        self.assertIn("## synthetic_split", rendered)
+        self.assertIn("gold_cascade_performance", rendered)
+        self.assertIn("synthetic/silver", rendered)
+        self.assertIn("python -m src.compute_aware_cascade --dataset synthetic_split", rendered)
 
 
 if __name__ == "__main__":
