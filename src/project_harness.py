@@ -348,6 +348,40 @@ def build_frontier_receipt_map_lines(rows: list[dict[str, str]]) -> list[str]:
     return lines
 
 
+def build_frontier_parallel_picklist_rows(queue_rows: list[dict[str, str]]) -> list[dict[str, str]]:
+    picklist_rows: list[dict[str, str]] = []
+    for row in queue_rows:
+        frontier_id = str(row.get("frontier_id", ""))
+        pickup_artifact, receipt_target = frontier_next_artifact(frontier_id)
+        picklist_rows.append(
+            {
+                "queue_order": str(row.get("queue_order", "")),
+                "current_frontier": frontier_id,
+                "pickup_artifact": pickup_artifact,
+                "receipt_target": receipt_target,
+                "pickup_note": "Safe to pick up in parallel after checking queue order and opening the pickup artifact first.",
+                "picklist_scope": "Coordination-only picklist; not a claim of completed frontier execution.",
+            }
+        )
+    return picklist_rows
+
+
+def build_frontier_parallel_picklist_lines(rows: list[dict[str, str]]) -> list[str]:
+    lines = [
+        "# Frontier Parallel Picklist",
+        "",
+        "This generated picklist shows which current frontiers can be picked up independently while keeping the breadth-first queue visible. It does not claim that any frontier work has already been executed.",
+        "",
+        "| queue_order | current_frontier | pickup_artifact | receipt_target | pickup_note | picklist_scope |",
+        "| --- | --- | --- | --- | --- | --- |",
+    ]
+    for row in rows:
+        lines.append(
+            f"| {row['queue_order']} | {row['current_frontier']} | {row['pickup_artifact']} | {row['receipt_target']} | {row['pickup_note']} | {row['picklist_scope']} |"
+        )
+    return lines
+
+
 def build_report() -> dict[str, object]:
     missing_core = [path for path in CORE_FILES if not exists(path)]
     gold_status = inspect_gold_cases()
@@ -501,6 +535,21 @@ def write_frontier_receipt_map(frontier_status: list[dict[str, str]]) -> tuple[P
     return json_path, md_path
 
 
+def write_frontier_parallel_picklist(frontier_status: list[dict[str, str]]) -> tuple[Path, Path]:
+    tables_dir = PROJECT_ROOT / "results" / "tables"
+    figures_dir = PROJECT_ROOT / "results" / "figures"
+    tables_dir.mkdir(parents=True, exist_ok=True)
+    figures_dir.mkdir(parents=True, exist_ok=True)
+
+    queue_rows = build_frontier_execution_queue_rows(frontier_status)
+    picklist_rows = build_frontier_parallel_picklist_rows(queue_rows)
+    json_path = tables_dir / "frontier_parallel_picklist.json"
+    md_path = figures_dir / "frontier_parallel_picklist.md"
+    json_path.write_text(json.dumps(picklist_rows, ensure_ascii=False, indent=2), encoding="utf-8")
+    md_path.write_text("\n".join(build_frontier_parallel_picklist_lines(picklist_rows)) + "\n", encoding="utf-8")
+    return json_path, md_path
+
+
 def main() -> None:
     report = build_report()
     json_path, md_path = write_report(report)
@@ -509,6 +558,7 @@ def main() -> None:
     handoff_json_path, handoff_md_path = write_frontier_handoff_packet(report["frontier_status"])
     receipt_json_path, receipt_md_path = write_frontier_receipt_packet(report["frontier_status"])
     receipt_map_json_path, receipt_map_md_path = write_frontier_receipt_map(report["frontier_status"])
+    parallel_picklist_json_path, parallel_picklist_md_path = write_frontier_parallel_picklist(report["frontier_status"])
     print(f"Wrote harness report: {json_path.relative_to(PROJECT_ROOT)}")
     print(f"Wrote harness summary: {md_path.relative_to(PROJECT_ROOT)}")
     print(f"Wrote frontier queue JSON: {queue_json_path.relative_to(PROJECT_ROOT)}")
@@ -521,6 +571,8 @@ def main() -> None:
     print(f"Wrote frontier receipt note: {receipt_md_path.relative_to(PROJECT_ROOT)}")
     print(f"Wrote frontier receipt map JSON: {receipt_map_json_path.relative_to(PROJECT_ROOT)}")
     print(f"Wrote frontier receipt map note: {receipt_map_md_path.relative_to(PROJECT_ROOT)}")
+    print(f"Wrote frontier parallel picklist JSON: {parallel_picklist_json_path.relative_to(PROJECT_ROOT)}")
+    print(f"Wrote frontier parallel picklist note: {parallel_picklist_md_path.relative_to(PROJECT_ROOT)}")
     print(f"gold_cases_present: {all(report['gold_cases'].values())}")
     print(f"gold_and_synthetic_separated: {report['gold_and_synthetic_separated']}")
 
