@@ -47,6 +47,15 @@ DRY_RUN_RECEIPT_COLUMNS = [
     "writeback_note",
 ]
 
+DRY_RUN_CHECKLIST_COLUMNS = [
+    "case_id",
+    "hypothesis_source",
+    "dry_run_priority",
+    "operator_step",
+    "expected_evidence",
+    "validation_note",
+]
+
 
 def load_reference_payload(case_id: str) -> dict[str, Any]:
     payload = load_reference(case_id)
@@ -255,11 +264,54 @@ def build_meeteval_dry_run_receipt_lines(rows: list[dict[str, str]]) -> list[str
     return lines
 
 
+def build_meeteval_dry_run_checklist_rows(rows: list[dict[str, Any]]) -> list[dict[str, str]]:
+    checklist_rows: list[dict[str, str]] = []
+    for row in rows:
+        hypothesis_source = str(row.get("hypothesis_source", ""))
+        if hypothesis_source == "separated_whisper":
+            dry_run_priority = "preferred"
+            validation_note = "Raw separated source is available, so this is the cleanest first dry-run candidate."
+        elif hypothesis_source == "separated_whisper_cleaned":
+            dry_run_priority = "secondary"
+            validation_note = "Cleaned fallback is available, but it should stay behind raw separated source cases in the dry-run queue."
+        else:
+            dry_run_priority = "unknown"
+            validation_note = "Source mix is unclear, so the case should only be used after the export path is checked."
+
+        checklist_rows.append(
+            {
+                "case_id": str(row.get("case_id", "")),
+                "hypothesis_source": hypothesis_source,
+                "dry_run_priority": dry_run_priority,
+                "operator_step": "Validate one exported case end-to-end before any cpWER-style claim.",
+                "expected_evidence": "results/tables/meeteval_dry_run_receipt.json",
+                "validation_note": validation_note,
+            }
+        )
+    return checklist_rows
+
+
+def build_meeteval_dry_run_checklist_lines(rows: list[dict[str, str]]) -> list[str]:
+    lines = [
+        "# MeetEval Dry Run Checklist",
+        "",
+        "This generated checklist orders the verified cases for a single diagnostic dry run. It does not claim that MeetEval or cpWER has been run.",
+        "",
+        "| case_id | hypothesis_source | dry_run_priority | operator_step | expected_evidence | validation_note |",
+        "| --- | --- | --- | --- | --- | --- |",
+    ]
+    for row in rows:
+        lines.append(
+            f"| {row['case_id']} | {row['hypothesis_source']} | {row['dry_run_priority']} | {row['operator_step']} | {row['expected_evidence']} | {row['validation_note']} |"
+        )
+    return lines
+
+
 def write_outputs(
     rows: list[dict[str, Any]],
     reference_lines: list[str],
     hypothesis_lines: list[str],
-) -> tuple[Path, Path, Path, Path, Path, Path, Path, Path, Path, Path, Path, Path, Path]:
+) -> tuple[Path, Path, Path, Path, Path, Path, Path, Path, Path, Path, Path, Path, Path, Path, Path, Path]:
     tables_dir = PROJECT_ROOT / "results" / "tables"
     figures_dir = PROJECT_ROOT / "results" / "figures"
     tables_dir.mkdir(parents=True, exist_ok=True)
@@ -281,6 +333,10 @@ def write_outputs(
     dry_run_receipt_rows = build_meeteval_dry_run_receipt_rows(dry_run_handoff_rows)
     dry_run_receipt_json_path = tables_dir / "meeteval_dry_run_receipt.json"
     dry_run_receipt_note_path = figures_dir / "meeteval_dry_run_receipt.md"
+    dry_run_checklist_rows = build_meeteval_dry_run_checklist_rows(rows)
+    dry_run_checklist_csv_path = tables_dir / "meeteval_dry_run_checklist.csv"
+    dry_run_checklist_json_path = tables_dir / "meeteval_dry_run_checklist.json"
+    dry_run_checklist_note_path = figures_dir / "meeteval_dry_run_checklist.md"
 
     with csv_path.open("w", newline="", encoding="utf-8-sig") as f:
         writer = csv.DictWriter(f, fieldnames=SUMMARY_COLUMNS)
@@ -310,6 +366,15 @@ def write_outputs(
         "\n".join(build_meeteval_dry_run_receipt_lines(dry_run_receipt_rows)) + "\n",
         encoding="utf-8",
     )
+    with dry_run_checklist_csv_path.open("w", newline="", encoding="utf-8-sig") as f:
+        writer = csv.DictWriter(f, fieldnames=DRY_RUN_CHECKLIST_COLUMNS)
+        writer.writeheader()
+        writer.writerows(dry_run_checklist_rows)
+    dry_run_checklist_json_path.write_text(json.dumps(dry_run_checklist_rows, ensure_ascii=False, indent=2), encoding="utf-8")
+    dry_run_checklist_note_path.write_text(
+        "\n".join(build_meeteval_dry_run_checklist_lines(dry_run_checklist_rows)) + "\n",
+        encoding="utf-8",
+    )
     return (
         csv_path,
         json_path,
@@ -324,6 +389,9 @@ def write_outputs(
         dry_run_handoff_note_path,
         dry_run_receipt_json_path,
         dry_run_receipt_note_path,
+        dry_run_checklist_csv_path,
+        dry_run_checklist_json_path,
+        dry_run_checklist_note_path,
     )
 
 
@@ -355,6 +423,9 @@ def main() -> None:
         dry_run_handoff_note_path,
         dry_run_receipt_json_path,
         dry_run_receipt_note_path,
+        dry_run_checklist_csv_path,
+        dry_run_checklist_json_path,
+        dry_run_checklist_note_path,
     ) = write_outputs(rows, reference_lines, hypothesis_lines)
     print(f"Wrote MeetEval summary: {csv_path.relative_to(PROJECT_ROOT)}")
     print(f"Wrote MeetEval JSON: {json_path.relative_to(PROJECT_ROOT)}")
@@ -369,6 +440,9 @@ def main() -> None:
     print(f"Wrote MeetEval dry run handoff note: {dry_run_handoff_note_path.relative_to(PROJECT_ROOT)}")
     print(f"Wrote MeetEval dry run receipt JSON: {dry_run_receipt_json_path.relative_to(PROJECT_ROOT)}")
     print(f"Wrote MeetEval dry run receipt note: {dry_run_receipt_note_path.relative_to(PROJECT_ROOT)}")
+    print(f"Wrote MeetEval dry run checklist CSV: {dry_run_checklist_csv_path.relative_to(PROJECT_ROOT)}")
+    print(f"Wrote MeetEval dry run checklist JSON: {dry_run_checklist_json_path.relative_to(PROJECT_ROOT)}")
+    print(f"Wrote MeetEval dry run checklist note: {dry_run_checklist_note_path.relative_to(PROJECT_ROOT)}")
 
 
 if __name__ == "__main__":

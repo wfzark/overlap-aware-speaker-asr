@@ -8,6 +8,8 @@ from src.export_meeteval_compatibility import (
     build_meeteval_compatibility_rows,
     build_meeteval_dry_run_handoff_lines,
     build_meeteval_dry_run_handoff_rows,
+    build_meeteval_dry_run_checklist_lines,
+    build_meeteval_dry_run_checklist_rows,
     build_meeteval_dry_run_receipt_lines,
     build_meeteval_dry_run_receipt_rows,
     build_meeteval_readiness_lines,
@@ -221,6 +223,45 @@ class MeetEvalCompatibilityTest(unittest.TestCase):
         self.assertIn("template_only", rendered)
         self.assertIn("single_verified_case", rendered)
         self.assertIn("not been executed yet", rendered)
+
+    def test_build_meeteval_dry_run_checklist_rows_rank_verified_cases(self) -> None:
+        rows = build_meeteval_dry_run_checklist_rows(
+            [
+                {
+                    "case_id": "NoOverlap",
+                    "hypothesis_source": "separated_whisper",
+                },
+                {
+                    "case_id": "LightOverlap",
+                    "hypothesis_source": "separated_whisper_cleaned",
+                },
+            ]
+        )
+
+        self.assertEqual(len(rows), 2)
+        self.assertEqual(rows[0]["dry_run_priority"], "preferred")
+        self.assertEqual(rows[1]["dry_run_priority"], "secondary")
+        self.assertIn("end-to-end", rows[0]["operator_step"])
+        self.assertIn("dry-run", rows[1]["validation_note"].lower())
+
+    def test_build_meeteval_dry_run_checklist_lines_render_queue(self) -> None:
+        lines = build_meeteval_dry_run_checklist_lines(
+            [
+                {
+                    "case_id": "NoOverlap",
+                    "hypothesis_source": "separated_whisper",
+                    "dry_run_priority": "preferred",
+                    "operator_step": "Validate one exported case end-to-end before any cpWER-style claim.",
+                    "expected_evidence": "results/tables/meeteval_dry_run_receipt.json",
+                    "validation_note": "Raw separated source is available, so this is the cleanest first dry-run candidate.",
+                }
+            ]
+        )
+        rendered = "\n".join(lines)
+
+        self.assertIn("# MeetEval Dry Run Checklist", rendered)
+        self.assertIn("preferred", rendered)
+        self.assertIn("meeteval_dry_run_receipt.json", rendered)
 
 
 if __name__ == "__main__":
