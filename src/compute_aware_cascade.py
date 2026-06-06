@@ -326,6 +326,14 @@ BENCHMARK_RUNBOOK_CARD_COLUMNS = [
     "runbook_note",
 ]
 
+BENCHMARK_MILESTONE_CARD_COLUMNS = [
+    "current_start_step",
+    "next_milestone_step",
+    "remaining_phase_count",
+    "current_urgency",
+    "milestone_note",
+]
+
 
 def build_benchmark_packet_lines(
     readiness_rows: list[dict[str, Any]],
@@ -339,6 +347,7 @@ def build_benchmark_packet_lines(
     dependency_graph_rows: list[dict[str, Any]],
     blocker_matrix_rows: list[dict[str, Any]],
     runbook_card_rows: list[dict[str, Any]],
+    milestone_card_rows: list[dict[str, Any]],
 ) -> list[str]:
     lines = [
         "# Cascade Benchmark Handoff Packet",
@@ -401,6 +410,12 @@ def build_benchmark_packet_lines(
         lines.append(
             f"- start `{row.get('recommended_start_step', '')}` / action `{row.get('recommended_action', '')}` / session `{row.get('session_type', '')}` / "
             f"evidence `{row.get('required_evidence', '')}` / urgency `{row.get('urgency', '')}` / note `{row.get('runbook_note', '')}`"
+        )
+    lines.extend(["", "## Milestone Card", ""])
+    for row in milestone_card_rows:
+        lines.append(
+            f"- current `{row.get('current_start_step', '')}` / next milestone `{row.get('next_milestone_step', '')}` / "
+            f"remaining phases `{row.get('remaining_phase_count', '')}` / urgency `{row.get('current_urgency', '')}` / note `{row.get('milestone_note', '')}`"
         )
     lines.extend(["", "## Execution Status", ""])
     for row in status_rows:
@@ -816,6 +831,63 @@ def build_benchmark_runbook_card_lines(rows: list[dict[str, Any]]) -> list[str]:
     return lines
 
 
+def build_benchmark_milestone_card_rows(
+    runbook_rows: list[dict[str, Any]],
+    dependency_rows: list[dict[str, Any]],
+    summary_rows: list[dict[str, Any]],
+) -> list[dict[str, Any]]:
+    if not runbook_rows:
+        return []
+    start_row = runbook_rows[0]
+    current_start_step = str(start_row.get("recommended_start_step", ""))
+    next_milestone_step = ""
+    for row in dependency_rows:
+        if str(row.get("plan_step_id", "")) == current_start_step:
+            next_milestone_step = str(row.get("unlocks_step", ""))
+            break
+    remaining_phase_count = len([row for row in summary_rows if str(row.get("readiness_label", "")) == "pending_execution"])
+    return [
+        {
+            "current_start_step": current_start_step,
+            "next_milestone_step": next_milestone_step,
+            "remaining_phase_count": remaining_phase_count,
+            "current_urgency": start_row.get("urgency", ""),
+            "milestone_note": f"{current_start_step} unlocks {next_milestone_step} and leaves {remaining_phase_count} pending phases.",
+        }
+    ]
+
+
+def build_benchmark_milestone_card_lines(rows: list[dict[str, Any]]) -> list[str]:
+    lines = [
+        "# Cascade Benchmark Milestone Card",
+        "",
+        "This generated milestone card summarizes the next milestone boundary and remaining benchmark path.",
+        "",
+    ]
+    for row in rows:
+        lines.extend(
+            [
+                f"- Current start step: `{row['current_start_step']}`",
+                f"- Next milestone step: `{row['next_milestone_step']}`",
+                f"- Remaining phase count: `{row['remaining_phase_count']}`",
+                f"- Current urgency: `{row['current_urgency']}`",
+                f"- Milestone note: {row['milestone_note']}",
+            ]
+        )
+    return lines
+
+
+def write_benchmark_milestone_card_outputs(
+    rows: list[dict[str, Any]],
+    csv_path: Path,
+    json_path: Path,
+    summary_path: Path,
+) -> None:
+    write_csv_json(rows, csv_path, json_path, BENCHMARK_MILESTONE_CARD_COLUMNS)
+    summary_path.parent.mkdir(parents=True, exist_ok=True)
+    summary_path.write_text("\n".join(build_benchmark_milestone_card_lines(rows)) + "\n", encoding="utf-8")
+
+
 def write_benchmark_runbook_card_outputs(
     rows: list[dict[str, Any]],
     csv_path: Path,
@@ -894,6 +966,7 @@ def write_benchmark_packet_output(
     dependency_graph_rows: list[dict[str, Any]],
     blocker_matrix_rows: list[dict[str, Any]],
     runbook_card_rows: list[dict[str, Any]],
+    milestone_card_rows: list[dict[str, Any]],
     output_path: Path,
 ) -> None:
     output_path.parent.mkdir(parents=True, exist_ok=True)
@@ -911,6 +984,7 @@ def write_benchmark_packet_output(
                 dependency_graph_rows,
                 blocker_matrix_rows,
                 runbook_card_rows,
+                milestone_card_rows,
             )
         )
         + "\n",
@@ -2085,6 +2159,7 @@ def build_artifact_index_rows() -> list[dict[str, Any]]:
         ("cross_dataset_benchmark_dependency_graph", "cross_dataset", "experimental/frontier", "report", "results/figures/cascade_benchmark_dependency_graph.md", "python -m src.compute_aware_cascade --dataset synthetic_split", "Dependency graph showing which benchmark step unlocks or blocks downstream benchmark steps."),
         ("cross_dataset_benchmark_blocker_matrix", "cross_dataset", "experimental/frontier", "report", "results/figures/cascade_benchmark_blocker_matrix.md", "python -m src.compute_aware_cascade --dataset synthetic_split", "Matrix view consolidating blocker type, queue priority, dependency state, and pending-field scale."),
         ("cross_dataset_benchmark_runbook_card", "cross_dataset", "experimental/frontier", "report", "results/figures/cascade_benchmark_runbook_card.md", "python -m src.compute_aware_cascade --dataset synthetic_split", "One-page runbook card summarizing the first benchmark action, evidence needs, and completion target."),
+        ("cross_dataset_benchmark_milestone_card", "cross_dataset", "experimental/frontier", "report", "results/figures/cascade_benchmark_milestone_card.md", "python -m src.compute_aware_cascade --dataset synthetic_split", "Milestone card summarizing the next unlock, current urgency, and remaining benchmark phases."),
         ("cross_dataset_benchmark_handoff_packet", "cross_dataset", "experimental/frontier", "report", "results/figures/cascade_benchmark_handoff_packet.md", "python -m src.compute_aware_cascade --dataset synthetic_split", "Single-entry benchmark handoff packet consolidating readiness, plan, checklist, manifest template, and status board."),
     ]
     rows = [
@@ -2772,6 +2847,14 @@ def main() -> None:
     benchmark_runbook_card_csv = PROJECT_ROOT / "results" / "tables" / "cascade_benchmark_runbook_card.csv"
     benchmark_runbook_card_json = PROJECT_ROOT / "results" / "tables" / "cascade_benchmark_runbook_card.json"
     benchmark_runbook_card_md = PROJECT_ROOT / "results" / "figures" / "cascade_benchmark_runbook_card.md"
+    benchmark_milestone_card_rows = build_benchmark_milestone_card_rows(
+        benchmark_runbook_card_rows,
+        benchmark_dependency_graph_rows,
+        benchmark_execution_summary_rows,
+    )
+    benchmark_milestone_card_csv = PROJECT_ROOT / "results" / "tables" / "cascade_benchmark_milestone_card.csv"
+    benchmark_milestone_card_json = PROJECT_ROOT / "results" / "tables" / "cascade_benchmark_milestone_card.json"
+    benchmark_milestone_card_md = PROJECT_ROOT / "results" / "figures" / "cascade_benchmark_milestone_card.md"
     benchmark_packet_md = PROJECT_ROOT / "results" / "figures" / "cascade_benchmark_handoff_packet.md"
     profile_playbook_csv = PROJECT_ROOT / "results" / "tables" / "cascade_profile_playbook.csv"
     profile_playbook_json = PROJECT_ROOT / "results" / "tables" / "cascade_profile_playbook.json"
@@ -2982,6 +3065,12 @@ def main() -> None:
             benchmark_runbook_card_json,
             benchmark_runbook_card_md,
         )
+        write_benchmark_milestone_card_outputs(
+            benchmark_milestone_card_rows,
+            benchmark_milestone_card_csv,
+            benchmark_milestone_card_json,
+            benchmark_milestone_card_md,
+        )
         write_benchmark_packet_output(
             benchmark_readiness_rows,
             benchmark_plan_rows,
@@ -2994,6 +3083,7 @@ def main() -> None:
             benchmark_dependency_graph_rows,
             benchmark_blocker_matrix_rows,
             benchmark_runbook_card_rows,
+            benchmark_milestone_card_rows,
             benchmark_packet_md,
         )
         profile_playbook_rows = build_profile_playbook_rows(decision_matrix_rows)
@@ -3083,6 +3173,7 @@ def main() -> None:
     print(f"Wrote cascade benchmark dependency graph: {benchmark_dependency_graph_csv.relative_to(PROJECT_ROOT)}")
     print(f"Wrote cascade benchmark blocker matrix: {benchmark_blocker_matrix_csv.relative_to(PROJECT_ROOT)}")
     print(f"Wrote cascade benchmark runbook card: {benchmark_runbook_card_csv.relative_to(PROJECT_ROOT)}")
+    print(f"Wrote cascade benchmark milestone card: {benchmark_milestone_card_csv.relative_to(PROJECT_ROOT)}")
     print(f"Wrote cascade benchmark handoff packet: {benchmark_packet_md.relative_to(PROJECT_ROOT)}")
     if wrote_profile_playbook:
         print(f"Wrote cascade profile playbook: {profile_playbook_csv.relative_to(PROJECT_ROOT)}")

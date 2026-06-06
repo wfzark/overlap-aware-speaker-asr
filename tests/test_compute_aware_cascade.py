@@ -20,6 +20,8 @@ from src.compute_aware_cascade import (
     build_benchmark_blocker_matrix_rows,
     build_benchmark_runbook_card_lines,
     build_benchmark_runbook_card_rows,
+    build_benchmark_milestone_card_lines,
+    build_benchmark_milestone_card_rows,
     build_benchmark_session_ledger_lines,
     build_benchmark_session_ledger_rows,
     build_benchmark_status_lines,
@@ -1170,6 +1172,58 @@ class ComputeAwareCascadeTest(unittest.TestCase):
         self.assertIn("timing_capture", rendered)
         self.assertIn("Start with phase1_gold_runtime_foundation because it is do_now and root.", rendered)
 
+    def test_build_benchmark_milestone_card_rows_summarize_next_milestone(self) -> None:
+        runbook_rows = [
+            {
+                "recommended_start_step": "phase1_gold_runtime_foundation",
+                "recommended_action": "collect_controlled_runtime",
+                "session_type": "timing_capture",
+                "required_evidence": "hardware_label;device;repeat_count;warmup_count;batch_shape;timing_notes",
+                "completion_note": "collect_controlled_runtime -> Gold runtime foundation artifacts are rebuilt from controlled timing.",
+                "urgency": "high",
+                "runbook_note": "Start with phase1_gold_runtime_foundation because it is do_now and root.",
+            }
+        ]
+        dependency_rows = [
+            {
+                "plan_step_id": "phase1_gold_runtime_foundation",
+                "unlocks_step": "phase2_synthetic_runtime_foundation",
+            }
+        ]
+        summary_rows = [
+            {"phase": "foundation", "readiness_label": "pending_execution"},
+            {"phase": "surface", "readiness_label": "pending_execution"},
+            {"phase": "cross_dataset", "readiness_label": "pending_execution"},
+        ]
+
+        rows = build_benchmark_milestone_card_rows(runbook_rows, dependency_rows, summary_rows)
+
+        self.assertEqual(rows[0]["current_start_step"], "phase1_gold_runtime_foundation")
+        self.assertEqual(rows[0]["next_milestone_step"], "phase2_synthetic_runtime_foundation")
+        self.assertEqual(rows[0]["remaining_phase_count"], 3)
+        self.assertEqual(rows[0]["current_urgency"], "high")
+        self.assertEqual(rows[0]["milestone_note"], "phase1_gold_runtime_foundation unlocks phase2_synthetic_runtime_foundation and leaves 3 pending phases.")
+
+    def test_build_benchmark_milestone_card_lines_render_progress_snapshot(self) -> None:
+        rows = [
+            {
+                "current_start_step": "phase1_gold_runtime_foundation",
+                "next_milestone_step": "phase2_synthetic_runtime_foundation",
+                "remaining_phase_count": 3,
+                "current_urgency": "high",
+                "milestone_note": "phase1_gold_runtime_foundation unlocks phase2_synthetic_runtime_foundation and leaves 3 pending phases.",
+            }
+        ]
+
+        lines = build_benchmark_milestone_card_lines(rows)
+        rendered = "\n".join(lines)
+
+        self.assertIn("# Cascade Benchmark Milestone Card", rendered)
+        self.assertIn("phase1_gold_runtime_foundation", rendered)
+        self.assertIn("phase2_synthetic_runtime_foundation", rendered)
+        self.assertIn("3", rendered)
+        self.assertIn("unlocks phase2_synthetic_runtime_foundation", rendered)
+
     def test_build_artifact_index_rows_include_benchmark_status_board(self) -> None:
         rows = build_artifact_index_rows()
         status_row = next(row for row in rows if row["artifact_id"] == "cross_dataset_benchmark_status")
@@ -1304,6 +1358,15 @@ class ComputeAwareCascadeTest(unittest.TestCase):
                 "runbook_note": "Start with phase1_gold_runtime_foundation because it is do_now and root.",
             }
         ]
+        milestone_card_rows = [
+            {
+                "current_start_step": "phase1_gold_runtime_foundation",
+                "next_milestone_step": "phase2_synthetic_runtime_foundation",
+                "remaining_phase_count": 3,
+                "current_urgency": "high",
+                "milestone_note": "phase1_gold_runtime_foundation unlocks phase2_synthetic_runtime_foundation and leaves 3 pending phases.",
+            }
+        ]
 
         lines = build_benchmark_packet_lines(
             readiness_rows,
@@ -1317,6 +1380,7 @@ class ComputeAwareCascadeTest(unittest.TestCase):
             dependency_graph_rows,
             blocker_matrix_rows,
             runbook_card_rows,
+            milestone_card_rows,
         )
         rendered = "\n".join(lines)
 
@@ -1328,6 +1392,7 @@ class ComputeAwareCascadeTest(unittest.TestCase):
         self.assertIn("## Dependency Graph", rendered)
         self.assertIn("## Blocker Matrix", rendered)
         self.assertIn("## Runbook Card", rendered)
+        self.assertIn("## Milestone Card", rendered)
         self.assertIn("## Execution Status", rendered)
         self.assertIn("phase1_gold_runtime_foundation", rendered)
         self.assertIn("runtime_capture_missing", rendered)
@@ -1337,6 +1402,7 @@ class ComputeAwareCascadeTest(unittest.TestCase):
         self.assertIn("phase1_gold_runtime_foundation unlocks the first gold surface refresh step.", rendered)
         self.assertIn("do_now / root / 4 pending fields", rendered)
         self.assertIn("Start with phase1_gold_runtime_foundation because it is do_now and root.", rendered)
+        self.assertIn("phase1_gold_runtime_foundation unlocks phase2_synthetic_runtime_foundation and leaves 3 pending phases.", rendered)
         self.assertIn("hardware_label;device;repeat_count;warmup_count", rendered)
         self.assertIn("Manifest template fields: hardware_label, device, repeat_count, warmup_count", rendered)
 
