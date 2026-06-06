@@ -7,6 +7,8 @@ from src.project_harness import (
     build_frontier_execution_queue_rows,
     build_frontier_focus_card_lines,
     build_frontier_focus_card_rows,
+    build_frontier_handoff_packet_lines,
+    build_frontier_handoff_packet_rows,
     build_report,
 )
 
@@ -124,6 +126,47 @@ class ProjectHarnessTest(unittest.TestCase):
         self.assertIn("# Frontier Focus Card", rendered)
         self.assertIn("meeteval_compatibility", rendered)
         self.assertIn("MeetEval readiness card", rendered)
+
+    def test_build_frontier_handoff_packet_rows_point_queue_head_to_next_artifact(self) -> None:
+        rows = build_frontier_handoff_packet_rows(
+            [
+                {
+                    "queue_order": "1",
+                    "frontier_id": "meeteval_compatibility",
+                    "status": "documented_skill",
+                    "entry_artifact": "MeetEval readiness card",
+                    "why_now": "Use the readiness card to stage one narrow dry run before claiming any benchmark bridge.",
+                }
+            ]
+        )
+
+        self.assertEqual(len(rows), 1)
+        self.assertEqual(rows[0]["current_frontier"], "meeteval_compatibility")
+        self.assertEqual(rows[0]["queue_order"], "1")
+        self.assertEqual(rows[0]["next_artifact"], "results/figures/meeteval_dry_run_handoff.md")
+        self.assertIn("single narrow dry run", rows[0]["execution_intent"].lower())
+        self.assertIn("meeteval_dry_run_receipt.json", rows[0]["expected_evidence"])
+        self.assertIn("coordination-only", rows[0]["handoff_scope"].lower())
+
+    def test_build_frontier_handoff_packet_lines_render_packet(self) -> None:
+        lines = build_frontier_handoff_packet_lines(
+            [
+                {
+                    "queue_order": "1",
+                    "current_frontier": "meeteval_compatibility",
+                    "next_artifact": "results/figures/meeteval_dry_run_handoff.md",
+                    "execution_intent": "Run a single narrow dry run handoff step before any broader claim.",
+                    "expected_evidence": "results/tables/meeteval_dry_run_receipt.json",
+                    "handoff_scope": "Coordination-only packet; not a claim of completed frontier execution.",
+                }
+            ]
+        )
+        rendered = "\n".join(lines)
+
+        self.assertIn("# Frontier Handoff Packet", rendered)
+        self.assertIn("meeteval_compatibility", rendered)
+        self.assertIn("meeteval_dry_run_handoff.md", rendered)
+        self.assertIn("meeteval_dry_run_receipt.json", rendered)
 
 
 if __name__ == "__main__":

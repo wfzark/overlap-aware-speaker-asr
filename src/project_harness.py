@@ -219,6 +219,67 @@ def build_frontier_focus_card_lines(rows: list[dict[str, str]]) -> list[str]:
     return lines
 
 
+def frontier_next_artifact(frontier_id: str) -> tuple[str, str]:
+    mapping = {
+        "meeteval_compatibility": (
+            "results/figures/meeteval_dry_run_handoff.md",
+            "results/tables/meeteval_dry_run_receipt.json",
+        ),
+        "external_validation": (
+            "results/figures/external_validation_prioritization.md",
+            "results/tables/external_validation_slice_receipt.json",
+        ),
+        "speaker_profile": (
+            "results/figures/speaker_profile_triage.md",
+            "results/tables/speaker_profile_method_receipt.json",
+        ),
+        "llm_critic": (
+            "results/figures/llm_critic_review_queue.md",
+            "results/tables/llm_critic_review_receipt.json",
+        ),
+        "demo_excellence": (
+            "results/figures/demo_walkthrough.md",
+            "results/tables/demo_walkthrough_receipt.json",
+        ),
+    }
+    return mapping.get(frontier_id, ("", ""))
+
+
+def build_frontier_handoff_packet_rows(queue_rows: list[dict[str, str]]) -> list[dict[str, str]]:
+    if not queue_rows:
+        return []
+
+    head = queue_rows[0]
+    frontier_id = str(head.get("frontier_id", ""))
+    next_artifact, expected_evidence = frontier_next_artifact(frontier_id)
+    return [
+        {
+            "queue_order": str(head.get("queue_order", "")),
+            "current_frontier": frontier_id,
+            "next_artifact": next_artifact,
+            "execution_intent": f"Run a single narrow dry run handoff step for {frontier_id} before any broader claim.",
+            "expected_evidence": expected_evidence,
+            "handoff_scope": "Coordination-only packet; not a claim of completed frontier execution.",
+        }
+    ]
+
+
+def build_frontier_handoff_packet_lines(rows: list[dict[str, str]]) -> list[str]:
+    lines = [
+        "# Frontier Handoff Packet",
+        "",
+        "This generated packet points the current frontier queue head at the single next artifact to open. It does not claim that the frontier work has already been executed.",
+        "",
+        "| queue_order | current_frontier | next_artifact | execution_intent | expected_evidence | handoff_scope |",
+        "| --- | --- | --- | --- | --- | --- |",
+    ]
+    for row in rows:
+        lines.append(
+            f"| {row['queue_order']} | {row['current_frontier']} | {row['next_artifact']} | {row['execution_intent']} | {row['expected_evidence']} | {row['handoff_scope']} |"
+        )
+    return lines
+
+
 def build_report() -> dict[str, object]:
     missing_core = [path for path in CORE_FILES if not exists(path)]
     gold_status = inspect_gold_cases()
@@ -327,17 +388,35 @@ def write_frontier_focus_card(frontier_status: list[dict[str, str]]) -> tuple[Pa
     return json_path, md_path
 
 
+def write_frontier_handoff_packet(frontier_status: list[dict[str, str]]) -> tuple[Path, Path]:
+    tables_dir = PROJECT_ROOT / "results" / "tables"
+    figures_dir = PROJECT_ROOT / "results" / "figures"
+    tables_dir.mkdir(parents=True, exist_ok=True)
+    figures_dir.mkdir(parents=True, exist_ok=True)
+
+    queue_rows = build_frontier_execution_queue_rows(frontier_status)
+    handoff_rows = build_frontier_handoff_packet_rows(queue_rows)
+    json_path = tables_dir / "frontier_handoff_packet.json"
+    md_path = figures_dir / "frontier_handoff_packet.md"
+    json_path.write_text(json.dumps(handoff_rows, ensure_ascii=False, indent=2), encoding="utf-8")
+    md_path.write_text("\n".join(build_frontier_handoff_packet_lines(handoff_rows)) + "\n", encoding="utf-8")
+    return json_path, md_path
+
+
 def main() -> None:
     report = build_report()
     json_path, md_path = write_report(report)
     queue_json_path, queue_md_path = write_frontier_queue(report["frontier_status"])
     focus_json_path, focus_md_path = write_frontier_focus_card(report["frontier_status"])
+    handoff_json_path, handoff_md_path = write_frontier_handoff_packet(report["frontier_status"])
     print(f"Wrote harness report: {json_path.relative_to(PROJECT_ROOT)}")
     print(f"Wrote harness summary: {md_path.relative_to(PROJECT_ROOT)}")
     print(f"Wrote frontier queue JSON: {queue_json_path.relative_to(PROJECT_ROOT)}")
     print(f"Wrote frontier queue note: {queue_md_path.relative_to(PROJECT_ROOT)}")
     print(f"Wrote frontier focus JSON: {focus_json_path.relative_to(PROJECT_ROOT)}")
     print(f"Wrote frontier focus note: {focus_md_path.relative_to(PROJECT_ROOT)}")
+    print(f"Wrote frontier handoff JSON: {handoff_json_path.relative_to(PROJECT_ROOT)}")
+    print(f"Wrote frontier handoff note: {handoff_md_path.relative_to(PROJECT_ROOT)}")
     print(f"gold_cases_present: {all(report['gold_cases'].values())}")
     print(f"gold_and_synthetic_separated: {report['gold_and_synthetic_separated']}")
 
