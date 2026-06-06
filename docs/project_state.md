@@ -498,6 +498,12 @@ External validation prioritization bridge:
 - `results/tables/external_validation_prioritization.csv`
 - This bridge now turns the candidate card into a lightweight execution order. It recommends `AISHELL-4` as the first tiny sanity-check target and records priority tier, readiness note, why-now context, and next action while preserving the `external/sanity-check` label.
 
+External validation slice handoff bridge:
+
+- `results/figures/external_validation_slice_handoff.md`
+- `results/tables/external_validation_slice_handoff.csv`
+- This bridge now turns that prioritized target into a single first-slice packet. It still does not claim any external execution; it only defines the first slice shape, license gate, mapping artifact, and dry-run goal for the narrowest external follow-up.
+
 Demo storyboard bridge:
 
 - `results/figures/demo_storyboard.md`

@@ -181,6 +181,12 @@ Update: a generated external validation prioritization card now turns that triag
 - Summary view: `results/figures/external_validation_prioritization.md`
 - This recommends `AISHELL-4` as the first tiny sanity-check target and records priority tier, recommended order, readiness note, and why-now context without claiming a completed external evaluation.
 
+Update: a generated external validation slice handoff now turns that recommendation into a first-slice packet.
+
+- External validation slice handoff: `results/tables/external_validation_slice_handoff.csv`
+- Summary view: `results/figures/external_validation_slice_handoff.md`
+- This keeps the scope narrow and honest: it defines the first slice shape, license gate, mapping artifact, and dry-run goal without implying that any external slice has already been staged or executed.
+
 Update: a generated demo walkthrough now turns the storyboard into a short presentation sequence.
 
 - Demo walkthrough: `results/tables/demo_walkthrough_steps.json`
