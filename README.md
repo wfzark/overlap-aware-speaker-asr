@@ -185,9 +185,13 @@ Current benchmark milestone card result:
 
 - `results/figures/cascade_benchmark_milestone_card.md` now shows the next milestone, what the first step unlocks, and how many phases remain
 
+Current benchmark phase checkpoint card result:
+
+- `results/figures/cascade_benchmark_phase_checkpoint_card.md` now shows each phase's blocker, next action, and completion signal in one short card
+
 Current benchmark handoff packet result:
 
-- `results/figures/cascade_benchmark_handoff_packet.md` now acts as the single-entry benchmark handoff note across readiness, plan, checklist, manifest template, execution summary, execution queue, session ledger, dependency graph, blocker matrix, runbook card, milestone card, and status tracking
+- `results/figures/cascade_benchmark_handoff_packet.md` now acts as the single-entry benchmark handoff note across readiness, plan, checklist, manifest template, execution summary, execution queue, session ledger, dependency graph, blocker matrix, runbook card, milestone card, phase checkpoint card, and status tracking
 
 ## Core Findings
 
@@ -262,6 +266,7 @@ python -m src.project_harness
 - [Cascade benchmark blocker matrix](results/figures/cascade_benchmark_blocker_matrix.md)
 - [Cascade benchmark runbook card](results/figures/cascade_benchmark_runbook_card.md)
 - [Cascade benchmark milestone card](results/figures/cascade_benchmark_milestone_card.md)
+- [Cascade benchmark phase checkpoint card](results/figures/cascade_benchmark_phase_checkpoint_card.md)
 - [Cascade benchmark handoff packet](results/figures/cascade_benchmark_handoff_packet.md)
 - [Synthetic split cascade summary](results/figures/synthetic_split_cascade_summary.md)
 - [Synthetic split cascade trade-off figure](results/figures/synthetic_split_cer_runtime_tradeoff.png)

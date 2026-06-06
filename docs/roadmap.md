@@ -181,10 +181,16 @@ Update: a generated benchmark milestone card now turns the execution brief into 
 - Summary view: `results/figures/cascade_benchmark_milestone_card.md`
 - This shows the next milestone, what the current first step unlocks, and how many benchmark phases remain before the controlled stack is fully refreshed.
 
+Update: a generated benchmark phase checkpoint card now turns the progress boundary into a per-phase execution check.
+
+- Benchmark phase checkpoint card: `results/tables/cascade_benchmark_phase_checkpoint_card.csv`
+- Summary view: `results/figures/cascade_benchmark_phase_checkpoint_card.md`
+- This shows each phase's blocker, next action, and completion signal without reopening the larger packet.
+
 Update: a generated benchmark handoff packet now turns the execution stack into a single benchmark entrypoint.
 
 - Handoff packet: `results/figures/cascade_benchmark_handoff_packet.md`
-- This lets future contributors start from one note before diving into readiness, plan, checklist, manifest, execution-summary, execution-queue, session-ledger, dependency-graph, blocker-matrix, runbook-card, milestone-card, and status details.
+- This lets future contributors start from one note before diving into readiness, plan, checklist, manifest, execution-summary, execution-queue, session-ledger, dependency-graph, blocker-matrix, runbook-card, milestone-card, phase-checkpoint-card, and status details.
 
 Remaining stretch work:
 

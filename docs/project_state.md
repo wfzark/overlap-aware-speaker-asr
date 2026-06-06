@@ -317,10 +317,16 @@ Benchmark milestone card:
 - `results/figures/cascade_benchmark_milestone_card.md`
 - This generated milestone card now shows the next milestone boundary, what the current start step unlocks, and how many phases remain in the benchmark path.
 
+Benchmark phase checkpoint card:
+
+- `results/tables/cascade_benchmark_phase_checkpoint_card.csv`
+- `results/figures/cascade_benchmark_phase_checkpoint_card.md`
+- This generated phase checkpoint card now shows each phase's current blocker, next action, and completion signal as a compact execution check.
+
 Benchmark handoff packet:
 
 - `results/figures/cascade_benchmark_handoff_packet.md`
-- This generated note now provides one benchmark-entry document that points to the readiness, plan, checklist, manifest template, execution-summary, execution-queue, session-ledger, dependency-graph, blocker-matrix, runbook-card, milestone-card, and status-board layers together.
+- This generated note now provides one benchmark-entry document that points to the readiness, plan, checklist, manifest template, execution-summary, execution-queue, session-ledger, dependency-graph, blocker-matrix, runbook-card, milestone-card, phase-checkpoint-card, and status-board layers together.
 
 ## Synthetic Split Cascade Validation
 
