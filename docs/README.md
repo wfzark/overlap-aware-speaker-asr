@@ -49,6 +49,8 @@ This folder is the documentation entry point for the project.
 
 ## Results Interpretation
 
+- [results/figures/frontier_execution_queue.md](../results/figures/frontier_execution_queue.md)
+- [results/figures/project_harness_report.md](../results/figures/project_harness_report.md)
 - [results/figures/current_results_summary.md](../results/figures/current_results_summary.md)
 - [results/figures/router_ablation_summary.md](../results/figures/router_ablation_summary.md)
 - [results/figures/synthetic_routing_summary.md](../results/figures/synthetic_routing_summary.md)
@@ -80,6 +82,11 @@ This folder is the documentation entry point for the project.
 - [results/figures/synthetic_split_cascade_pareto.md](../results/figures/synthetic_split_cascade_pareto.md)
 - [results/figures/synthetic_split_cascade_recommendations.md](../results/figures/synthetic_split_cascade_recommendations.md)
 - [results/figures/cpcer_lite_summary.md](../results/figures/cpcer_lite_summary.md)
+
+## Frontier Coordination
+
+- [Frontier execution queue](../results/figures/frontier_execution_queue.md)
+- [Project harness report](../results/figures/project_harness_report.md)
 
 ## New Contributor Rule
 
