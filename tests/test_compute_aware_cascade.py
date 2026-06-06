@@ -10,6 +10,8 @@ from src.compute_aware_cascade import (
     build_benchmark_checklist_rows,
     build_benchmark_manifest_template_rows,
     build_benchmark_packet_lines,
+    build_benchmark_status_lines,
+    build_benchmark_status_rows,
     build_profile_playbook_lines,
     build_profile_playbook_rows,
     build_benchmark_readiness_lines,
@@ -659,6 +661,90 @@ class ComputeAwareCascadeTest(unittest.TestCase):
         self.assertEqual(cross_dataset["source_timing_manifest"], "TODO")
         self.assertEqual(cross_dataset["cross_dataset_scope"], "TODO")
         self.assertTrue(rows == sorted(rows, key=lambda row: row["step_order"]))
+
+    def test_build_benchmark_status_rows_marks_template_only_steps_as_pending(self) -> None:
+        manifest_rows = [
+            {
+                "plan_step_id": "phase1_gold_runtime_foundation",
+                "step_order": 1,
+                "phase": "foundation",
+                "dataset_scope": "gold",
+                "session_type": "timing_capture",
+                "command": "python -m src.compute_aware_cascade",
+                "acceptance_check": "Gold runtime foundation artifacts are rebuilt from controlled timing.",
+                "hardware_label": "TODO",
+                "device": "TODO",
+                "repeat_count": "TODO",
+                "warmup_count": "TODO",
+                "batch_shape": "TODO",
+                "timing_notes": "TODO",
+                "source_timing_manifest": "",
+                "refresh_command": "",
+                "diff_review_notes": "",
+                "cross_dataset_scope": "",
+                "consistency_notes": "",
+            },
+            {
+                "plan_step_id": "phase5_cross_dataset_refresh",
+                "step_order": 5,
+                "phase": "cross_dataset",
+                "dataset_scope": "cross_dataset",
+                "session_type": "derived_refresh",
+                "command": "python -m src.compute_aware_cascade --dataset synthetic_split",
+                "acceptance_check": "Cross-dataset decision-support artifacts are rebuilt from controlled timing-backed inputs.",
+                "hardware_label": "",
+                "device": "",
+                "repeat_count": "",
+                "warmup_count": "",
+                "batch_shape": "",
+                "timing_notes": "",
+                "source_timing_manifest": "TODO",
+                "refresh_command": "TODO",
+                "diff_review_notes": "",
+                "cross_dataset_scope": "TODO",
+                "consistency_notes": "TODO",
+            },
+        ]
+
+        rows = build_benchmark_status_rows(manifest_rows)
+        foundation = next(row for row in rows if row["plan_step_id"] == "phase1_gold_runtime_foundation")
+        cross_dataset = next(row for row in rows if row["plan_step_id"] == "phase5_cross_dataset_refresh")
+
+        self.assertEqual(foundation["execution_status"], "template_only")
+        self.assertEqual(foundation["readiness_signal"], "pending_execution")
+        self.assertEqual(cross_dataset["execution_status"], "template_only")
+        self.assertIn("source_timing_manifest", cross_dataset["missing_fields"])
+        self.assertTrue(rows == sorted(rows, key=lambda row: row["step_order"]))
+
+    def test_build_benchmark_status_lines_render_phase_board(self) -> None:
+        rows = [
+            {
+                "plan_step_id": "phase1_gold_runtime_foundation",
+                "step_order": 1,
+                "phase": "foundation",
+                "dataset_scope": "gold",
+                "execution_status": "template_only",
+                "readiness_signal": "pending_execution",
+                "missing_fields": "hardware_label;device;repeat_count",
+                "acceptance_check": "Gold runtime foundation artifacts are rebuilt from controlled timing.",
+            }
+        ]
+
+        lines = build_benchmark_status_lines(rows)
+        rendered = "\n".join(lines)
+
+        self.assertIn("# Cascade Benchmark Status Board", rendered)
+        self.assertIn("phase1_gold_runtime_foundation", rendered)
+        self.assertIn("pending_execution", rendered)
+        self.assertIn("hardware_label;device;repeat_count", rendered)
+
+    def test_build_artifact_index_rows_include_benchmark_status_board(self) -> None:
+        rows = build_artifact_index_rows()
+        status_row = next(row for row in rows if row["artifact_id"] == "cross_dataset_benchmark_status")
+
+        self.assertEqual(status_row["dataset"], "cross_dataset")
+        self.assertEqual(status_row["artifact_path"], "results/figures/cascade_benchmark_status.md")
+        self.assertIn("status board", status_row["intended_use"])
 
     def test_build_benchmark_packet_lines_consolidate_execution_artifacts(self) -> None:
         readiness_rows = [

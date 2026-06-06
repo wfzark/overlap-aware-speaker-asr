@@ -240,6 +240,17 @@ BENCHMARK_MANIFEST_TEMPLATE_COLUMNS = [
     "consistency_notes",
 ]
 
+BENCHMARK_STATUS_COLUMNS = [
+    "plan_step_id",
+    "step_order",
+    "phase",
+    "dataset_scope",
+    "execution_status",
+    "readiness_signal",
+    "missing_fields",
+    "acceptance_check",
+]
+
 
 def build_benchmark_packet_lines(
     readiness_rows: list[dict[str, Any]],
@@ -277,6 +288,40 @@ def build_benchmark_packet_lines(
         fields = [key for key, value in sample.items() if str(value).strip() == "TODO"]
         lines.append(f"Manifest template fields: {', '.join(fields)}")
     return lines
+
+
+def build_benchmark_status_rows(manifest_rows: list[dict[str, Any]]) -> list[dict[str, Any]]:
+    tracked_fields = [
+        "hardware_label",
+        "device",
+        "repeat_count",
+        "warmup_count",
+        "batch_shape",
+        "timing_notes",
+        "source_timing_manifest",
+        "refresh_command",
+        "diff_review_notes",
+        "cross_dataset_scope",
+        "consistency_notes",
+    ]
+    rows: list[dict[str, Any]] = []
+    for row in manifest_rows:
+        missing = [field for field in tracked_fields if str(row.get(field, "")).strip() == "TODO"]
+        execution_status = "template_only" if missing else "filled"
+        readiness_signal = "pending_execution" if missing else "ready_for_review"
+        rows.append(
+            {
+                "plan_step_id": row.get("plan_step_id", ""),
+                "step_order": row.get("step_order", ""),
+                "phase": row.get("phase", ""),
+                "dataset_scope": row.get("dataset_scope", ""),
+                "execution_status": execution_status,
+                "readiness_signal": readiness_signal,
+                "missing_fields": ";".join(missing),
+                "acceptance_check": row.get("acceptance_check", ""),
+            }
+        )
+    return sorted(rows, key=lambda row: to_int(row.get("step_order")))
 
 
 def write_benchmark_packet_output(
@@ -1453,6 +1498,7 @@ def build_artifact_index_rows() -> list[dict[str, Any]]:
         ("cross_dataset_benchmark_plan", "cross_dataset", "experimental/frontier", "report", "results/figures/cascade_benchmark_plan.md", "python -m src.compute_aware_cascade --dataset synthetic_split", "Staged benchmark handoff plan derived from the readiness scaffold."),
         ("cross_dataset_benchmark_checklist", "cross_dataset", "experimental/frontier", "report", "results/figures/cascade_benchmark_checklist.md", "python -m src.compute_aware_cascade --dataset synthetic_split", "Execution checklist for recording benchmark session metadata and acceptance checks."),
         ("cross_dataset_benchmark_manifest_template", "cross_dataset", "experimental/frontier", "report", "results/tables/cascade_benchmark_manifest_template.csv", "python -m src.compute_aware_cascade --dataset synthetic_split", "Fill-in template for benchmark session metadata captured during controlled timing runs."),
+        ("cross_dataset_benchmark_status", "cross_dataset", "experimental/frontier", "report", "results/figures/cascade_benchmark_status.md", "python -m src.compute_aware_cascade --dataset synthetic_split", "Phase-by-phase benchmark status board showing template completeness and pending execution gaps."),
         ("cross_dataset_benchmark_handoff_packet", "cross_dataset", "experimental/frontier", "report", "results/figures/cascade_benchmark_handoff_packet.md", "python -m src.compute_aware_cascade --dataset synthetic_split", "Single-entry benchmark handoff packet consolidating readiness, plan, checklist, and manifest template."),
     ]
     rows = [
@@ -1889,6 +1935,34 @@ def write_benchmark_manifest_template_outputs(
     write_csv_json(rows, csv_path, json_path, BENCHMARK_MANIFEST_TEMPLATE_COLUMNS)
 
 
+def build_benchmark_status_lines(rows: list[dict[str, Any]]) -> list[str]:
+    lines = [
+        "# Cascade Benchmark Status Board",
+        "",
+        "This generated status board tracks which benchmark handoff phases are still template-only and what evidence is missing next.",
+        "",
+        "| step_order | plan_step_id | phase | dataset_scope | execution_status | readiness_signal | missing_fields | acceptance_check |",
+        "| ---: | --- | --- | --- | --- | --- | --- | --- |",
+    ]
+    for row in rows:
+        lines.append(
+            f"| {row['step_order']} | {row['plan_step_id']} | {row['phase']} | {row['dataset_scope']} | "
+            f"{row['execution_status']} | {row['readiness_signal']} | {row['missing_fields']} | {row['acceptance_check']} |"
+        )
+    return lines
+
+
+def write_benchmark_status_outputs(
+    rows: list[dict[str, Any]],
+    csv_path: Path,
+    json_path: Path,
+    summary_path: Path,
+) -> None:
+    write_csv_json(rows, csv_path, json_path, BENCHMARK_STATUS_COLUMNS)
+    summary_path.parent.mkdir(parents=True, exist_ok=True)
+    summary_path.write_text("\n".join(build_benchmark_status_lines(rows)) + "\n", encoding="utf-8")
+
+
 def set_pixel(pixels: bytearray, width: int, height: int, x: int, y: int, color: tuple[int, int, int]) -> None:
     if 0 <= x < width and 0 <= y < height:
         idx = (y * width + x) * 3
@@ -2069,6 +2143,10 @@ def main() -> None:
     benchmark_manifest_template_rows = build_benchmark_manifest_template_rows(benchmark_checklist_rows)
     benchmark_manifest_template_csv = PROJECT_ROOT / "results" / "tables" / "cascade_benchmark_manifest_template.csv"
     benchmark_manifest_template_json = PROJECT_ROOT / "results" / "tables" / "cascade_benchmark_manifest_template.json"
+    benchmark_status_rows = build_benchmark_status_rows(benchmark_manifest_template_rows)
+    benchmark_status_csv = PROJECT_ROOT / "results" / "tables" / "cascade_benchmark_status.csv"
+    benchmark_status_json = PROJECT_ROOT / "results" / "tables" / "cascade_benchmark_status.json"
+    benchmark_status_md = PROJECT_ROOT / "results" / "figures" / "cascade_benchmark_status.md"
     benchmark_packet_md = PROJECT_ROOT / "results" / "figures" / "cascade_benchmark_handoff_packet.md"
     profile_playbook_csv = PROJECT_ROOT / "results" / "tables" / "cascade_profile_playbook.csv"
     profile_playbook_json = PROJECT_ROOT / "results" / "tables" / "cascade_profile_playbook.json"
@@ -2237,6 +2315,12 @@ def main() -> None:
             benchmark_manifest_template_csv,
             benchmark_manifest_template_json,
         )
+        write_benchmark_status_outputs(
+            benchmark_status_rows,
+            benchmark_status_csv,
+            benchmark_status_json,
+            benchmark_status_md,
+        )
         write_benchmark_packet_output(
             benchmark_readiness_rows,
             benchmark_plan_rows,
@@ -2324,6 +2408,7 @@ def main() -> None:
     print(f"Wrote cascade benchmark plan: {benchmark_plan_csv.relative_to(PROJECT_ROOT)}")
     print(f"Wrote cascade benchmark checklist: {benchmark_checklist_csv.relative_to(PROJECT_ROOT)}")
     print(f"Wrote cascade benchmark manifest template: {benchmark_manifest_template_csv.relative_to(PROJECT_ROOT)}")
+    print(f"Wrote cascade benchmark status: {benchmark_status_csv.relative_to(PROJECT_ROOT)}")
     print(f"Wrote cascade benchmark handoff packet: {benchmark_packet_md.relative_to(PROJECT_ROOT)}")
     if wrote_profile_playbook:
         print(f"Wrote cascade profile playbook: {profile_playbook_csv.relative_to(PROJECT_ROOT)}")
