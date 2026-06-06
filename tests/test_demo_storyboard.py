@@ -5,6 +5,8 @@ import unittest
 from src.demo_storyboard import (
     build_demo_storyboard_cards,
     build_demo_storyboard_lines,
+    build_demo_walkthrough_receipt_lines,
+    build_demo_walkthrough_receipt_rows,
     build_demo_walkthrough_lines,
     build_demo_walkthrough_steps,
 )
@@ -76,6 +78,44 @@ class DemoStoryboardTest(unittest.TestCase):
         self.assertIn("# Demo Walkthrough", rendered)
         self.assertIn("Problem framing", rendered)
         self.assertIn("artifact_anchor", rendered)
+
+    def test_build_demo_walkthrough_receipt_rows_create_template_evidence_target(self) -> None:
+        rows = build_demo_walkthrough_receipt_rows(
+            [
+                {
+                    "step_id": "1",
+                    "focus": "Problem framing",
+                    "talk_track": "Start by explaining why overlap does not always justify separation.",
+                    "artifact_anchor": "README.md",
+                }
+            ]
+        )
+
+        self.assertEqual(len(rows), 1)
+        self.assertEqual(rows[0]["execution_status"], "template_only")
+        self.assertEqual(rows[0]["walkthrough_scope"], "step_1_problem_framing")
+        self.assertIn("walkthrough", rows[0]["expected_inputs"].lower())
+        self.assertIn("diagnostic", rows[0]["expected_outputs"].lower())
+        self.assertIn("has been executed", rows[0]["writeback_note"].lower())
+
+    def test_build_demo_walkthrough_receipt_lines_render_template(self) -> None:
+        lines = build_demo_walkthrough_receipt_lines(
+            [
+                {
+                    "execution_status": "template_only",
+                    "walkthrough_scope": "step_1_problem_framing",
+                    "expected_inputs": "Demo walkthrough head plus one narration note stub.",
+                    "expected_outputs": "Diagnostic walkthrough note and a narrow presentation writeback.",
+                    "writeback_note": "No demo walkthrough pass has been executed yet; fill this receipt only after the first run.",
+                }
+            ]
+        )
+        rendered = "\n".join(lines)
+
+        self.assertIn("# Demo Walkthrough Receipt", rendered)
+        self.assertIn("template_only", rendered)
+        self.assertIn("step_1_problem_framing", rendered)
+        self.assertIn("has been executed yet", rendered)
 
 
 if __name__ == "__main__":

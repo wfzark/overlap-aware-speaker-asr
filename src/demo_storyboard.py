@@ -7,6 +7,40 @@ from typing import Any
 from .config import PROJECT_ROOT
 
 
+def build_demo_walkthrough_receipt_rows(steps: list[dict[str, str]]) -> list[dict[str, str]]:
+    if not steps:
+        return []
+
+    head = steps[0]
+    step_id = str(head.get("step_id", ""))
+    focus = str(head.get("focus", "")).strip().lower().replace(" ", "_")
+    return [
+        {
+            "execution_status": "template_only",
+            "walkthrough_scope": f"step_{step_id}_{focus}",
+            "expected_inputs": "Demo walkthrough head plus one narration note stub.",
+            "expected_outputs": "Diagnostic walkthrough note and a narrow presentation writeback.",
+            "writeback_note": "No demo walkthrough pass has been executed yet; fill this receipt only after the first run.",
+        }
+    ]
+
+
+def build_demo_walkthrough_receipt_lines(rows: list[dict[str, str]]) -> list[str]:
+    lines = [
+        "# Demo Walkthrough Receipt",
+        "",
+        "This generated receipt is a template-only writeback target for the first demo walkthrough pass. It does not claim a completed live demo or recording.",
+        "",
+        "| execution_status | walkthrough_scope | expected_inputs | expected_outputs | writeback_note |",
+        "| --- | --- | --- | --- | --- |",
+    ]
+    for row in rows:
+        lines.append(
+            f"| {row['execution_status']} | {row['walkthrough_scope']} | {row['expected_inputs']} | {row['expected_outputs']} | {row['writeback_note']} |"
+        )
+    return lines
+
+
 def build_demo_storyboard_cards(summary: dict[str, str]) -> list[dict[str, str]]:
     return [
         {
@@ -106,7 +140,7 @@ def build_demo_walkthrough_lines(steps: list[dict[str, str]]) -> list[str]:
     return lines
 
 
-def write_outputs(cards: list[dict[str, str]], steps: list[dict[str, str]]) -> tuple[Path, Path, Path, Path]:
+def write_outputs(cards: list[dict[str, str]], steps: list[dict[str, str]]) -> tuple[Path, Path, Path, Path, Path, Path]:
     tables_dir = PROJECT_ROOT / "results" / "tables"
     figures_dir = PROJECT_ROOT / "results" / "figures"
     tables_dir.mkdir(parents=True, exist_ok=True)
@@ -115,11 +149,19 @@ def write_outputs(cards: list[dict[str, str]], steps: list[dict[str, str]]) -> t
     md_path = figures_dir / "demo_storyboard.md"
     walkthrough_json_path = tables_dir / "demo_walkthrough_steps.json"
     walkthrough_md_path = figures_dir / "demo_walkthrough.md"
+    walkthrough_receipt_json_path = tables_dir / "demo_walkthrough_receipt.json"
+    walkthrough_receipt_md_path = figures_dir / "demo_walkthrough_receipt.md"
     json_path.write_text(json.dumps(cards, ensure_ascii=False, indent=2), encoding="utf-8")
     md_path.write_text("\n".join(build_demo_storyboard_lines(cards)) + "\n", encoding="utf-8")
     walkthrough_json_path.write_text(json.dumps(steps, ensure_ascii=False, indent=2), encoding="utf-8")
     walkthrough_md_path.write_text("\n".join(build_demo_walkthrough_lines(steps)) + "\n", encoding="utf-8")
-    return json_path, md_path, walkthrough_json_path, walkthrough_md_path
+    walkthrough_receipt_rows = build_demo_walkthrough_receipt_rows(steps)
+    walkthrough_receipt_json_path.write_text(json.dumps(walkthrough_receipt_rows, ensure_ascii=False, indent=2), encoding="utf-8")
+    walkthrough_receipt_md_path.write_text(
+        "\n".join(build_demo_walkthrough_receipt_lines(walkthrough_receipt_rows)) + "\n",
+        encoding="utf-8",
+    )
+    return json_path, md_path, walkthrough_json_path, walkthrough_md_path, walkthrough_receipt_json_path, walkthrough_receipt_md_path
 
 
 def main() -> None:
@@ -131,11 +173,20 @@ def main() -> None:
     }
     cards = build_demo_storyboard_cards(summary)
     steps = build_demo_walkthrough_steps(summary)
-    json_path, md_path, walkthrough_json_path, walkthrough_md_path = write_outputs(cards, steps)
+    (
+        json_path,
+        md_path,
+        walkthrough_json_path,
+        walkthrough_md_path,
+        walkthrough_receipt_json_path,
+        walkthrough_receipt_md_path,
+    ) = write_outputs(cards, steps)
     print(f"Wrote demo storyboard cards: {json_path.relative_to(PROJECT_ROOT)}")
     print(f"Wrote demo storyboard note: {md_path.relative_to(PROJECT_ROOT)}")
     print(f"Wrote demo walkthrough steps: {walkthrough_json_path.relative_to(PROJECT_ROOT)}")
     print(f"Wrote demo walkthrough note: {walkthrough_md_path.relative_to(PROJECT_ROOT)}")
+    print(f"Wrote demo walkthrough receipt JSON: {walkthrough_receipt_json_path.relative_to(PROJECT_ROOT)}")
+    print(f"Wrote demo walkthrough receipt note: {walkthrough_receipt_md_path.relative_to(PROJECT_ROOT)}")
 
 
 if __name__ == "__main__":
