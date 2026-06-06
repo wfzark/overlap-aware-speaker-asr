@@ -8,6 +8,10 @@ When should the system spend more compute?
 
 The current pipeline already has cheap and more expensive paths. This skill frames the problem as an accuracy-cost trade-off rather than a single best model chase.
 
+## Current queue position
+
+Not in the current frontier queue. The cascade line is already part of the broader frontier stack, but this card now serves as the research-extension reference rather than the next queue head.
+
 ## Challenge level
 
 Level 3: Research Extension
