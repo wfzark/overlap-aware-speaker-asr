@@ -14,6 +14,8 @@ from src.compute_aware_cascade import (
     build_benchmark_execution_summary_rows,
     build_benchmark_execution_queue_lines,
     build_benchmark_execution_queue_rows,
+    build_benchmark_dependency_graph_lines,
+    build_benchmark_dependency_graph_rows,
     build_benchmark_session_ledger_lines,
     build_benchmark_session_ledger_rows,
     build_benchmark_status_lines,
@@ -969,6 +971,72 @@ class ComputeAwareCascadeTest(unittest.TestCase):
         self.assertIn("hardware_label;device;repeat_count;warmup_count;batch_shape;timing_notes", rendered)
         self.assertIn("collect_controlled_runtime -> Gold runtime foundation artifacts are rebuilt from controlled timing.", rendered)
 
+    def test_build_benchmark_dependency_graph_rows_connect_predecessors(self) -> None:
+        plan_rows = [
+            {
+                "plan_step_id": "phase1_gold_runtime_foundation",
+                "step_order": 1,
+                "phase": "foundation",
+                "dataset_scope": "gold",
+                "success_signal": "Gold runtime foundation artifacts are rebuilt from controlled timing.",
+            },
+            {
+                "plan_step_id": "phase3_gold_surface_refresh",
+                "step_order": 3,
+                "phase": "surface",
+                "dataset_scope": "gold",
+                "success_signal": "Gold surface artifacts are rebuilt from controlled timing-backed inputs.",
+            },
+        ]
+        queue_rows = [
+            {
+                "queue_rank": 1,
+                "plan_step_id": "phase1_gold_runtime_foundation",
+                "priority_bucket": "do_now",
+            },
+            {
+                "queue_rank": 3,
+                "plan_step_id": "phase3_gold_surface_refresh",
+                "priority_bucket": "next_after_runtime",
+            },
+        ]
+
+        rows = build_benchmark_dependency_graph_rows(plan_rows, queue_rows)
+        foundation = next(row for row in rows if row["plan_step_id"] == "phase1_gold_runtime_foundation")
+        surface = next(row for row in rows if row["plan_step_id"] == "phase3_gold_surface_refresh")
+
+        self.assertEqual(foundation["depends_on_step"], "")
+        self.assertEqual(foundation["dependency_status"], "root")
+        self.assertEqual(surface["depends_on_step"], "phase1_gold_runtime_foundation")
+        self.assertEqual(surface["dependency_status"], "blocked_by_predecessor")
+        self.assertEqual(surface["unlocks_step"], "")
+        self.assertEqual(surface["dependency_note"], "Wait for phase1_gold_runtime_foundation before phase3_gold_surface_refresh can produce timing-backed surface outputs.")
+
+    def test_build_benchmark_dependency_graph_lines_render_unlock_chain(self) -> None:
+        rows = [
+            {
+                "plan_step_id": "phase3_gold_surface_refresh",
+                "step_order": 3,
+                "phase": "surface",
+                "dataset_scope": "gold",
+                "queue_rank": 3,
+                "priority_bucket": "next_after_runtime",
+                "depends_on_step": "phase1_gold_runtime_foundation",
+                "dependency_status": "blocked_by_predecessor",
+                "unlocks_step": "",
+                "dependency_note": "Wait for phase1_gold_runtime_foundation before phase3_gold_surface_refresh can produce timing-backed surface outputs.",
+            }
+        ]
+
+        lines = build_benchmark_dependency_graph_lines(rows)
+        rendered = "\n".join(lines)
+
+        self.assertIn("# Cascade Benchmark Dependency Graph", rendered)
+        self.assertIn("phase3_gold_surface_refresh", rendered)
+        self.assertIn("phase1_gold_runtime_foundation", rendered)
+        self.assertIn("blocked_by_predecessor", rendered)
+        self.assertIn("timing-backed surface outputs", rendered)
+
     def test_build_artifact_index_rows_include_benchmark_status_board(self) -> None:
         rows = build_artifact_index_rows()
         status_row = next(row for row in rows if row["artifact_id"] == "cross_dataset_benchmark_status")
@@ -1064,6 +1132,20 @@ class ComputeAwareCascadeTest(unittest.TestCase):
                 "completion_note": "collect_controlled_runtime -> Gold runtime foundation artifacts are rebuilt from controlled timing.",
             }
         ]
+        dependency_graph_rows = [
+            {
+                "plan_step_id": "phase1_gold_runtime_foundation",
+                "step_order": 1,
+                "phase": "foundation",
+                "dataset_scope": "gold",
+                "queue_rank": 1,
+                "priority_bucket": "do_now",
+                "depends_on_step": "",
+                "dependency_status": "root",
+                "unlocks_step": "phase3_gold_surface_refresh",
+                "dependency_note": "phase1_gold_runtime_foundation unlocks the first gold surface refresh step.",
+            }
+        ]
 
         lines = build_benchmark_packet_lines(
             readiness_rows,
@@ -1074,6 +1156,7 @@ class ComputeAwareCascadeTest(unittest.TestCase):
             execution_summary_rows,
             execution_queue_rows,
             session_ledger_rows,
+            dependency_graph_rows,
         )
         rendered = "\n".join(lines)
 
@@ -1082,12 +1165,14 @@ class ComputeAwareCascadeTest(unittest.TestCase):
         self.assertIn("## Execution Summary", rendered)
         self.assertIn("## Execution Queue", rendered)
         self.assertIn("## Session Ledger", rendered)
+        self.assertIn("## Dependency Graph", rendered)
         self.assertIn("## Execution Status", rendered)
         self.assertIn("phase1_gold_runtime_foundation", rendered)
         self.assertIn("runtime_capture_missing", rendered)
         self.assertIn("pending_execution", rendered)
         self.assertIn("do_now", rendered)
         self.assertIn("hardware_label;device;repeat_count;warmup_count", rendered)
+        self.assertIn("phase1_gold_runtime_foundation unlocks the first gold surface refresh step.", rendered)
         self.assertIn("hardware_label;device;repeat_count;warmup_count", rendered)
         self.assertIn("Manifest template fields: hardware_label, device, repeat_count, warmup_count", rendered)
 
