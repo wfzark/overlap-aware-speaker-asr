@@ -113,6 +113,12 @@ Current recommendation stability result:
 - `balanced` has `consensus_ratio = 0.75`, splitting between `router_v2_costed` and `router_v2_synthetic_costed`
 - `accuracy_first` also has `consensus_ratio = 0.75`, splitting between `router_v2_costed` and `fixed_separated_whisper_cleaned`
 
+Current family-level recommendation stability result:
+
+- after normalizing `router_v2_costed` and `router_v2_synthetic_costed` into the same family, `balanced` rises to `consensus_ratio = 1.0`
+- `cost_first` remains fully stable at `consensus_ratio = 1.0`
+- `accuracy_first` still splits between `router_v2` and `fixed_separated_whisper_cleaned`
+
 ## Core Findings
 
 - Speech separation is useful, but not universally beneficial.
@@ -170,6 +176,7 @@ python -m src.project_harness
 - [Cascade recommendation card](results/figures/cascade_recommendations.md)
 - [Cascade robustness gap audit](results/figures/cascade_robustness_gap.md)
 - [Cascade recommendation stability audit](results/figures/cascade_recommendation_stability.md)
+- [Cascade recommendation family stability audit](results/figures/cascade_recommendation_family_stability.md)
 - [Synthetic split cascade summary](results/figures/synthetic_split_cascade_summary.md)
 - [Synthetic split cascade trade-off figure](results/figures/synthetic_split_cer_runtime_tradeoff.png)
 - [Synthetic split cascade runtime audit](results/figures/synthetic_split_cascade_runtime_audit.md)

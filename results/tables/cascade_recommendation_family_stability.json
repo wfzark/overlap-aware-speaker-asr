@@ -1,0 +1,29 @@
+[
+  {
+    "profile": "accuracy_first",
+    "distinct_strategy_count": 2,
+    "most_common_strategy": "fixed_separated_whisper_cleaned",
+    "consensus_ratio": 0.75,
+    "scope_count": 4,
+    "strategy_set": "fixed_separated_whisper_cleaned;router_v2",
+    "notes": "Consensus ratio is the share of audited scopes that recommend the most common strategy for this profile."
+  },
+  {
+    "profile": "balanced",
+    "distinct_strategy_count": 1,
+    "most_common_strategy": "router_v2",
+    "consensus_ratio": 1.0,
+    "scope_count": 4,
+    "strategy_set": "router_v2",
+    "notes": "Consensus ratio is the share of audited scopes that recommend the most common strategy for this profile."
+  },
+  {
+    "profile": "cost_first",
+    "distinct_strategy_count": 1,
+    "most_common_strategy": "fixed_mixed_whisper",
+    "consensus_ratio": 1.0,
+    "scope_count": 4,
+    "strategy_set": "fixed_mixed_whisper",
+    "notes": "Consensus ratio is the share of audited scopes that recommend the most common strategy for this profile."
+  }
+]

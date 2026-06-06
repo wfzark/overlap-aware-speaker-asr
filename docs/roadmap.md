@@ -83,6 +83,11 @@ Update: recommendation stability audit now checks whether deployment guidance is
 - Stability audit: `results/tables/cascade_recommendation_stability.csv`
 - Current evidence shows `cost_first` is the most stable profile, while `balanced` and `accuracy_first` vary between gold and synthetic settings.
 
+Update: family-level stability audit separates naming drift from true recommendation drift.
+
+- Family stability audit: `results/tables/cascade_recommendation_family_stability.csv`
+- Current evidence shows `balanced` is actually stable at the strategy-family level; the remaining cross-scope disagreement is concentrated in `accuracy_first`.
+
 Remaining stretch work:
 
 - replace proxy costs with a controlled hardware/runtime benchmark

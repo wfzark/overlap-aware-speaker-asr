@@ -215,6 +215,13 @@ Recommendation stability audit:
 - `cost_first` is fully stable across gold and synthetic `ALL/DEV/TEST`, always selecting `fixed_mixed_whisper`.
 - `balanced` and `accuracy_first` each show `consensus_ratio 0.75`, indicating useful but not perfect cross-scope recommendation stability.
 
+Recommendation family stability audit:
+
+- `results/tables/cascade_recommendation_family_stability.csv`
+- `results/figures/cascade_recommendation_family_stability.md`
+- After merging `router_v2_costed` and `router_v2_synthetic_costed` into the same family, `balanced` becomes fully stable with `consensus_ratio 1.0`.
+- `accuracy_first` remains the only profile with meaningful family-level disagreement across scopes.
+
 ## Synthetic Split Cascade Validation
 
 Label: `synthetic/silver` and `experimental/frontier`
