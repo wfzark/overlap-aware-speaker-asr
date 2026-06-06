@@ -114,6 +114,21 @@ RECOMMENDATION_COLUMNS = [
     "reason",
 ]
 
+ROBUSTNESS_GAP_COLUMNS = [
+    "strategy",
+    "gold_average_cer",
+    "synthetic_average_cer",
+    "cer_gap_vs_gold",
+    "gold_average_compute_cost",
+    "synthetic_average_compute_cost",
+    "cost_gap_vs_gold",
+    "gold_average_rtf",
+    "synthetic_average_rtf",
+    "rtf_gap_vs_gold",
+    "robustness_rank",
+    "notes",
+]
+
 
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description="Compute-aware cascade evaluation.")
@@ -582,6 +597,42 @@ def build_recommendation_rows(pareto_rows: list[dict[str, Any]]) -> list[dict[st
     return recommendations
 
 
+def build_robustness_gap_rows(
+    gold_rows: list[dict[str, Any]],
+    synthetic_rows: list[dict[str, Any]],
+) -> list[dict[str, Any]]:
+    gold_lookup = {str(row.get("strategy", "")): row for row in gold_rows if str(row.get("scope", "ALL")) == "ALL"}
+    synthetic_lookup = {str(row.get("strategy", "")): row for row in synthetic_rows if str(row.get("scope", "ALL")) == "ALL"}
+    shared = sorted(set(gold_lookup) & set(synthetic_lookup))
+    rows: list[dict[str, Any]] = []
+    for strategy in shared:
+        gold = gold_lookup[strategy]
+        synthetic = synthetic_lookup[strategy]
+        cer_gap = round(to_float(synthetic.get("average_cer")) - to_float(gold.get("average_cer")), 6)
+        cost_gap = round(to_float(synthetic.get("average_compute_cost")) - to_float(gold.get("average_compute_cost")), 6)
+        rtf_gap = round(to_float(synthetic.get("average_rtf")) - to_float(gold.get("average_rtf")), 6)
+        rows.append(
+            {
+                "strategy": strategy,
+                "gold_average_cer": gold.get("average_cer", ""),
+                "synthetic_average_cer": synthetic.get("average_cer", ""),
+                "cer_gap_vs_gold": cer_gap,
+                "gold_average_compute_cost": gold.get("average_compute_cost", ""),
+                "synthetic_average_compute_cost": synthetic.get("average_compute_cost", ""),
+                "cost_gap_vs_gold": cost_gap,
+                "gold_average_rtf": gold.get("average_rtf", ""),
+                "synthetic_average_rtf": synthetic.get("average_rtf", ""),
+                "rtf_gap_vs_gold": rtf_gap,
+                "robustness_rank": 0,
+                "notes": "Gap is synthetic_split ALL minus gold ALL for the same strategy.",
+            }
+        )
+    ranked = sorted(rows, key=lambda row: (to_float(row["cer_gap_vs_gold"]), abs(to_float(row["cost_gap_vs_gold"])), str(row["strategy"])))
+    for index, row in enumerate(ranked, start=1):
+        row["robustness_rank"] = index
+    return ranked
+
+
 def load_gold_cases() -> list[dict[str, Any]]:
     config = load_config()
     risk_rows = {str(row["case_id"]): row for row in read_csv_rows(PROJECT_ROOT / "results" / "tables" / "risk_aware_selection.csv")}
@@ -980,6 +1031,35 @@ def write_recommendation_outputs(
     render_recommendation_summary(rows, summary_path)
 
 
+def render_robustness_gap_summary(rows: list[dict[str, Any]], output_path: Path) -> None:
+    lines = [
+        "# Cascade Robustness Gap Audit",
+        "",
+        "This audit compares gold ALL against synthetic split ALL for shared strategy names.",
+        "",
+        "| strategy | gold_average_cer | synthetic_average_cer | cer_gap_vs_gold | gold_average_compute_cost | synthetic_average_compute_cost | cost_gap_vs_gold | gold_average_rtf | synthetic_average_rtf | rtf_gap_vs_gold | robustness_rank |",
+        "| --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |",
+    ]
+    for row in rows:
+        lines.append(
+            f"| {row['strategy']} | {row['gold_average_cer']} | {row['synthetic_average_cer']} | {row['cer_gap_vs_gold']} | "
+            f"{row['gold_average_compute_cost']} | {row['synthetic_average_compute_cost']} | {row['cost_gap_vs_gold']} | "
+            f"{row['gold_average_rtf']} | {row['synthetic_average_rtf']} | {row['rtf_gap_vs_gold']} | {row['robustness_rank']} |"
+        )
+    output_path.parent.mkdir(parents=True, exist_ok=True)
+    output_path.write_text("\n".join(lines) + "\n", encoding="utf-8")
+
+
+def write_robustness_gap_outputs(
+    rows: list[dict[str, Any]],
+    csv_path: Path,
+    json_path: Path,
+    summary_path: Path,
+) -> None:
+    write_csv_json(rows, csv_path, json_path, ROBUSTNESS_GAP_COLUMNS)
+    render_robustness_gap_summary(rows, summary_path)
+
+
 def set_pixel(pixels: bytearray, width: int, height: int, x: int, y: int, color: tuple[int, int, int]) -> None:
     if 0 <= x < width and 0 <= y < height:
         idx = (y * width + x) * 3
@@ -1227,6 +1307,26 @@ def main() -> None:
         write_pareto_outputs(pareto_rows, pareto_csv, pareto_json, pareto_md)
         recommendation_rows = build_recommendation_rows(pareto_rows)
         write_recommendation_outputs(recommendation_rows, recommendation_csv, recommendation_json, recommendation_md)
+
+        gold_rows = build_strategy_rows(load_gold_cases(), load_decisions(), load_cer_lookup(), load_runtime_lookup())
+        gold_runtime_norm_rows = summarize_runtime_normalization(
+            load_gold_cases(),
+            STRATEGIES,
+            load_decisions(),
+            load_runtime_lookup(),
+            load_gold_duration_lookup(),
+            scope="ALL",
+            dataset_label="gold",
+        )
+        gold_performance_rows = [dict(row, scope="ALL") for row in gold_rows]
+        gold_pareto_rows = build_pareto_rows(gold_performance_rows, gold_runtime_norm_rows, dataset_label="gold")
+        robustness_rows = build_robustness_gap_rows(gold_pareto_rows, pareto_rows)
+        write_robustness_gap_outputs(
+            robustness_rows,
+            PROJECT_ROOT / "results" / "tables" / "cascade_robustness_gap.csv",
+            PROJECT_ROOT / "results" / "tables" / "cascade_robustness_gap.json",
+            PROJECT_ROOT / "results" / "figures" / "cascade_robustness_gap.md",
+        )
     else:
         cases = load_gold_cases()
         decisions = load_decisions()

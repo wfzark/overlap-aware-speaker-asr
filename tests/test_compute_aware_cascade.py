@@ -5,6 +5,7 @@ import unittest
 from src.compute_aware_cascade import (
     DEFAULT_COST_PROXY,
     build_recommendation_rows,
+    build_robustness_gap_rows,
     build_strategy_rows,
     build_synthetic_scope_rows,
     choose_cleaned_preferred_method,
@@ -195,6 +196,25 @@ class ComputeAwareCascadeTest(unittest.TestCase):
         self.assertEqual(by_profile["accuracy_first"]["recommended_strategy"], "accurate")
         self.assertEqual(by_profile["cost_first"]["recommended_strategy"], "cheap")
         self.assertEqual(by_profile["balanced"]["recommended_strategy"], "balanced")
+
+    def test_build_robustness_gap_rows_compares_gold_to_synthetic_all(self) -> None:
+        gold_rows = [
+            {"dataset": "gold", "scope": "ALL", "strategy": "router", "average_cer": 0.12, "average_compute_cost": 5.5, "average_rtf": 0.08},
+            {"dataset": "gold", "scope": "ALL", "strategy": "mixed", "average_cer": 0.30, "average_compute_cost": 5.2, "average_rtf": 0.11},
+        ]
+        synthetic_rows = [
+            {"dataset": "synthetic_split", "scope": "ALL", "strategy": "router", "average_cer": 0.28, "average_compute_cost": 0.78, "average_rtf": 0.15},
+            {"dataset": "synthetic_split", "scope": "ALL", "strategy": "mixed", "average_cer": 0.46, "average_compute_cost": 0.67, "average_rtf": 0.16},
+        ]
+
+        rows = build_robustness_gap_rows(gold_rows, synthetic_rows)
+        router = next(row for row in rows if row["strategy"] == "router")
+        mixed = next(row for row in rows if row["strategy"] == "mixed")
+
+        self.assertEqual(router["cer_gap_vs_gold"], 0.16)
+        self.assertEqual(router["cost_gap_vs_gold"], -4.72)
+        self.assertEqual(mixed["robustness_rank"], 1)
+        self.assertEqual(router["robustness_rank"], 2)
 
 
 if __name__ == "__main__":
