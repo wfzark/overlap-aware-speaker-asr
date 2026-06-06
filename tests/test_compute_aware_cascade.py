@@ -6,6 +6,8 @@ from src.compute_aware_cascade import (
     build_decision_matrix_rows,
     build_artifact_index_lines,
     build_artifact_index_rows,
+    build_benchmark_checklist_lines,
+    build_benchmark_checklist_rows,
     build_profile_playbook_lines,
     build_profile_playbook_rows,
     build_benchmark_readiness_lines,
@@ -562,6 +564,64 @@ class ComputeAwareCascadeTest(unittest.TestCase):
         self.assertIn("## balanced", rendered)
         self.assertIn("router_v2", rendered)
         self.assertIn("Use when you want the cleanest default operating point across scopes.", rendered)
+
+    def test_build_benchmark_checklist_rows_turns_plan_steps_into_session_requirements(self) -> None:
+        plan_rows = [
+            {
+                "plan_step_id": "phase1_gold_runtime_foundation",
+                "step_order": 1,
+                "phase": "foundation",
+                "dataset_scope": "gold",
+                "command": "python -m src.compute_aware_cascade",
+                "prerequisite_artifacts": "gold_runtime_audit;gold_runtime_normalization",
+                "refreshed_artifacts": "gold_runtime_audit;gold_runtime_normalization",
+                "success_signal": "Gold runtime foundation artifacts are rebuilt from controlled timing.",
+            },
+            {
+                "plan_step_id": "phase5_cross_dataset_refresh",
+                "step_order": 5,
+                "phase": "cross_dataset",
+                "dataset_scope": "cross_dataset",
+                "command": "python -m src.compute_aware_cascade --dataset synthetic_split",
+                "prerequisite_artifacts": "cross_dataset_robustness_gap;cross_dataset_decision_matrix",
+                "refreshed_artifacts": "cross_dataset_robustness_gap;cross_dataset_decision_matrix",
+                "success_signal": "Cross-dataset decision-support artifacts are rebuilt from controlled timing-backed inputs.",
+            },
+        ]
+
+        rows = build_benchmark_checklist_rows(plan_rows)
+        foundation = next(row for row in rows if row["plan_step_id"] == "phase1_gold_runtime_foundation")
+        cross_dataset = next(row for row in rows if row["plan_step_id"] == "phase5_cross_dataset_refresh")
+
+        self.assertEqual(foundation["session_type"], "timing_capture")
+        self.assertIn("hardware_label", foundation["required_metadata"])
+        self.assertIn("repeat_count", foundation["required_metadata"])
+        self.assertEqual(cross_dataset["session_type"], "derived_refresh")
+        self.assertIn("source_timing_manifest", cross_dataset["required_metadata"])
+        self.assertIn("Cross-dataset decision-support artifacts", cross_dataset["acceptance_check"])
+        self.assertTrue(rows == sorted(rows, key=lambda row: row["step_order"]))
+
+    def test_build_benchmark_checklist_lines_render_run_metadata_requirements(self) -> None:
+        rows = [
+            {
+                "plan_step_id": "phase1_gold_runtime_foundation",
+                "step_order": 1,
+                "phase": "foundation",
+                "dataset_scope": "gold",
+                "command": "python -m src.compute_aware_cascade",
+                "session_type": "timing_capture",
+                "required_metadata": "hardware_label;device;repeat_count;warmup_count",
+                "acceptance_check": "Gold runtime foundation artifacts are rebuilt from controlled timing.",
+            },
+        ]
+
+        lines = build_benchmark_checklist_lines(rows)
+        rendered = "\n".join(lines)
+
+        self.assertIn("# Cascade Benchmark Checklist", rendered)
+        self.assertIn("phase1_gold_runtime_foundation", rendered)
+        self.assertIn("hardware_label;device;repeat_count;warmup_count", rendered)
+        self.assertIn("Gold runtime foundation artifacts are rebuilt from controlled timing.", rendered)
 
 
 if __name__ == "__main__":
