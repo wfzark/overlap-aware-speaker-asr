@@ -20,6 +20,7 @@ This generated note identifies which cascade artifacts most need controlled hard
 | artifact_id | dataset | benchmark_status | readiness_tier | artifact_path | next_evidence_step |
 | --- | --- | --- | --- | --- | --- |
 | cross_dataset_benchmark_checklist | cross_dataset | inherits_repo_local_runtime | downstream_summary | results/figures/cascade_benchmark_checklist.md | Refresh after gold and synthetic controlled benchmark evidence lands. |
+| cross_dataset_benchmark_dependency_graph | cross_dataset | inherits_repo_local_runtime | downstream_summary | results/figures/cascade_benchmark_dependency_graph.md | Refresh after gold and synthetic controlled benchmark evidence lands. |
 | cross_dataset_benchmark_execution_queue | cross_dataset | inherits_repo_local_runtime | downstream_summary | results/figures/cascade_benchmark_execution_queue.md | Refresh after gold and synthetic controlled benchmark evidence lands. |
 | cross_dataset_benchmark_execution_summary | cross_dataset | inherits_repo_local_runtime | downstream_summary | results/figures/cascade_benchmark_execution_summary.md | Refresh after gold and synthetic controlled benchmark evidence lands. |
 | cross_dataset_benchmark_handoff_packet | cross_dataset | inherits_repo_local_runtime | downstream_summary | results/figures/cascade_benchmark_handoff_packet.md | Refresh after gold and synthetic controlled benchmark evidence lands. |

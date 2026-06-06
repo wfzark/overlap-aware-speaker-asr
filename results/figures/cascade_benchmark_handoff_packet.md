@@ -50,6 +50,14 @@ This generated packet consolidates the benchmark readiness scaffold, staged plan
 - rank 4: `phase4_synthetic_surface_refresh` / session `artifact_refresh` / evidence `source_timing_manifest;refresh_command;diff_review_notes` / completion `refresh_timing_backed_artifacts -> Synthetic split surface artifacts are rebuilt from controlled timing-backed inputs.`
 - rank 5: `phase5_cross_dataset_refresh` / session `derived_refresh` / evidence `source_timing_manifest;refresh_command;cross_dataset_scope;consistency_notes` / completion `refresh_cross_dataset_stack -> Cross-dataset decision-support artifacts are rebuilt from controlled timing-backed inputs.`
 
+## Dependency Graph
+
+- `phase1_gold_runtime_foundation` depends on `` / status `root` / unlocks `phase2_synthetic_runtime_foundation` / note `phase1_gold_runtime_foundation starts the benchmark chain for the foundation phase.`
+- `phase2_synthetic_runtime_foundation` depends on `phase1_gold_runtime_foundation` / status `blocked_by_predecessor` / unlocks `phase3_gold_surface_refresh` / note `Wait for phase1_gold_runtime_foundation before phase2_synthetic_runtime_foundation can produce timing-backed foundation outputs.`
+- `phase3_gold_surface_refresh` depends on `phase2_synthetic_runtime_foundation` / status `blocked_by_predecessor` / unlocks `phase4_synthetic_surface_refresh` / note `Wait for phase2_synthetic_runtime_foundation before phase3_gold_surface_refresh can produce timing-backed surface outputs.`
+- `phase4_synthetic_surface_refresh` depends on `phase3_gold_surface_refresh` / status `blocked_by_predecessor` / unlocks `phase5_cross_dataset_refresh` / note `Wait for phase3_gold_surface_refresh before phase4_synthetic_surface_refresh can produce timing-backed surface outputs.`
+- `phase5_cross_dataset_refresh` depends on `phase4_synthetic_surface_refresh` / status `blocked_by_predecessor` / unlocks `` / note `Wait for phase4_synthetic_surface_refresh before phase5_cross_dataset_refresh can produce timing-backed cross_dataset outputs.`
+
 ## Execution Status
 
 - step 1: `phase1_gold_runtime_foundation` is `template_only` / `pending_execution` with missing `hardware_label;device;repeat_count;warmup_count;batch_shape;timing_notes`
