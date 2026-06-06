@@ -1,0 +1,9 @@
+[
+  {
+    "execution_status": "template_only",
+    "walkthrough_scope": "step_1_problem_framing",
+    "expected_inputs": "Demo walkthrough head plus one narration note stub.",
+    "expected_outputs": "Diagnostic walkthrough note and a narrow presentation writeback.",
+    "writeback_note": "No demo walkthrough pass has been executed yet; fill this receipt only after the first run."
+  }
+]
