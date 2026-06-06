@@ -264,6 +264,11 @@ Benchmark checklist:
 - `results/figures/cascade_benchmark_checklist.md`
 - This generated checklist now records the run metadata and acceptance checks required for each controlled benchmark phase.
 
+Benchmark manifest template:
+
+- `results/tables/cascade_benchmark_manifest_template.csv`
+- This generated fill-in template now turns the checklist metadata requirements into a session log skeleton for real controlled timing runs.
+
 ## Synthetic Split Cascade Validation
 
 Label: `synthetic/silver` and `experimental/frontier`

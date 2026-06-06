@@ -149,6 +149,10 @@ Current benchmark checklist result:
 
 - `results/figures/cascade_benchmark_checklist.md` now records which hardware/runtime metadata and acceptance checks should be captured for each benchmark phase
 
+Current benchmark manifest template result:
+
+- `results/tables/cascade_benchmark_manifest_template.csv` now provides a fill-in template for recording per-phase benchmark session metadata during controlled timing runs
+
 ## Core Findings
 
 - Speech separation is useful, but not universally beneficial.

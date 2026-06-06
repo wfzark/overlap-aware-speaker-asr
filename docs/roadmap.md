@@ -128,6 +128,11 @@ Update: a generated benchmark checklist now turns the plan into a per-run execut
 - Summary view: `results/figures/cascade_benchmark_checklist.md`
 - This captures which metadata should be logged and what acceptance signal each benchmark phase must satisfy.
 
+Update: a generated benchmark manifest template now turns the checklist into a fill-in session log.
+
+- Manifest template: `results/tables/cascade_benchmark_manifest_template.csv`
+- This gives future contributors a concrete table to fill while running controlled timing sweeps instead of collecting benchmark metadata ad hoc.
+
 Remaining stretch work:
 
 - replace proxy costs with a controlled hardware/runtime benchmark
