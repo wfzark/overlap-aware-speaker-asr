@@ -11,6 +11,8 @@ from src.project_harness import (
     build_frontier_handoff_packet_rows,
     build_frontier_parallel_picklist_lines,
     build_frontier_parallel_picklist_rows,
+    build_frontier_receipt_board_lines,
+    build_frontier_receipt_board_rows,
     build_frontier_receipt_map_lines,
     build_frontier_receipt_map_rows,
     build_frontier_receipt_packet_lines,
@@ -304,6 +306,55 @@ class ProjectHarnessTest(unittest.TestCase):
         rendered = "\n".join(lines)
 
         self.assertIn("# Frontier Parallel Picklist", rendered)
+        self.assertIn("meeteval_compatibility", rendered)
+        self.assertIn("meeteval_dry_run_handoff.md", rendered)
+        self.assertIn("meeteval_dry_run_receipt.json", rendered)
+
+    def test_build_frontier_receipt_board_rows_cover_all_current_frontiers(self) -> None:
+        rows = build_frontier_receipt_board_rows(
+            [
+                {
+                    "queue_order": "1",
+                    "frontier_id": "meeteval_compatibility",
+                    "status": "documented_skill",
+                    "entry_artifact": "MeetEval readiness card",
+                    "why_now": "Use the readiness card to stage one narrow dry run before claiming any benchmark bridge.",
+                },
+                {
+                    "queue_order": "2",
+                    "frontier_id": "external_validation",
+                    "status": "documented_skill",
+                    "entry_artifact": "external sanity-check prioritization card",
+                    "why_now": "Use the prioritization card to map one tiny sanity-check slice without claiming a completed benchmark.",
+                },
+            ]
+        )
+
+        self.assertEqual(len(rows), 2)
+        self.assertEqual(rows[0]["frontier_id"], "meeteval_compatibility")
+        self.assertEqual(rows[0]["pickup_artifact"], "results/figures/meeteval_dry_run_handoff.md")
+        self.assertEqual(rows[0]["receipt_target"], "results/tables/meeteval_dry_run_receipt.json")
+        self.assertEqual(rows[1]["frontier_id"], "external_validation")
+        self.assertEqual(rows[1]["receipt_target"], "results/tables/external_validation_slice_receipt.json")
+        self.assertIn("breadth-first", rows[0]["board_note"].lower())
+
+    def test_build_frontier_receipt_board_lines_render_table(self) -> None:
+        lines = build_frontier_receipt_board_lines(
+            [
+                {
+                    "queue_order": "1",
+                    "frontier_id": "meeteval_compatibility",
+                    "pickup_artifact": "results/figures/meeteval_dry_run_handoff.md",
+                    "receipt_target": "results/tables/meeteval_dry_run_receipt.json",
+                    "board_status": "documented_skill",
+                    "board_note": "Use this board as the single breadth-first receipt snapshot before moving to the next queue head.",
+                    "board_scope": "Coordination-only board; not a claim of completed frontier execution.",
+                }
+            ]
+        )
+        rendered = "\n".join(lines)
+
+        self.assertIn("# Frontier Receipt Board", rendered)
         self.assertIn("meeteval_compatibility", rendered)
         self.assertIn("meeteval_dry_run_handoff.md", rendered)
         self.assertIn("meeteval_dry_run_receipt.json", rendered)
