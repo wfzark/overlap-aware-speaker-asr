@@ -84,6 +84,10 @@ This generated packet consolidates the benchmark readiness scaffold, staged plan
 
 - start `phase1_gold_runtime_foundation` / pending phases `3` / dominant blocker `runtime_capture_missing` / urgency `high` / note `phase1_gold_runtime_foundation leads a 3-phase pending stack with dominant blocker runtime_capture_missing.`
 
+## Operator Brief
+
+- step `phase1_gold_runtime_foundation` / action `collect_controlled_runtime` / session `timing_capture` / evidence `hardware_label;device;repeat_count;warmup_count;batch_shape;timing_notes` / note `Run phase1_gold_runtime_foundation now; it is blocked by runtime_capture_missing and carries high urgency.`
+
 ## Execution Status
 
 - step 1: `phase1_gold_runtime_foundation` is `template_only` / `pending_execution` with missing `hardware_label;device;repeat_count;warmup_count;batch_shape;timing_notes`
