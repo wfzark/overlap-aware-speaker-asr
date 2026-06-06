@@ -145,10 +145,16 @@ Update: a generated benchmark execution summary now turns the status board into 
 - Summary view: `results/figures/cascade_benchmark_execution_summary.md`
 - This shows blocker totals, readiness by phase, and the top next action before contributors dive into the lower-level status board.
 
+Update: a generated benchmark execution queue now turns the rollup into an ordered next-run list.
+
+- Benchmark execution queue: `results/tables/cascade_benchmark_execution_queue.csv`
+- Summary view: `results/figures/cascade_benchmark_execution_queue.md`
+- This shows which benchmark step should execute or be reviewed first once contributors move from planning into action.
+
 Update: a generated benchmark handoff packet now turns the execution stack into a single benchmark entrypoint.
 
 - Handoff packet: `results/figures/cascade_benchmark_handoff_packet.md`
-- This lets future contributors start from one note before diving into readiness, plan, checklist, manifest, execution-summary, and status details.
+- This lets future contributors start from one note before diving into readiness, plan, checklist, manifest, execution-summary, execution-queue, and status details.
 
 Remaining stretch work:
 

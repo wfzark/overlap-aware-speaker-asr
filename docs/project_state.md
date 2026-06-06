@@ -281,10 +281,16 @@ Benchmark execution summary:
 - `results/figures/cascade_benchmark_execution_summary.md`
 - This generated summary now rolls the status board up by phase so the next contributor can see blocker totals, readiness, and the top recommended next action before drilling into individual steps.
 
+Benchmark execution queue:
+
+- `results/tables/cascade_benchmark_execution_queue.csv`
+- `results/figures/cascade_benchmark_execution_queue.md`
+- This generated queue now converts the status stack into an ordered run list so the next contributor can tell which benchmark step should execute or be reviewed first.
+
 Benchmark handoff packet:
 
 - `results/figures/cascade_benchmark_handoff_packet.md`
-- This generated note now provides one benchmark-entry document that points to the readiness, plan, checklist, manifest template, execution-summary, and status-board layers together.
+- This generated note now provides one benchmark-entry document that points to the readiness, plan, checklist, manifest template, execution-summary, execution-queue, and status-board layers together.
 
 ## Synthetic Split Cascade Validation
 
