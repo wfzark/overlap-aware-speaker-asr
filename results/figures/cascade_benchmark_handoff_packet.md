@@ -28,6 +28,12 @@ This generated packet consolidates the benchmark readiness scaffold, staged plan
 - `phase4_synthetic_surface_refresh`: session `artifact_refresh`, metadata `source_timing_manifest;refresh_command;diff_review_notes`, acceptance `Synthetic split surface artifacts are rebuilt from controlled timing-backed inputs.`
 - `phase5_cross_dataset_refresh`: session `derived_refresh`, metadata `source_timing_manifest;cross_dataset_scope;refresh_command;consistency_notes`, acceptance `Cross-dataset decision-support artifacts are rebuilt from controlled timing-backed inputs.`
 
+## Execution Summary
+
+- `foundation`: `pending_execution` with `2/2` template-only steps, `12` pending fields, blocker `runtime_capture_missing`, next `collect_controlled_runtime`, datasets `gold;synthetic_split`
+- `surface`: `pending_execution` with `2/2` template-only steps, `6` pending fields, blocker `artifact_refresh_missing`, next `refresh_timing_backed_artifacts`, datasets `gold;synthetic_split`
+- `cross_dataset`: `pending_execution` with `1/1` template-only steps, `4` pending fields, blocker `derived_refresh_missing`, next `refresh_cross_dataset_stack`, datasets `cross_dataset`
+
 ## Execution Status
 
 - step 1: `phase1_gold_runtime_foundation` is `template_only` / `pending_execution` with missing `hardware_label;device;repeat_count;warmup_count;batch_shape;timing_notes`
