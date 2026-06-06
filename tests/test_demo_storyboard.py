@@ -5,6 +5,8 @@ import unittest
 from src.demo_storyboard import (
     build_demo_storyboard_cards,
     build_demo_storyboard_lines,
+    build_demo_walkthrough_lines,
+    build_demo_walkthrough_steps,
 )
 
 
@@ -42,6 +44,38 @@ class DemoStoryboardTest(unittest.TestCase):
         self.assertIn("Problem", rendered)
         self.assertIn("router_v2", rendered)
         self.assertIn("critic bridges now exist", rendered)
+
+    def test_build_demo_walkthrough_steps_cover_short_demo_flow(self) -> None:
+        steps = build_demo_walkthrough_steps(
+            {
+                "baseline": "Selective separation beats blind separation on the gold benchmark.",
+                "router": "router_v2 matches oracle-best average CER.",
+                "frontier": "Frontier artifacts now cover external prioritization and qualitative critics.",
+            }
+        )
+
+        self.assertEqual(steps[0]["step_id"], "1")
+        self.assertIn("problem", steps[0]["focus"].lower())
+        self.assertIn("oracle-best", steps[2]["talk_track"])
+        self.assertIn("external prioritization", steps[3]["talk_track"])
+        self.assertEqual(steps[-1]["step_id"], "5")
+
+    def test_build_demo_walkthrough_lines_render_ordered_script(self) -> None:
+        lines = build_demo_walkthrough_lines(
+            [
+                {
+                    "step_id": "1",
+                    "focus": "Problem framing",
+                    "talk_track": "Start by explaining why overlap does not always justify separation.",
+                    "artifact_anchor": "README.md",
+                }
+            ]
+        )
+        rendered = "\n".join(lines)
+
+        self.assertIn("# Demo Walkthrough", rendered)
+        self.assertIn("Problem framing", rendered)
+        self.assertIn("artifact_anchor", rendered)
 
 
 if __name__ == "__main__":
