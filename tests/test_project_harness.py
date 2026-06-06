@@ -22,6 +22,8 @@ class ProjectHarnessTest(unittest.TestCase):
         self.assertIn("external_validation", by_id)
         self.assertIn("demo_excellence", by_id)
         self.assertEqual(by_id["speaker_profile"]["status"], "documented_skill")
+        self.assertIn("triage", by_id["speaker_profile"]["expected_output"])
+        self.assertIn("stronger profile method", by_id["speaker_profile"]["next_step"])
         self.assertEqual(by_id["meeteval_compatibility"]["evidence_path"], "docs/skills/skill_04_meeteval_compatibility.md")
         self.assertIn("readiness", by_id["meeteval_compatibility"]["expected_output"])
         self.assertIn("dry run", by_id["meeteval_compatibility"]["next_step"])
