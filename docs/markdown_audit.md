@@ -29,6 +29,7 @@ This audit classifies the repository's Markdown files so future agents can tell 
 | `docs/skills/skill_04_meeteval_compatibility.md` | current | keep as a challenge card |
 | `docs/skills/skill_05_agentic_llm_critic.md` | current | keep as a challenge card |
 | `docs/skills/skill_06_github_demo_excellence.md` | current | keep as a challenge card |
+| `docs/skills/skill_07_external_validation.md` | current | keep as a challenge card |
 | `results/figures/current_results_summary.md` | current | keep as the results summary hub |
 | `results/figures/best_method_by_case.md` | current | keep as supporting interpretation |
 | `results/figures/cpcer_lite_summary.md` | current | keep as supporting interpretation |
