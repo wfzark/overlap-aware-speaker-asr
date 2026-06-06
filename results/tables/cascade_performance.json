@@ -1,0 +1,80 @@
+[
+  {
+    "strategy": "fixed_mixed_whisper",
+    "label": "experimental/frontier",
+    "average_cer": 0.302093,
+    "average_compute_cost": 5.2198,
+    "relative_cost_vs_fixed_separated": 0.874104,
+    "automatic_coverage": 1.0,
+    "manual_review_count": 0,
+    "sample_count": 5,
+    "case_count": 5,
+    "selected_method_mix": "mixed_whisper:5",
+    "notes": "Costed offline analysis; route selection uses existing reference-free decisions or overlap/risk signals. CER is used only after decisions are fixed."
+  },
+  {
+    "strategy": "fixed_separated_whisper",
+    "label": "experimental/frontier",
+    "average_cer": 0.191846,
+    "average_compute_cost": 5.9716,
+    "relative_cost_vs_fixed_separated": 1.0,
+    "automatic_coverage": 1.0,
+    "manual_review_count": 0,
+    "sample_count": 5,
+    "case_count": 5,
+    "selected_method_mix": "separated_whisper:5",
+    "notes": "Costed offline analysis; route selection uses existing reference-free decisions or overlap/risk signals. CER is used only after decisions are fixed."
+  },
+  {
+    "strategy": "fixed_separated_whisper_cleaned",
+    "label": "experimental/frontier",
+    "average_cer": 0.181681,
+    "average_compute_cost": 5.9716,
+    "relative_cost_vs_fixed_separated": 1.0,
+    "automatic_coverage": 1.0,
+    "manual_review_count": 0,
+    "sample_count": 5,
+    "case_count": 5,
+    "selected_method_mix": "separated_whisper_cleaned:5",
+    "notes": "Costed offline analysis; route selection uses existing reference-free decisions or overlap/risk signals. CER is used only after decisions are fixed."
+  },
+  {
+    "strategy": "router_v2_costed",
+    "label": "experimental/frontier",
+    "average_cer": 0.120042,
+    "average_compute_cost": 5.5508,
+    "relative_cost_vs_fixed_separated": 0.929533,
+    "automatic_coverage": 1.0,
+    "manual_review_count": 0,
+    "sample_count": 5,
+    "case_count": 5,
+    "selected_method_mix": "mixed_whisper:2;separated_whisper:3",
+    "notes": "Costed offline analysis; route selection uses existing reference-free decisions or overlap/risk signals. CER is used only after decisions are fixed."
+  },
+  {
+    "strategy": "risk_aware_costed",
+    "label": "experimental/frontier",
+    "average_cer": 0.134587,
+    "average_compute_cost": 5.5508,
+    "relative_cost_vs_fixed_separated": 0.929533,
+    "automatic_coverage": 1.0,
+    "manual_review_count": 0,
+    "sample_count": 5,
+    "case_count": 5,
+    "selected_method_mix": "mixed_whisper:2;separated_whisper:1;separated_whisper_cleaned:2",
+    "notes": "Costed offline analysis; route selection uses existing reference-free decisions or overlap/risk signals. CER is used only after decisions are fixed."
+  },
+  {
+    "strategy": "budget_cascade",
+    "label": "experimental/frontier",
+    "average_cer": 0.134587,
+    "average_compute_cost": 5.5508,
+    "relative_cost_vs_fixed_separated": 0.929533,
+    "automatic_coverage": 1.0,
+    "manual_review_count": 0,
+    "sample_count": 5,
+    "case_count": 5,
+    "selected_method_mix": "mixed_whisper:2;separated_whisper:1;separated_whisper_cleaned:2",
+    "notes": "Costed offline analysis; route selection uses existing reference-free decisions or overlap/risk signals. CER is used only after decisions are fixed."
+  }
+]

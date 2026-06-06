@@ -1,0 +1,440 @@
+from __future__ import annotations
+
+import csv
+import json
+import struct
+import zlib
+from pathlib import Path
+from typing import Any
+
+from .config import PROJECT_ROOT, load_config
+
+
+METHODS = ["mixed_whisper", "separated_whisper", "separated_whisper_cleaned"]
+
+DEFAULT_COST_PROXY = {
+    "mixed_whisper": 1.0,
+    "separated_whisper": 2.0,
+    "separated_whisper_cleaned": 2.1,
+    "manual_review": 3.0,
+}
+
+STRATEGIES = [
+    "fixed_mixed_whisper",
+    "fixed_separated_whisper",
+    "fixed_separated_whisper_cleaned",
+    "router_v2_costed",
+    "risk_aware_costed",
+    "budget_cascade",
+]
+
+PERFORMANCE_COLUMNS = [
+    "strategy",
+    "label",
+    "average_cer",
+    "average_compute_cost",
+    "relative_cost_vs_fixed_separated",
+    "automatic_coverage",
+    "manual_review_count",
+    "sample_count",
+    "case_count",
+    "selected_method_mix",
+    "notes",
+]
+
+
+def to_float(value: Any) -> float:
+    try:
+        return float(str(value).strip())
+    except Exception:
+        return 0.0
+
+
+def to_int(value: Any) -> int:
+    try:
+        return int(float(str(value).strip()))
+    except Exception:
+        return 0
+
+
+def read_csv_rows(path: Path) -> list[dict[str, Any]]:
+    if not path.exists():
+        raise FileNotFoundError(f"Missing table: {path.relative_to(PROJECT_ROOT)}")
+    with path.open("r", encoding="utf-8-sig", newline="") as f:
+        return [row for row in csv.DictReader(f) if isinstance(row, dict)]
+
+
+def write_csv_json(rows: list[dict[str, Any]], csv_path: Path, json_path: Path, fieldnames: list[str]) -> None:
+    csv_path.parent.mkdir(parents=True, exist_ok=True)
+    with csv_path.open("w", newline="", encoding="utf-8-sig") as f:
+        writer = csv.DictWriter(f, fieldnames=fieldnames)
+        writer.writeheader()
+        writer.writerows(rows)
+    json_path.write_text(json.dumps(rows, ensure_ascii=False, indent=2), encoding="utf-8")
+
+
+def compute_method_cost(method: str, runtime_row: dict[str, Any]) -> float:
+    runtime_field = {
+        "mixed_whisper": "mixed_runtime_sec",
+        "separated_whisper": "separated_runtime_sec",
+        "separated_whisper_cleaned": "cleaned_runtime_sec",
+    }.get(method)
+    if runtime_field:
+        observed = to_float(runtime_row.get(runtime_field))
+        if observed > 0:
+            return observed
+    return DEFAULT_COST_PROXY.get(method, DEFAULT_COST_PROXY["manual_review"])
+
+
+def choose_budget_cascade_method(overlap_level: int, risk_level: str) -> str:
+    if overlap_level == 0:
+        return "separated_whisper"
+    if overlap_level in (1, 2):
+        return "mixed_whisper"
+    if risk_level in {"medium", "high"}:
+        return "separated_whisper_cleaned"
+    return "separated_whisper"
+
+
+def fixed_method_for_strategy(strategy: str) -> str | None:
+    mapping = {
+        "fixed_mixed_whisper": "mixed_whisper",
+        "fixed_separated_whisper": "separated_whisper",
+        "fixed_separated_whisper_cleaned": "separated_whisper_cleaned",
+    }
+    return mapping.get(strategy)
+
+
+def select_strategy_method(
+    strategy: str,
+    case: dict[str, Any],
+    decisions: dict[str, dict[str, str]],
+) -> str:
+    fixed = fixed_method_for_strategy(strategy)
+    if fixed:
+        return fixed
+    case_id = str(case.get("case_id", "")).strip()
+    if strategy == "budget_cascade":
+        return choose_budget_cascade_method(to_int(case.get("overlap_level")), str(case.get("risk_level", "low")).strip())
+    return decisions.get(strategy, {}).get(case_id, "manual_review")
+
+
+def build_strategy_rows(
+    cases: list[dict[str, Any]],
+    decisions: dict[str, dict[str, str]],
+    cer_lookup: dict[tuple[str, str], float],
+    runtime_lookup: dict[str, dict[str, Any]],
+) -> list[dict[str, Any]]:
+    rows: list[dict[str, Any]] = []
+    case_count = len(cases)
+    for strategy in STRATEGIES:
+        cer_values: list[float] = []
+        costs: list[float] = []
+        method_counts: dict[str, int] = {}
+        manual_review_count = 0
+
+        for case in cases:
+            case_id = str(case.get("case_id", "")).strip()
+            method = select_strategy_method(strategy, case, decisions)
+            method_counts[method] = method_counts.get(method, 0) + 1
+            costs.append(compute_method_cost(method, runtime_lookup.get(case_id, {})))
+
+            if method == "manual_review":
+                manual_review_count += 1
+                continue
+            cer = cer_lookup.get((case_id, method))
+            if cer is not None:
+                cer_values.append(cer)
+
+        automatic_count = case_count - manual_review_count
+        rows.append(
+            {
+                "strategy": strategy,
+                "label": "experimental/frontier",
+                "average_cer": round(sum(cer_values) / len(cer_values), 6) if cer_values else "",
+                "average_compute_cost": round(sum(costs) / len(costs), 6) if costs else 0.0,
+                "relative_cost_vs_fixed_separated": "",
+                "automatic_coverage": round(automatic_count / case_count, 6) if case_count else 0.0,
+                "manual_review_count": manual_review_count,
+                "sample_count": len(cer_values),
+                "case_count": case_count,
+                "selected_method_mix": ";".join(
+                    f"{method}:{method_counts[method]}" for method in sorted(method_counts)
+                ),
+                "notes": (
+                    "Costed offline analysis; route selection uses existing reference-free decisions or overlap/risk signals. "
+                    "CER is used only after decisions are fixed."
+                ),
+            }
+        )
+
+    separated_cost = next(
+        (to_float(row["average_compute_cost"]) for row in rows if row["strategy"] == "fixed_separated_whisper"),
+        0.0,
+    )
+    for row in rows:
+        row["relative_cost_vs_fixed_separated"] = (
+            round(to_float(row["average_compute_cost"]) / separated_cost, 6) if separated_cost else ""
+        )
+    return rows
+
+
+def load_gold_cases() -> list[dict[str, Any]]:
+    config = load_config()
+    risk_rows = {str(row["case_id"]): row for row in read_csv_rows(PROJECT_ROOT / "results" / "tables" / "risk_aware_selection.csv")}
+    cases: list[dict[str, Any]] = []
+    for case in config.get("audio_cases", []):
+        case_id = str(case.get("id", "")).strip()
+        risk_row = risk_rows.get(case_id, {})
+        cases.append(
+            {
+                "case_id": case_id,
+                "overlap_level": to_int(case.get("overlap_level")),
+                "risk_level": str(risk_row.get("risk_level", "low")).strip() or "low",
+            }
+        )
+    return [case for case in cases if case["case_id"]]
+
+
+def load_decisions() -> dict[str, dict[str, str]]:
+    router_rows = read_csv_rows(PROJECT_ROOT / "results" / "tables" / "routing_decisions_v2.csv")
+    risk_rows = read_csv_rows(PROJECT_ROOT / "results" / "tables" / "risk_aware_selection.csv")
+    return {
+        "router_v2_costed": {
+            str(row.get("case_id", "")).strip(): str(row.get("selected_method", "")).strip()
+            for row in router_rows
+            if str(row.get("case_id", "")).strip()
+        },
+        "risk_aware_costed": {
+            str(row.get("case_id", "")).strip(): str(row.get("final_selected_method", "")).strip()
+            for row in risk_rows
+            if str(row.get("case_id", "")).strip()
+        },
+    }
+
+
+def load_cer_lookup() -> dict[tuple[str, str], float]:
+    lookup: dict[tuple[str, str], float] = {}
+    for row in read_csv_rows(PROJECT_ROOT / "results" / "tables" / "cer_results.csv"):
+        case_id = str(row.get("case_id", "")).strip()
+        method = str(row.get("method", "")).strip()
+        if case_id and method:
+            lookup[(case_id, method)] = to_float(row.get("cer"))
+    return lookup
+
+
+def load_runtime_lookup() -> dict[str, dict[str, Any]]:
+    lookup: dict[str, dict[str, Any]] = {}
+    for row in read_csv_rows(PROJECT_ROOT / "results" / "tables" / "routing_decisions_v2.csv"):
+        case_id = str(row.get("case_id", "")).strip()
+        if not case_id:
+            continue
+        separated_runtime = to_float(row.get("separated_runtime_sec"))
+        cleaned_runtime = to_float(row.get("cleaned_runtime_sec")) or separated_runtime
+        lookup[case_id] = {
+            "mixed_runtime_sec": to_float(row.get("mixed_runtime_sec")),
+            "separated_runtime_sec": separated_runtime,
+            "cleaned_runtime_sec": cleaned_runtime,
+        }
+    return lookup
+
+
+def render_summary(rows: list[dict[str, Any]], output_path: Path, figure_path: Path) -> None:
+    lines = [
+        "# Compute-aware Cascade Summary",
+        "",
+        "## Label",
+        "",
+        "- experimental/frontier",
+        "",
+        "## Interpretation",
+        "",
+        "- This is an offline costed analysis of existing gold benchmark outputs.",
+        "- Route selection uses overlap, risk, and existing reference-free router decisions.",
+        "- CER is used only after each strategy has fixed its selected method.",
+        "- Compute cost uses observed runtime fields when available and deterministic proxy costs otherwise.",
+        "",
+        "## Performance",
+        "",
+        "| strategy | average_cer | average_compute_cost | relative_cost_vs_fixed_separated | coverage | method_mix |",
+        "| --- | ---: | ---: | ---: | ---: | --- |",
+    ]
+    for row in rows:
+        lines.append(
+            "| {strategy} | {average_cer} | {average_compute_cost} | {relative_cost_vs_fixed_separated} | "
+            "{automatic_coverage} | {selected_method_mix} |".format(**row)
+        )
+    lines += [
+        "",
+        "## Outputs",
+        "",
+        "- Table: `results/tables/cascade_performance.csv`",
+        f"- Figure: `{figure_path.relative_to(PROJECT_ROOT).as_posix()}`",
+        "",
+        "## Caution",
+        "",
+        "The runtime values are useful for comparing routes inside this repository, but they are not a universal hardware benchmark.",
+    ]
+    output_path.parent.mkdir(parents=True, exist_ok=True)
+    output_path.write_text("\n".join(lines) + "\n", encoding="utf-8")
+
+
+def set_pixel(pixels: bytearray, width: int, height: int, x: int, y: int, color: tuple[int, int, int]) -> None:
+    if 0 <= x < width and 0 <= y < height:
+        idx = (y * width + x) * 3
+        pixels[idx : idx + 3] = bytes(color)
+
+
+def draw_line(
+    pixels: bytearray,
+    width: int,
+    height: int,
+    x0: int,
+    y0: int,
+    x1: int,
+    y1: int,
+    color: tuple[int, int, int],
+) -> None:
+    dx = abs(x1 - x0)
+    dy = -abs(y1 - y0)
+    sx = 1 if x0 < x1 else -1
+    sy = 1 if y0 < y1 else -1
+    err = dx + dy
+    while True:
+        set_pixel(pixels, width, height, x0, y0, color)
+        if x0 == x1 and y0 == y1:
+            break
+        e2 = 2 * err
+        if e2 >= dy:
+            err += dy
+            x0 += sx
+        if e2 <= dx:
+            err += dx
+            y0 += sy
+
+
+def draw_circle(
+    pixels: bytearray,
+    width: int,
+    height: int,
+    cx: int,
+    cy: int,
+    radius: int,
+    color: tuple[int, int, int],
+) -> None:
+    for y in range(cy - radius, cy + radius + 1):
+        for x in range(cx - radius, cx + radius + 1):
+            if (x - cx) ** 2 + (y - cy) ** 2 <= radius**2:
+                set_pixel(pixels, width, height, x, y, color)
+
+
+def write_fallback_png(path: Path, rows: list[dict[str, Any]]) -> None:
+    width, height = 900, 550
+    pixels = bytearray(b"\xff\xff\xff" * width * height)
+    left, right, top, bottom = 90, 40, 40, 80
+    plot_w = width - left - right
+    plot_h = height - top - bottom
+    axis_color = (45, 45, 45)
+    grid_color = (225, 225, 225)
+    point_color = (47, 111, 143)
+
+    x_values = [to_float(row["average_compute_cost"]) for row in rows]
+    y_values = [to_float(row["average_cer"]) for row in rows]
+    x_min, x_max = min(x_values or [0.0]), max(x_values or [1.0])
+    y_min, y_max = min(y_values or [0.0]), max(y_values or [1.0])
+    if x_min == x_max:
+        x_min -= 1.0
+        x_max += 1.0
+    if y_min == y_max:
+        y_min -= 0.1
+        y_max += 0.1
+    x_pad = (x_max - x_min) * 0.08
+    y_pad = (y_max - y_min) * 0.08
+    x_min -= x_pad
+    x_max += x_pad
+    y_min -= y_pad
+    y_max += y_pad
+
+    for tick in range(6):
+        x = left + round(plot_w * tick / 5)
+        y = top + round(plot_h * tick / 5)
+        draw_line(pixels, width, height, x, top, x, top + plot_h, grid_color)
+        draw_line(pixels, width, height, left, y, left + plot_w, y, grid_color)
+    draw_line(pixels, width, height, left, top, left, top + plot_h, axis_color)
+    draw_line(pixels, width, height, left, top + plot_h, left + plot_w, top + plot_h, axis_color)
+
+    for row in rows:
+        x_value = to_float(row["average_compute_cost"])
+        y_value = to_float(row["average_cer"])
+        x = left + round((x_value - x_min) / (x_max - x_min) * plot_w)
+        y = top + plot_h - round((y_value - y_min) / (y_max - y_min) * plot_h)
+        draw_circle(pixels, width, height, x, y, 7, point_color)
+        draw_circle(pixels, width, height, x, y, 3, (255, 255, 255))
+
+    raw_rows = []
+    for y in range(height):
+        start = y * width * 3
+        raw_rows.append(b"\x00" + bytes(pixels[start : start + width * 3]))
+    compressed = zlib.compress(b"".join(raw_rows))
+
+    def chunk(kind: bytes, data: bytes) -> bytes:
+        payload = kind + data
+        return struct.pack(">I", len(data)) + payload + struct.pack(">I", zlib.crc32(payload) & 0xFFFFFFFF)
+
+    png = (
+        b"\x89PNG\r\n\x1a\n"
+        + chunk(b"IHDR", struct.pack(">IIBBBBB", width, height, 8, 2, 0, 0, 0))
+        + chunk(b"IDAT", compressed)
+        + chunk(b"IEND", b"")
+    )
+    path.parent.mkdir(parents=True, exist_ok=True)
+    path.write_bytes(png)
+
+
+def render_tradeoff_figure(rows: list[dict[str, Any]], output_path: Path) -> None:
+    try:
+        import matplotlib
+
+        matplotlib.use("Agg")
+        import matplotlib.pyplot as plt
+    except Exception:
+        write_fallback_png(output_path, rows)
+        return
+
+    output_path.parent.mkdir(parents=True, exist_ok=True)
+    fig, ax = plt.subplots(figsize=(9, 5.5))
+    x_values = [to_float(row["average_compute_cost"]) for row in rows]
+    y_values = [to_float(row["average_cer"]) for row in rows]
+    ax.scatter(x_values, y_values, color="#2f6f8f", s=80)
+    for row, x_value, y_value in zip(rows, x_values, y_values):
+        ax.annotate(str(row["strategy"]), (x_value, y_value), textcoords="offset points", xytext=(6, 5), fontsize=8)
+    ax.set_xlabel("Average compute cost (observed runtime or proxy)")
+    ax.set_ylabel("Average CER")
+    ax.set_title("Compute-aware cascade trade-off")
+    ax.grid(True, alpha=0.25)
+    fig.tight_layout()
+    fig.savefig(output_path, dpi=200)
+    plt.close(fig)
+
+
+def main() -> None:
+    cases = load_gold_cases()
+    rows = build_strategy_rows(cases, load_decisions(), load_cer_lookup(), load_runtime_lookup())
+
+    table_csv = PROJECT_ROOT / "results" / "tables" / "cascade_performance.csv"
+    table_json = PROJECT_ROOT / "results" / "tables" / "cascade_performance.json"
+    figure_path = PROJECT_ROOT / "results" / "figures" / "cer_runtime_tradeoff.png"
+    summary_path = PROJECT_ROOT / "results" / "figures" / "compute_aware_cascade_summary.md"
+
+    write_csv_json(rows, table_csv, table_json, PERFORMANCE_COLUMNS)
+    render_tradeoff_figure(rows, figure_path)
+    render_summary(rows, summary_path, figure_path)
+
+    print(f"Wrote cascade performance: {table_csv.relative_to(PROJECT_ROOT)}")
+    print(f"Wrote cascade JSON: {table_json.relative_to(PROJECT_ROOT)}")
+    print(f"Wrote cascade figure: {figure_path.relative_to(PROJECT_ROOT)}")
+    print(f"Wrote cascade summary: {summary_path.relative_to(PROJECT_ROOT)}")
+
+
+if __name__ == "__main__":
+    main()
