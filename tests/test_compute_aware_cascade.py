@@ -712,8 +712,14 @@ class ComputeAwareCascadeTest(unittest.TestCase):
 
         self.assertEqual(foundation["execution_status"], "template_only")
         self.assertEqual(foundation["readiness_signal"], "pending_execution")
+        self.assertEqual(foundation["pending_field_count"], 6)
+        self.assertEqual(foundation["blocking_category"], "runtime_capture_missing")
+        self.assertEqual(foundation["next_action"], "collect_controlled_runtime")
         self.assertEqual(cross_dataset["execution_status"], "template_only")
+        self.assertEqual(cross_dataset["pending_field_count"], 4)
+        self.assertEqual(cross_dataset["blocking_category"], "derived_refresh_missing")
         self.assertIn("source_timing_manifest", cross_dataset["missing_fields"])
+        self.assertEqual(cross_dataset["next_action"], "refresh_cross_dataset_stack")
         self.assertTrue(rows == sorted(rows, key=lambda row: row["step_order"]))
 
     def test_build_benchmark_status_lines_render_phase_board(self) -> None:
@@ -725,6 +731,9 @@ class ComputeAwareCascadeTest(unittest.TestCase):
                 "dataset_scope": "gold",
                 "execution_status": "template_only",
                 "readiness_signal": "pending_execution",
+                "pending_field_count": 3,
+                "blocking_category": "runtime_capture_missing",
+                "next_action": "collect_controlled_runtime",
                 "missing_fields": "hardware_label;device;repeat_count",
                 "acceptance_check": "Gold runtime foundation artifacts are rebuilt from controlled timing.",
             }
@@ -736,6 +745,8 @@ class ComputeAwareCascadeTest(unittest.TestCase):
         self.assertIn("# Cascade Benchmark Status Board", rendered)
         self.assertIn("phase1_gold_runtime_foundation", rendered)
         self.assertIn("pending_execution", rendered)
+        self.assertIn("runtime_capture_missing", rendered)
+        self.assertIn("collect_controlled_runtime", rendered)
         self.assertIn("hardware_label;device;repeat_count", rendered)
 
     def test_build_artifact_index_rows_include_benchmark_status_board(self) -> None:

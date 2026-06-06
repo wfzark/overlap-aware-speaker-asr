@@ -6,6 +6,9 @@
     "dataset_scope": "gold",
     "execution_status": "template_only",
     "readiness_signal": "pending_execution",
+    "pending_field_count": 6,
+    "blocking_category": "runtime_capture_missing",
+    "next_action": "collect_controlled_runtime",
     "missing_fields": "hardware_label;device;repeat_count;warmup_count;batch_shape;timing_notes",
     "acceptance_check": "Gold runtime foundation artifacts are rebuilt from controlled timing."
   },
@@ -16,6 +19,9 @@
     "dataset_scope": "synthetic_split",
     "execution_status": "template_only",
     "readiness_signal": "pending_execution",
+    "pending_field_count": 6,
+    "blocking_category": "runtime_capture_missing",
+    "next_action": "collect_controlled_runtime",
     "missing_fields": "hardware_label;device;repeat_count;warmup_count;batch_shape;timing_notes",
     "acceptance_check": "Synthetic split runtime foundation artifacts are rebuilt from controlled timing."
   },
@@ -26,6 +32,9 @@
     "dataset_scope": "gold",
     "execution_status": "template_only",
     "readiness_signal": "pending_execution",
+    "pending_field_count": 3,
+    "blocking_category": "artifact_refresh_missing",
+    "next_action": "refresh_timing_backed_artifacts",
     "missing_fields": "source_timing_manifest;refresh_command;diff_review_notes",
     "acceptance_check": "Gold surface artifacts are rebuilt from controlled timing-backed inputs."
   },
@@ -36,6 +45,9 @@
     "dataset_scope": "synthetic_split",
     "execution_status": "template_only",
     "readiness_signal": "pending_execution",
+    "pending_field_count": 3,
+    "blocking_category": "artifact_refresh_missing",
+    "next_action": "refresh_timing_backed_artifacts",
     "missing_fields": "source_timing_manifest;refresh_command;diff_review_notes",
     "acceptance_check": "Synthetic split surface artifacts are rebuilt from controlled timing-backed inputs."
   },
@@ -46,6 +58,9 @@
     "dataset_scope": "cross_dataset",
     "execution_status": "template_only",
     "readiness_signal": "pending_execution",
+    "pending_field_count": 4,
+    "blocking_category": "derived_refresh_missing",
+    "next_action": "refresh_cross_dataset_stack",
     "missing_fields": "source_timing_manifest;refresh_command;cross_dataset_scope;consistency_notes",
     "acceptance_check": "Cross-dataset decision-support artifacts are rebuilt from controlled timing-backed inputs."
   }

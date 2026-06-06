@@ -247,6 +247,9 @@ BENCHMARK_STATUS_COLUMNS = [
     "dataset_scope",
     "execution_status",
     "readiness_signal",
+    "pending_field_count",
+    "blocking_category",
+    "next_action",
     "missing_fields",
     "acceptance_check",
 ]
@@ -316,14 +319,31 @@ def build_benchmark_status_rows(manifest_rows: list[dict[str, Any]]) -> list[dic
         missing = [field for field in tracked_fields if str(row.get(field, "")).strip() == "TODO"]
         execution_status = "template_only" if missing else "filled"
         readiness_signal = "pending_execution" if missing else "ready_for_review"
+        phase = str(row.get("phase", ""))
+        pending_field_count = len(missing)
+        if not missing:
+            blocking_category = "ready_for_review"
+            next_action = "review_completed_manifest"
+        elif phase == "foundation":
+            blocking_category = "runtime_capture_missing"
+            next_action = "collect_controlled_runtime"
+        elif phase == "surface":
+            blocking_category = "artifact_refresh_missing"
+            next_action = "refresh_timing_backed_artifacts"
+        else:
+            blocking_category = "derived_refresh_missing"
+            next_action = "refresh_cross_dataset_stack"
         rows.append(
             {
                 "plan_step_id": row.get("plan_step_id", ""),
                 "step_order": row.get("step_order", ""),
-                "phase": row.get("phase", ""),
+                "phase": phase,
                 "dataset_scope": row.get("dataset_scope", ""),
                 "execution_status": execution_status,
                 "readiness_signal": readiness_signal,
+                "pending_field_count": pending_field_count,
+                "blocking_category": blocking_category,
+                "next_action": next_action,
                 "missing_fields": ";".join(missing),
                 "acceptance_check": row.get("acceptance_check", ""),
             }
@@ -1949,13 +1969,14 @@ def build_benchmark_status_lines(rows: list[dict[str, Any]]) -> list[str]:
         "",
         "This generated status board tracks which benchmark handoff phases are still template-only and what evidence is missing next.",
         "",
-        "| step_order | plan_step_id | phase | dataset_scope | execution_status | readiness_signal | missing_fields | acceptance_check |",
-        "| ---: | --- | --- | --- | --- | --- | --- | --- |",
+        "| step_order | plan_step_id | phase | dataset_scope | execution_status | readiness_signal | pending_field_count | blocking_category | next_action | missing_fields | acceptance_check |",
+        "| ---: | --- | --- | --- | --- | --- | ---: | --- | --- | --- | --- |",
     ]
     for row in rows:
         lines.append(
             f"| {row['step_order']} | {row['plan_step_id']} | {row['phase']} | {row['dataset_scope']} | "
-            f"{row['execution_status']} | {row['readiness_signal']} | {row['missing_fields']} | {row['acceptance_check']} |"
+            f"{row['execution_status']} | {row['readiness_signal']} | {row['pending_field_count']} | {row['blocking_category']} | "
+            f"{row['next_action']} | {row['missing_fields']} | {row['acceptance_check']} |"
         )
     return lines
 
