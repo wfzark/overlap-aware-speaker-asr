@@ -26,6 +26,8 @@ from src.compute_aware_cascade import (
     build_benchmark_phase_checkpoint_card_rows,
     build_benchmark_completion_dashboard_lines,
     build_benchmark_completion_dashboard_rows,
+    build_benchmark_operator_brief_lines,
+    build_benchmark_operator_brief_rows,
     build_benchmark_session_ledger_lines,
     build_benchmark_session_ledger_rows,
     build_benchmark_status_lines,
@@ -1326,6 +1328,57 @@ class ComputeAwareCascadeTest(unittest.TestCase):
         self.assertIn("runtime_capture_missing", rendered)
         self.assertIn("dominant blocker runtime_capture_missing", rendered)
 
+    def test_build_benchmark_operator_brief_rows_summarize_operator_context(self) -> None:
+        dashboard_rows = [
+            {
+                "current_start_step": "phase1_gold_runtime_foundation",
+                "pending_phase_count": 3,
+                "dominant_blocker_family": "runtime_capture_missing",
+                "current_urgency": "high",
+            }
+        ]
+        runbook_rows = [
+            {
+                "recommended_start_step": "phase1_gold_runtime_foundation",
+                "recommended_action": "collect_controlled_runtime",
+            }
+        ]
+        ledger_rows = [
+            {
+                "plan_step_id": "phase1_gold_runtime_foundation",
+                "session_type": "timing_capture",
+                "evidence_anchor": "hardware_label;device;repeat_count;warmup_count;batch_shape;timing_notes",
+            }
+        ]
+
+        rows = build_benchmark_operator_brief_rows(dashboard_rows, runbook_rows, ledger_rows)
+
+        self.assertEqual(rows[0]["operator_step"], "phase1_gold_runtime_foundation")
+        self.assertEqual(rows[0]["operator_action"], "collect_controlled_runtime")
+        self.assertEqual(rows[0]["operator_session_type"], "timing_capture")
+        self.assertEqual(rows[0]["operator_evidence"], "hardware_label;device;repeat_count;warmup_count;batch_shape;timing_notes")
+        self.assertEqual(rows[0]["operator_note"], "Run phase1_gold_runtime_foundation now; it is blocked by runtime_capture_missing and carries high urgency.")
+
+    def test_build_benchmark_operator_brief_lines_render_plain_language_card(self) -> None:
+        rows = [
+            {
+                "operator_step": "phase1_gold_runtime_foundation",
+                "operator_action": "collect_controlled_runtime",
+                "operator_session_type": "timing_capture",
+                "operator_evidence": "hardware_label;device;repeat_count;warmup_count;batch_shape;timing_notes",
+                "operator_note": "Run phase1_gold_runtime_foundation now; it is blocked by runtime_capture_missing and carries high urgency.",
+            }
+        ]
+
+        lines = build_benchmark_operator_brief_lines(rows)
+        rendered = "\n".join(lines)
+
+        self.assertIn("# Cascade Benchmark Operator Brief", rendered)
+        self.assertIn("phase1_gold_runtime_foundation", rendered)
+        self.assertIn("collect_controlled_runtime", rendered)
+        self.assertIn("timing_capture", rendered)
+        self.assertIn("blocked by runtime_capture_missing", rendered)
+
     def test_build_artifact_index_rows_include_benchmark_status_board(self) -> None:
         rows = build_artifact_index_rows()
         status_row = next(row for row in rows if row["artifact_id"] == "cross_dataset_benchmark_status")
@@ -1487,6 +1540,15 @@ class ComputeAwareCascadeTest(unittest.TestCase):
                 "dashboard_note": "phase1_gold_runtime_foundation leads a 3-phase pending stack with dominant blocker runtime_capture_missing.",
             }
         ]
+        operator_brief_rows = [
+            {
+                "operator_step": "phase1_gold_runtime_foundation",
+                "operator_action": "collect_controlled_runtime",
+                "operator_session_type": "timing_capture",
+                "operator_evidence": "hardware_label;device;repeat_count;warmup_count",
+                "operator_note": "Run phase1_gold_runtime_foundation now; it is blocked by runtime_capture_missing and carries high urgency.",
+            }
+        ]
 
         lines = build_benchmark_packet_lines(
             readiness_rows,
@@ -1503,6 +1565,7 @@ class ComputeAwareCascadeTest(unittest.TestCase):
             milestone_card_rows,
             phase_checkpoint_card_rows,
             completion_dashboard_rows,
+            operator_brief_rows,
         )
         rendered = "\n".join(lines)
 
@@ -1517,6 +1580,7 @@ class ComputeAwareCascadeTest(unittest.TestCase):
         self.assertIn("## Milestone Card", rendered)
         self.assertIn("## Phase Checkpoint Card", rendered)
         self.assertIn("## Completion Dashboard", rendered)
+        self.assertIn("## Operator Brief", rendered)
         self.assertIn("## Execution Status", rendered)
         self.assertIn("phase1_gold_runtime_foundation", rendered)
         self.assertIn("runtime_capture_missing", rendered)
@@ -1529,6 +1593,7 @@ class ComputeAwareCascadeTest(unittest.TestCase):
         self.assertIn("phase1_gold_runtime_foundation unlocks phase2_synthetic_runtime_foundation and leaves 3 pending phases.", rendered)
         self.assertIn("Gold runtime foundation artifacts are rebuilt from controlled timing.", rendered)
         self.assertIn("phase1_gold_runtime_foundation leads a 3-phase pending stack with dominant blocker runtime_capture_missing.", rendered)
+        self.assertIn("Run phase1_gold_runtime_foundation now; it is blocked by runtime_capture_missing and carries high urgency.", rendered)
         self.assertIn("hardware_label;device;repeat_count;warmup_count", rendered)
         self.assertIn("Manifest template fields: hardware_label, device, repeat_count, warmup_count", rendered)
 
