@@ -155,7 +155,7 @@ Current benchmark manifest template result:
 
 Current benchmark status result:
 
-- `results/figures/cascade_benchmark_status.md` now acts as a phase-by-phase status board that shows which benchmark steps are still template-only and which metadata gaps still block execution
+- `results/figures/cascade_benchmark_status.md` now acts as a phase-by-phase status board that shows which benchmark steps are still template-only, how many fields remain open, which blocker category each phase is in, and what next action should happen first
 
 Current benchmark handoff packet result:
 

@@ -137,7 +137,7 @@ Update: a generated benchmark status board now turns the manifest template into 
 
 - Benchmark status: `results/tables/cascade_benchmark_status.csv`
 - Summary view: `results/figures/cascade_benchmark_status.md`
-- This shows which benchmark phases are still template-only, which metadata fields are still missing, and which stages can move from planning into controlled execution next.
+- This shows which benchmark phases are still template-only, how many metadata fields remain open, which blocker category each phase belongs to, and which stages can move from planning into controlled execution next.
 
 Update: a generated benchmark handoff packet now turns the execution stack into a single benchmark entrypoint.
 

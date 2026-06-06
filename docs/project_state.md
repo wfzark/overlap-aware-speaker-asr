@@ -273,7 +273,7 @@ Benchmark status board:
 
 - `results/tables/cascade_benchmark_status.csv`
 - `results/figures/cascade_benchmark_status.md`
-- This generated status board now shows which benchmark phases are still template-only, which fields are still missing, and which refresh step is ready to execute next.
+- This generated status board now shows which benchmark phases are still template-only, how many fields remain open, which blocker category each phase falls into, and which next action should happen before execution can move forward.
 
 Benchmark handoff packet:
 
