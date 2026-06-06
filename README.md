@@ -224,6 +224,11 @@ Current frontier focus card result:
 - `results/figures/frontier_focus_card.md` now compresses that queue into a one-glance current priority card
 - This card is still only a coordination artifact: it highlights the current queue head so the next contributor can start faster without reading the full queue first
 
+Current frontier handoff packet result:
+
+- `results/figures/frontier_handoff_packet.md` now points that current queue head directly at the next artifact to open
+- This remains coordination-only: it links the current frontier, next artifact, and expected evidence target without claiming that the underlying frontier work has already been executed
+
 Current MeetEval compatibility result:
 
 - `results/figures/meeteval_compatibility_note.md` now provides a segment-level compatibility bridge across verified gold references and speaker-attributed hypotheses without claiming a finished cpWER evaluation

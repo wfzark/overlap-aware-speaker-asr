@@ -425,6 +425,12 @@ Frontier focus card:
 - `results/tables/frontier_focus_card.json`
 - This card now turns the queue head into a one-glance starting point. It remains a coordination artifact rather than a new frontier result.
 
+Frontier handoff packet:
+
+- `results/figures/frontier_handoff_packet.md`
+- `results/tables/frontier_handoff_packet.json`
+- This packet now points that same queue head directly at its next artifact and expected evidence target. It is still a coordination layer only, not a claim that the queued frontier work has already been executed.
+
 Benchmark frontier bridge:
 
 - `results/figures/cascade_benchmark_frontier_bridge.md`

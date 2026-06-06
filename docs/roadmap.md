@@ -287,6 +287,12 @@ Update: the project harness now also includes a frontier focus card.
 - Summary view: `results/figures/frontier_focus_card.md`
 - This is the shortest coordination layer in the stack: it shows the current queue head without adding any new experimental claim.
 
+Update: the project harness now also includes a frontier handoff packet.
+
+- Frontier handoff packet: `results/tables/frontier_handoff_packet.json`
+- Summary view: `results/figures/frontier_handoff_packet.md`
+- This keeps the breadth-first layer moving with less ambiguity: it points the current queue head directly at the next artifact and expected evidence target while remaining coordination-only.
+
 Update: `meeteval_compatibility` now has a first concrete bridge artifact.
 
 - Compatibility note: `results/figures/meeteval_compatibility_note.md`
