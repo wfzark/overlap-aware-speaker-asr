@@ -1,0 +1,9 @@
+[
+  {
+    "execution_status": "template_only",
+    "review_scope": "HeavyOverlap",
+    "expected_inputs": "Critic review queue head plus one qualitative review note stub.",
+    "expected_outputs": "Diagnostic critic-pass note and a narrow review writeback.",
+    "writeback_note": "No critic-style review pass has been executed yet; fill this receipt only after the first review."
+  }
+]
