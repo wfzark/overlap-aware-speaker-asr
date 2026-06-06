@@ -65,6 +65,7 @@ class MeetEvalCompatibilityTest(unittest.TestCase):
                     "reference_segment_count": 2,
                     "hypothesis_segment_count": 2,
                     "speaker_count": 2,
+                    "hypothesis_source": "separated_whisper",
                     "reference_export": "results/tables/meeteval_reference_segments.jsonl",
                     "hypothesis_export": "results/tables/meeteval_hypothesis_segments.jsonl",
                     "observation": "Compatibility bridge only; no cpWER claim yet.",

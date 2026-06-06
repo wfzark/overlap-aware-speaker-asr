@@ -14,6 +14,7 @@ SUMMARY_COLUMNS = [
     "reference_segment_count",
     "hypothesis_segment_count",
     "speaker_count",
+    "hypothesis_source",
     "reference_export",
     "hypothesis_export",
     "observation",
@@ -26,11 +27,26 @@ def load_reference_payload(case_id: str) -> dict[str, Any]:
 
 
 def load_hypothesis_payload(case_id: str) -> dict[str, Any]:
-    path = PROJECT_ROOT / "results" / "transcripts_speaker" / f"{case_id}_separated_speaker_transcript.json"
-    if not path.exists():
-        raise FileNotFoundError(f"Missing speaker transcript: {path.relative_to(PROJECT_ROOT)}")
-    payload = load_json(path)
-    return {"segments": list(payload.get("segments", []))}
+    raw_path = PROJECT_ROOT / "results" / "transcripts_speaker" / f"{case_id}_separated_speaker_transcript.json"
+    if raw_path.exists():
+        payload = load_json(raw_path)
+        return {
+            "segments": list(payload.get("segments", [])),
+            "hypothesis_source": "separated_whisper",
+        }
+
+    cleaned_path = (
+        PROJECT_ROOT / "results" / "transcripts_postprocessed" / f"{case_id}_separated_speaker_transcript_cleaned.json"
+    )
+    if cleaned_path.exists():
+        payload = load_json(cleaned_path)
+        return {
+            "segments": list(payload.get("cleaned_segments", [])),
+            "hypothesis_source": "separated_whisper_cleaned",
+        }
+    raise FileNotFoundError(
+        f"Missing speaker transcript candidates: {raw_path.relative_to(PROJECT_ROOT)} and {cleaned_path.relative_to(PROJECT_ROOT)}"
+    )
 
 
 def build_meeteval_compatibility_rows(
@@ -53,6 +69,7 @@ def build_meeteval_compatibility_rows(
                 "reference_segment_count": len(reference_segments),
                 "hypothesis_segment_count": len(hypothesis_segments),
                 "speaker_count": len(speakers),
+                "hypothesis_source": str(hypothesis_payloads.get(case_id, {}).get("hypothesis_source", "")),
                 "reference_export": "results/tables/meeteval_reference_segments.jsonl",
                 "hypothesis_export": "results/tables/meeteval_hypothesis_segments.jsonl",
                 "observation": "compatibility bridge only; this export does not claim cpWER evaluation yet.",
@@ -82,12 +99,12 @@ def build_meeteval_compatibility_lines(rows: list[dict[str, Any]]) -> list[str]:
         "",
         "This generated note documents a segment-level compatibility bridge only; it does not claim a finished MeetEval or cpWER evaluation.",
         "",
-        "| case_id | reference_segment_count | hypothesis_segment_count | speaker_count | reference_export | hypothesis_export | observation |",
-        "| --- | ---: | ---: | ---: | --- | --- | --- |",
+        "| case_id | reference_segment_count | hypothesis_segment_count | speaker_count | hypothesis_source | reference_export | hypothesis_export | observation |",
+        "| --- | ---: | ---: | ---: | --- | --- | --- | --- |",
     ]
     for row in rows:
         lines.append(
-            f"| {row['case_id']} | {row['reference_segment_count']} | {row['hypothesis_segment_count']} | {row['speaker_count']} | "
+            f"| {row['case_id']} | {row['reference_segment_count']} | {row['hypothesis_segment_count']} | {row['speaker_count']} | {row['hypothesis_source']} | "
             f"{row['reference_export']} | {row['hypothesis_export']} | {row['observation']} |"
         )
     return lines
