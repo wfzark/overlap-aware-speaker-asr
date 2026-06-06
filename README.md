@@ -101,6 +101,40 @@ Current recommendation card result:
   - `cost_first`: `fixed_mixed_whisper`
   - `balanced`: `router_v2_synthetic_costed`
 
+## Project Map
+
+The repository now has a stable baseline and a breadth-first frontier queue. The diagram below shows the main flow at a glance.
+
+```mermaid
+flowchart LR
+    A["Gold benchmark<br/>5 verified cases"] --> B["Stable ASR analysis<br/>mixed, separated, cleaned"]
+    B --> C["Adaptive routing<br/>router v1 / v2"]
+    B --> D["Speaker-aware evaluation<br/>CER, speaker gap, cpCER-lite"]
+    B --> E["Synthetic silver validation<br/>held-out robustness checks"]
+    B --> F["Risk-aware selector<br/>deployment-facing choice layer"]
+    F --> G["Experimental frontier"]
+    G --> H["MeetEval compatibility"]
+    G --> I["External mini validation"]
+    G --> J["Speaker profile / voiceprint"]
+    G --> K["LLM critic / repair"]
+    G --> L["Demo excellence"]
+```
+
+The current breadth-first queue is documented here:
+
+- [Frontier execution queue](results/figures/frontier_execution_queue.md)
+- [Project harness report](results/figures/project_harness_report.md)
+
+Queue order:
+
+1. `meeteval_compatibility`
+2. `external_validation`
+3. `speaker_profile`
+4. `llm_critic`
+5. `demo_excellence`
+
+These are coordination targets, not new benchmark claims.
+
 Current robustness gap result:
 
 - best shared cross-dataset stability: `fixed_separated_whisper_cleaned` with `cer_gap_vs_gold = -0.00266`
