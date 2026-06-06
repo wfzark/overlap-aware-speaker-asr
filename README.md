@@ -169,9 +169,13 @@ Current benchmark session ledger result:
 
 - `results/figures/cascade_benchmark_session_ledger.md` now provides the evidence anchor and completion note for each queued benchmark step
 
+Current benchmark dependency graph result:
+
+- `results/figures/cascade_benchmark_dependency_graph.md` now shows which benchmark step unlocks each downstream benchmark refresh
+
 Current benchmark handoff packet result:
 
-- `results/figures/cascade_benchmark_handoff_packet.md` now acts as the single-entry benchmark handoff note across readiness, plan, checklist, manifest template, execution summary, execution queue, session ledger, and status tracking
+- `results/figures/cascade_benchmark_handoff_packet.md` now acts as the single-entry benchmark handoff note across readiness, plan, checklist, manifest template, execution summary, execution queue, session ledger, dependency graph, and status tracking
 
 ## Core Findings
 
@@ -242,6 +246,7 @@ python -m src.project_harness
 - [Cascade benchmark execution summary](results/figures/cascade_benchmark_execution_summary.md)
 - [Cascade benchmark execution queue](results/figures/cascade_benchmark_execution_queue.md)
 - [Cascade benchmark session ledger](results/figures/cascade_benchmark_session_ledger.md)
+- [Cascade benchmark dependency graph](results/figures/cascade_benchmark_dependency_graph.md)
 - [Cascade benchmark handoff packet](results/figures/cascade_benchmark_handoff_packet.md)
 - [Synthetic split cascade summary](results/figures/synthetic_split_cascade_summary.md)
 - [Synthetic split cascade trade-off figure](results/figures/synthetic_split_cer_runtime_tradeoff.png)

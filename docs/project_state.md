@@ -293,10 +293,16 @@ Benchmark session ledger:
 - `results/figures/cascade_benchmark_session_ledger.md`
 - This generated ledger now bridges the queue and manifest layers so the next contributor can see which evidence anchor and completion note each queued step must leave behind.
 
+Benchmark dependency graph:
+
+- `results/tables/cascade_benchmark_dependency_graph.csv`
+- `results/figures/cascade_benchmark_dependency_graph.md`
+- This generated dependency graph now shows which benchmark step unlocks or blocks the next downstream step in the controlled-benchmark sequence.
+
 Benchmark handoff packet:
 
 - `results/figures/cascade_benchmark_handoff_packet.md`
-- This generated note now provides one benchmark-entry document that points to the readiness, plan, checklist, manifest template, execution-summary, execution-queue, session-ledger, and status-board layers together.
+- This generated note now provides one benchmark-entry document that points to the readiness, plan, checklist, manifest template, execution-summary, execution-queue, session-ledger, dependency-graph, and status-board layers together.
 
 ## Synthetic Split Cascade Validation
 

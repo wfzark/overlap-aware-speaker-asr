@@ -157,10 +157,16 @@ Update: a generated benchmark session ledger now turns the queue into an evidenc
 - Summary view: `results/figures/cascade_benchmark_session_ledger.md`
 - This shows which evidence anchor and completion note each queued benchmark step must satisfy once the run actually happens.
 
+Update: a generated benchmark dependency graph now turns the run list into an unlock chain.
+
+- Benchmark dependency graph: `results/tables/cascade_benchmark_dependency_graph.csv`
+- Summary view: `results/figures/cascade_benchmark_dependency_graph.md`
+- This shows which benchmark step unlocks the next downstream refresh and which pending steps are still blocked by earlier benchmark work.
+
 Update: a generated benchmark handoff packet now turns the execution stack into a single benchmark entrypoint.
 
 - Handoff packet: `results/figures/cascade_benchmark_handoff_packet.md`
-- This lets future contributors start from one note before diving into readiness, plan, checklist, manifest, execution-summary, execution-queue, session-ledger, and status details.
+- This lets future contributors start from one note before diving into readiness, plan, checklist, manifest, execution-summary, execution-queue, session-ledger, dependency-graph, and status details.
 
 Remaining stretch work:
 
