@@ -153,6 +153,10 @@ Current benchmark manifest template result:
 
 - `results/tables/cascade_benchmark_manifest_template.csv` now provides a fill-in template for recording per-phase benchmark session metadata during controlled timing runs
 
+Current benchmark handoff packet result:
+
+- `results/figures/cascade_benchmark_handoff_packet.md` now acts as the single-entry benchmark handoff note across readiness, plan, checklist, and manifest template
+
 ## Core Findings
 
 - Speech separation is useful, but not universally beneficial.
@@ -218,6 +222,7 @@ python -m src.project_harness
 - [Cascade benchmark plan](results/figures/cascade_benchmark_plan.md)
 - [Cascade profile playbook](results/figures/cascade_profile_playbook.md)
 - [Cascade benchmark checklist](results/figures/cascade_benchmark_checklist.md)
+- [Cascade benchmark handoff packet](results/figures/cascade_benchmark_handoff_packet.md)
 - [Synthetic split cascade summary](results/figures/synthetic_split_cascade_summary.md)
 - [Synthetic split cascade trade-off figure](results/figures/synthetic_split_cer_runtime_tradeoff.png)
 - [Synthetic split cascade runtime audit](results/figures/synthetic_split_cascade_runtime_audit.md)

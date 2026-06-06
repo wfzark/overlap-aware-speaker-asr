@@ -133,6 +133,11 @@ Update: a generated benchmark manifest template now turns the checklist into a f
 - Manifest template: `results/tables/cascade_benchmark_manifest_template.csv`
 - This gives future contributors a concrete table to fill while running controlled timing sweeps instead of collecting benchmark metadata ad hoc.
 
+Update: a generated benchmark handoff packet now turns the execution stack into a single benchmark entrypoint.
+
+- Handoff packet: `results/figures/cascade_benchmark_handoff_packet.md`
+- This lets future contributors start from one note before diving into readiness, plan, checklist, and manifest details.
+
 Remaining stretch work:
 
 - replace proxy costs with a controlled hardware/runtime benchmark
