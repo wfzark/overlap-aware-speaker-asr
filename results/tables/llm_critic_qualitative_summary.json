@@ -1,0 +1,37 @@
+[
+  {
+    "case_id": "NoOverlap",
+    "label": "qualitative/demo",
+    "risk_explanation": "The selector reports a medium risk state even without explicit flags, so the current transcript still deserves critic review.",
+    "candidate_repair": "Try base separated output is stable enough before treating the current transcript as final.",
+    "uncertainty_note": "Profile alignment still prefers swapped, so attribution remains uncertain."
+  },
+  {
+    "case_id": "LightOverlap",
+    "label": "qualitative/demo",
+    "risk_explanation": "The selector reports a high risk state even without explicit flags, so the current transcript still deserves critic review.",
+    "candidate_repair": "Try keep mixed output because separated looks risky before treating the current transcript as final.",
+    "uncertainty_note": "Profile alignment still prefers swapped, so attribution remains uncertain."
+  },
+  {
+    "case_id": "MidOverlap",
+    "label": "qualitative/demo",
+    "risk_explanation": "The selector reports a high risk state even without explicit flags, so the current transcript still deserves critic review.",
+    "candidate_repair": "Try keep mixed output because separated looks risky before treating the current transcript as final.",
+    "uncertainty_note": "Profile alignment still prefers swapped, so attribution remains uncertain."
+  },
+  {
+    "case_id": "HeavyOverlap",
+    "label": "qualitative/demo",
+    "risk_explanation": "The selector reports a medium risk state even without explicit flags, so the current transcript still deserves critic review.",
+    "candidate_repair": "Try repair separated output with cleaned transcript before treating the current transcript as final.",
+    "uncertainty_note": "Profile alignment still prefers swapped, so attribution remains uncertain."
+  },
+  {
+    "case_id": "OppositeOverlap",
+    "label": "qualitative/demo",
+    "risk_explanation": "The selector reports a medium risk state even without explicit flags, so the current transcript still deserves critic review.",
+    "candidate_repair": "Try repair separated output with cleaned transcript before treating the current transcript as final.",
+    "uncertainty_note": "Profile alignment still prefers swapped, so attribution remains uncertain."
+  }
+]
