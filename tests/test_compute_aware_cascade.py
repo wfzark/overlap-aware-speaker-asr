@@ -22,6 +22,8 @@ from src.compute_aware_cascade import (
     build_benchmark_runbook_card_rows,
     build_benchmark_milestone_card_lines,
     build_benchmark_milestone_card_rows,
+    build_benchmark_phase_checkpoint_card_lines,
+    build_benchmark_phase_checkpoint_card_rows,
     build_benchmark_session_ledger_lines,
     build_benchmark_session_ledger_rows,
     build_benchmark_status_lines,
@@ -1224,6 +1226,50 @@ class ComputeAwareCascadeTest(unittest.TestCase):
         self.assertIn("3", rendered)
         self.assertIn("unlocks phase2_synthetic_runtime_foundation", rendered)
 
+    def test_build_benchmark_phase_checkpoint_card_rows_pair_summary_with_plan(self) -> None:
+        summary_rows = [
+            {
+                "phase": "foundation",
+                "readiness_label": "pending_execution",
+                "primary_blocking_category": "runtime_capture_missing",
+                "recommended_next_action": "collect_controlled_runtime",
+            }
+        ]
+        plan_rows = [
+            {
+                "phase": "foundation",
+                "success_signal": "Gold runtime foundation artifacts are rebuilt from controlled timing.",
+            }
+        ]
+
+        rows = build_benchmark_phase_checkpoint_card_rows(summary_rows, plan_rows)
+
+        self.assertEqual(rows[0]["phase"], "foundation")
+        self.assertEqual(rows[0]["readiness_label"], "pending_execution")
+        self.assertEqual(rows[0]["primary_blocking_category"], "runtime_capture_missing")
+        self.assertEqual(rows[0]["checkpoint_action"], "collect_controlled_runtime")
+        self.assertEqual(rows[0]["completion_signal"], "Gold runtime foundation artifacts are rebuilt from controlled timing.")
+
+    def test_build_benchmark_phase_checkpoint_card_lines_render_phase_gate(self) -> None:
+        rows = [
+            {
+                "phase": "foundation",
+                "readiness_label": "pending_execution",
+                "primary_blocking_category": "runtime_capture_missing",
+                "checkpoint_action": "collect_controlled_runtime",
+                "completion_signal": "Gold runtime foundation artifacts are rebuilt from controlled timing.",
+            }
+        ]
+
+        lines = build_benchmark_phase_checkpoint_card_lines(rows)
+        rendered = "\n".join(lines)
+
+        self.assertIn("# Cascade Benchmark Phase Checkpoint Card", rendered)
+        self.assertIn("foundation", rendered)
+        self.assertIn("runtime_capture_missing", rendered)
+        self.assertIn("collect_controlled_runtime", rendered)
+        self.assertIn("Gold runtime foundation artifacts are rebuilt from controlled timing.", rendered)
+
     def test_build_artifact_index_rows_include_benchmark_status_board(self) -> None:
         rows = build_artifact_index_rows()
         status_row = next(row for row in rows if row["artifact_id"] == "cross_dataset_benchmark_status")
@@ -1367,6 +1413,15 @@ class ComputeAwareCascadeTest(unittest.TestCase):
                 "milestone_note": "phase1_gold_runtime_foundation unlocks phase2_synthetic_runtime_foundation and leaves 3 pending phases.",
             }
         ]
+        phase_checkpoint_card_rows = [
+            {
+                "phase": "foundation",
+                "readiness_label": "pending_execution",
+                "primary_blocking_category": "runtime_capture_missing",
+                "checkpoint_action": "collect_controlled_runtime",
+                "completion_signal": "Gold runtime foundation artifacts are rebuilt from controlled timing.",
+            }
+        ]
 
         lines = build_benchmark_packet_lines(
             readiness_rows,
@@ -1381,6 +1436,7 @@ class ComputeAwareCascadeTest(unittest.TestCase):
             blocker_matrix_rows,
             runbook_card_rows,
             milestone_card_rows,
+            phase_checkpoint_card_rows,
         )
         rendered = "\n".join(lines)
 
@@ -1393,6 +1449,7 @@ class ComputeAwareCascadeTest(unittest.TestCase):
         self.assertIn("## Blocker Matrix", rendered)
         self.assertIn("## Runbook Card", rendered)
         self.assertIn("## Milestone Card", rendered)
+        self.assertIn("## Phase Checkpoint Card", rendered)
         self.assertIn("## Execution Status", rendered)
         self.assertIn("phase1_gold_runtime_foundation", rendered)
         self.assertIn("runtime_capture_missing", rendered)
@@ -1403,6 +1460,7 @@ class ComputeAwareCascadeTest(unittest.TestCase):
         self.assertIn("do_now / root / 4 pending fields", rendered)
         self.assertIn("Start with phase1_gold_runtime_foundation because it is do_now and root.", rendered)
         self.assertIn("phase1_gold_runtime_foundation unlocks phase2_synthetic_runtime_foundation and leaves 3 pending phases.", rendered)
+        self.assertIn("Gold runtime foundation artifacts are rebuilt from controlled timing.", rendered)
         self.assertIn("hardware_label;device;repeat_count;warmup_count", rendered)
         self.assertIn("Manifest template fields: hardware_label, device, repeat_count, warmup_count", rendered)
 
