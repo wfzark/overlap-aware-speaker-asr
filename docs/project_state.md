@@ -455,6 +455,12 @@ Frontier receipt board:
 - `results/tables/frontier_receipt_board.json`
 - This board now condenses the same breadth-first set into a single receipt snapshot. It still does not claim any executed frontier work; it simply keeps queue order, pickup artifact, and receipt target visible together for the next pass.
 
+Frontier coordination matrix:
+
+- `results/figures/frontier_coordination_matrix.md`
+- `results/tables/frontier_coordination_matrix.json`
+- This matrix now gives the same breadth-first set a denser scan view. It still does not claim any executed frontier work; it simply keeps queue order, entry artifact, pickup artifact, and receipt target visible together for the next pass.
+
 Benchmark frontier bridge:
 
 - `results/figures/cascade_benchmark_frontier_bridge.md`

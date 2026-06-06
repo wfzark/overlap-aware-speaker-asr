@@ -347,6 +347,12 @@ Update: the project harness now also includes a frontier receipt board.
 - Summary view: `results/figures/frontier_receipt_board.md`
 - This consolidates the same breadth-first set into a single receipt snapshot: it keeps queue order, pickup artifact, and receipt target visible together while remaining coordination-only.
 
+Update: the project harness now also includes a frontier coordination matrix.
+
+- Frontier coordination matrix: `results/tables/frontier_coordination_matrix.json`
+- Summary view: `results/figures/frontier_coordination_matrix.md`
+- This combines the same breadth-first set into a richer scan table: it keeps queue order, entry artifact, pickup artifact, and receipt target visible together while staying coordination-only.
+
 Update: `meeteval_compatibility` now has a first concrete bridge artifact.
 
 - Compatibility note: `results/figures/meeteval_compatibility_note.md`
