@@ -187,6 +187,12 @@ Update: a generated demo walkthrough now turns the storyboard into a short prese
 - Summary view: `results/figures/demo_walkthrough.md`
 - This keeps the `demo_excellence` frontier lightweight while making live demo or recording flow more explicit: each step points to an existing artifact rather than claiming new model evidence.
 
+Update: a generated llm critic review queue now turns the qualitative note into a first-pass triage order.
+
+- LLM critic review queue: `results/tables/llm_critic_review_queue.csv`
+- Summary view: `results/figures/llm_critic_review_queue.md`
+- This remains a `qualitative/demo` artifact. It does not claim repaired transcripts; it simply orders which case should receive the next critic-style review pass and exposes that swapped-profile uncertainty is still common.
+
 Update: a generated benchmark runbook card now turns the triage panel into a one-page execution brief.
 
 - Benchmark runbook card: `results/tables/cascade_benchmark_runbook_card.csv`

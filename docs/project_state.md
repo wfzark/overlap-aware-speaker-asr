@@ -432,6 +432,12 @@ LLM critic qualitative bridge:
 - `results/tables/llm_critic_qualitative_summary.csv`
 - This bridge now turns structured risk cues into a qualitative critic-style note. It is intentionally labeled `qualitative/demo` and helps explain what might be repaired first without claiming that any transcript has been verified or improved.
 
+LLM critic review queue bridge:
+
+- `results/figures/llm_critic_review_queue.md`
+- `results/tables/llm_critic_review_queue.csv`
+- This bridge now turns the critic note into a lightweight triage order. It stays explicitly qualitative, recommends which case to inspect first, and currently highlights that swapped-profile uncertainty remains widespread across the gold cases.
+
 External validation candidate bridge:
 
 - `results/figures/external_validation_candidates.md`
