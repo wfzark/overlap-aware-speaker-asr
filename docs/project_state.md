@@ -252,6 +252,12 @@ Benchmark plan:
 - `results/figures/cascade_benchmark_plan.md`
 - This generated handoff plan now sequences the controlled benchmark refresh into foundation, surface, and cross-dataset stages.
 
+Profile playbook:
+
+- `results/tables/cascade_profile_playbook.csv`
+- `results/figures/cascade_profile_playbook.md`
+- This generated guide now explains when each deployment profile is the cleanest default, the strongest robustness-biased choice, or the cheapest stable floor.
+
 ## Synthetic Split Cascade Validation
 
 Label: `synthetic/silver` and `experimental/frontier`

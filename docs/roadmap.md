@@ -116,6 +116,12 @@ Update: a generated benchmark plan now turns the readiness scaffold into an exec
 - Summary view: `results/figures/cascade_benchmark_plan.md`
 - This sequences the controlled benchmark work into gold foundation, synthetic foundation, surface refresh, and cross-dataset refresh phases.
 
+Update: a generated profile playbook now turns the recommendation tables into plain-language deployment guidance.
+
+- Profile playbook: `results/tables/cascade_profile_playbook.csv`
+- Summary view: `results/figures/cascade_profile_playbook.md`
+- This explains when `balanced`, `accuracy_first`, and `cost_first` should be the default, the robustness-biased alternative, or the compute floor.
+
 Remaining stretch work:
 
 - replace proxy costs with a controlled hardware/runtime benchmark

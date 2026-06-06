@@ -239,6 +239,7 @@ The frontier work now includes:
 - a generated artifact index
 - a generated benchmark-readiness scaffold
 - a generated benchmark handoff plan
+- a generated profile playbook
 
 This turns the cascade from a single offline plot into a small decision-support stack. The current evidence suggests:
 
@@ -286,7 +287,7 @@ The stable baseline opens a path toward more ambitious agentic ASR systems:
 6. Learned router from synthetic split
 7. Demo-oriented ASR intelligence system
 
-The compute-aware line is now beyond a placeholder idea: the immediate next step is a controlled hardware/runtime benchmark that can replace repository-local runtime comparisons with stronger deployment evidence. The repository now includes both a generated benchmark-readiness scaffold and a staged benchmark handoff plan, so the next contributor can see not only which artifacts matter first but also the intended execution order. After that, the most interesting future work will still be the work that clarifies a boundary, exposes a failure mode, or tests an idea that is intentionally a little risky.
+The compute-aware line is now beyond a placeholder idea: the immediate next step is a controlled hardware/runtime benchmark that can replace repository-local runtime comparisons with stronger deployment evidence. The repository now includes a generated benchmark-readiness scaffold, a staged benchmark handoff plan, and a profile playbook, so the next contributor can see which artifacts matter first, what order to refresh them in, and how the resulting profile choices should be interpreted. After that, the most interesting future work will still be the work that clarifies a boundary, exposes a failure mode, or tests an idea that is intentionally a little risky.
 
 ## 9. Conclusion
 
