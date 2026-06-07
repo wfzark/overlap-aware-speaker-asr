@@ -62,6 +62,8 @@ python -m src.risk_aware_selector --case all
 python -m src.router_ablation
 python -m src.router_ablation_split
 python -m src.project_harness
+python -m src.frontier_execution_receipt_fill_execution_completion_summary
+python -m src.frontier_execution_receipt_fill_execution_handoff_bridge_checklist
 ```
 
 ## Maintenance Goal

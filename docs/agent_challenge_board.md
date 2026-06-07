@@ -14,6 +14,16 @@ Use this order when picking a new breadth-first frontier task:
 
 This sequence is coordination guidance only. It does not claim that any frontier item has been completed.
 
+## Current Coordination Focus
+
+The frontier receipt-fill execution stack is ready for real receipt writeback:
+
+- Entry: `results/figures/frontier_execution_receipt_fill_execution_completion_summary.md`
+- Handoff: `results/figures/frontier_execution_receipt_fill_execution_handoff.md`
+- Bridge: `results/figures/frontier_execution_receipt_fill_execution_handoff_bridge_checklist.md`
+
+MeetEval compatibility remains the recommended first fill target. Filling execution receipts is coordination-only until a real frontier run happens; no benchmark execution is claimed by the scaffold alone.
+
 ## Level 1: Documentation / Presentation
 
 - README beautification

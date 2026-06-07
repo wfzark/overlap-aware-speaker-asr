@@ -1259,6 +1259,24 @@ Update: the frontier receipt layer now has a fill execution handoff.
 - Summary view: `results/figures/frontier_execution_receipt_fill_execution_handoff.md`
 - Per-frontier fill execution actions for MeetEval, speaker profile, and external staging.
 
+Update: the frontier receipt layer now has a fill execution handoff bridge checklist.
+
+- Handoff bridge checklist: `results/tables/frontier_execution_receipt_fill_execution_handoff_bridge_checklist.csv`
+- Summary view: `results/figures/frontier_execution_receipt_fill_execution_handoff_bridge_checklist.md`
+- Connects the fill execution handoff to per-frontier execution receipts without claiming benchmark execution.
+
+Update: the frontier receipt layer now has a fill execution completion summary.
+
+- Completion summary: `results/tables/frontier_execution_receipt_fill_execution_completion_summary.csv`
+- Summary view: `results/figures/frontier_execution_receipt_fill_execution_completion_summary.md`
+- `combined_fill_execution_status = fill_execution_ready` with `awaiting_fill_execution_count = 3/3`; no benchmark execution is claimed.
+
+Update: the frontier receipt layer now has a fill execution completion summary bridge checklist.
+
+- Completion summary bridge checklist: `results/tables/frontier_execution_receipt_fill_execution_completion_summary_bridge_checklist.csv`
+- Summary view: `results/figures/frontier_execution_receipt_fill_execution_completion_summary_bridge_checklist.md`
+- Connects the fill execution completion summary to the fill execution handoff.
+
 Update: `demo_excellence` now has a lightweight Streamlit viewer scaffold.
 
 - Demo app: `demo/app.py`
