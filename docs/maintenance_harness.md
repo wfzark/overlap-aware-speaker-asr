@@ -101,6 +101,7 @@ python -m src.meeteval_cpwer_official_execution_tokenization_diagnostic
 python -m src.meeteval_cpwer_character_level_official_execution --all
 python -m src.meeteval_cpwer_official_execution_reconciliation_audit
 python -m src.meeteval_cpwer_official_execution_reconciliation_audit_bridge_checklist
+python -m src.speaker_profile_text_proxy_trial_diagnostic
 python -m src.frontier_execution_receipt_fill_execution_handoff_bridge_checklist
 ```
 

@@ -971,6 +971,12 @@ Speaker profile embedding trial:
 - `results/tables/speaker_profile_embedding_trial.csv`
 - The embedding trial scaffold records `trial_status = scaffold_only` for `NoOverlap` using text-profile proxy scores; voiceprint execution remains pending.
 
+Speaker profile text-proxy trial diagnostic:
+
+- `results/figures/speaker_profile_text_proxy_trial_diagnostic.md`
+- `results/tables/speaker_profile_text_proxy_trial_diagnostic.csv`
+- All-gold text-profile proxy diagnostic reports `5/5` swapped bias; next direction remains `embedding_or_voiceprint_baseline`.
+
 Speaker profile embedding trial handoff bridge checklist:
 
 - `results/figures/speaker_profile_embedding_trial_handoff_bridge_checklist.md`
