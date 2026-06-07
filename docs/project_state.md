@@ -803,6 +803,8 @@ python -m src.compute_aware_cascade
 python -m src.compute_aware_cascade --dataset synthetic_split
 python -m src.router_ablation
 python -m src.router_ablation_split
+python -m src.export_meeteval_compatibility
+python -m src.meeteval_dry_run
 python -m src.project_harness
 ```
 
