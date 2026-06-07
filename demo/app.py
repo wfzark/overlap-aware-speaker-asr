@@ -122,6 +122,11 @@ def render_frontier_fill_status() -> None:
                 "hypothesis_source": [row.get("hypothesis_source", "") for row in preflight_batch],
             }
         )
+    if receipt_batch_scaffold:
+        st.metric(
+            "MeetEval receipt scaffolds",
+            f"{len(receipt_batch_scaffold)}/5 cases scaffolded",
+        )
     if dashboard:
         st.markdown("**Fill execution dashboard**")
         st.write(dashboard.get("dashboard_note", ""))
