@@ -1393,6 +1393,12 @@ Frontier execution receipt queue handoff:
 - `results/tables/frontier_execution_receipt_queue_handoff.csv`
 - This handoff turns the unified receipt readiness rollup into per-frontier receipt-fill actions for MeetEval, speaker profile, and external staging.
 
+Frontier execution receipt queue handoff bridge checklist:
+
+- `results/figures/frontier_execution_receipt_queue_handoff_bridge_checklist.md`
+- `results/tables/frontier_execution_receipt_queue_handoff_bridge_checklist.csv`
+- This checklist connects the receipt-fill handoff to per-frontier execution receipts without claiming benchmark execution.
+
 MeetEval compatibility skill card:
 
 - `docs/skills/skill_04_meeteval_compatibility.md`
@@ -1765,6 +1771,7 @@ python -m src.frontier_execution_receipt_queue_status_bridge_checklist
 python -m src.frontier_execution_receipt_queue_completion_summary
 python -m src.frontier_execution_receipt_queue_completion_summary_bridge_checklist
 python -m src.frontier_execution_receipt_queue_handoff
+python -m src.frontier_execution_receipt_queue_handoff_bridge_checklist
 python -m src.speaker_profile_embedding_trial_execution_handoff
 python -m src.speaker_profile_embedding_trial_execution_handoff_bridge_checklist
 python -m src.speaker_profile_embedding_trial_execution_preflight

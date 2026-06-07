@@ -1186,6 +1186,12 @@ Update: the frontier receipt layer now has a coordination queue completion summa
 - Receipt queue handoff: `results/tables/frontier_execution_receipt_queue_handoff.csv`
 - `queue_status = queue_complete` at `3/3` receipt-ready frontiers; receipt-fill actions remain coordination-only.
 
+Update: the frontier receipt layer now has a handoff bridge checklist.
+
+- Handoff bridge checklist: `results/tables/frontier_execution_receipt_queue_handoff_bridge_checklist.csv`
+- Summary view: `results/figures/frontier_execution_receipt_queue_handoff_bridge_checklist.md`
+- This connects the receipt-fill handoff to per-frontier execution receipts without claiming benchmark execution.
+
 ## Healthy Project Principles
 
 - New experiments should be isolated.
