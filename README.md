@@ -551,7 +551,7 @@ Current external validation skill result:
 
 Current Streamlit demo scaffold:
 
-- `demo/app.py` provides a lightweight qualitative/demo viewer for storyboard cards and gold benchmark averages
+- `demo/app.py` provides a lightweight qualitative/demo viewer with tabs for storyboard cards, walkthrough steps, gold benchmark averages, and frontier fill queue status
 - Install demo dependencies with `pip install -r requirements-demo.txt`, then run `streamlit run demo/app.py`
 - This does not run live ASR, separation, or routing
 

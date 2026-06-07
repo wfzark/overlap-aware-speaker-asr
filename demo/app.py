@@ -18,14 +18,75 @@ GOLD_AVERAGES = [
 ]
 
 
-def load_storyboard_cards() -> list[dict[str, str]]:
-    path = PROJECT_ROOT / "results" / "tables" / "demo_storyboard_cards.json"
+def load_json_list(path_rel: str) -> list[dict[str, str]]:
+    path = PROJECT_ROOT / path_rel
     if not path.exists():
         return []
     payload = json.loads(path.read_text(encoding="utf-8"))
     if not isinstance(payload, list):
         return []
-    return [card for card in payload if isinstance(card, dict)]
+    return [item for item in payload if isinstance(item, dict)]
+
+
+def load_json_dict(path_rel: str) -> dict[str, str]:
+    path = PROJECT_ROOT / path_rel
+    if not path.exists():
+        return {}
+    payload = json.loads(path.read_text(encoding="utf-8"))
+    return payload if isinstance(payload, dict) else {}
+
+
+def render_storyboard() -> None:
+    cards = load_json_list("results/tables/demo_storyboard_cards.json")
+    if not cards:
+        st.warning("Storyboard cards not found.")
+        return
+    cols = st.columns(min(len(cards), 4))
+    for idx, card in enumerate(cards):
+        with cols[idx % len(cols)]:
+            st.markdown(f"**{card.get('title', 'Card')}**")
+            st.write(card.get("body", ""))
+
+
+def render_walkthrough() -> None:
+    steps = load_json_list("results/tables/demo_walkthrough_steps.json")
+    if not steps:
+        st.warning("Walkthrough steps not found.")
+        return
+    for step in steps:
+        st.markdown(f"**Step {step.get('step_id', '?')}: {step.get('focus', 'Focus')}**")
+        st.write(step.get("talk_track", ""))
+        st.caption(f"Artifact: `{step.get('artifact_anchor', '')}`")
+
+
+def render_gold_table() -> None:
+    st.table(
+        {
+            "strategy": [row[0] for row in GOLD_AVERAGES],
+            "average CER": [f"{row[1]:.6f}" for row in GOLD_AVERAGES],
+        }
+    )
+
+
+def render_frontier_fill_status() -> None:
+    summary = load_json_dict("results/tables/frontier_execution_receipt_fill_queue_summary.json")
+    rows = load_json_list("results/tables/frontier_execution_receipt_fill_queue_status.json")
+    if not summary:
+        st.warning("Frontier fill queue summary not found.")
+        return
+    st.metric("Combined fill status", summary.get("combined_fill_status", "unknown"))
+    st.metric(
+        "Awaiting fill",
+        f"{summary.get('awaiting_fill_count', '0')}/{summary.get('total_frontier_count', '0')}",
+    )
+    if rows:
+        st.table(
+            {
+                "frontier": [row.get("frontier_name", "") for row in rows],
+                "fill_status": [row.get("fill_status", "") for row in rows],
+                "execution_status": [row.get("execution_status", "") for row in rows],
+            }
+        )
 
 
 def main() -> None:
@@ -33,22 +94,17 @@ def main() -> None:
     st.title("When Should We Separate?")
     st.caption("Qualitative/demo viewer — not a live ASR runtime.")
 
-    cards = load_storyboard_cards()
-    if cards:
-        st.subheader("Storyboard")
-        cols = st.columns(min(len(cards), 4))
-        for idx, card in enumerate(cards):
-            with cols[idx % len(cols)]:
-                st.markdown(f"**{card.get('title', 'Card')}**")
-                st.write(card.get("body", ""))
-
-    st.subheader("Gold Benchmark Averages")
-    st.table(
-        {
-            "strategy": [row[0] for row in GOLD_AVERAGES],
-            "average CER": [f"{row[1]:.6f}" for row in GOLD_AVERAGES],
-        }
+    tab_story, tab_walk, tab_gold, tab_frontier = st.tabs(
+        ["Storyboard", "Walkthrough", "Gold CER", "Frontier fill queue"]
     )
+    with tab_story:
+        render_storyboard()
+    with tab_walk:
+        render_walkthrough()
+    with tab_gold:
+        render_gold_table()
+    with tab_frontier:
+        render_frontier_fill_status()
 
     st.info(
         "This demo surfaces existing stable/gold and qualitative/demo artifacts. "
