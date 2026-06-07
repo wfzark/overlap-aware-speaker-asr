@@ -1,0 +1,14 @@
+[
+  {
+    "case_id": "HeavyOverlap",
+    "hypothesis_source": "separated_whisper_cleaned",
+    "cpwer_bridge_lite": "0.162827",
+    "speaker_macro_cer": "0.146535",
+    "alignment_gap": "0.016292",
+    "drift_severity": "moderate",
+    "likely_cause": "HeavyOverlap uses separated_whisper_cleaned; the cleaned separated export path and speaker_macro_cer recomputation diverge under heavy overlap, producing a non-zero cross-metric gap.",
+    "recommended_action": "Inspect HeavyOverlap cleaned separated segments before treating cpWER bridge-lite as aligned with speaker_macro_cer.",
+    "diagnostic_status": "drift_documented",
+    "observation": "experimental/frontier drift diagnostic only; this does not claim a finished MeetEval evaluation."
+  }
+]
