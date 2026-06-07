@@ -229,6 +229,12 @@ Update: `external_validation` now also has a license confirmation receipt bridge
 - Summary view: `results/figures/external_validation_license_confirmation_receipt_bridge.md`
 - This links the confirmation scaffold bridge checklist to the slice receipt without claiming benchmark execution.
 
+Update: `external_validation` now also has a license confirmation receipt bridge checklist.
+
+- License confirmation receipt bridge checklist: `results/tables/external_validation_license_confirmation_receipt_bridge_checklist.csv`
+- Summary view: `results/figures/external_validation_license_confirmation_receipt_bridge_checklist.md`
+- This connects the receipt bridge to the slice receipt without claiming benchmark execution.
+
 Update: `external_validation` now also has a slice manifest.
 
 - Slice manifest: `results/tables/external_validation_slice_manifest.json`
@@ -472,6 +478,24 @@ Update: `meeteval_compatibility` now also has a cpWER alignment drift segment re
 - Drift segment reconciliation scaffold: `results/tables/meeteval_cpwer_alignment_drift_segment_reconciliation_scaffold.json`
 - Summary view: `results/figures/meeteval_cpwer_alignment_drift_segment_reconciliation_scaffold.md`
 - `HeavyOverlap` reconciliation remains `scaffold_only` after `segment_inspection_complete`; reconciled alignment and cpWER execution remain pending.
+
+Update: `meeteval_compatibility` now also has a cpWER alignment drift segment reconciliation scaffold bridge checklist.
+
+- Drift segment reconciliation scaffold bridge checklist: `results/tables/meeteval_cpwer_alignment_drift_segment_reconciliation_scaffold_bridge_checklist.csv`
+- Summary view: `results/figures/meeteval_cpwer_alignment_drift_segment_reconciliation_scaffold_bridge_checklist.md`
+- This connects the reconciliation scaffold to the segment inspection bridge checklist while cpWER execution remains pending.
+
+Update: `meeteval_compatibility` now also has a cpWER alignment drift segment reconciliation handoff.
+
+- Drift segment reconciliation handoff: `results/tables/meeteval_cpwer_alignment_drift_segment_reconciliation_handoff.csv`
+- Summary view: `results/figures/meeteval_cpwer_alignment_drift_segment_reconciliation_handoff.md`
+- `HeavyOverlap` reconciliation diagnostic is handed off while cpWER execution remains pending.
+
+Update: `meeteval_compatibility` now also has a cpWER alignment drift segment reconciliation diagnostic.
+
+- Drift segment reconciliation diagnostic: `results/tables/meeteval_cpwer_alignment_drift_segment_reconciliation_diagnostic.csv`
+- Summary view: `results/figures/meeteval_cpwer_alignment_drift_segment_reconciliation_diagnostic.md`
+- `HeavyOverlap` reports `reconciliation_pass = false` because per-speaker segment counts do not match even though total segment counts align.
 
 Update: `meeteval_compatibility` now also has a cpWER bridge handoff.
 
@@ -778,6 +802,13 @@ Update: `demo_excellence` now also has a walkthrough review pass.
 - Walkthrough review pass: `results/tables/demo_walkthrough_review_pass.csv`
 - Summary view: `results/figures/demo_walkthrough_review_pass.md`
 - The first qualitative walkthrough review pass records `review_status = review_complete` without claiming live demo or recording delivery.
+
+Update: `demo_excellence` now also has a walkthrough review pass advance layer.
+
+- Walkthrough review pass advance: `results/tables/demo_walkthrough_review_pass_advance.csv`
+- Second pass table: `results/tables/demo_walkthrough_review_pass_second.csv`
+- Summary view: `results/figures/demo_walkthrough_review_pass_advance.md`
+- Step `2` (`Baseline evidence`) is the second queue pass after step `1`; no live demo delivery is claimed.
 
 Update: `external_validation` now has a dedicated skill card.
 

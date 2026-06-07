@@ -718,6 +718,24 @@ MeetEval cpWER alignment drift segment reconciliation scaffold:
 - `results/tables/meeteval_cpwer_alignment_drift_segment_reconciliation_scaffold.json`
 - The reconciliation scaffold for `HeavyOverlap` remains `scaffold_only` with `inspection_status = segment_inspection_complete`; reconciled alignment and cpWER execution remain pending.
 
+MeetEval cpWER alignment drift segment reconciliation scaffold bridge checklist:
+
+- `results/figures/meeteval_cpwer_alignment_drift_segment_reconciliation_scaffold_bridge_checklist.md`
+- `results/tables/meeteval_cpwer_alignment_drift_segment_reconciliation_scaffold_bridge_checklist.csv`
+- This checklist connects the reconciliation scaffold to the segment inspection bridge checklist while cpWER execution remains pending.
+
+MeetEval cpWER alignment drift segment reconciliation handoff:
+
+- `results/figures/meeteval_cpwer_alignment_drift_segment_reconciliation_handoff.md`
+- `results/tables/meeteval_cpwer_alignment_drift_segment_reconciliation_handoff.csv`
+- The reconciliation handoff targets `HeavyOverlap` diagnostic follow-up before any cpWER bridge advance.
+
+MeetEval cpWER alignment drift segment reconciliation diagnostic:
+
+- `results/figures/meeteval_cpwer_alignment_drift_segment_reconciliation_diagnostic.md`
+- `results/tables/meeteval_cpwer_alignment_drift_segment_reconciliation_diagnostic.csv`
+- The first narrow reconciliation diagnostic on `HeavyOverlap` reports `reconciliation_pass = false` because `speaker_segment_count_match = false` even though total segment counts align; reconciled alignment and cpWER execution remain pending.
+
 MeetEval cpWER bridge handoff:
 
 - `results/figures/meeteval_cpwer_bridge_handoff.md`
@@ -952,6 +970,12 @@ External validation license confirmation receipt bridge:
 - `results/tables/external_validation_license_confirmation_receipt_bridge.csv`
 - This bridge links the confirmation scaffold bridge checklist to the slice receipt without claiming benchmark execution.
 
+External validation license confirmation receipt bridge checklist:
+
+- `results/figures/external_validation_license_confirmation_receipt_bridge_checklist.md`
+- `results/tables/external_validation_license_confirmation_receipt_bridge_checklist.csv`
+- This checklist connects the receipt bridge to the slice receipt without claiming benchmark execution.
+
 External validation slice manifest bridge:
 
 - `results/figures/external_validation_slice_manifest.md`
@@ -1059,6 +1083,18 @@ Demo walkthrough review pass:
 - `results/tables/demo_walkthrough_review_pass.csv`
 - The first qualitative walkthrough review pass records `review_status = review_complete` for the opening step without claiming live demo or recording delivery.
 
+Demo walkthrough review pass advance:
+
+- `results/figures/demo_walkthrough_review_pass_advance.md`
+- `results/tables/demo_walkthrough_review_pass_advance.csv`
+- The walkthrough review queue advanced to step `2` (`Baseline evidence`) after step `1` reached `review_complete` without claiming live demo delivery.
+
+Demo walkthrough review pass second:
+
+- `results/figures/demo_walkthrough_review_pass_second.md`
+- `results/tables/demo_walkthrough_review_pass_second.csv`
+- The second qualitative walkthrough review pass records critic-style notes for step `2` only; no live demo or recording is claimed.
+
 ## How to Resume Work
 
 Common commands:
@@ -1095,7 +1131,12 @@ python -m src.external_validation_license_confirmation_scaffold
 python -m src.external_validation_license_confirmation_scaffold_bridge_checklist
 python -m src.external_validation_license_confirmation_receipt_bridge
 python -m src.meeteval_cpwer_alignment_drift_segment_reconciliation_scaffold
+python -m src.meeteval_cpwer_alignment_drift_segment_reconciliation_scaffold_bridge_checklist
+python -m src.meeteval_cpwer_alignment_drift_segment_reconciliation_handoff
+python -m src.meeteval_cpwer_alignment_drift_segment_reconciliation_diagnostic
 python -m src.demo_walkthrough_review_pass
+python -m src.demo_walkthrough_review_pass_advance
+python -m src.external_validation_license_confirmation_receipt_bridge_checklist
 python -m src.external_validation_slice_manifest
 python -m src.external_validation_slice_manifest_bridge_checklist
 python -m src.external_validation_slice_staging_readiness
