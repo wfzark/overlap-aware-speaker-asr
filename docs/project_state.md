@@ -554,6 +554,12 @@ LLM critic review receipt bridge:
 - `results/tables/llm_critic_review_receipt.json`
 - This bridge now materializes the expected evidence slot for that first critic-style pass as a template-only receipt. It still does not claim any executed repair; it simply defines what the first qualitative review follow-up should write back once it actually happens.
 
+LLM critic review checklist bridge:
+
+- `results/figures/llm_critic_review_checklist.md`
+- `results/tables/llm_critic_review_checklist.csv`
+- This bridge now turns the review queue into an ordered execution checklist. It stays explicitly `qualitative/demo`, keeps the receipt target visible, and helps a future agent pick the first critic-style pass without implying that any repair has already been verified.
+
 External validation candidate bridge:
 
 - `results/figures/external_validation_candidates.md`
