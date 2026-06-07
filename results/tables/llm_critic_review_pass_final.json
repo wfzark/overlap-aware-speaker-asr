@@ -1,0 +1,8 @@
+{
+  "queue_order": "5",
+  "case_id": "OppositeOverlap",
+  "completed_pass_count": "4",
+  "review_priority": "high",
+  "review_outcome": "Qualitative critic pass recorded for OppositeOverlap; no verified transcript repair was applied.",
+  "final_note": "Final qualitative pass recorded for OppositeOverlap; gold review queue is now complete without any verified transcript repair claim."
+}
