@@ -433,6 +433,12 @@ Frontier handoff packet:
 - `results/tables/frontier_handoff_packet.json`
 - This packet now points that same queue head directly at its next artifact and expected evidence target. It is still a coordination layer only, not a claim that the queued frontier work has already been executed.
 
+Frontier handoff checklist:
+
+- `results/figures/frontier_handoff_checklist.md`
+- `results/tables/frontier_handoff_checklist.csv`
+- This checklist now turns the handoff packet into an ordered open-artifact path. It stays explicitly coordination-only, keeps the next artifact visible, and helps a future agent start the frontier pass in order.
+
 Frontier receipt packet:
 
 - `results/figures/frontier_receipt_packet.md`

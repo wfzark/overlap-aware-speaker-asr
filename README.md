@@ -273,6 +273,11 @@ Current frontier handoff packet result:
 - `results/figures/frontier_handoff_packet.md` now points that current queue head directly at the next artifact to open
 - This remains coordination-only: it links the current frontier, next artifact, and expected evidence target without claiming that the underlying frontier work has already been executed
 
+Current frontier handoff checklist result:
+
+- `results/figures/frontier_handoff_checklist.md` now turns the handoff packet into an ordered open-artifact checklist
+- This checklist remains coordination-only and keeps the next artifact visible without claiming that any frontier work has already been executed
+
 Current frontier receipt packet result:
 
 - `results/figures/frontier_receipt_packet.md` now points that same queue head directly at its receipt-level writeback target
