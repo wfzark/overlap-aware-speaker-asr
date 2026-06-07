@@ -1,0 +1,37 @@
+[
+  {
+    "queue_order": "1",
+    "case_id": "HeavyOverlap",
+    "pass_status": "review_complete",
+    "review_priority": "high",
+    "next_action": "Pass recorded; move to the next queue item when ready."
+  },
+  {
+    "queue_order": "2",
+    "case_id": "LightOverlap",
+    "pass_status": "review_complete",
+    "review_priority": "high",
+    "next_action": "Pass recorded; move to the next queue item when ready."
+  },
+  {
+    "queue_order": "3",
+    "case_id": "MidOverlap",
+    "pass_status": "pending_review",
+    "review_priority": "high",
+    "next_action": "Continue qualitative review without claiming verified repair."
+  },
+  {
+    "queue_order": "4",
+    "case_id": "NoOverlap",
+    "pass_status": "pending_review",
+    "review_priority": "high",
+    "next_action": "Continue qualitative review without claiming verified repair."
+  },
+  {
+    "queue_order": "5",
+    "case_id": "OppositeOverlap",
+    "pass_status": "pending_review",
+    "review_priority": "high",
+    "next_action": "Continue qualitative review without claiming verified repair."
+  }
+]

@@ -1,0 +1,7 @@
+{
+  "scope": "gold_review_queue",
+  "completed_count": "2",
+  "pending_count": "3",
+  "next_case_id": "MidOverlap",
+  "observation": "Qualitative/demo queue status rollup; no verified transcript repair is claimed for completed passes."
+}
