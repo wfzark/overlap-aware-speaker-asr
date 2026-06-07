@@ -1,0 +1,13 @@
+[
+  {
+    "execution_status": "template_only",
+    "run_scope": "single_case_embedding_execution",
+    "case_id": "NoOverlap",
+    "method_direction": "embedding_or_voiceprint_baseline",
+    "preflight_pass": "True",
+    "swapped_bias_detected": "True",
+    "expected_inputs": "con/pro snippet audio for one verified gold case plus embedding or voiceprint tooling.",
+    "expected_outputs": "Embedding-similarity diagnostic note comparing direct vs swapped assignment.",
+    "writeback_note": "Voiceprint or embedding model has not been executed yet; fill this receipt only after a real embedding diagnostic run."
+  }
+]
