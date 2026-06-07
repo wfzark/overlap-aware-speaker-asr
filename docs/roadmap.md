@@ -1235,6 +1235,30 @@ Update: the frontier receipt layer now has a fill execution packet.
 - Summary view: `results/figures/frontier_execution_receipt_fill_execution_packet.md`
 - Single entrypoint for the fill execution stack while `combined_fill_status = fill_queue_ready`.
 
+Update: the frontier receipt layer now has a fill execution packet bridge checklist.
+
+- Packet bridge checklist: `results/tables/frontier_execution_receipt_fill_execution_packet_bridge_checklist.csv`
+- Summary view: `results/figures/frontier_execution_receipt_fill_execution_packet_bridge_checklist.md`
+- Connects the fill execution packet to the unified fill execution status rollup.
+
+Update: the frontier receipt layer now has a fill execution status rollup.
+
+- Fill execution status: `results/tables/frontier_execution_receipt_fill_execution_status.csv`
+- Summary view: `results/figures/frontier_execution_receipt_fill_execution_status.md`
+- `combined_fill_execution_status = fill_execution_ready` with all three receipts still template-only.
+
+Update: the frontier receipt layer now has a fill execution status bridge checklist.
+
+- Status bridge checklist: `results/tables/frontier_execution_receipt_fill_execution_status_bridge_checklist.csv`
+- Summary view: `results/figures/frontier_execution_receipt_fill_execution_status_bridge_checklist.md`
+- Connects the fill execution status rollup to the fill execution handoff.
+
+Update: the frontier receipt layer now has a fill execution handoff.
+
+- Fill execution handoff: `results/tables/frontier_execution_receipt_fill_execution_handoff.csv`
+- Summary view: `results/figures/frontier_execution_receipt_fill_execution_handoff.md`
+- Per-frontier fill execution actions for MeetEval, speaker profile, and external staging.
+
 Update: `demo_excellence` now has a lightweight Streamlit viewer scaffold.
 
 - Demo app: `demo/app.py`

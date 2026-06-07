@@ -1442,6 +1442,30 @@ Frontier execution receipt fill execution packet:
 - `results/tables/frontier_execution_receipt_fill_execution_packet.csv`
 - This packet provides a single entrypoint for the receipt fill execution stack while `combined_fill_status = fill_queue_ready`.
 
+Frontier execution receipt fill execution packet bridge checklist:
+
+- `results/figures/frontier_execution_receipt_fill_execution_packet_bridge_checklist.md`
+- `results/tables/frontier_execution_receipt_fill_execution_packet_bridge_checklist.csv`
+- This checklist connects the fill execution packet to the unified fill execution status rollup.
+
+Frontier execution receipt fill execution status:
+
+- `results/figures/frontier_execution_receipt_fill_execution_status.md`
+- `results/tables/frontier_execution_receipt_fill_execution_status.csv`
+- The unified fill execution rollup reports `combined_fill_execution_status = fill_execution_ready` with all three receipts still `template_only`.
+
+Frontier execution receipt fill execution status bridge checklist:
+
+- `results/figures/frontier_execution_receipt_fill_execution_status_bridge_checklist.md`
+- `results/tables/frontier_execution_receipt_fill_execution_status_bridge_checklist.csv`
+- This checklist connects the fill execution status rollup to the fill execution handoff.
+
+Frontier execution receipt fill execution handoff:
+
+- `results/figures/frontier_execution_receipt_fill_execution_handoff.md`
+- `results/tables/frontier_execution_receipt_fill_execution_handoff.csv`
+- This handoff turns the unified fill execution status into per-frontier fill execution actions for MeetEval, speaker profile, and external staging.
+
 MeetEval compatibility skill card:
 
 - `docs/skills/skill_04_meeteval_compatibility.md`
@@ -1828,6 +1852,10 @@ python -m src.frontier_execution_receipt_fill_queue_handoff
 python -m src.frontier_execution_receipt_fill_queue_completion_summary_bridge_checklist
 python -m src.frontier_execution_receipt_fill_queue_handoff_bridge_checklist
 python -m src.frontier_execution_receipt_fill_execution_packet
+python -m src.frontier_execution_receipt_fill_execution_packet_bridge_checklist
+python -m src.frontier_execution_receipt_fill_execution_status
+python -m src.frontier_execution_receipt_fill_execution_status_bridge_checklist
+python -m src.frontier_execution_receipt_fill_execution_handoff
 python -m src.speaker_profile_embedding_trial_execution_handoff
 python -m src.speaker_profile_embedding_trial_execution_handoff_bridge_checklist
 python -m src.speaker_profile_embedding_trial_execution_preflight
