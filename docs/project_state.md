@@ -469,6 +469,12 @@ Frontier receipt board:
 - `results/tables/frontier_receipt_board.json`
 - This board now condenses the same breadth-first set into a single receipt snapshot. It still does not claim any executed frontier work; it simply keeps queue order, pickup artifact, and receipt target visible together for the next pass.
 
+Frontier receipt board checklist:
+
+- `results/figures/frontier_receipt_board_checklist.md`
+- `results/tables/frontier_receipt_board_checklist.csv`
+- This checklist now turns the receipt board into an ordered snapshot path. It stays explicitly coordination-only, keeps the board snapshot visible, and helps a future agent advance the frontier queue in order.
+
 Frontier coordination matrix:
 
 - `results/figures/frontier_coordination_matrix.md`

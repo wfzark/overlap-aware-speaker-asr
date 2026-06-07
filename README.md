@@ -283,6 +283,11 @@ Current frontier receipt checklist result:
 - `results/figures/frontier_receipt_checklist.md` now turns that receipt packet into an ordered writeback checklist
 - This checklist remains coordination-only and keeps the receipt target explicit without claiming that any frontier work has already been executed
 
+Current frontier receipt board result:
+
+- `results/figures/frontier_receipt_board.md` now condenses the breadth-first set into a single receipt snapshot
+- This remains coordination-only and keeps queue order, pickup artifact, and receipt target visible together for the next pass
+
 Current frontier receipt map result:
 
 - `results/figures/frontier_receipt_map.md` now lays out the receipt path for all current frontiers, not just the queue head
