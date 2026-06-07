@@ -265,6 +265,12 @@ Update: `meeteval_compatibility` now also has a cpWER bridge summary.
 - Summary view: `results/figures/meeteval_cpwer_bridge_summary.md`
 - This condenses the all-gold bridge-lite pass without promoting it into a finished MeetEval evaluation claim.
 
+Update: `meeteval_compatibility` now also has a cpWER alignment audit.
+
+- cpWER alignment table: `results/tables/meeteval_cpwer_alignment.csv`
+- Summary view: `results/figures/meeteval_cpwer_alignment.md`
+- Cross-metric alignment reports `matched_count = 4/5` with `HeavyOverlap` as the only drift case.
+
 Update: `meeteval_compatibility` now also has a cpWER bridge handoff.
 
 - cpWER bridge handoff: `results/tables/meeteval_cpwer_bridge_handoff.csv`

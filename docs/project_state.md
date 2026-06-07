@@ -640,6 +640,12 @@ MeetEval cpWER bridge summary:
 - `results/tables/meeteval_cpwer_bridge_summary.csv`
 - The summary condenses the five verified gold cases without promoting bridge-lite evidence into a finished MeetEval evaluation claim.
 
+MeetEval cpWER alignment:
+
+- `results/figures/meeteval_cpwer_alignment.md`
+- `results/tables/meeteval_cpwer_alignment.csv`
+- Cross-metric alignment reports `matched_count = 4/5` with `HeavyOverlap` as the only drift case against speaker_macro_cer.
+
 MeetEval cpWER bridge handoff:
 
 - `results/figures/meeteval_cpwer_bridge_handoff.md`
@@ -700,6 +706,12 @@ LLM critic review receipt bridge:
 - `results/tables/llm_critic_review_receipt.json`
 - This bridge now materializes the expected evidence slot for that first critic-style pass as a template-only receipt. It still does not claim any executed repair; it simply defines what the first qualitative review follow-up should write back once it actually happens.
 
+LLM critic review pass bridge:
+
+- `results/figures/llm_critic_review_pass.md`
+- `results/tables/llm_critic_review_pass.csv`
+- The first qualitative pass on `HeavyOverlap` is `review_complete` without any verified transcript repair claim.
+
 LLM critic review bridge checklist:
 
 - `results/figures/llm_critic_review_bridge_checklist.md`
@@ -747,6 +759,12 @@ External validation license gate bridge:
 - `results/figures/external_validation_license_gate.md`
 - `results/tables/external_validation_license_gate.csv`
 - The license gate checklist documents preflight steps while `license_status` remains `pending_confirmation` and external audio staging stays blocked.
+
+External validation slice manifest bridge:
+
+- `results/figures/external_validation_slice_manifest.md`
+- `results/tables/external_validation_slice_manifest.json`
+- The slice manifest records `staging_status = blocked_by_license_gate` for the first AISHELL-4 excerpt.
 
 External validation checklist bridge:
 
@@ -842,9 +860,12 @@ python -m src.router_ablation_split
 python -m src.export_meeteval_compatibility
 python -m src.meeteval_dry_run
 python -m src.meeteval_cpwer_bridge --case all
+python -m src.meeteval_cpwer_alignment
 python -m src.external_validation_slice_scaffold
 python -m src.external_validation_license_gate
+python -m src.external_validation_slice_manifest
 python -m src.speaker_profile_embedding_scaffold
+python -m src.llm_critic_review_pass
 python -m src.project_harness
 ```
 

@@ -421,6 +421,12 @@ Current MeetEval cpWER bridge summary result:
 - `results/tables/meeteval_cpwer_bridge_summary.csv`
 - The summary condenses the five verified gold cases without promoting bridge-lite evidence into a finished MeetEval evaluation claim.
 
+Current MeetEval cpWER alignment result:
+
+- `results/figures/meeteval_cpwer_alignment.md`
+- `results/tables/meeteval_cpwer_alignment.csv`
+- Cross-metric alignment reports `matched_count = 4/5` with `HeavyOverlap` as the only drift case against speaker_macro_cer.
+
 Current MeetEval cpWER bridge handoff result:
 
 - `results/figures/meeteval_cpwer_bridge_handoff.md`
@@ -472,6 +478,12 @@ Current llm critic review receipt result:
 - `results/figures/llm_critic_review_receipt.md` now materializes the expected evidence slot for that first review pass
 - This still does not claim any successful repair: it defines the review scope, expected inputs, expected outputs, and writeback note so the first critic-style pass has a concrete receipt to fill
 
+Current llm critic review pass result:
+
+- `results/figures/llm_critic_review_pass.md`
+- `results/tables/llm_critic_review_pass.csv`
+- The first qualitative pass on `HeavyOverlap` is `review_complete` without any verified transcript repair claim.
+
 Current llm critic review bridge checklist result:
 
 - `results/figures/llm_critic_review_bridge_checklist.md`
@@ -514,6 +526,12 @@ Current external validation license gate result:
 - `results/figures/external_validation_license_gate.md`
 - `results/tables/external_validation_license_gate.csv`
 - The license gate checklist documents preflight steps while `license_status` remains `pending_confirmation` and external audio staging stays blocked.
+
+Current external validation slice manifest result:
+
+- `results/figures/external_validation_slice_manifest.md`
+- `results/tables/external_validation_slice_manifest.json`
+- The slice manifest records `staging_status = blocked_by_license_gate` for the first AISHELL-4 excerpt.
 
 Current external validation slice bridge checklist result:
 
@@ -631,9 +649,12 @@ python -m src.router_ablation_split
 python -m src.export_meeteval_compatibility
 python -m src.meeteval_dry_run
 python -m src.meeteval_cpwer_bridge --case all
+python -m src.meeteval_cpwer_alignment
 python -m src.external_validation_slice_scaffold
 python -m src.external_validation_license_gate
+python -m src.external_validation_slice_manifest
 python -m src.speaker_profile_embedding_scaffold
+python -m src.llm_critic_review_pass
 python -m src.project_harness
 ```
 
