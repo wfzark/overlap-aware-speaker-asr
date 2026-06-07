@@ -1,0 +1,13 @@
+# MeetEval cpWER Execution Status Batch Handoff
+
+This generated handoff turns the batch execution-chain status into per-case official cpWER execution actions. It does not claim official cpWER evaluation or benchmark completion.
+
+Summary: `5/5` cases are execution_chain_ready; first action targets the preferred ready case.
+
+| handoff_order | handoff_status | case_id | execution_chain_status | hypothesis_source | execution_target | handoff_goal | expected_evidence | handoff_note |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| 1 | execution_handoff_ready | NoOverlap | execution_chain_ready | separated_whisper | results/tables/meeteval_cpwer_execution_receipt.json | Run official MeetEval cpWER narrow dry run for NoOverlap after batch chain readiness audit. | results/tables/meeteval_cpwer_execution_receipt.json | experimental/frontier batch cpWER execution handoff only; official benchmark completion is not claimed. |
+| 2 | execution_handoff_queued | LightOverlap | execution_chain_ready | separated_whisper_cleaned | results/tables/meeteval_cpwer_execution_receipt.json | Queue official MeetEval cpWER execution for LightOverlap after the first narrow dry run. | results/tables/meeteval_cpwer_execution_receipt.json | experimental/frontier batch cpWER execution handoff only; official benchmark completion is not claimed. |
+| 3 | execution_handoff_queued | MidOverlap | execution_chain_ready | separated_whisper_cleaned | results/tables/meeteval_cpwer_execution_receipt.json | Queue official MeetEval cpWER execution for MidOverlap after the first narrow dry run. | results/tables/meeteval_cpwer_execution_receipt.json | experimental/frontier batch cpWER execution handoff only; official benchmark completion is not claimed. |
+| 4 | execution_handoff_queued | HeavyOverlap | execution_chain_ready | separated_whisper_cleaned | results/tables/meeteval_cpwer_execution_receipt.json | Queue official MeetEval cpWER execution for HeavyOverlap after the first narrow dry run. | results/tables/meeteval_cpwer_execution_receipt.json | experimental/frontier batch cpWER execution handoff only; official benchmark completion is not claimed. |
+| 5 | execution_handoff_queued | OppositeOverlap | execution_chain_ready | separated_whisper_cleaned | results/tables/meeteval_cpwer_execution_receipt.json | Queue official MeetEval cpWER execution for OppositeOverlap after the first narrow dry run. | results/tables/meeteval_cpwer_execution_receipt.json | experimental/frontier batch cpWER execution handoff only; official benchmark completion is not claimed. |
