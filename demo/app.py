@@ -79,6 +79,7 @@ def render_frontier_fill_status() -> None:
     dashboard = load_json_dict("results/tables/frontier_execution_receipt_fill_execution_completion_dashboard.json")
     preflight_batch = load_json_list("results/tables/meeteval_cpwer_execution_preflight_batch.json")
     receipt_batch_scaffold = load_json_list("results/tables/meeteval_cpwer_execution_receipt_batch_scaffold.json")
+    execution_status_batch = load_json_list("results/tables/meeteval_cpwer_execution_status_batch.json")
     if not summary:
         st.warning("Frontier fill queue summary not found.")
         return
@@ -127,6 +128,11 @@ def render_frontier_fill_status() -> None:
             "MeetEval receipt scaffolds",
             f"{len(receipt_batch_scaffold)}/5 cases scaffolded",
         )
+    if execution_status_batch:
+        ready_count = sum(
+            1 for row in execution_status_batch if row.get("execution_chain_status") == "execution_chain_ready"
+        )
+        st.metric("MeetEval execution chain", f"{ready_count}/{len(execution_status_batch)} cases ready")
     if dashboard:
         st.markdown("**Fill execution dashboard**")
         st.write(dashboard.get("dashboard_note", ""))
