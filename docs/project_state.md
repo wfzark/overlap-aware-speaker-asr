@@ -1321,6 +1321,36 @@ Frontier execution queue handoff:
 - `results/tables/frontier_execution_queue_handoff.csv`
 - This handoff turns the unified frontier rollup into per-frontier execution receipt actions for MeetEval, speaker profile, and external staging.
 
+Frontier execution queue handoff bridge checklist:
+
+- `results/figures/frontier_execution_queue_handoff_bridge_checklist.md`
+- `results/tables/frontier_execution_queue_handoff_bridge_checklist.csv`
+- This checklist connects the execution handoff to per-frontier execution receipts without claiming benchmark execution.
+
+MeetEval cpWER execution receipt readiness:
+
+- `results/figures/meeteval_cpwer_execution_receipt_readiness.md`
+- `results/tables/meeteval_cpwer_execution_receipt_readiness.csv`
+- Receipt readiness reports `readiness_status = receipt_ready_to_fill` for `NoOverlap`; official MeetEval evaluation remains pending.
+
+Speaker profile embedding trial execution receipt readiness:
+
+- `results/figures/speaker_profile_embedding_trial_execution_receipt_readiness.md`
+- `results/tables/speaker_profile_embedding_trial_execution_receipt_readiness.csv`
+- Receipt readiness reports `readiness_status = receipt_ready_to_fill` for `NoOverlap` with `swapped_bias_detected = true`; voiceprint execution remains pending.
+
+External validation slice staging handoff receipt readiness:
+
+- `results/figures/external_validation_slice_staging_handoff_receipt_readiness.md`
+- `results/tables/external_validation_slice_staging_handoff_receipt_readiness.csv`
+- Receipt readiness reports `readiness_status = receipt_ready_to_fill` for AISHELL-4; external audio staging remains pending.
+
+Frontier execution receipt queue status:
+
+- `results/figures/frontier_execution_receipt_queue_status.md`
+- `results/tables/frontier_execution_receipt_queue_status.csv`
+- The unified receipt readiness rollup reports `combined_readiness_status = receipt_ready_to_fill`; no benchmark execution is claimed.
+
 MeetEval compatibility skill card:
 
 - `docs/skills/skill_04_meeteval_compatibility.md`
@@ -1681,6 +1711,11 @@ python -m src.frontier_execution_queue_status_bridge_checklist
 python -m src.frontier_execution_queue_completion_summary
 python -m src.frontier_execution_queue_completion_summary_bridge_checklist
 python -m src.frontier_execution_queue_handoff
+python -m src.frontier_execution_queue_handoff_bridge_checklist
+python -m src.meeteval_cpwer_execution_receipt_readiness
+python -m src.speaker_profile_embedding_trial_execution_receipt_readiness
+python -m src.external_validation_slice_staging_handoff_receipt_readiness
+python -m src.frontier_execution_receipt_queue_status
 python -m src.speaker_profile_embedding_trial_execution_handoff
 python -m src.speaker_profile_embedding_trial_execution_handoff_bridge_checklist
 python -m src.speaker_profile_embedding_trial_execution_preflight

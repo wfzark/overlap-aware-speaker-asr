@@ -1159,6 +1159,20 @@ Update: the frontier now has a per-frontier execution handoff.
 - Summary view: `results/figures/frontier_execution_queue_handoff.md`
 - This turns the unified rollup into receipt-fill handoff actions for MeetEval, speaker profile, and external staging.
 
+Update: the frontier now has execution receipt readiness rollups.
+
+- MeetEval receipt readiness: `results/tables/meeteval_cpwer_execution_receipt_readiness.csv`
+- Speaker profile receipt readiness: `results/tables/speaker_profile_embedding_trial_execution_receipt_readiness.csv`
+- External staging receipt readiness: `results/tables/external_validation_slice_staging_handoff_receipt_readiness.csv`
+- Unified receipt queue status: `results/tables/frontier_execution_receipt_queue_status.csv`
+- `combined_readiness_status = receipt_ready_to_fill` across all three frontiers; no benchmark execution is claimed.
+
+Update: the frontier handoff now has a bridge checklist.
+
+- Handoff bridge checklist: `results/tables/frontier_execution_queue_handoff_bridge_checklist.csv`
+- Summary view: `results/figures/frontier_execution_queue_handoff_bridge_checklist.md`
+- This connects the execution handoff to per-frontier receipt fill gates without claiming benchmark completion.
+
 ## Healthy Project Principles
 
 - New experiments should be isolated.
