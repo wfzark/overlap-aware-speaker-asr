@@ -78,6 +78,7 @@ def render_frontier_fill_status() -> None:
     runbook = load_json_dict("results/tables/frontier_execution_receipt_fill_execution_runbook_card.json")
     dashboard = load_json_dict("results/tables/frontier_execution_receipt_fill_execution_completion_dashboard.json")
     preflight_batch = load_json_list("results/tables/meeteval_cpwer_execution_preflight_batch.json")
+    receipt_batch_scaffold = load_json_list("results/tables/meeteval_cpwer_execution_receipt_batch_scaffold.json")
     if not summary:
         st.warning("Frontier fill queue summary not found.")
         return
