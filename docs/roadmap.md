@@ -1217,6 +1217,24 @@ Update: the frontier receipt layer now has a fill queue handoff.
 - Summary view: `results/figures/frontier_execution_receipt_fill_queue_handoff.md`
 - This turns the fill queue status into per-frontier fill execution actions.
 
+Update: the frontier receipt layer now has a fill queue completion summary bridge checklist.
+
+- Completion summary bridge checklist: `results/tables/frontier_execution_receipt_fill_queue_completion_summary_bridge_checklist.csv`
+- Summary view: `results/figures/frontier_execution_receipt_fill_queue_completion_summary_bridge_checklist.md`
+- This connects the fill coordination completion summary to the fill execution handoff.
+
+Update: the frontier receipt layer now has a fill queue handoff bridge checklist.
+
+- Handoff bridge checklist: `results/tables/frontier_execution_receipt_fill_queue_handoff_bridge_checklist.csv`
+- Summary view: `results/figures/frontier_execution_receipt_fill_queue_handoff_bridge_checklist.md`
+- This connects the fill execution handoff to per-frontier execution receipts.
+
+Update: the frontier receipt layer now has a fill execution packet.
+
+- Fill execution packet: `results/tables/frontier_execution_receipt_fill_execution_packet.csv`
+- Summary view: `results/figures/frontier_execution_receipt_fill_execution_packet.md`
+- Single entrypoint for the fill execution stack while `combined_fill_status = fill_queue_ready`.
+
 Update: `demo_excellence` now has a lightweight Streamlit viewer scaffold.
 
 - Demo app: `demo/app.py`

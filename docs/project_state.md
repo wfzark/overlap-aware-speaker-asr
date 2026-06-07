@@ -1424,6 +1424,24 @@ Frontier execution receipt fill queue handoff:
 - `results/tables/frontier_execution_receipt_fill_queue_handoff.csv`
 - This handoff turns the fill queue status into per-frontier fill execution actions for MeetEval, speaker profile, and external staging.
 
+Frontier execution receipt fill queue completion summary bridge checklist:
+
+- `results/figures/frontier_execution_receipt_fill_queue_completion_summary_bridge_checklist.md`
+- `results/tables/frontier_execution_receipt_fill_queue_completion_summary_bridge_checklist.csv`
+- This checklist connects the fill coordination completion summary to the fill execution handoff without claiming benchmark execution.
+
+Frontier execution receipt fill queue handoff bridge checklist:
+
+- `results/figures/frontier_execution_receipt_fill_queue_handoff_bridge_checklist.md`
+- `results/tables/frontier_execution_receipt_fill_queue_handoff_bridge_checklist.csv`
+- This checklist connects the fill execution handoff to per-frontier execution receipts without claiming benchmark execution.
+
+Frontier execution receipt fill execution packet:
+
+- `results/figures/frontier_execution_receipt_fill_execution_packet.md`
+- `results/tables/frontier_execution_receipt_fill_execution_packet.csv`
+- This packet provides a single entrypoint for the receipt fill execution stack while `combined_fill_status = fill_queue_ready`.
+
 MeetEval compatibility skill card:
 
 - `docs/skills/skill_04_meeteval_compatibility.md`
@@ -1684,7 +1702,7 @@ Streamlit demo scaffold:
 
 - `demo/app.py`
 - `requirements-demo.txt`
-- Run with `streamlit run demo/app.py` after installing `requirements-demo.txt`; this is qualitative/demo support only and does not run live ASR.
+- Run with `streamlit run demo/app.py` after installing `requirements-demo.txt`; tabs cover storyboard, walkthrough, gold CER, and frontier fill queue status. This is qualitative/demo support only and does not run live ASR.
 
 ## How to Resume Work
 
@@ -1807,6 +1825,9 @@ python -m src.frontier_execution_receipt_fill_queue_status
 python -m src.frontier_execution_receipt_fill_queue_status_bridge_checklist
 python -m src.frontier_execution_receipt_fill_queue_completion_summary
 python -m src.frontier_execution_receipt_fill_queue_handoff
+python -m src.frontier_execution_receipt_fill_queue_completion_summary_bridge_checklist
+python -m src.frontier_execution_receipt_fill_queue_handoff_bridge_checklist
+python -m src.frontier_execution_receipt_fill_execution_packet
 python -m src.speaker_profile_embedding_trial_execution_handoff
 python -m src.speaker_profile_embedding_trial_execution_handoff_bridge_checklist
 python -m src.speaker_profile_embedding_trial_execution_preflight
