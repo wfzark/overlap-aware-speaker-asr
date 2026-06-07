@@ -1,0 +1,42 @@
+[
+  {
+    "case_id": "NoOverlap",
+    "official_cpwer": "4.0",
+    "cpwer_bridge_lite": "0.054312",
+    "alignment_delta": "3.945688",
+    "alignment_status": "moderate_drift",
+    "audit_note": "Moderate drift detected; segment or speaker mapping may need inspection."
+  },
+  {
+    "case_id": "LightOverlap",
+    "official_cpwer": "4.0",
+    "cpwer_bridge_lite": "0.135164",
+    "alignment_delta": "3.864836",
+    "alignment_status": "moderate_drift",
+    "audit_note": "Moderate drift detected; segment or speaker mapping may need inspection."
+  },
+  {
+    "case_id": "MidOverlap",
+    "official_cpwer": "4.0",
+    "cpwer_bridge_lite": "0.16862",
+    "alignment_delta": "3.83138",
+    "alignment_status": "moderate_drift",
+    "audit_note": "Moderate drift detected; segment or speaker mapping may need inspection."
+  },
+  {
+    "case_id": "HeavyOverlap",
+    "official_cpwer": "3.5",
+    "cpwer_bridge_lite": "0.162827",
+    "alignment_delta": "3.337173",
+    "alignment_status": "moderate_drift",
+    "audit_note": "Moderate drift detected; segment or speaker mapping may need inspection."
+  },
+  {
+    "case_id": "OppositeOverlap",
+    "official_cpwer": "3.5",
+    "cpwer_bridge_lite": "0.083193",
+    "alignment_delta": "3.416807",
+    "alignment_status": "moderate_drift",
+    "audit_note": "Moderate drift detected; segment or speaker mapping may need inspection."
+  }
+]
