@@ -760,6 +760,30 @@ MeetEval cpWER alignment drift segment speaker count diagnostic bridge checklist
 - `results/tables/meeteval_cpwer_alignment_drift_segment_speaker_count_diagnostic_bridge_checklist.csv`
 - This checklist connects the speaker count diagnostic to the reconciliation diagnostic bridge checklist without claiming cpWER execution.
 
+MeetEval cpWER alignment drift segment speaker count diagnostic handoff:
+
+- `results/figures/meeteval_cpwer_alignment_drift_segment_speaker_count_diagnostic_handoff.md`
+- `results/tables/meeteval_cpwer_alignment_drift_segment_speaker_count_diagnostic_handoff.csv`
+- The speaker count diagnostic handoff targets per-speaker timing follow-up for `HeavyOverlap`; reconciled alignment and cpWER execution remain pending.
+
+MeetEval cpWER alignment drift segment timing diagnostic:
+
+- `results/figures/meeteval_cpwer_alignment_drift_segment_timing_diagnostic.md`
+- `results/tables/meeteval_cpwer_alignment_drift_segment_timing_diagnostic.csv`
+- Per-speaker timing on `HeavyOverlap` reports `mismatched_speaker_count = 1/2` with `SPEAKER_1 delta=-2.360s`; reconciled alignment and cpWER execution remain pending.
+
+MeetEval cpWER alignment drift segment timing diagnostic bridge checklist:
+
+- `results/figures/meeteval_cpwer_alignment_drift_segment_timing_diagnostic_bridge_checklist.md`
+- `results/tables/meeteval_cpwer_alignment_drift_segment_timing_diagnostic_bridge_checklist.csv`
+- This checklist connects the timing diagnostic to the speaker count handoff bridge without claiming cpWER execution.
+
+MeetEval cpWER alignment drift segment speaker count diagnostic handoff bridge checklist:
+
+- `results/figures/meeteval_cpwer_alignment_drift_segment_speaker_count_diagnostic_handoff_bridge_checklist.md`
+- `results/tables/meeteval_cpwer_alignment_drift_segment_speaker_count_diagnostic_handoff_bridge_checklist.csv`
+- This checklist connects the speaker count handoff to the timing diagnostic bridge without claiming cpWER execution.
+
 MeetEval cpWER bridge handoff:
 
 - `results/figures/meeteval_cpwer_bridge_handoff.md`
@@ -1131,6 +1155,42 @@ Demo walkthrough review pass third:
 - `results/tables/demo_walkthrough_review_pass_third.csv`
 - The third qualitative walkthrough review pass records notes for step `3` only; no live demo or recording is claimed.
 
+Demo walkthrough review pass continue bridge checklist:
+
+- `results/figures/demo_walkthrough_review_pass_continue_bridge_checklist.md`
+- `results/tables/demo_walkthrough_review_pass_continue_bridge_checklist.csv`
+- This checklist connects step `3` to the step `4` second-continue pass without claiming live demo delivery.
+
+Demo walkthrough review pass second continue:
+
+- `results/figures/demo_walkthrough_review_pass_second_continue.md`
+- `results/tables/demo_walkthrough_review_pass_second_continue.csv`
+- The walkthrough review queue advanced to step `4` (`Frontier breadth`) after steps `1`–`3` reached `review_complete` without claiming live demo delivery.
+
+Demo walkthrough review pass fourth:
+
+- `results/figures/demo_walkthrough_review_pass_fourth.md`
+- `results/tables/demo_walkthrough_review_pass_fourth.csv`
+- The fourth qualitative walkthrough review pass records notes for step `4` only; no live demo or recording is claimed.
+
+Demo walkthrough review pass third continue:
+
+- `results/figures/demo_walkthrough_review_pass_third_continue.md`
+- `results/tables/demo_walkthrough_review_pass_third_continue.csv`
+- The walkthrough review queue advanced to step `5` (`Next-step framing`) after steps `1`–`4` reached `review_complete` without claiming live demo delivery.
+
+Demo walkthrough review pass fifth:
+
+- `results/figures/demo_walkthrough_review_pass_fifth.md`
+- `results/tables/demo_walkthrough_review_pass_fifth.csv`
+- The fifth qualitative walkthrough review pass records notes for step `5` only; no live demo or recording is claimed.
+
+Demo walkthrough review pass status:
+
+- `results/figures/demo_walkthrough_review_pass_status.md`
+- `results/tables/demo_walkthrough_review_pass_status.csv`
+- The walkthrough review queue rollup reports `queue_status = queue_complete` with `completed_count = 5/5`; no live demo delivery is claimed.
+
 ## How to Resume Work
 
 Common commands:
@@ -1174,9 +1234,17 @@ python -m src.meeteval_cpwer_alignment_drift_segment_reconciliation_diagnostic_b
 python -m src.meeteval_cpwer_alignment_drift_segment_reconciliation_handoff_bridge_checklist
 python -m src.meeteval_cpwer_alignment_drift_segment_speaker_count_diagnostic
 python -m src.meeteval_cpwer_alignment_drift_segment_speaker_count_diagnostic_bridge_checklist
+python -m src.meeteval_cpwer_alignment_drift_segment_speaker_count_diagnostic_handoff
+python -m src.meeteval_cpwer_alignment_drift_segment_timing_diagnostic
+python -m src.meeteval_cpwer_alignment_drift_segment_timing_diagnostic_bridge_checklist
+python -m src.meeteval_cpwer_alignment_drift_segment_speaker_count_diagnostic_handoff_bridge_checklist
 python -m src.demo_walkthrough_review_pass
 python -m src.demo_walkthrough_review_pass_advance
 python -m src.demo_walkthrough_review_pass_continue
+python -m src.demo_walkthrough_review_pass_continue_bridge_checklist
+python -m src.demo_walkthrough_review_pass_second_continue
+python -m src.demo_walkthrough_review_pass_third_continue
+python -m src.demo_walkthrough_review_pass_status
 python -m src.external_validation_license_confirmation_receipt_bridge_checklist
 python -m src.external_validation_slice_manifest
 python -m src.external_validation_slice_manifest_bridge_checklist

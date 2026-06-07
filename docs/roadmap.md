@@ -521,6 +521,30 @@ Update: `meeteval_compatibility` now also has a cpWER alignment drift segment sp
 - Summary view: `results/figures/meeteval_cpwer_alignment_drift_segment_speaker_count_diagnostic_bridge_checklist.md`
 - This connects the speaker count diagnostic to the reconciliation diagnostic bridge checklist without claiming cpWER execution.
 
+Update: `meeteval_compatibility` now also has a cpWER alignment drift segment speaker count diagnostic handoff.
+
+- Drift segment speaker count diagnostic handoff: `results/tables/meeteval_cpwer_alignment_drift_segment_speaker_count_diagnostic_handoff.csv`
+- Summary view: `results/figures/meeteval_cpwer_alignment_drift_segment_speaker_count_diagnostic_handoff.md`
+- This hands off `HeavyOverlap` to per-speaker timing diagnostic follow-up while cpWER execution remains pending.
+
+Update: `meeteval_compatibility` now also has a cpWER alignment drift segment timing diagnostic.
+
+- Drift segment timing diagnostic: `results/tables/meeteval_cpwer_alignment_drift_segment_timing_diagnostic.csv`
+- Summary view: `results/figures/meeteval_cpwer_alignment_drift_segment_timing_diagnostic_summary.md`
+- `HeavyOverlap` reports `mismatched_speaker_count = 1/2` with `SPEAKER_1 delta=-2.360s`; reconciled alignment and cpWER execution remain pending.
+
+Update: `meeteval_compatibility` now also has a cpWER alignment drift segment timing diagnostic bridge checklist.
+
+- Drift segment timing diagnostic bridge checklist: `results/tables/meeteval_cpwer_alignment_drift_segment_timing_diagnostic_bridge_checklist.csv`
+- Summary view: `results/figures/meeteval_cpwer_alignment_drift_segment_timing_diagnostic_bridge_checklist.md`
+- This connects the timing diagnostic to the speaker count handoff bridge without claiming cpWER execution.
+
+Update: `meeteval_compatibility` now also has a cpWER alignment drift segment speaker count diagnostic handoff bridge checklist.
+
+- Drift segment speaker count diagnostic handoff bridge checklist: `results/tables/meeteval_cpwer_alignment_drift_segment_speaker_count_diagnostic_handoff_bridge_checklist.csv`
+- Summary view: `results/figures/meeteval_cpwer_alignment_drift_segment_speaker_count_diagnostic_handoff_bridge_checklist.md`
+- This connects the speaker count handoff to the timing diagnostic bridge without claiming cpWER execution.
+
 Update: `meeteval_compatibility` now also has a cpWER bridge handoff.
 
 - cpWER bridge handoff: `results/tables/meeteval_cpwer_bridge_handoff.csv`
@@ -840,6 +864,32 @@ Update: `demo_excellence` now also has a walkthrough review pass continue layer.
 - Third pass table: `results/tables/demo_walkthrough_review_pass_third.csv`
 - Summary view: `results/figures/demo_walkthrough_review_pass_continue.md`
 - Step `3` (`Routing takeaway`) is the third queue pass after steps `1` and `2`; no live demo delivery is claimed.
+
+Update: `demo_excellence` now also has a walkthrough review pass continue bridge checklist.
+
+- Walkthrough review pass continue bridge checklist: `results/tables/demo_walkthrough_review_pass_continue_bridge_checklist.csv`
+- Summary view: `results/figures/demo_walkthrough_review_pass_continue_bridge_checklist.md`
+- This connects step `3` to the step `4` second-continue pass without claiming live demo delivery.
+
+Update: `demo_excellence` now also has a walkthrough review pass second continue layer.
+
+- Walkthrough review pass second continue: `results/tables/demo_walkthrough_review_pass_second_continue.csv`
+- Fourth pass table: `results/tables/demo_walkthrough_review_pass_fourth.csv`
+- Summary view: `results/figures/demo_walkthrough_review_pass_second_continue.md`
+- Step `4` (`Frontier breadth`) is the fourth queue pass after steps `1`–`3`; no live demo delivery is claimed.
+
+Update: `demo_excellence` now also has a walkthrough review pass third continue layer.
+
+- Walkthrough review pass third continue: `results/tables/demo_walkthrough_review_pass_third_continue.csv`
+- Fifth pass table: `results/tables/demo_walkthrough_review_pass_fifth.csv`
+- Summary view: `results/figures/demo_walkthrough_review_pass_third_continue.md`
+- Step `5` (`Next-step framing`) closes the gold walkthrough queue at `5/5`; no live demo delivery is claimed.
+
+Update: `demo_excellence` now also has a walkthrough review pass status rollup.
+
+- Walkthrough review pass status: `results/tables/demo_walkthrough_review_pass_status.csv`
+- Summary view: `results/figures/demo_walkthrough_review_pass_status.md`
+- `queue_status = queue_complete` without any live demo or recording claim.
 
 Update: `external_validation` now has a dedicated skill card.
 
