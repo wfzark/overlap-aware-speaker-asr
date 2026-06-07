@@ -21,6 +21,11 @@ This generated packet consolidates the fill execution coordination stack into on
 | meeteval_official_execution_completion_summary | results/figures/meeteval_cpwer_official_execution_completion_summary.md | Official cpWER narrow dry-run completion rollup |
 | meeteval_official_execution_completion_summary_bridge_checklist | results/figures/meeteval_cpwer_official_execution_completion_summary_bridge_checklist.md | Completion summary to alignment audit verification |
 | meeteval_official_execution_alignment_audit | results/figures/meeteval_cpwer_official_execution_alignment_audit.md | Official cpWER vs bridge-lite alignment audit |
+| meeteval_official_execution_alignment_audit_bridge_checklist | results/figures/meeteval_cpwer_official_execution_alignment_audit_bridge_checklist.md | Alignment audit to tokenization diagnostic verification |
+| meeteval_official_execution_tokenization_diagnostic | results/figures/meeteval_cpwer_official_execution_tokenization_diagnostic.md | Chinese tokenization root-cause diagnostic |
+| meeteval_character_level_official_execution | results/figures/meeteval_cpwer_character_level_official_execution.md | Character-spaced MeetEval cpWER narrow dry-run result |
+| meeteval_official_execution_reconciliation_audit | results/figures/meeteval_cpwer_official_execution_reconciliation_audit.md | Character-spaced cpWER vs bridge-lite reconciliation audit |
+| meeteval_official_execution_reconciliation_audit_bridge_checklist | results/figures/meeteval_cpwer_official_execution_reconciliation_audit_bridge_checklist.md | Reconciliation audit verification path |
 | frontier_bridge | results/figures/frontier_execution_receipt_fill_execution_frontier_bridge.md | Fill execution to breadth-first frontier queue bridge |
 | frontier_bridge_checklist | results/figures/frontier_execution_receipt_fill_execution_frontier_bridge_checklist.md | Frontier bridge verification path |
 | runbook | results/figures/frontier_execution_receipt_fill_execution_runbook_card.md | One-page first action execution card |

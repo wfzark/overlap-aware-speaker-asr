@@ -85,6 +85,31 @@
     "section_role": "Official cpWER vs bridge-lite alignment audit"
   },
   {
+    "packet_section": "meeteval_official_execution_alignment_audit_bridge_checklist",
+    "artifact_path": "results/figures/meeteval_cpwer_official_execution_alignment_audit_bridge_checklist.md",
+    "section_role": "Alignment audit to tokenization diagnostic verification"
+  },
+  {
+    "packet_section": "meeteval_official_execution_tokenization_diagnostic",
+    "artifact_path": "results/figures/meeteval_cpwer_official_execution_tokenization_diagnostic.md",
+    "section_role": "Chinese tokenization root-cause diagnostic"
+  },
+  {
+    "packet_section": "meeteval_character_level_official_execution",
+    "artifact_path": "results/figures/meeteval_cpwer_character_level_official_execution.md",
+    "section_role": "Character-spaced MeetEval cpWER narrow dry-run result"
+  },
+  {
+    "packet_section": "meeteval_official_execution_reconciliation_audit",
+    "artifact_path": "results/figures/meeteval_cpwer_official_execution_reconciliation_audit.md",
+    "section_role": "Character-spaced cpWER vs bridge-lite reconciliation audit"
+  },
+  {
+    "packet_section": "meeteval_official_execution_reconciliation_audit_bridge_checklist",
+    "artifact_path": "results/figures/meeteval_cpwer_official_execution_reconciliation_audit_bridge_checklist.md",
+    "section_role": "Reconciliation audit verification path"
+  },
+  {
     "packet_section": "frontier_bridge",
     "artifact_path": "results/figures/frontier_execution_receipt_fill_execution_frontier_bridge.md",
     "section_role": "Fill execution to breadth-first frontier queue bridge"
