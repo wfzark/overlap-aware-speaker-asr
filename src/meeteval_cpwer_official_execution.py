@@ -8,6 +8,7 @@ from typing import Any
 
 from .config import PROJECT_ROOT
 from .meeteval_cpwer_bridge import aggregate_speaker_text
+from .meeteval_cpwer_execution_preflight_batch import GOLD_CASES
 from .meeteval_dry_run import load_jsonl_segments, select_preferred_case
 
 
@@ -277,33 +278,47 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument(
         "--case",
         default="preferred",
-        help="Verified case id or 'preferred' (default uses dry-run checklist priority).",
+        help="Verified case id, 'preferred' (dry-run checklist priority), or 'all' for every gold case.",
+    )
+    parser.add_argument(
+        "--all",
+        action="store_true",
+        help="Run official cpWER for all five verified gold cases.",
     )
     return parser.parse_args()
 
 
-def resolve_case_id(case_arg: str) -> str:
+def resolve_case_ids(case_arg: str, run_all: bool) -> list[str]:
+    if run_all or case_arg == "all":
+        return list(GOLD_CASES)
     if case_arg == "preferred":
         checklist_path = PROJECT_ROOT / "results" / "tables" / "meeteval_dry_run_checklist.csv"
-        return select_preferred_case(checklist_path)
-    return case_arg
+        return [select_preferred_case(checklist_path)]
+    return [case_arg]
 
 
 def main() -> None:
     args = parse_args()
-    case_id = resolve_case_id(args.case)
-    execution_row = run_official_execution(case_id)
-    csv_path, json_path, md_path = write_outputs([execution_row])
+    case_ids = resolve_case_ids(args.case, args.all)
+    execution_rows = [run_official_execution(case_id) for case_id in case_ids]
+    csv_path, json_path, md_path = write_outputs(execution_rows)
 
-    if execution_row.get("execution_status") == "official_cpwer_narrow_dry_run_complete":
-        update_execution_receipt(execution_row)
+    for execution_row in execution_rows:
+        if execution_row.get("execution_status") == "official_cpwer_narrow_dry_run_complete":
+            update_execution_receipt(execution_row)
 
     print(f"Wrote MeetEval cpWER official execution CSV: {csv_path.relative_to(PROJECT_ROOT)}")
     print(f"Wrote MeetEval cpWER official execution JSON: {json_path.relative_to(PROJECT_ROOT)}")
     print(f"Wrote MeetEval cpWER official execution note: {md_path.relative_to(PROJECT_ROOT)}")
-    print(f"Execution status: {execution_row['execution_status']}")
-    if execution_row.get("official_cpwer"):
-        print(f"Official cpWER: {execution_row['official_cpwer']}")
+    complete_count = sum(
+        1
+        for row in execution_rows
+        if row.get("execution_status") == "official_cpwer_narrow_dry_run_complete"
+    )
+    print(f"Execution complete: {complete_count}/{len(execution_rows)} cases")
+    for execution_row in execution_rows:
+        if execution_row.get("official_cpwer"):
+            print(f"  {execution_row['case_id']}: cpWER={execution_row['official_cpwer']}")
 
 
 if __name__ == "__main__":
