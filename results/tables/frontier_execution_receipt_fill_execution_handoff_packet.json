@@ -65,6 +65,26 @@
     "section_role": "Official MeetEval cpWER narrow dry-run execution result"
   },
   {
+    "packet_section": "meeteval_official_execution_bridge_checklist",
+    "artifact_path": "results/figures/meeteval_cpwer_official_execution_bridge_checklist.md",
+    "section_role": "Official execution to receipt bridge verification"
+  },
+  {
+    "packet_section": "meeteval_official_execution_completion_summary",
+    "artifact_path": "results/figures/meeteval_cpwer_official_execution_completion_summary.md",
+    "section_role": "Official cpWER narrow dry-run completion rollup"
+  },
+  {
+    "packet_section": "meeteval_official_execution_completion_summary_bridge_checklist",
+    "artifact_path": "results/figures/meeteval_cpwer_official_execution_completion_summary_bridge_checklist.md",
+    "section_role": "Completion summary to alignment audit verification"
+  },
+  {
+    "packet_section": "meeteval_official_execution_alignment_audit",
+    "artifact_path": "results/figures/meeteval_cpwer_official_execution_alignment_audit.md",
+    "section_role": "Official cpWER vs bridge-lite alignment audit"
+  },
+  {
     "packet_section": "frontier_bridge",
     "artifact_path": "results/figures/frontier_execution_receipt_fill_execution_frontier_bridge.md",
     "section_role": "Fill execution to breadth-first frontier queue bridge"
