@@ -70,15 +70,24 @@ def render_gold_table() -> None:
 
 def render_frontier_fill_status() -> None:
     summary = load_json_dict("results/tables/frontier_execution_receipt_fill_queue_summary.json")
+    execution = load_json_dict("results/tables/frontier_execution_receipt_fill_execution_status.json")
     rows = load_json_list("results/tables/frontier_execution_receipt_fill_queue_status.json")
     if not summary:
         st.warning("Frontier fill queue summary not found.")
         return
-    st.metric("Combined fill status", summary.get("combined_fill_status", "unknown"))
-    st.metric(
-        "Awaiting fill",
-        f"{summary.get('awaiting_fill_count', '0')}/{summary.get('total_frontier_count', '0')}",
-    )
+    col_a, col_b = st.columns(2)
+    with col_a:
+        st.metric("Fill queue status", summary.get("combined_fill_status", "unknown"))
+        st.metric(
+            "Awaiting fill",
+            f"{summary.get('awaiting_fill_count', '0')}/{summary.get('total_frontier_count', '0')}",
+        )
+    with col_b:
+        if execution:
+            st.metric(
+                "Fill execution status",
+                execution.get("combined_fill_execution_status", "unknown"),
+            )
     if rows:
         st.table(
             {
