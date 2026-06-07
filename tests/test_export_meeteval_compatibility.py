@@ -12,6 +12,8 @@ from src.export_meeteval_compatibility import (
     build_meeteval_dry_run_bridge_checklist_rows,
     build_meeteval_dry_run_checklist_lines,
     build_meeteval_dry_run_checklist_rows,
+    build_meeteval_dry_run_receipt_checklist_lines,
+    build_meeteval_dry_run_receipt_checklist_rows,
     build_meeteval_dry_run_receipt_lines,
     build_meeteval_dry_run_receipt_rows,
     build_meeteval_readiness_lines,
@@ -297,6 +299,46 @@ class MeetEvalCompatibilityTest(unittest.TestCase):
         self.assertEqual(rows[1]["dry_run_priority"], "secondary")
         self.assertIn("end-to-end", rows[0]["operator_step"])
         self.assertIn("dry-run", rows[1]["validation_note"].lower())
+
+    def test_build_meeteval_dry_run_receipt_checklist_rows_link_receipt_to_checklist(self) -> None:
+        rows = build_meeteval_dry_run_receipt_checklist_rows(
+            [
+                {
+                    "execution_status": "template_only",
+                    "run_scope": "single_verified_case",
+                    "expected_inputs": "results/tables/meeteval_reference_segments.jsonl; results/tables/meeteval_hypothesis_segments.jsonl",
+                    "expected_outputs": "Diagnostic export-path confirmation and a narrow run note.",
+                    "writeback_note": "MeetEval / cpWER has not been executed yet; fill this receipt only after the first dry run.",
+                }
+            ]
+        )
+
+        self.assertEqual(len(rows), 1)
+        self.assertEqual(rows[0]["dry_run_scope"], "single_verified_case")
+        self.assertEqual(rows[0]["receipt_state"], "template_only")
+        self.assertEqual(rows[0]["receipt_target"], "results/figures/meeteval_dry_run_receipt.md")
+        self.assertIn("cpwer", rows[0]["checklist_goal"].lower())
+
+    def test_build_meeteval_dry_run_receipt_checklist_lines_render_checklist(self) -> None:
+        lines = build_meeteval_dry_run_receipt_checklist_lines(
+            [
+                {
+                    "checklist_order": "1",
+                    "dry_run_scope": "single_verified_case",
+                    "receipt_state": "template_only",
+                    "prerequisite_artifact": "results/figures/meeteval_dry_run_checklist.md",
+                    "receipt_target": "results/figures/meeteval_dry_run_receipt.md",
+                    "checklist_goal": "Verify the dry-run receipt path for single_verified_case before any cpWER claim is advanced.",
+                    "preflight_step": "Open the dry-run checklist and confirm the preferred case export before filling the receipt.",
+                    "next_gate": "Fill the receipt before promoting any MeetEval evaluation claim.",
+                }
+            ]
+        )
+        rendered = "\n".join(lines)
+
+        self.assertIn("# MeetEval Dry Run Receipt Checklist", rendered)
+        self.assertIn("single_verified_case", rendered)
+        self.assertIn("meeteval_dry_run_receipt.md", rendered)
 
     def test_build_meeteval_dry_run_checklist_lines_render_queue(self) -> None:
         lines = build_meeteval_dry_run_checklist_lines(
