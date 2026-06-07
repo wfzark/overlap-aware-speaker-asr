@@ -223,6 +223,12 @@ Update: `external_validation` now also has a license confirmation scaffold bridg
 - Summary view: `results/figures/external_validation_license_confirmation_scaffold_bridge_checklist.md`
 - This connects the confirmation scaffold to staging readiness without claiming benchmark execution.
 
+Update: `external_validation` now also has a license confirmation receipt bridge.
+
+- License confirmation receipt bridge: `results/tables/external_validation_license_confirmation_receipt_bridge.csv`
+- Summary view: `results/figures/external_validation_license_confirmation_receipt_bridge.md`
+- This links the confirmation scaffold bridge checklist to the slice receipt without claiming benchmark execution.
+
 Update: `external_validation` now also has a slice manifest.
 
 - Slice manifest: `results/tables/external_validation_slice_manifest.json`
@@ -460,6 +466,12 @@ Update: `meeteval_compatibility` now also has a cpWER alignment drift segment in
 - Drift segment inspection bridge checklist: `results/tables/meeteval_cpwer_alignment_drift_segment_inspection_bridge_checklist.csv`
 - Summary view: `results/figures/meeteval_cpwer_alignment_drift_segment_inspection_bridge_checklist.md`
 - This connects the segment inspection to the segment handoff bridge checklist without claiming cpWER execution.
+
+Update: `meeteval_compatibility` now also has a cpWER alignment drift segment reconciliation scaffold.
+
+- Drift segment reconciliation scaffold: `results/tables/meeteval_cpwer_alignment_drift_segment_reconciliation_scaffold.json`
+- Summary view: `results/figures/meeteval_cpwer_alignment_drift_segment_reconciliation_scaffold.md`
+- `HeavyOverlap` reconciliation remains `scaffold_only` after `segment_inspection_complete`; reconciled alignment and cpWER execution remain pending.
 
 Update: `meeteval_compatibility` now also has a cpWER bridge handoff.
 
@@ -760,6 +772,12 @@ Update: `demo_excellence` now also has a walkthrough bridge checklist.
 - Walkthrough bridge checklist: `results/tables/demo_walkthrough_bridge_checklist.csv`
 - Summary view: `results/figures/demo_walkthrough_bridge_checklist.md`
 - This keeps the walkthrough and receipt visible together while staying explicit that no live demo or recording has yet been completed.
+
+Update: `demo_excellence` now also has a walkthrough review pass.
+
+- Walkthrough review pass: `results/tables/demo_walkthrough_review_pass.csv`
+- Summary view: `results/figures/demo_walkthrough_review_pass.md`
+- The first qualitative walkthrough review pass records `review_status = review_complete` without claiming live demo or recording delivery.
 
 Update: `external_validation` now has a dedicated skill card.
 

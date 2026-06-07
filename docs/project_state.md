@@ -712,6 +712,12 @@ MeetEval cpWER alignment drift segment inspection bridge checklist:
 - `results/tables/meeteval_cpwer_alignment_drift_segment_inspection_bridge_checklist.csv`
 - This checklist connects the segment inspection to the segment handoff bridge checklist without claiming cpWER execution.
 
+MeetEval cpWER alignment drift segment reconciliation scaffold:
+
+- `results/figures/meeteval_cpwer_alignment_drift_segment_reconciliation_scaffold.md`
+- `results/tables/meeteval_cpwer_alignment_drift_segment_reconciliation_scaffold.json`
+- The reconciliation scaffold for `HeavyOverlap` remains `scaffold_only` with `inspection_status = segment_inspection_complete`; reconciled alignment and cpWER execution remain pending.
+
 MeetEval cpWER bridge handoff:
 
 - `results/figures/meeteval_cpwer_bridge_handoff.md`
@@ -940,6 +946,12 @@ External validation license confirmation scaffold bridge checklist:
 - `results/tables/external_validation_license_confirmation_scaffold_bridge_checklist.csv`
 - This checklist connects the confirmation scaffold to staging readiness without claiming benchmark execution.
 
+External validation license confirmation receipt bridge:
+
+- `results/figures/external_validation_license_confirmation_receipt_bridge.md`
+- `results/tables/external_validation_license_confirmation_receipt_bridge.csv`
+- This bridge links the confirmation scaffold bridge checklist to the slice receipt without claiming benchmark execution.
+
 External validation slice manifest bridge:
 
 - `results/figures/external_validation_slice_manifest.md`
@@ -1041,6 +1053,12 @@ Demo walkthrough checklist bridge:
 - `results/tables/demo_walkthrough_checklist.csv`
 - This bridge now turns the walkthrough into an ordered presentation checklist. It stays explicitly `qualitative/demo`, keeps the receipt target visible, and helps a future agent follow the short demo script without implying that a live demo has already been completed.
 
+Demo walkthrough review pass:
+
+- `results/figures/demo_walkthrough_review_pass.md`
+- `results/tables/demo_walkthrough_review_pass.csv`
+- The first qualitative walkthrough review pass records `review_status = review_complete` for the opening step without claiming live demo or recording delivery.
+
 ## How to Resume Work
 
 Common commands:
@@ -1075,6 +1093,9 @@ python -m src.external_validation_license_gate
 python -m src.external_validation_license_gate_bridge_checklist
 python -m src.external_validation_license_confirmation_scaffold
 python -m src.external_validation_license_confirmation_scaffold_bridge_checklist
+python -m src.external_validation_license_confirmation_receipt_bridge
+python -m src.meeteval_cpwer_alignment_drift_segment_reconciliation_scaffold
+python -m src.demo_walkthrough_review_pass
 python -m src.external_validation_slice_manifest
 python -m src.external_validation_slice_manifest_bridge_checklist
 python -m src.external_validation_slice_staging_readiness
