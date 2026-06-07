@@ -40,6 +40,31 @@
     "section_role": "Batch execution status to official execution receipt verification"
   },
   {
+    "packet_section": "meeteval_execution_status_batch_completion_summary",
+    "artifact_path": "results/figures/meeteval_cpwer_execution_status_batch_completion_summary.md",
+    "section_role": "Batch execution-chain completion rollup"
+  },
+  {
+    "packet_section": "meeteval_execution_status_batch_completion_summary_bridge_checklist",
+    "artifact_path": "results/figures/meeteval_cpwer_execution_status_batch_completion_summary_bridge_checklist.md",
+    "section_role": "Batch completion summary to batch handoff verification"
+  },
+  {
+    "packet_section": "meeteval_execution_status_batch_handoff",
+    "artifact_path": "results/figures/meeteval_cpwer_execution_status_batch_handoff.md",
+    "section_role": "Per-case official cpWER batch execution handoff"
+  },
+  {
+    "packet_section": "meeteval_execution_status_batch_handoff_bridge_checklist",
+    "artifact_path": "results/figures/meeteval_cpwer_execution_status_batch_handoff_bridge_checklist.md",
+    "section_role": "Batch handoff to official cpWER execution verification"
+  },
+  {
+    "packet_section": "meeteval_official_execution",
+    "artifact_path": "results/figures/meeteval_cpwer_official_execution.md",
+    "section_role": "Official MeetEval cpWER narrow dry-run execution result"
+  },
+  {
     "packet_section": "frontier_bridge",
     "artifact_path": "results/figures/frontier_execution_receipt_fill_execution_frontier_bridge.md",
     "section_role": "Fill execution to breadth-first frontier queue bridge"

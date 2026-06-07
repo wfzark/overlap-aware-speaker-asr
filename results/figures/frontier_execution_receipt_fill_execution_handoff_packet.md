@@ -12,6 +12,11 @@ This generated packet consolidates the fill execution coordination stack into on
 | meeteval_receipt_batch_scaffold_bridge_checklist | results/figures/meeteval_cpwer_execution_receipt_batch_scaffold_bridge_checklist.md | Batch receipt scaffold to official execution receipt verification |
 | meeteval_execution_status_batch | results/figures/meeteval_cpwer_execution_status_batch.md | All-gold MeetEval cpWER execution chain status rollup |
 | meeteval_execution_status_batch_bridge_checklist | results/figures/meeteval_cpwer_execution_status_batch_bridge_checklist.md | Batch execution status to official execution receipt verification |
+| meeteval_execution_status_batch_completion_summary | results/figures/meeteval_cpwer_execution_status_batch_completion_summary.md | Batch execution-chain completion rollup |
+| meeteval_execution_status_batch_completion_summary_bridge_checklist | results/figures/meeteval_cpwer_execution_status_batch_completion_summary_bridge_checklist.md | Batch completion summary to batch handoff verification |
+| meeteval_execution_status_batch_handoff | results/figures/meeteval_cpwer_execution_status_batch_handoff.md | Per-case official cpWER batch execution handoff |
+| meeteval_execution_status_batch_handoff_bridge_checklist | results/figures/meeteval_cpwer_execution_status_batch_handoff_bridge_checklist.md | Batch handoff to official cpWER execution verification |
+| meeteval_official_execution | results/figures/meeteval_cpwer_official_execution.md | Official MeetEval cpWER narrow dry-run execution result |
 | frontier_bridge | results/figures/frontier_execution_receipt_fill_execution_frontier_bridge.md | Fill execution to breadth-first frontier queue bridge |
 | frontier_bridge_checklist | results/figures/frontier_execution_receipt_fill_execution_frontier_bridge_checklist.md | Frontier bridge verification path |
 | runbook | results/figures/frontier_execution_receipt_fill_execution_runbook_card.md | One-page first action execution card |
@@ -33,8 +38,9 @@ This generated packet consolidates the fill execution coordination stack into on
 ## Recommended first action
 
 1. Confirm the MeetEval preflight batch and its bridge checklist before any cpWER run.
-2. Open the runbook card for the current first frontier (`meeteval_compatibility`).
-3. Follow the execution receipt bridge checklist before updating the JSON receipt.
-4. Fill `results/tables/meeteval_cpwer_execution_receipt.json` only after a real frontier run.
+2. Review the batch completion summary and batch handoff before official cpWER execution.
+3. Open the runbook card for the current first frontier (`meeteval_compatibility`).
+4. Follow the execution receipt bridge checklist before updating the JSON receipt.
+5. Fill `results/tables/meeteval_cpwer_execution_receipt.json` only after a real frontier run.
 
 No benchmark execution or external audio staging is claimed until receipts are filled.
