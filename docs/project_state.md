@@ -421,6 +421,12 @@ Frontier execution queue:
 - Current queue head: `meeteval_compatibility`
 - Next breadth-first move: use the MeetEval readiness path to stage a narrow dry run before touching the remaining frontier backlog.
 
+Frontier execution queue checklist:
+
+- `results/figures/frontier_execution_queue_checklist.md`
+- `results/tables/frontier_execution_queue_checklist.csv`
+- This checklist now turns the execution queue into a row-by-row verification path. It remains coordination-only and keeps the queue order visible without claiming that any frontier work has already been executed.
+
 Frontier focus card:
 
 - `results/figures/frontier_focus_card.md`

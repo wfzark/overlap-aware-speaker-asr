@@ -263,6 +263,11 @@ Current frontier execution queue result:
 - `results/figures/frontier_execution_queue.md` now turns that breadth-first status view into an ordered next-step queue
 - This queue is a coordination artifact rather than a new experiment result: it simply ranks which frontier handoff should be picked up first based on the current generated cards
 
+Current frontier execution queue checklist result:
+
+- `results/figures/frontier_execution_queue_checklist.md` now turns that queue into a row-by-row verification checklist
+- This checklist remains coordination-only and keeps the queue order visible without claiming that any frontier work has already been executed
+
 Current frontier focus card result:
 
 - `results/figures/frontier_focus_card.md` now compresses that queue into a one-glance current priority card
