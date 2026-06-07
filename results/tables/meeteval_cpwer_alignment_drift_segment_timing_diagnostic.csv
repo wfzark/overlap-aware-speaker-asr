@@ -1,0 +1,3 @@
+﻿case_id,speaker,reference_duration_sec,hypothesis_duration_sec,duration_delta_sec,duration_match
+HeavyOverlap,SPEAKER_1,31.360,29.000,-2.360,False
+HeavyOverlap,SPEAKER_2,36.360,36.360,0.000,True

@@ -1,0 +1,18 @@
+[
+  {
+    "case_id": "HeavyOverlap",
+    "speaker": "SPEAKER_1",
+    "reference_duration_sec": "31.360",
+    "hypothesis_duration_sec": "29.000",
+    "duration_delta_sec": "-2.360",
+    "duration_match": "False"
+  },
+  {
+    "case_id": "HeavyOverlap",
+    "speaker": "SPEAKER_2",
+    "reference_duration_sec": "36.360",
+    "hypothesis_duration_sec": "36.360",
+    "duration_delta_sec": "0.000",
+    "duration_match": "True"
+  }
+]
