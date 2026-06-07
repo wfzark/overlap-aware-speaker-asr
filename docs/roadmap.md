@@ -469,6 +469,12 @@ Update: `demo_excellence` now also has a storyboard receipt.
 - Summary view: `results/figures/demo_storyboard_receipt.md`
 - This keeps the storyboard review path explicit while staying clear that no live demo or recording has yet been completed.
 
+Update: `demo_excellence` now also has a storyboard receipt bridge.
+
+- Storyboard receipt bridge: `results/tables/demo_storyboard_receipt_bridge.csv`
+- Summary view: `results/figures/demo_storyboard_receipt_bridge.md`
+- This keeps the storyboard cards and storyboard receipt visible together while staying explicit that no live demo or recording has yet been completed.
+
 Update: `demo_excellence` now also has a storyboard bridge checklist.
 
 - Storyboard bridge checklist: `results/tables/demo_storyboard_bridge_checklist.csv`

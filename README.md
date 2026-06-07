@@ -481,6 +481,12 @@ Current demo storyboard receipt result:
 - `results/tables/demo_storyboard_receipt.json`
 - This receipt now creates the first evidence slot for a demo storyboard review pass. It stays demo support only and does not claim that any live demo or recording has been completed.
 
+Current demo storyboard receipt bridge result:
+
+- `results/figures/demo_storyboard_receipt_bridge.md`
+- `results/tables/demo_storyboard_receipt_bridge.csv`
+- This bridge now links the storyboard cards to the storyboard receipt. It stays demo support only and keeps the story and receipt targets visible without claiming that any live demo has been completed.
+
 Current demo storyboard bridge checklist result:
 
 - `results/figures/demo_storyboard_bridge_checklist.md`
