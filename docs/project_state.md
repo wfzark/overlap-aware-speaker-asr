@@ -899,6 +899,12 @@ MeetEval cpWER execution receipt scaffold:
 - `results/tables/meeteval_cpwer_execution_receipt.json`
 - The receipt scaffold records `scaffold_status = receipt_scaffold_only` for `NoOverlap` after `preflight_pass = true`; official MeetEval evaluation remains pending.
 
+MeetEval cpWER execution receipt scaffold bridge checklist:
+
+- `results/figures/meeteval_cpwer_execution_receipt_scaffold_bridge_checklist.md`
+- `results/tables/meeteval_cpwer_execution_receipt_scaffold_bridge_checklist.csv`
+- This checklist connects the receipt scaffold to the official cpWER execution receipt without claiming benchmark execution.
+
 Speaker profile similarity bridge:
 
 - `results/figures/speaker_profile_risk_summary.md`
@@ -988,6 +994,13 @@ Speaker profile embedding trial execution preflight:
 - `results/figures/speaker_profile_embedding_trial_execution_preflight.md`
 - `results/tables/speaker_profile_embedding_trial_execution_preflight.csv`
 - The first narrow execution preflight on `NoOverlap` reports `preflight_pass = true` with `swapped_bias_detected = true`; voiceprint execution remains pending.
+
+Speaker profile embedding trial execution receipt scaffold:
+
+- `results/figures/speaker_profile_embedding_trial_execution_receipt_scaffold.md`
+- `results/tables/speaker_profile_embedding_trial_execution_receipt_scaffold.csv`
+- `results/tables/speaker_profile_embedding_trial_execution_receipt.json`
+- The receipt scaffold records `scaffold_status = receipt_scaffold_only` for `NoOverlap` with `swapped_bias_detected = true`; voiceprint execution remains pending.
 
 LLM critic qualitative bridge:
 
@@ -1554,7 +1567,9 @@ python -m src.meeteval_cpwer_execution_handoff_bridge_checklist
 python -m src.meeteval_cpwer_execution_preflight
 python -m src.meeteval_cpwer_execution_preflight_bridge_checklist
 python -m src.meeteval_cpwer_execution_receipt_scaffold
+python -m src.meeteval_cpwer_execution_receipt_scaffold_bridge_checklist
 python -m src.speaker_profile_embedding_trial_execution_scaffold
+python -m src.speaker_profile_embedding_trial_execution_receipt_scaffold
 python -m src.speaker_profile_embedding_trial_execution_handoff
 python -m src.speaker_profile_embedding_trial_execution_handoff_bridge_checklist
 python -m src.speaker_profile_embedding_trial_execution_preflight
