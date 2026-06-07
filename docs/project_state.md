@@ -1562,6 +1562,24 @@ Frontier execution receipt fill execution runbook bridge checklist:
 - `results/tables/frontier_execution_receipt_fill_execution_runbook_bridge_checklist.csv`
 - This checklist connects the runbook card to the evidence receipt target.
 
+MeetEval cpWER execution preflight batch:
+
+- `results/figures/meeteval_cpwer_execution_preflight_batch.md`
+- `results/tables/meeteval_cpwer_execution_preflight_batch.csv`
+- All five verified gold cases pass segment-export preflight; official cpWER evaluation remains pending.
+
+Frontier execution receipt fill execution frontier bridge:
+
+- `results/figures/frontier_execution_receipt_fill_execution_frontier_bridge.md`
+- `results/tables/frontier_execution_receipt_fill_execution_frontier_bridge.csv`
+- This bridge connects fill execution to the breadth-first frontier queue head.
+
+Frontier execution receipt fill execution dashboard bridge checklist:
+
+- `results/figures/frontier_execution_receipt_fill_execution_dashboard_bridge_checklist.md`
+- `results/tables/frontier_execution_receipt_fill_execution_dashboard_bridge_checklist.csv`
+- This checklist connects the completion dashboard to the runbook card target.
+
 MeetEval compatibility skill card:
 
 - `docs/skills/skill_04_meeteval_compatibility.md`

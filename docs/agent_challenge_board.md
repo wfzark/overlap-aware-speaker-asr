@@ -26,6 +26,8 @@ The frontier receipt-fill execution stack now has an operator brief and receipt 
 - Bridge checklist: `results/figures/frontier_execution_receipt_fill_execution_receipt_bridge_checklist.md`
 - Evidence receipt: `results/figures/frontier_execution_receipt_fill_execution_evidence_receipt.md`
 - Execution receipt bridge: `results/figures/frontier_execution_receipt_fill_execution_execution_receipt_bridge.md`
+- MeetEval preflight batch: `results/figures/meeteval_cpwer_execution_preflight_batch.md`
+- Frontier bridge: `results/figures/frontier_execution_receipt_fill_execution_frontier_bridge.md`
 
 MeetEval compatibility remains the recommended first fill target. Filling execution receipts is coordination-only until a real frontier run happens; no benchmark execution is claimed by the scaffold alone.
 

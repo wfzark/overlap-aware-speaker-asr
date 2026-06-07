@@ -1355,6 +1355,24 @@ Update: the frontier receipt layer now has a fill execution runbook bridge check
 - Summary view: `results/figures/frontier_execution_receipt_fill_execution_runbook_bridge_checklist.md`
 - Connects the runbook card to the evidence receipt target.
 
+Update: `meeteval_compatibility` now has an all-gold execution preflight batch.
+
+- Preflight batch: `results/tables/meeteval_cpwer_execution_preflight_batch.csv`
+- Summary view: `results/figures/meeteval_cpwer_execution_preflight_batch.md`
+- All five verified gold cases pass segment-export preflight; official cpWER remains pending.
+
+Update: the frontier receipt layer now has a fill execution frontier bridge.
+
+- Frontier bridge: `results/tables/frontier_execution_receipt_fill_execution_frontier_bridge.csv`
+- Summary view: `results/figures/frontier_execution_receipt_fill_execution_frontier_bridge.md`
+- Connects fill execution to the breadth-first frontier queue head.
+
+Update: the frontier receipt layer now has a fill execution dashboard bridge checklist.
+
+- Dashboard bridge checklist: `results/tables/frontier_execution_receipt_fill_execution_dashboard_bridge_checklist.csv`
+- Summary view: `results/figures/frontier_execution_receipt_fill_execution_dashboard_bridge_checklist.md`
+- Connects the completion dashboard to the runbook card target.
+
 Update: `demo_excellence` now has a lightweight Streamlit viewer scaffold.
 
 - Demo app: `demo/app.py`
