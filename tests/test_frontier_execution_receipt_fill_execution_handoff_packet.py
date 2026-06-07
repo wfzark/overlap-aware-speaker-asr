@@ -24,6 +24,8 @@ class FrontierExecutionReceiptFillExecutionHandoffPacketTest(unittest.TestCase):
         self.assertIn("meeteval_execution_status_batch_completion_summary", sections)
         self.assertIn("meeteval_execution_status_batch_handoff", sections)
         self.assertIn("meeteval_official_execution", sections)
+        self.assertIn("meeteval_official_execution_bridge_checklist", sections)
+        self.assertIn("meeteval_official_execution_alignment_audit", sections)
 
 
 if __name__ == "__main__":
