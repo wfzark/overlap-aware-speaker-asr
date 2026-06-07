@@ -705,6 +705,12 @@ Demo storyboard bridge:
 - `results/tables/demo_storyboard_cards.json`
 - This bridge now turns the repository into a one-page demo-facing story so a new visitor can understand the problem, pipeline, findings, and frontier directions quickly without opening the full report first.
 
+Demo storyboard bridge checklist:
+
+- `results/figures/demo_storyboard_bridge_checklist.md`
+- `results/tables/demo_storyboard_bridge_checklist.csv`
+- This checklist turns the storyboard into an ordered bridge verification path between the storyboard and walkthrough. It stays demo support only and does not claim that any live demo or recording has already happened.
+
 Demo walkthrough bridge:
 
 - `results/figures/demo_walkthrough.md`

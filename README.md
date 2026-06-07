@@ -475,6 +475,12 @@ Current demo storyboard result:
 
 - `results/figures/demo_storyboard.md` now provides a one-page demo-facing story that explains the problem, pipeline, findings, and current frontier extensions with a lightweight Mermaid diagram
 
+Current demo storyboard bridge checklist result:
+
+- `results/figures/demo_storyboard_bridge_checklist.md`
+- `results/tables/demo_storyboard_bridge_checklist.csv`
+- This checklist now turns the storyboard into an ordered bridge verification path. It stays demo support only and keeps the storyboard and walkthrough artifacts visible without claiming any live demo has been completed.
+
 Current demo walkthrough result:
 
 - `results/figures/demo_walkthrough.md` now provides a short ordered talk track for presenting the repository in five steps
