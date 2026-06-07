@@ -443,6 +443,24 @@ Update: `meeteval_compatibility` now also has a cpWER alignment drift segment ha
 - Summary view: `results/figures/meeteval_cpwer_alignment_drift_segment_handoff.md`
 - `HeavyOverlap` segment inspection is handed off while reconciliation and cpWER execution remain pending.
 
+Update: `meeteval_compatibility` now also has a cpWER alignment drift segment handoff bridge checklist.
+
+- Drift segment handoff bridge checklist: `results/tables/meeteval_cpwer_alignment_drift_segment_handoff_bridge_checklist.csv`
+- Summary view: `results/figures/meeteval_cpwer_alignment_drift_segment_handoff_bridge_checklist.md`
+- This connects the segment handoff to the segment scaffold bridge checklist while cpWER execution remains pending.
+
+Update: `meeteval_compatibility` now also has a cpWER alignment drift segment inspection.
+
+- Drift segment inspection table: `results/tables/meeteval_cpwer_alignment_drift_segment_inspection.csv`
+- Summary view: `results/figures/meeteval_cpwer_alignment_drift_segment_inspection.md`
+- The first narrow inspection on `HeavyOverlap` reports `inspection_pass = true` with `segment_count_delta = 0`; reconciliation and cpWER execution remain pending.
+
+Update: `meeteval_compatibility` now also has a cpWER alignment drift segment inspection bridge checklist.
+
+- Drift segment inspection bridge checklist: `results/tables/meeteval_cpwer_alignment_drift_segment_inspection_bridge_checklist.csv`
+- Summary view: `results/figures/meeteval_cpwer_alignment_drift_segment_inspection_bridge_checklist.md`
+- This connects the segment inspection to the segment handoff bridge checklist without claiming cpWER execution.
+
 Update: `meeteval_compatibility` now also has a cpWER bridge handoff.
 
 - cpWER bridge handoff: `results/tables/meeteval_cpwer_bridge_handoff.csv`

@@ -694,6 +694,24 @@ MeetEval cpWER alignment drift segment handoff:
 - `results/tables/meeteval_cpwer_alignment_drift_segment_handoff.csv`
 - The segment handoff targets `HeavyOverlap` inspection before any reconciliation or cpWER execution claim.
 
+MeetEval cpWER alignment drift segment handoff bridge checklist:
+
+- `results/figures/meeteval_cpwer_alignment_drift_segment_handoff_bridge_checklist.md`
+- `results/tables/meeteval_cpwer_alignment_drift_segment_handoff_bridge_checklist.csv`
+- This checklist connects the segment handoff to the segment scaffold bridge checklist while cpWER execution remains pending.
+
+MeetEval cpWER alignment drift segment inspection:
+
+- `results/figures/meeteval_cpwer_alignment_drift_segment_inspection.md`
+- `results/tables/meeteval_cpwer_alignment_drift_segment_inspection.csv`
+- The first narrow segment inspection on `HeavyOverlap` reports `inspection_pass = true` with `segment_count_delta = 0`; reconciliation and cpWER execution remain pending.
+
+MeetEval cpWER alignment drift segment inspection bridge checklist:
+
+- `results/figures/meeteval_cpwer_alignment_drift_segment_inspection_bridge_checklist.md`
+- `results/tables/meeteval_cpwer_alignment_drift_segment_inspection_bridge_checklist.csv`
+- This checklist connects the segment inspection to the segment handoff bridge checklist without claiming cpWER execution.
+
 MeetEval cpWER bridge handoff:
 
 - `results/figures/meeteval_cpwer_bridge_handoff.md`
@@ -1049,6 +1067,9 @@ python -m src.meeteval_cpwer_alignment_drift_handoff_bridge_checklist
 python -m src.meeteval_cpwer_alignment_drift_segment_scaffold
 python -m src.meeteval_cpwer_alignment_drift_segment_scaffold_bridge_checklist
 python -m src.meeteval_cpwer_alignment_drift_segment_handoff
+python -m src.meeteval_cpwer_alignment_drift_segment_handoff_bridge_checklist
+python -m src.meeteval_cpwer_alignment_drift_segment_inspection
+python -m src.meeteval_cpwer_alignment_drift_segment_inspection_bridge_checklist
 python -m src.external_validation_slice_scaffold
 python -m src.external_validation_license_gate
 python -m src.external_validation_license_gate_bridge_checklist
