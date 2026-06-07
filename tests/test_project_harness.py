@@ -11,6 +11,8 @@ from src.project_harness import (
     build_frontier_handoff_packet_rows,
     build_frontier_parallel_picklist_lines,
     build_frontier_parallel_picklist_rows,
+    build_frontier_parallel_picklist_checklist_lines,
+    build_frontier_parallel_picklist_checklist_rows,
     build_frontier_coordination_matrix_lines,
     build_frontier_coordination_matrix_rows,
     build_frontier_receipt_board_lines,
@@ -98,6 +100,47 @@ class ProjectHarnessTest(unittest.TestCase):
         self.assertIn("# Frontier Execution Queue", rendered)
         self.assertIn("meeteval_compatibility", rendered)
         self.assertIn("entry_artifact", rendered)
+
+    def test_build_frontier_parallel_picklist_checklist_rows_point_queue_head_to_pickup_step(self) -> None:
+        rows = build_frontier_parallel_picklist_checklist_rows(
+            [
+                {
+                    "queue_order": "1",
+                    "frontier_id": "meeteval_compatibility",
+                    "status": "documented_skill",
+                    "entry_artifact": "MeetEval readiness card",
+                    "why_now": "Use the readiness card to stage one narrow dry run before claiming any benchmark bridge.",
+                }
+            ]
+        )
+
+        self.assertEqual(len(rows), 1)
+        self.assertEqual(rows[0]["checklist_order"], "1")
+        self.assertEqual(rows[0]["current_frontier"], "meeteval_compatibility")
+        self.assertEqual(rows[0]["pickup_artifact"], "results/figures/meeteval_dry_run_handoff.md")
+        self.assertIn("parallel", rows[0]["checklist_goal"].lower())
+        self.assertIn("pickup artifact", rows[0]["parallelism_note"].lower())
+
+    def test_build_frontier_parallel_picklist_checklist_lines_render_queue(self) -> None:
+        lines = build_frontier_parallel_picklist_checklist_lines(
+            [
+                {
+                    "checklist_order": "1",
+                    "current_frontier": "meeteval_compatibility",
+                    "pickup_artifact": "results/figures/meeteval_dry_run_handoff.md",
+                    "receipt_target": "results/tables/meeteval_dry_run_receipt.json",
+                    "checklist_goal": "Pick up meeteval_compatibility in parallel only after confirming queue order.",
+                    "parallelism_note": "Check the queue head first, then open the pickup artifact before any parallel action.",
+                    "next_gate": "Complete the pickup artifact and keep the receipt target visible for writeback.",
+                }
+            ]
+        )
+        rendered = "\n".join(lines)
+
+        self.assertIn("# Frontier Parallel Picklist Checklist", rendered)
+        self.assertIn("meeteval_compatibility", rendered)
+        self.assertIn("meeteval_dry_run_handoff.md", rendered)
+        self.assertIn("pickup path", rendered)
 
     def test_build_frontier_focus_card_rows_pick_queue_head(self) -> None:
         rows = build_frontier_focus_card_rows(

@@ -256,6 +256,16 @@ FRONTIER_RECEIPT_CHECKLIST_COLUMNS = [
     "next_gate",
 ]
 
+FRONTIER_PICKLIST_CHECKLIST_COLUMNS = [
+    "checklist_order",
+    "current_frontier",
+    "pickup_artifact",
+    "receipt_target",
+    "checklist_goal",
+    "parallelism_note",
+    "next_gate",
+]
+
 
 def build_frontier_handoff_packet_rows(queue_rows: list[dict[str, str]]) -> list[dict[str, str]]:
     if not queue_rows:
@@ -426,6 +436,42 @@ def build_frontier_parallel_picklist_lines(rows: list[dict[str, str]]) -> list[s
     for row in rows:
         lines.append(
             f"| {row['queue_order']} | {row['current_frontier']} | {row['pickup_artifact']} | {row['receipt_target']} | {row['pickup_note']} | {row['picklist_scope']} |"
+        )
+    return lines
+
+
+def build_frontier_parallel_picklist_checklist_rows(queue_rows: list[dict[str, str]]) -> list[dict[str, str]]:
+    if not queue_rows:
+        return []
+
+    head = queue_rows[0]
+    frontier_id = str(head.get("frontier_id", ""))
+    pickup_artifact, receipt_target = frontier_next_artifact(frontier_id)
+    return [
+        {
+            "checklist_order": "1",
+            "current_frontier": frontier_id,
+            "pickup_artifact": pickup_artifact,
+            "receipt_target": receipt_target,
+            "checklist_goal": f"Pick up {frontier_id} in parallel only after confirming queue order.",
+            "parallelism_note": "Check the queue head first, then open the pickup artifact before any parallel action.",
+            "next_gate": "Complete the pickup artifact and keep the receipt target visible for writeback.",
+        }
+    ]
+
+
+def build_frontier_parallel_picklist_checklist_lines(rows: list[dict[str, str]]) -> list[str]:
+    lines = [
+        "# Frontier Parallel Picklist Checklist",
+        "",
+        "This generated checklist turns the parallel picklist into an ordered pickup path. It remains coordination-only and does not claim that any frontier work has already been executed.",
+        "",
+        "| checklist_order | current_frontier | pickup_artifact | receipt_target | checklist_goal | parallelism_note | next_gate |",
+        "| --- | --- | --- | --- | --- | --- | --- |",
+    ]
+    for row in rows:
+        lines.append(
+            f"| {row['checklist_order']} | {row['current_frontier']} | {row['pickup_artifact']} | {row['receipt_target']} | {row['checklist_goal']} | {row['parallelism_note']} | {row['next_gate']} |"
         )
     return lines
 
@@ -693,6 +739,26 @@ def write_frontier_receipt_checklist(frontier_status: list[dict[str, str]]) -> t
     return csv_path, json_path, md_path
 
 
+def write_frontier_parallel_picklist_checklist(frontier_status: list[dict[str, str]]) -> tuple[Path, Path, Path]:
+    tables_dir = PROJECT_ROOT / "results" / "tables"
+    figures_dir = PROJECT_ROOT / "results" / "figures"
+    tables_dir.mkdir(parents=True, exist_ok=True)
+    figures_dir.mkdir(parents=True, exist_ok=True)
+
+    queue_rows = build_frontier_execution_queue_rows(frontier_status)
+    checklist_rows = build_frontier_parallel_picklist_checklist_rows(queue_rows)
+    csv_path = tables_dir / "frontier_parallel_picklist_checklist.csv"
+    json_path = tables_dir / "frontier_parallel_picklist_checklist.json"
+    md_path = figures_dir / "frontier_parallel_picklist_checklist.md"
+    with csv_path.open("w", newline="", encoding="utf-8-sig") as f:
+        writer = csv.DictWriter(f, fieldnames=FRONTIER_PICKLIST_CHECKLIST_COLUMNS)
+        writer.writeheader()
+        writer.writerows(checklist_rows)
+    json_path.write_text(json.dumps(checklist_rows, ensure_ascii=False, indent=2), encoding="utf-8")
+    md_path.write_text("\n".join(build_frontier_parallel_picklist_checklist_lines(checklist_rows)) + "\n", encoding="utf-8")
+    return csv_path, json_path, md_path
+
+
 def write_frontier_receipt_map(frontier_status: list[dict[str, str]]) -> tuple[Path, Path]:
     tables_dir = PROJECT_ROOT / "results" / "tables"
     figures_dir = PROJECT_ROOT / "results" / "figures"
@@ -778,6 +844,7 @@ def main() -> None:
     receipt_checklist_csv_path, receipt_checklist_json_path, receipt_checklist_md_path = write_frontier_receipt_checklist(report["frontier_status"])
     receipt_map_json_path, receipt_map_md_path = write_frontier_receipt_map(report["frontier_status"])
     parallel_picklist_json_path, parallel_picklist_md_path = write_frontier_parallel_picklist(report["frontier_status"])
+    parallel_picklist_checklist_csv_path, parallel_picklist_checklist_json_path, parallel_picklist_checklist_md_path = write_frontier_parallel_picklist_checklist(report["frontier_status"])
     receipt_board_json_path, receipt_board_md_path = write_frontier_receipt_board(report["frontier_status"])
     coordination_matrix_json_path, coordination_matrix_md_path = write_frontier_coordination_matrix(report["frontier_status"])
     writeback_index_json_path, writeback_index_md_path = write_frontier_writeback_index(report["frontier_status"])
@@ -798,6 +865,9 @@ def main() -> None:
     print(f"Wrote frontier receipt map note: {receipt_map_md_path.relative_to(PROJECT_ROOT)}")
     print(f"Wrote frontier parallel picklist JSON: {parallel_picklist_json_path.relative_to(PROJECT_ROOT)}")
     print(f"Wrote frontier parallel picklist note: {parallel_picklist_md_path.relative_to(PROJECT_ROOT)}")
+    print(f"Wrote frontier parallel picklist checklist CSV: {parallel_picklist_checklist_csv_path.relative_to(PROJECT_ROOT)}")
+    print(f"Wrote frontier parallel picklist checklist JSON: {parallel_picklist_checklist_json_path.relative_to(PROJECT_ROOT)}")
+    print(f"Wrote frontier parallel picklist checklist note: {parallel_picklist_checklist_md_path.relative_to(PROJECT_ROOT)}")
     print(f"Wrote frontier receipt board JSON: {receipt_board_json_path.relative_to(PROJECT_ROOT)}")
     print(f"Wrote frontier receipt board note: {receipt_board_md_path.relative_to(PROJECT_ROOT)}")
     print(f"Wrote frontier coordination matrix JSON: {coordination_matrix_json_path.relative_to(PROJECT_ROOT)}")
