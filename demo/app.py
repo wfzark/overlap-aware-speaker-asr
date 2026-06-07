@@ -80,6 +80,11 @@ def render_frontier_fill_status() -> None:
     preflight_batch = load_json_list("results/tables/meeteval_cpwer_execution_preflight_batch.json")
     receipt_batch_scaffold = load_json_list("results/tables/meeteval_cpwer_execution_receipt_batch_scaffold.json")
     execution_status_batch = load_json_list("results/tables/meeteval_cpwer_execution_status_batch.json")
+    completion_summary = load_json_dict(
+        "results/tables/meeteval_cpwer_execution_status_batch_completion_summary.json"
+    )
+    batch_handoff = load_json_list("results/tables/meeteval_cpwer_execution_status_batch_handoff.json")
+    official_execution = load_json_list("results/tables/meeteval_cpwer_official_execution.json")
     if not summary:
         st.warning("Frontier fill queue summary not found.")
         return
@@ -133,6 +138,30 @@ def render_frontier_fill_status() -> None:
             1 for row in execution_status_batch if row.get("execution_chain_status") == "execution_chain_ready"
         )
         st.metric("MeetEval execution chain", f"{ready_count}/{len(execution_status_batch)} cases ready")
+    if completion_summary:
+        st.metric(
+            "Batch chain queue",
+            completion_summary.get("queue_status", "unknown"),
+        )
+    if batch_handoff:
+        first_ready = next(
+            (row for row in batch_handoff if row.get("handoff_status") == "execution_handoff_ready"),
+            None,
+        )
+        if first_ready:
+            st.caption(
+                f"Next official cpWER target: `{first_ready.get('case_id', '')}` "
+                f"({first_ready.get('hypothesis_source', '')})"
+            )
+    if official_execution:
+        st.markdown("**Official MeetEval cpWER narrow dry run**")
+        st.table(
+            {
+                "case_id": [row.get("case_id", "") for row in official_execution],
+                "status": [row.get("execution_status", "") for row in official_execution],
+                "official_cpwer": [row.get("official_cpwer", "—") or "—" for row in official_execution],
+            }
+        )
     if dashboard:
         st.markdown("**Fill execution dashboard**")
         st.write(dashboard.get("dashboard_note", ""))
