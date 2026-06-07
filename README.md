@@ -268,6 +268,11 @@ Current frontier focus card result:
 - `results/figures/frontier_focus_card.md` now compresses that queue into a one-glance current priority card
 - This card is still only a coordination artifact: it highlights the current queue head so the next contributor can start faster without reading the full queue first
 
+Current frontier focus checklist result:
+
+- `results/figures/frontier_focus_card_checklist.md` now turns that focus card into a one-glance verification checklist
+- This checklist remains coordination-only and keeps the current action visible without claiming that any frontier work has already been executed
+
 Current frontier handoff packet result:
 
 - `results/figures/frontier_handoff_packet.md` now points that current queue head directly at the next artifact to open

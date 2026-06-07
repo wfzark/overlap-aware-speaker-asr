@@ -427,6 +427,12 @@ Frontier focus card:
 - `results/tables/frontier_focus_card.json`
 - This card now turns the queue head into a one-glance starting point. It remains a coordination artifact rather than a new frontier result.
 
+Frontier focus checklist:
+
+- `results/figures/frontier_focus_card_checklist.md`
+- `results/tables/frontier_focus_card_checklist.csv`
+- This checklist now turns the focus card into a one-glance verification path. It remains coordination-only and keeps the current action visible without claiming that any frontier work has already been executed.
+
 Frontier handoff packet:
 
 - `results/figures/frontier_handoff_packet.md`
