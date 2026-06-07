@@ -1,13 +1,17 @@
 [
   {
-    "execution_status": "template_only",
+    "execution_status": "official_cpwer_narrow_dry_run_complete",
     "run_scope": "all_gold_cpwer_execution",
     "case_id": "NoOverlap",
     "hypothesis_source": "separated_whisper",
     "preflight_pass": "True",
     "expected_inputs": "results/tables/meeteval_reference_segments.jsonl; results/tables/meeteval_hypothesis_segments.jsonl; MeetEval cpWER tooling.",
     "expected_outputs": "Official cpWER score and evaluation note.",
-    "writeback_note": "Official MeetEval cpWER has not been executed yet; fill this receipt only after a real cpWER evaluation run."
+    "writeback_note": "Official MeetEval cpWER narrow dry run completed for NoOverlap; this remains experimental/frontier and is not a full benchmark claim. MeetEval scored length matches speaker count (no whitespace splits on Chinese); compare against cpwer_bridge_lite for content-level alignment.",
+    "official_cpwer": "4.0",
+    "cpwer_tool": "meeteval",
+    "cpwer_bridge_lite": "0.054312",
+    "result_label": "experimental/frontier"
   },
   {
     "execution_status": "template_only",

@@ -2,11 +2,11 @@
   {
     "case_id": "NoOverlap",
     "hypothesis_source": "separated_whisper",
-    "execution_status": "official_cpwer_tool_unavailable",
-    "official_cpwer": "",
-    "cpwer_tool": "unavailable",
+    "execution_status": "official_cpwer_narrow_dry_run_complete",
+    "official_cpwer": "4.0",
+    "cpwer_tool": "meeteval",
     "speaker_count": "2",
     "result_label": "experimental/frontier",
-    "execution_note": "MeetEval package not installed; run `pip install meeteval` before official cpWER execution."
+    "execution_note": "Official MeetEval cpWER narrow dry run completed for NoOverlap; this remains experimental/frontier and is not a full benchmark claim. MeetEval scored length matches speaker count (no whitespace splits on Chinese); compare against cpwer_bridge_lite for content-level alignment."
   }
 ]

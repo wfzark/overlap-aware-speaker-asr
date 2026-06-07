@@ -66,16 +66,6 @@ def build_speaker_text_lists(
     return reference_texts, hypothesis_texts
 
 
-def compute_official_cpwer(
-    cp_word_error_rate: Any,
-    reference_texts: list[str],
-    hypothesis_texts: list[str],
-) -> float:
-    result = cp_word_error_rate(reference=reference_texts, hypothesis=hypothesis_texts)
-    error_rate = getattr(result, "error_rate", result)
-    return round(float(error_rate), 6)
-
-
 def load_bridge_lite_score(case_id: str) -> str:
     path = PROJECT_ROOT / "results" / "tables" / "meeteval_cpwer_bridge.csv"
     if not path.exists():
@@ -105,12 +95,20 @@ def build_execution_row(
     official_cpwer: float | None,
     speaker_count: int,
     tool_available: bool,
+    scored_length: int | None = None,
 ) -> dict[str, str]:
     if official_cpwer is not None:
         execution_status = "official_cpwer_narrow_dry_run_complete"
+        tokenization_caveat = ""
+        if scored_length is not None and scored_length <= speaker_count:
+            tokenization_caveat = (
+                " MeetEval scored length matches speaker count (no whitespace splits on Chinese); "
+                "compare against cpwer_bridge_lite for content-level alignment."
+            )
         execution_note = (
             f"Official MeetEval cpWER narrow dry run completed for {case_id}; "
             "this remains experimental/frontier and is not a full benchmark claim."
+            f"{tokenization_caveat}"
         )
     elif not tool_available:
         execution_status = "official_cpwer_tool_unavailable"
@@ -144,6 +142,7 @@ def run_official_execution(case_id: str) -> dict[str, str]:
     hypothesis_source = load_hypothesis_source(case_id)
 
     official_cpwer: float | None = None
+    scored_length: int | None = None
     if tool_available and len(speakers) >= 2 and reference_segments and hypothesis_segments:
         reference_texts, hypothesis_texts = build_speaker_text_lists(
             reference_segments,
@@ -151,9 +150,18 @@ def run_official_execution(case_id: str) -> dict[str, str]:
             speakers,
         )
         if all(reference_texts) and all(hypothesis_texts):
-            official_cpwer = compute_official_cpwer(cp_word_error_rate, reference_texts, hypothesis_texts)
+            result = cp_word_error_rate(reference=reference_texts, hypothesis=hypothesis_texts)
+            official_cpwer = round(float(getattr(result, "error_rate", result)), 6)
+            scored_length = int(getattr(result, "length", 0) or 0)
 
-    return build_execution_row(case_id, hypothesis_source, official_cpwer, len(speakers), tool_available)
+    return build_execution_row(
+        case_id,
+        hypothesis_source,
+        official_cpwer,
+        len(speakers),
+        tool_available,
+        scored_length=scored_length,
+    )
 
 
 def build_execution_lines(rows: list[dict[str, str]]) -> list[str]:

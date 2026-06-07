@@ -1,2 +1,2 @@
 ﻿case_id,hypothesis_source,execution_status,official_cpwer,cpwer_tool,speaker_count,result_label,execution_note
-NoOverlap,separated_whisper,official_cpwer_tool_unavailable,,unavailable,2,experimental/frontier,MeetEval package not installed; run `pip install meeteval` before official cpWER execution.
+NoOverlap,separated_whisper,official_cpwer_narrow_dry_run_complete,4.0,meeteval,2,experimental/frontier,Official MeetEval cpWER narrow dry run completed for NoOverlap; this remains experimental/frontier and is not a full benchmark claim. MeetEval scored length matches speaker count (no whitespace splits on Chinese); compare against cpwer_bridge_lite for content-level alignment.
