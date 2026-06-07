@@ -303,6 +303,11 @@ Current frontier parallel picklist checklist result:
 - `results/figures/frontier_parallel_picklist_checklist.md` now turns the parallel picklist into an ordered pickup checklist
 - This checklist remains coordination-only and keeps the pickup artifact visible without claiming that any frontier step has already been executed
 
+Current frontier coordination matrix result:
+
+- `results/figures/frontier_coordination_matrix.md` now gives the breadth-first set a denser scan view
+- This remains coordination-only and keeps queue order, entry artifact, pickup artifact, and receipt target visible together for the next pass
+
 Current MeetEval compatibility result:
 
 - `results/figures/meeteval_compatibility_note.md` now provides a segment-level compatibility bridge across verified gold references and speaker-attributed hypotheses without claiming a finished cpWER evaluation
