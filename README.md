@@ -385,6 +385,12 @@ Current MeetEval dry run checklist result:
 - `results/figures/meeteval_dry_run_checklist.md` now turns the verified cases into an ordered dry-run checklist so the next contributor can pick a concrete case before touching the receipt slot
 - This remains pre-evaluation coordination: it ranks the raw separated case ahead of the cleaned-fallback cases and still does not claim that MeetEval or cpWER has been run
 
+Current MeetEval dry run diagnostic result:
+
+- `results/figures/meeteval_dry_run_diagnostic.md`
+- `results/tables/meeteval_dry_run_diagnostic.csv`
+- The first narrow diagnostic pass on `NoOverlap` validated the export path and updated the receipt to `diagnostic_complete` without claiming cpWER evaluation.
+
 Current speaker profile result:
 
 - `results/figures/speaker_profile_risk_summary.md` now provides a lightweight text-profile overlap report that compares direct vs swapped alignment and currently exposes a useful failure mode rather than a speaker-ID success claim

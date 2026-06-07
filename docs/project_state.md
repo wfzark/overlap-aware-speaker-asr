@@ -604,6 +604,12 @@ MeetEval dry run checklist bridge:
 - `results/tables/meeteval_dry_run_checklist.csv`
 - This bridge now orders the verified cases into a checklist for the first diagnostic dry run. It still does not claim any MeetEval or cpWER execution; it simply helps the next contributor pick the cleanest exported case first.
 
+MeetEval dry run diagnostic bridge:
+
+- `results/figures/meeteval_dry_run_diagnostic.md`
+- `results/tables/meeteval_dry_run_diagnostic.csv`
+- The first narrow diagnostic pass on `NoOverlap` validated the export path and updated the receipt to `diagnostic_complete` without claiming cpWER evaluation.
+
 Speaker profile similarity bridge:
 
 - `results/figures/speaker_profile_risk_summary.md`

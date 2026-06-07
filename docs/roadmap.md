@@ -211,6 +211,12 @@ Update: a generated MeetEval dry-run checklist now turns the first diagnostic ha
 - Summary view: `results/figures/meeteval_dry_run_checklist.md`
 - This keeps the compatibility bridge in the coordination lane: it ranks the verified cases for the first diagnostic dry run without claiming that MeetEval or cpWER has already been executed.
 
+Update: the first MeetEval dry-run diagnostic pass now exists.
+
+- Diagnostic table: `results/tables/meeteval_dry_run_diagnostic.csv`
+- Summary view: `results/figures/meeteval_dry_run_diagnostic.md`
+- The `NoOverlap` export path passed speaker and time-range checks; the receipt moved to `diagnostic_complete` while cpWER evaluation remains pending.
+
 Update: a generated llm critic review queue now turns the qualitative note into a first-pass triage order.
 
 - LLM critic review queue: `results/tables/llm_critic_review_queue.csv`
