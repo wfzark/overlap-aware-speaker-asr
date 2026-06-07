@@ -45,6 +45,16 @@ SLICE_RECEIPT_COLUMNS = [
     "writeback_note",
 ]
 
+CHECKLIST_COLUMNS = [
+    "dataset_name",
+    "label",
+    "checklist_order",
+    "preflight_step",
+    "expected_evidence",
+    "next_gate",
+    "validation_note",
+]
+
 
 def build_external_validation_candidate_rows() -> list[dict[str, str]]:
     return [
@@ -251,7 +261,54 @@ def build_external_validation_slice_receipt_lines(
     return lines
 
 
-def write_outputs(rows: list[dict[str, str]]) -> tuple[Path, Path, Path, Path, Path, Path, Path, Path, Path, Path, Path]:
+def build_external_validation_checklist_rows(
+    rows: list[dict[str, str]],
+) -> list[dict[str, str]]:
+    checklist_rows: list[dict[str, str]] = []
+    for index, row in enumerate(rows, start=1):
+        dataset_name = str(row.get("dataset_name", ""))
+        if dataset_name == "AISHELL-4":
+            validation_note = "Closest meeting-style target, so keep it at the front of the external sanity-check queue."
+        elif dataset_name == "AliMeeting":
+            validation_note = "Near-term backup if AISHELL-4 access or packaging is slower than expected."
+        elif dataset_name == "AMI":
+            validation_note = "Useful cross-domain reference, but keep the license check explicit before any slice is staged."
+        else:
+            validation_note = "Best reserved for overlap-heavy follow-up after one meeting-style path is already established."
+
+        checklist_rows.append(
+            {
+                "dataset_name": dataset_name,
+                "label": str(row.get("label", "")),
+                "checklist_order": str(index),
+                "preflight_step": str(row.get("next_action", "")),
+                "expected_evidence": "results/tables/external_validation_slice_receipt.json",
+                "next_gate": "Confirm license, then stage one tiny slice before any evaluation claim.",
+                "validation_note": validation_note,
+            }
+        )
+    return checklist_rows
+
+
+def build_external_validation_checklist_lines(
+    rows: list[dict[str, str]],
+) -> list[str]:
+    lines = [
+        "# External Validation Checklist",
+        "",
+        "This generated checklist orders the external sanity-check front end before any slice is staged. It does not claim that any external benchmark has already been run.",
+        "",
+        "| dataset_name | label | checklist_order | preflight_step | expected_evidence | next_gate | validation_note |",
+        "| --- | --- | ---: | --- | --- | --- | --- |",
+    ]
+    for row in rows:
+        lines.append(
+            f"| {row['dataset_name']} | {row['label']} | {row['checklist_order']} | {row['preflight_step']} | {row['expected_evidence']} | {row['next_gate']} | {row['validation_note']} |"
+        )
+    return lines
+
+
+def write_outputs(rows: list[dict[str, str]]) -> tuple[Path, Path, Path, Path, Path, Path, Path, Path, Path, Path, Path, Path, Path, Path]:
     tables_dir = PROJECT_ROOT / "results" / "tables"
     figures_dir = PROJECT_ROOT / "results" / "figures"
     tables_dir.mkdir(parents=True, exist_ok=True)
@@ -270,6 +327,10 @@ def write_outputs(rows: list[dict[str, str]]) -> tuple[Path, Path, Path, Path, P
     slice_receipt_rows = build_external_validation_slice_receipt_rows(slice_handoff_rows)
     slice_receipt_json_path = tables_dir / "external_validation_slice_receipt.json"
     slice_receipt_md_path = figures_dir / "external_validation_slice_receipt.md"
+    checklist_rows = build_external_validation_checklist_rows(prioritization_rows)
+    checklist_csv_path = tables_dir / "external_validation_checklist.csv"
+    checklist_json_path = tables_dir / "external_validation_checklist.json"
+    checklist_md_path = figures_dir / "external_validation_checklist.md"
     with csv_path.open("w", newline="", encoding="utf-8-sig") as f:
         writer = csv.DictWriter(f, fieldnames=CSV_COLUMNS)
         writer.writeheader()
@@ -299,6 +360,15 @@ def write_outputs(rows: list[dict[str, str]]) -> tuple[Path, Path, Path, Path, P
         "\n".join(build_external_validation_slice_receipt_lines(slice_receipt_rows)) + "\n",
         encoding="utf-8",
     )
+    with checklist_csv_path.open("w", newline="", encoding="utf-8-sig") as f:
+        writer = csv.DictWriter(f, fieldnames=CHECKLIST_COLUMNS)
+        writer.writeheader()
+        writer.writerows(checklist_rows)
+    checklist_json_path.write_text(json.dumps(checklist_rows, ensure_ascii=False, indent=2), encoding="utf-8")
+    checklist_md_path.write_text(
+        "\n".join(build_external_validation_checklist_lines(checklist_rows)) + "\n",
+        encoding="utf-8",
+    )
     return (
         csv_path,
         json_path,
@@ -311,6 +381,9 @@ def write_outputs(rows: list[dict[str, str]]) -> tuple[Path, Path, Path, Path, P
         slice_handoff_md_path,
         slice_receipt_json_path,
         slice_receipt_md_path,
+        checklist_csv_path,
+        checklist_json_path,
+        checklist_md_path,
     )
 
 
@@ -328,6 +401,9 @@ def main() -> None:
         slice_handoff_md_path,
         slice_receipt_json_path,
         slice_receipt_md_path,
+        checklist_csv_path,
+        checklist_json_path,
+        checklist_md_path,
     ) = write_outputs(rows)
     print(f"Wrote external validation candidates: {csv_path.relative_to(PROJECT_ROOT)}")
     print(f"Wrote external validation JSON: {json_path.relative_to(PROJECT_ROOT)}")
@@ -340,6 +416,9 @@ def main() -> None:
     print(f"Wrote external validation slice handoff note: {slice_handoff_md_path.relative_to(PROJECT_ROOT)}")
     print(f"Wrote external validation slice receipt JSON: {slice_receipt_json_path.relative_to(PROJECT_ROOT)}")
     print(f"Wrote external validation slice receipt note: {slice_receipt_md_path.relative_to(PROJECT_ROOT)}")
+    print(f"Wrote external validation checklist: {checklist_csv_path.relative_to(PROJECT_ROOT)}")
+    print(f"Wrote external validation checklist JSON: {checklist_json_path.relative_to(PROJECT_ROOT)}")
+    print(f"Wrote external validation checklist note: {checklist_md_path.relative_to(PROJECT_ROOT)}")
 
 
 if __name__ == "__main__":

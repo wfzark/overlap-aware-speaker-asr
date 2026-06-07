@@ -5,6 +5,8 @@ import unittest
 from src.external_validation_candidates import (
     build_external_validation_candidate_lines,
     build_external_validation_candidate_rows,
+    build_external_validation_checklist_lines,
+    build_external_validation_checklist_rows,
     build_external_validation_slice_handoff_lines,
     build_external_validation_slice_handoff_rows,
     build_external_validation_slice_receipt_lines,
@@ -165,6 +167,39 @@ class ExternalValidationCandidatesTest(unittest.TestCase):
         self.assertIn("template_only", rendered)
         self.assertIn("single_short_meeting_excerpt", rendered)
         self.assertIn("No external validation slice has been executed yet", rendered)
+
+    def test_build_external_validation_checklist_rows_order_preflight_steps(self) -> None:
+        rows = build_external_validation_checklist_rows(
+            build_external_validation_prioritization_rows(build_external_validation_candidate_rows())
+        )
+
+        by_name = {row["dataset_name"]: row for row in rows}
+
+        self.assertEqual(by_name["AISHELL-4"]["checklist_order"], "1")
+        self.assertEqual(by_name["AISHELL-4"]["expected_evidence"], "results/tables/external_validation_slice_receipt.json")
+        self.assertIn("license", by_name["AMI"]["next_gate"].lower())
+        self.assertIn("overlap", by_name["LibriCSS"]["validation_note"].lower())
+
+    def test_build_external_validation_checklist_lines_render_ordered_queue(self) -> None:
+        lines = build_external_validation_checklist_lines(
+            [
+                {
+                    "dataset_name": "AISHELL-4",
+                    "label": "external/sanity-check",
+                    "checklist_order": "1",
+                    "preflight_step": "Confirm license and choose a tiny sanity-check slice.",
+                    "expected_evidence": "results/tables/external_validation_slice_receipt.json",
+                    "next_gate": "Confirm license, then stage one tiny slice before any evaluation claim.",
+                    "validation_note": "Closest meeting-style target, so keep it at the front of the external sanity-check queue.",
+                }
+            ]
+        )
+        rendered = "\n".join(lines)
+
+        self.assertIn("# External Validation Checklist", rendered)
+        self.assertIn("AISHELL-4", rendered)
+        self.assertIn("external/sanity-check", rendered)
+        self.assertIn("results/tables/external_validation_slice_receipt.json", rendered)
 
 
 if __name__ == "__main__":
