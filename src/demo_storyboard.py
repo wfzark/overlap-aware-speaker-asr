@@ -1,10 +1,23 @@
 from __future__ import annotations
 
+import csv
 import json
 from pathlib import Path
 from typing import Any
 
 from .config import PROJECT_ROOT
+
+
+CHECKLIST_COLUMNS = [
+    "checklist_order",
+    "step_id",
+    "focus",
+    "artifact_anchor",
+    "checklist_goal",
+    "expected_evidence",
+    "preflight_step",
+    "next_gate",
+]
 
 
 def build_demo_walkthrough_receipt_rows(steps: list[dict[str, str]]) -> list[dict[str, str]]:
@@ -140,7 +153,43 @@ def build_demo_walkthrough_lines(steps: list[dict[str, str]]) -> list[str]:
     return lines
 
 
-def write_outputs(cards: list[dict[str, str]], steps: list[dict[str, str]]) -> tuple[Path, Path, Path, Path, Path, Path]:
+def build_demo_walkthrough_checklist_rows(steps: list[dict[str, str]]) -> list[dict[str, str]]:
+    checklist_rows: list[dict[str, str]] = []
+    for index, step in enumerate(steps, start=1):
+        focus = str(step.get("focus", ""))
+        artifact_anchor = str(step.get("artifact_anchor", ""))
+        checklist_rows.append(
+            {
+                "checklist_order": str(index),
+                "step_id": str(step.get("step_id", "")),
+                "focus": focus,
+                "artifact_anchor": artifact_anchor,
+                "checklist_goal": str(step.get("talk_track", "")),
+                "expected_evidence": "results/tables/demo_walkthrough_receipt.json",
+                "preflight_step": f"Open {artifact_anchor} before presenting the {focus.lower()} step.",
+                "next_gate": "Fill the walkthrough receipt after the first presentation run.",
+            }
+        )
+    return checklist_rows
+
+
+def build_demo_walkthrough_checklist_lines(rows: list[dict[str, str]]) -> list[str]:
+    lines = [
+        "# Demo Walkthrough Checklist",
+        "",
+        "This generated checklist orders the demo walkthrough into a presentation-ready execution path. It remains a coordination artifact and does not claim a completed live demo or recording.",
+        "",
+        "| checklist_order | step_id | focus | artifact_anchor | checklist_goal | expected_evidence | preflight_step | next_gate |",
+        "| --- | --- | --- | --- | --- | --- | --- | --- |",
+    ]
+    for row in rows:
+        lines.append(
+            f"| {row['checklist_order']} | {row['step_id']} | {row['focus']} | {row['artifact_anchor']} | {row['checklist_goal']} | {row['expected_evidence']} | {row['preflight_step']} | {row['next_gate']} |"
+        )
+    return lines
+
+
+def write_outputs(cards: list[dict[str, str]], steps: list[dict[str, str]]) -> tuple[Path, Path, Path, Path, Path, Path, Path, Path, Path]:
     tables_dir = PROJECT_ROOT / "results" / "tables"
     figures_dir = PROJECT_ROOT / "results" / "figures"
     tables_dir.mkdir(parents=True, exist_ok=True)
@@ -151,6 +200,10 @@ def write_outputs(cards: list[dict[str, str]], steps: list[dict[str, str]]) -> t
     walkthrough_md_path = figures_dir / "demo_walkthrough.md"
     walkthrough_receipt_json_path = tables_dir / "demo_walkthrough_receipt.json"
     walkthrough_receipt_md_path = figures_dir / "demo_walkthrough_receipt.md"
+    walkthrough_checklist_rows = build_demo_walkthrough_checklist_rows(steps)
+    walkthrough_checklist_csv_path = tables_dir / "demo_walkthrough_checklist.csv"
+    walkthrough_checklist_json_path = tables_dir / "demo_walkthrough_checklist.json"
+    walkthrough_checklist_md_path = figures_dir / "demo_walkthrough_checklist.md"
     json_path.write_text(json.dumps(cards, ensure_ascii=False, indent=2), encoding="utf-8")
     md_path.write_text("\n".join(build_demo_storyboard_lines(cards)) + "\n", encoding="utf-8")
     walkthrough_json_path.write_text(json.dumps(steps, ensure_ascii=False, indent=2), encoding="utf-8")
@@ -161,7 +214,26 @@ def write_outputs(cards: list[dict[str, str]], steps: list[dict[str, str]]) -> t
         "\n".join(build_demo_walkthrough_receipt_lines(walkthrough_receipt_rows)) + "\n",
         encoding="utf-8",
     )
-    return json_path, md_path, walkthrough_json_path, walkthrough_md_path, walkthrough_receipt_json_path, walkthrough_receipt_md_path
+    with walkthrough_checklist_csv_path.open("w", newline="", encoding="utf-8-sig") as f:
+        writer = csv.DictWriter(f, fieldnames=CHECKLIST_COLUMNS)
+        writer.writeheader()
+        writer.writerows(walkthrough_checklist_rows)
+    walkthrough_checklist_json_path.write_text(json.dumps(walkthrough_checklist_rows, ensure_ascii=False, indent=2), encoding="utf-8")
+    walkthrough_checklist_md_path.write_text(
+        "\n".join(build_demo_walkthrough_checklist_lines(walkthrough_checklist_rows)) + "\n",
+        encoding="utf-8",
+    )
+    return (
+        json_path,
+        md_path,
+        walkthrough_json_path,
+        walkthrough_md_path,
+        walkthrough_receipt_json_path,
+        walkthrough_receipt_md_path,
+        walkthrough_checklist_csv_path,
+        walkthrough_checklist_json_path,
+        walkthrough_checklist_md_path,
+    )
 
 
 def main() -> None:
@@ -180,6 +252,9 @@ def main() -> None:
         walkthrough_md_path,
         walkthrough_receipt_json_path,
         walkthrough_receipt_md_path,
+        walkthrough_checklist_csv_path,
+        walkthrough_checklist_json_path,
+        walkthrough_checklist_md_path,
     ) = write_outputs(cards, steps)
     print(f"Wrote demo storyboard cards: {json_path.relative_to(PROJECT_ROOT)}")
     print(f"Wrote demo storyboard note: {md_path.relative_to(PROJECT_ROOT)}")
@@ -187,6 +262,9 @@ def main() -> None:
     print(f"Wrote demo walkthrough note: {walkthrough_md_path.relative_to(PROJECT_ROOT)}")
     print(f"Wrote demo walkthrough receipt JSON: {walkthrough_receipt_json_path.relative_to(PROJECT_ROOT)}")
     print(f"Wrote demo walkthrough receipt note: {walkthrough_receipt_md_path.relative_to(PROJECT_ROOT)}")
+    print(f"Wrote demo walkthrough checklist CSV: {walkthrough_checklist_csv_path.relative_to(PROJECT_ROOT)}")
+    print(f"Wrote demo walkthrough checklist JSON: {walkthrough_checklist_json_path.relative_to(PROJECT_ROOT)}")
+    print(f"Wrote demo walkthrough checklist note: {walkthrough_checklist_md_path.relative_to(PROJECT_ROOT)}")
 
 
 if __name__ == "__main__":

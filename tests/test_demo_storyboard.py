@@ -5,6 +5,8 @@ import unittest
 from src.demo_storyboard import (
     build_demo_storyboard_cards,
     build_demo_storyboard_lines,
+    build_demo_walkthrough_checklist_lines,
+    build_demo_walkthrough_checklist_rows,
     build_demo_walkthrough_receipt_lines,
     build_demo_walkthrough_receipt_rows,
     build_demo_walkthrough_lines,
@@ -116,6 +118,53 @@ class DemoStoryboardTest(unittest.TestCase):
         self.assertIn("template_only", rendered)
         self.assertIn("step_1_problem_framing", rendered)
         self.assertIn("has been executed yet", rendered)
+
+    def test_build_demo_walkthrough_checklist_rows_order_execution_path(self) -> None:
+        rows = build_demo_walkthrough_checklist_rows(
+            [
+                {
+                    "step_id": "1",
+                    "focus": "Problem framing",
+                    "talk_track": "Start by explaining why overlap does not always justify separation.",
+                    "artifact_anchor": "README.md",
+                },
+                {
+                    "step_id": "2",
+                    "focus": "Baseline evidence",
+                    "talk_track": "Show the gold benchmark evidence and highlight the selected-route tradeoff.",
+                    "artifact_anchor": "REPORT.md",
+                },
+            ]
+        )
+
+        self.assertEqual(rows[0]["checklist_order"], "1")
+        self.assertEqual(rows[0]["step_id"], "1")
+        self.assertIn("open readme.md", rows[0]["preflight_step"].lower())
+        self.assertIn("receipt", rows[0]["expected_evidence"])
+        self.assertEqual(rows[1]["checklist_order"], "2")
+        self.assertIn("REPORT.md", rows[1]["artifact_anchor"])
+
+    def test_build_demo_walkthrough_checklist_lines_render_ordered_script(self) -> None:
+        lines = build_demo_walkthrough_checklist_lines(
+            [
+                {
+                    "checklist_order": "1",
+                    "step_id": "1",
+                    "focus": "Problem framing",
+                    "artifact_anchor": "README.md",
+                    "checklist_goal": "Start by explaining why overlap does not always justify separation.",
+                    "expected_evidence": "results/tables/demo_walkthrough_receipt.json",
+                    "preflight_step": "Open README.md before presenting the problem framing step.",
+                    "next_gate": "Fill the walkthrough receipt after the first presentation run.",
+                }
+            ]
+        )
+        rendered = "\n".join(lines)
+
+        self.assertIn("# Demo Walkthrough Checklist", rendered)
+        self.assertIn("README.md", rendered)
+        self.assertIn("presentation-ready execution path", rendered)
+        self.assertIn("results/tables/demo_walkthrough_receipt.json", rendered)
 
 
 if __name__ == "__main__":
