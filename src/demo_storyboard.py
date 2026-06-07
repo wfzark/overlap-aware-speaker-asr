@@ -29,6 +29,16 @@ BRIDGE_CHECKLIST_COLUMNS = [
     "next_gate",
 ]
 
+STORYBOARD_BRIDGE_CHECKLIST_COLUMNS = [
+    "checklist_order",
+    "story_card",
+    "prerequisite_artifact",
+    "receipt_target",
+    "checklist_goal",
+    "bridge_note",
+    "next_gate",
+]
+
 
 def build_demo_walkthrough_receipt_rows(steps: list[dict[str, str]]) -> list[dict[str, str]]:
     if not steps:
@@ -153,6 +163,44 @@ def build_demo_storyboard_lines(cards: list[dict[str, str]]) -> list[str]:
     return lines
 
 
+def build_demo_storyboard_bridge_checklist_rows(
+    cards: list[dict[str, str]],
+    steps: list[dict[str, str]],
+) -> list[dict[str, str]]:
+    if not cards or not steps:
+        return []
+
+    head_card = cards[0]
+    head_step = steps[0]
+    return [
+        {
+            "checklist_order": "1",
+            "story_card": str(head_card.get("title", "")),
+            "prerequisite_artifact": "results/figures/demo_storyboard.md",
+            "receipt_target": "results/figures/demo_walkthrough.md",
+            "checklist_goal": f"Verify the storyboard bridge before the {str(head_step.get('step_id', ''))} walkthrough step is advanced.",
+            "bridge_note": f"Use the {str(head_card.get('title', 'story'))} card to justify opening the {str(head_step.get('focus', '')).lower()} walkthrough step.",
+            "next_gate": "Confirm this bridge before opening the walkthrough artifact.",
+        }
+    ]
+
+
+def build_demo_storyboard_bridge_checklist_lines(rows: list[dict[str, str]]) -> list[str]:
+    lines = [
+        "# Demo Storyboard Bridge Checklist",
+        "",
+        "This generated checklist turns the storyboard into a row-by-row bridge verification path. It remains demo support only and does not claim a completed live demo or recording.",
+        "",
+        "| checklist_order | story_card | prerequisite_artifact | receipt_target | checklist_goal | bridge_note | next_gate |",
+        "| --- | --- | --- | --- | --- | --- | --- |",
+    ]
+    for row in rows:
+        lines.append(
+            f"| {row['checklist_order']} | {row['story_card']} | {row['prerequisite_artifact']} | {row['receipt_target']} | {row['checklist_goal']} | {row['bridge_note']} | {row['next_gate']} |"
+        )
+    return lines
+
+
 def build_demo_walkthrough_steps(summary: dict[str, str]) -> list[dict[str, str]]:
     return [
         {
@@ -243,7 +291,7 @@ def build_demo_walkthrough_checklist_lines(rows: list[dict[str, str]]) -> list[s
 def write_outputs(
     cards: list[dict[str, str]],
     steps: list[dict[str, str]],
-) -> tuple[Path, Path, Path, Path, Path, Path, Path, Path, Path, Path, Path, Path]:
+) -> tuple[Path, Path, Path, Path, Path, Path, Path, Path, Path, Path, Path, Path, Path, Path, Path]:
     tables_dir = PROJECT_ROOT / "results" / "tables"
     figures_dir = PROJECT_ROOT / "results" / "figures"
     tables_dir.mkdir(parents=True, exist_ok=True)
@@ -252,6 +300,10 @@ def write_outputs(
     md_path = figures_dir / "demo_storyboard.md"
     walkthrough_json_path = tables_dir / "demo_walkthrough_steps.json"
     walkthrough_md_path = figures_dir / "demo_walkthrough.md"
+    storyboard_bridge_checklist_rows = build_demo_storyboard_bridge_checklist_rows(cards, steps)
+    storyboard_bridge_checklist_csv_path = tables_dir / "demo_storyboard_bridge_checklist.csv"
+    storyboard_bridge_checklist_json_path = tables_dir / "demo_storyboard_bridge_checklist.json"
+    storyboard_bridge_checklist_md_path = figures_dir / "demo_storyboard_bridge_checklist.md"
     walkthrough_receipt_json_path = tables_dir / "demo_walkthrough_receipt.json"
     walkthrough_receipt_md_path = figures_dir / "demo_walkthrough_receipt.md"
     walkthrough_checklist_rows = build_demo_walkthrough_checklist_rows(steps)
@@ -267,6 +319,18 @@ def write_outputs(
     walkthrough_bridge_checklist_md_path = figures_dir / "demo_walkthrough_bridge_checklist.md"
     json_path.write_text(json.dumps(cards, ensure_ascii=False, indent=2), encoding="utf-8")
     md_path.write_text("\n".join(build_demo_storyboard_lines(cards)) + "\n", encoding="utf-8")
+    with storyboard_bridge_checklist_csv_path.open("w", newline="", encoding="utf-8-sig") as f:
+        writer = csv.DictWriter(f, fieldnames=STORYBOARD_BRIDGE_CHECKLIST_COLUMNS)
+        writer.writeheader()
+        writer.writerows(storyboard_bridge_checklist_rows)
+    storyboard_bridge_checklist_json_path.write_text(
+        json.dumps(storyboard_bridge_checklist_rows, ensure_ascii=False, indent=2),
+        encoding="utf-8",
+    )
+    storyboard_bridge_checklist_md_path.write_text(
+        "\n".join(build_demo_storyboard_bridge_checklist_lines(storyboard_bridge_checklist_rows)) + "\n",
+        encoding="utf-8",
+    )
     walkthrough_json_path.write_text(json.dumps(steps, ensure_ascii=False, indent=2), encoding="utf-8")
     walkthrough_md_path.write_text("\n".join(build_demo_walkthrough_lines(steps)) + "\n", encoding="utf-8")
     walkthrough_receipt_rows = build_demo_walkthrough_receipt_rows(steps)
@@ -299,6 +363,9 @@ def write_outputs(
     return (
         json_path,
         md_path,
+        storyboard_bridge_checklist_csv_path,
+        storyboard_bridge_checklist_json_path,
+        storyboard_bridge_checklist_md_path,
         walkthrough_json_path,
         walkthrough_md_path,
         walkthrough_receipt_json_path,
@@ -324,6 +391,9 @@ def main() -> None:
     (
         json_path,
         md_path,
+        storyboard_bridge_checklist_csv_path,
+        storyboard_bridge_checklist_json_path,
+        storyboard_bridge_checklist_md_path,
         walkthrough_json_path,
         walkthrough_md_path,
         walkthrough_receipt_json_path,
@@ -337,6 +407,9 @@ def main() -> None:
     ) = write_outputs(cards, steps)
     print(f"Wrote demo storyboard cards: {json_path.relative_to(PROJECT_ROOT)}")
     print(f"Wrote demo storyboard note: {md_path.relative_to(PROJECT_ROOT)}")
+    print(f"Wrote demo storyboard bridge checklist CSV: {storyboard_bridge_checklist_csv_path.relative_to(PROJECT_ROOT)}")
+    print(f"Wrote demo storyboard bridge checklist JSON: {storyboard_bridge_checklist_json_path.relative_to(PROJECT_ROOT)}")
+    print(f"Wrote demo storyboard bridge checklist note: {storyboard_bridge_checklist_md_path.relative_to(PROJECT_ROOT)}")
     print(f"Wrote demo walkthrough steps: {walkthrough_json_path.relative_to(PROJECT_ROOT)}")
     print(f"Wrote demo walkthrough note: {walkthrough_md_path.relative_to(PROJECT_ROOT)}")
     print(f"Wrote demo walkthrough receipt JSON: {walkthrough_receipt_json_path.relative_to(PROJECT_ROOT)}")

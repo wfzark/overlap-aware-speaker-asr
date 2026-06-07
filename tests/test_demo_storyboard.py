@@ -5,6 +5,8 @@ import unittest
 from src.demo_storyboard import (
     build_demo_storyboard_cards,
     build_demo_storyboard_lines,
+    build_demo_storyboard_bridge_checklist_lines,
+    build_demo_storyboard_bridge_checklist_rows,
     build_demo_walkthrough_bridge_checklist_lines,
     build_demo_walkthrough_bridge_checklist_rows,
     build_demo_walkthrough_checklist_lines,
@@ -50,6 +52,50 @@ class DemoStoryboardTest(unittest.TestCase):
         self.assertIn("Problem", rendered)
         self.assertIn("router_v2", rendered)
         self.assertIn("critic bridges now exist", rendered)
+
+    def test_build_demo_storyboard_bridge_checklist_rows_link_story_to_walkthrough(self) -> None:
+        rows = build_demo_storyboard_bridge_checklist_rows(
+            [
+                {"title": "Problem", "body": "Overlap-aware ASR should separate selectively."},
+                {"title": "Pipeline", "body": "Mixed ASR, separated ASR, routing, and evaluation compose the main flow."},
+            ],
+            [
+                {
+                    "step_id": "1",
+                    "focus": "Problem framing",
+                    "talk_track": "Start by explaining why overlap does not always justify separation.",
+                    "artifact_anchor": "README.md",
+                }
+            ],
+        )
+
+        self.assertEqual(len(rows), 1)
+        self.assertEqual(rows[0]["checklist_order"], "1")
+        self.assertEqual(rows[0]["story_card"], "Problem")
+        self.assertEqual(rows[0]["prerequisite_artifact"], "results/figures/demo_storyboard.md")
+        self.assertEqual(rows[0]["receipt_target"], "results/figures/demo_walkthrough.md")
+        self.assertIn("bridge", rows[0]["checklist_goal"].lower())
+
+    def test_build_demo_storyboard_bridge_checklist_lines_render_bridge(self) -> None:
+        lines = build_demo_storyboard_bridge_checklist_lines(
+            [
+                {
+                    "checklist_order": "1",
+                    "story_card": "Problem",
+                    "prerequisite_artifact": "results/figures/demo_storyboard.md",
+                    "receipt_target": "results/figures/demo_walkthrough.md",
+                    "checklist_goal": "Verify the storyboard bridge before the 1 walkthrough step is advanced.",
+                    "bridge_note": "Use the Problem card to justify opening the problem framing walkthrough step.",
+                    "next_gate": "Confirm this bridge before opening the walkthrough artifact.",
+                }
+            ]
+        )
+        rendered = "\n".join(lines)
+
+        self.assertIn("# Demo Storyboard Bridge Checklist", rendered)
+        self.assertIn("results/figures/demo_storyboard.md", rendered)
+        self.assertIn("results/figures/demo_walkthrough.md", rendered)
+        self.assertIn("demo support only", rendered)
 
     def test_build_demo_walkthrough_steps_cover_short_demo_flow(self) -> None:
         steps = build_demo_walkthrough_steps(
