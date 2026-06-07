@@ -1,0 +1,62 @@
+[
+  {
+    "case_id": "NoOverlap",
+    "hypothesis_source": "separated_whisper",
+    "execution_status": "character_level_cpwer_narrow_dry_run_complete",
+    "official_cpwer": "0.053957",
+    "cpwer_tool": "meeteval",
+    "speaker_count": "2",
+    "result_label": "experimental/frontier",
+    "execution_note": "Character-spaced MeetEval cpWER narrow dry run completed for NoOverlap; this remains experimental/frontier and uses space-separated CJK characters to align with bridge-lite character-level scoring.",
+    "tokenization_mode": "character_spaced",
+    "official_cpwer_raw": "4.0"
+  },
+  {
+    "case_id": "LightOverlap",
+    "hypothesis_source": "separated_whisper_cleaned",
+    "execution_status": "character_level_cpwer_narrow_dry_run_complete",
+    "official_cpwer": "0.135714",
+    "cpwer_tool": "meeteval",
+    "speaker_count": "2",
+    "result_label": "experimental/frontier",
+    "execution_note": "Character-spaced MeetEval cpWER narrow dry run completed for LightOverlap; this remains experimental/frontier and uses space-separated CJK characters to align with bridge-lite character-level scoring.",
+    "tokenization_mode": "character_spaced",
+    "official_cpwer_raw": "4.0"
+  },
+  {
+    "case_id": "MidOverlap",
+    "hypothesis_source": "separated_whisper_cleaned",
+    "execution_status": "character_level_cpwer_narrow_dry_run_complete",
+    "official_cpwer": "0.168421",
+    "cpwer_tool": "meeteval",
+    "speaker_count": "2",
+    "result_label": "experimental/frontier",
+    "execution_note": "Character-spaced MeetEval cpWER narrow dry run completed for MidOverlap; this remains experimental/frontier and uses space-separated CJK characters to align with bridge-lite character-level scoring.",
+    "tokenization_mode": "character_spaced",
+    "official_cpwer_raw": "4.0"
+  },
+  {
+    "case_id": "HeavyOverlap",
+    "hypothesis_source": "separated_whisper_cleaned",
+    "execution_status": "character_level_cpwer_narrow_dry_run_complete",
+    "official_cpwer": "0.163121",
+    "cpwer_tool": "meeteval",
+    "speaker_count": "2",
+    "result_label": "experimental/frontier",
+    "execution_note": "Character-spaced MeetEval cpWER narrow dry run completed for HeavyOverlap; this remains experimental/frontier and uses space-separated CJK characters to align with bridge-lite character-level scoring.",
+    "tokenization_mode": "character_spaced",
+    "official_cpwer_raw": "3.5"
+  },
+  {
+    "case_id": "OppositeOverlap",
+    "hypothesis_source": "separated_whisper_cleaned",
+    "execution_status": "character_level_cpwer_narrow_dry_run_complete",
+    "official_cpwer": "0.083333",
+    "cpwer_tool": "meeteval",
+    "speaker_count": "2",
+    "result_label": "experimental/frontier",
+    "execution_note": "Character-spaced MeetEval cpWER narrow dry run completed for OppositeOverlap; this remains experimental/frontier and uses space-separated CJK characters to align with bridge-lite character-level scoring.",
+    "tokenization_mode": "character_spaced",
+    "official_cpwer_raw": "3.5"
+  }
+]
