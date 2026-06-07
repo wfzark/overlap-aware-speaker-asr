@@ -9,6 +9,8 @@ from src.speaker_profile_similarity import (
     build_speaker_profile_checklist_rows,
     build_speaker_profile_method_handoff_lines,
     build_speaker_profile_method_handoff_rows,
+    build_speaker_profile_method_bridge_checklist_lines,
+    build_speaker_profile_method_bridge_checklist_rows,
     build_speaker_profile_method_receipt_lines,
     build_speaker_profile_method_receipt_rows,
     build_speaker_profile_summary_lines,
@@ -191,6 +193,47 @@ class SpeakerProfileSimilarityTest(unittest.TestCase):
         self.assertIn("triage", rows[0]["expected_inputs"].lower())
         self.assertIn("diagnostic", rows[0]["expected_outputs"].lower())
         self.assertIn("has been executed", rows[0]["writeback_note"].lower())
+
+    def test_build_speaker_profile_method_bridge_checklist_rows_link_handoff_to_receipt(self) -> None:
+        rows = build_speaker_profile_method_bridge_checklist_rows(
+            [
+                {
+                    "dominant_pattern": "swapped_bias",
+                    "first_method_direction": "embedding_or_voiceprint_baseline",
+                    "method_goal": "Test a stronger profile method before any attribution claim.",
+                    "expected_evidence": "results/tables/speaker_profile_method_receipt.json",
+                    "handoff_note": "Current signal is diagnostic only, not speaker-ID success.",
+                }
+            ]
+        )
+
+        self.assertEqual(len(rows), 1)
+        self.assertEqual(rows[0]["checklist_order"], "1")
+        self.assertEqual(rows[0]["dominant_pattern"], "swapped_bias")
+        self.assertEqual(rows[0]["prerequisite_artifact"], "results/figures/speaker_profile_method_handoff.md")
+        self.assertEqual(rows[0]["receipt_target"], "results/figures/speaker_profile_method_receipt.md")
+        self.assertIn("bridge", rows[0]["checklist_goal"].lower())
+
+    def test_build_speaker_profile_method_bridge_checklist_lines_render_bridge(self) -> None:
+        lines = build_speaker_profile_method_bridge_checklist_lines(
+            [
+                {
+                    "checklist_order": "1",
+                    "dominant_pattern": "swapped_bias",
+                    "prerequisite_artifact": "results/figures/speaker_profile_method_handoff.md",
+                    "receipt_target": "results/figures/speaker_profile_method_receipt.md",
+                    "checklist_goal": "Verify the stronger speaker-profile method bridge before any attribution claim is advanced.",
+                    "bridge_note": "Open the method handoff first, then write back through the receipt target for swapped_bias.",
+                    "next_gate": "Confirm this bridge before opening the method receipt target.",
+                }
+            ]
+        )
+        rendered = "\n".join(lines)
+
+        self.assertIn("# Speaker Profile Method Bridge Checklist", rendered)
+        self.assertIn("swapped_bias", rendered)
+        self.assertIn("speaker_profile_method_handoff.md", rendered)
+        self.assertIn("speaker_profile_method_receipt.md", rendered)
 
     def test_build_speaker_profile_checklist_rows_order_next_steps(self) -> None:
         rows = build_speaker_profile_checklist_rows(

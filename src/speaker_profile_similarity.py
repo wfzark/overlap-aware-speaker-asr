@@ -46,6 +46,16 @@ METHOD_RECEIPT_COLUMNS = [
     "writeback_note",
 ]
 
+METHOD_BRIDGE_CHECKLIST_COLUMNS = [
+    "checklist_order",
+    "dominant_pattern",
+    "prerequisite_artifact",
+    "receipt_target",
+    "checklist_goal",
+    "bridge_note",
+    "next_gate",
+]
+
 CHECKLIST_COLUMNS = [
     "checklist_order",
     "dominant_pattern",
@@ -297,6 +307,41 @@ def build_speaker_profile_method_receipt_lines(rows: list[dict[str, str]]) -> li
     return lines
 
 
+def build_speaker_profile_method_bridge_checklist_rows(rows: list[dict[str, str]]) -> list[dict[str, str]]:
+    if not rows:
+        return []
+
+    handoff = rows[0]
+    dominant_pattern = str(handoff.get("dominant_pattern", ""))
+    return [
+        {
+            "checklist_order": "1",
+            "dominant_pattern": dominant_pattern,
+            "prerequisite_artifact": "results/figures/speaker_profile_method_handoff.md",
+            "receipt_target": "results/figures/speaker_profile_method_receipt.md",
+            "checklist_goal": "Verify the stronger speaker-profile method bridge before any attribution claim is advanced.",
+            "bridge_note": f"Open the method handoff first, then write back through the receipt target for {dominant_pattern}.",
+            "next_gate": "Confirm this bridge before opening the method receipt target.",
+        }
+    ]
+
+
+def build_speaker_profile_method_bridge_checklist_lines(rows: list[dict[str, str]]) -> list[str]:
+    lines = [
+        "# Speaker Profile Method Bridge Checklist",
+        "",
+        "This generated checklist turns the method handoff into a row-by-row bridge verification path. It remains coordination-only and does not claim that any stronger speaker-profile method has already been executed.",
+        "",
+        "| checklist_order | dominant_pattern | prerequisite_artifact | receipt_target | checklist_goal | bridge_note | next_gate |",
+        "| --- | --- | --- | --- | --- | --- | --- |",
+    ]
+    for row in rows:
+        lines.append(
+            f"| {row['checklist_order']} | {row['dominant_pattern']} | {row['prerequisite_artifact']} | {row['receipt_target']} | {row['checklist_goal']} | {row['bridge_note']} | {row['next_gate']} |"
+        )
+    return lines
+
+
 def load_snippet_rows(prefix: str) -> list[dict[str, Any]]:
     rows: list[dict[str, Any]] = []
     for path in sorted((PROJECT_ROOT / "results" / "snippet_transcripts").glob(f"{prefix}_*_whisper.json")):
@@ -350,6 +395,10 @@ def write_outputs(rows: list[dict[str, Any]]) -> tuple[Path, Path, Path, Path, P
     method_receipt_rows = build_speaker_profile_method_receipt_rows(method_handoff_rows)
     method_receipt_json_path = tables_dir / "speaker_profile_method_receipt.json"
     method_receipt_md_path = figures_dir / "speaker_profile_method_receipt.md"
+    method_bridge_checklist_rows = build_speaker_profile_method_bridge_checklist_rows(method_handoff_rows)
+    method_bridge_checklist_csv_path = tables_dir / "speaker_profile_method_bridge_checklist.csv"
+    method_bridge_checklist_json_path = tables_dir / "speaker_profile_method_bridge_checklist.json"
+    method_bridge_checklist_md_path = figures_dir / "speaker_profile_method_bridge_checklist.md"
     checklist_rows = build_speaker_profile_checklist_rows(method_handoff_rows)
     checklist_csv_path = tables_dir / "speaker_profile_checklist.csv"
     checklist_json_path = tables_dir / "speaker_profile_checklist.json"
@@ -380,6 +429,18 @@ def write_outputs(rows: list[dict[str, Any]]) -> tuple[Path, Path, Path, Path, P
         "\n".join(build_speaker_profile_method_receipt_lines(method_receipt_rows)) + "\n",
         encoding="utf-8",
     )
+    with method_bridge_checklist_csv_path.open("w", newline="", encoding="utf-8-sig") as f:
+        writer = csv.DictWriter(f, fieldnames=METHOD_BRIDGE_CHECKLIST_COLUMNS)
+        writer.writeheader()
+        writer.writerows(method_bridge_checklist_rows)
+    method_bridge_checklist_json_path.write_text(
+        json.dumps(method_bridge_checklist_rows, ensure_ascii=False, indent=2),
+        encoding="utf-8",
+    )
+    method_bridge_checklist_md_path.write_text(
+        "\n".join(build_speaker_profile_method_bridge_checklist_lines(method_bridge_checklist_rows)) + "\n",
+        encoding="utf-8",
+    )
     with checklist_csv_path.open("w", newline="", encoding="utf-8-sig") as f:
         writer = csv.DictWriter(f, fieldnames=CHECKLIST_COLUMNS)
         writer.writeheader()
@@ -401,6 +462,9 @@ def write_outputs(rows: list[dict[str, Any]]) -> tuple[Path, Path, Path, Path, P
         method_handoff_md_path,
         method_receipt_json_path,
         method_receipt_md_path,
+        method_bridge_checklist_csv_path,
+        method_bridge_checklist_json_path,
+        method_bridge_checklist_md_path,
         checklist_csv_path,
         checklist_json_path,
         checklist_md_path,
@@ -428,6 +492,9 @@ def main() -> None:
         method_handoff_md_path,
         method_receipt_json_path,
         method_receipt_md_path,
+        method_bridge_checklist_csv_path,
+        method_bridge_checklist_json_path,
+        method_bridge_checklist_md_path,
         checklist_csv_path,
         checklist_json_path,
         checklist_md_path,
@@ -443,6 +510,9 @@ def main() -> None:
     print(f"Wrote speaker profile method handoff note: {method_handoff_md_path.relative_to(PROJECT_ROOT)}")
     print(f"Wrote speaker profile method receipt JSON: {method_receipt_json_path.relative_to(PROJECT_ROOT)}")
     print(f"Wrote speaker profile method receipt note: {method_receipt_md_path.relative_to(PROJECT_ROOT)}")
+    print(f"Wrote speaker profile method bridge checklist CSV: {method_bridge_checklist_csv_path.relative_to(PROJECT_ROOT)}")
+    print(f"Wrote speaker profile method bridge checklist JSON: {method_bridge_checklist_json_path.relative_to(PROJECT_ROOT)}")
+    print(f"Wrote speaker profile method bridge checklist note: {method_bridge_checklist_md_path.relative_to(PROJECT_ROOT)}")
     print(f"Wrote speaker profile checklist CSV: {checklist_csv_path.relative_to(PROJECT_ROOT)}")
     print(f"Wrote speaker profile checklist JSON: {checklist_json_path.relative_to(PROJECT_ROOT)}")
     print(f"Wrote speaker profile checklist note: {checklist_md_path.relative_to(PROJECT_ROOT)}")
