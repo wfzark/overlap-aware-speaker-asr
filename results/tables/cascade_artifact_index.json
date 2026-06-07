@@ -171,6 +171,15 @@
     "intended_use": "Priority-ordered readiness scaffold for replacing repository-local timing with controlled benchmark evidence."
   },
   {
+    "artifact_id": "cross_dataset_benchmark_receipt_bridge_checklist",
+    "dataset": "cross_dataset",
+    "label": "experimental/frontier",
+    "artifact_group": "report",
+    "artifact_path": "results/figures/cascade_benchmark_receipt_bridge_checklist.md",
+    "generator_command": "python -m src.compute_aware_cascade --dataset synthetic_split",
+    "intended_use": "Verification checklist for the benchmark receipt bridge between the handoff packet and the evidence receipt."
+  },
+  {
     "artifact_id": "cross_dataset_benchmark_runbook_card",
     "dataset": "cross_dataset",
     "label": "experimental/frontier",

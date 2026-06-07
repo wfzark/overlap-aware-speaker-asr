@@ -95,7 +95,7 @@
 
 | strategy | average_cer | average_compute_cost | sample_count |
 | --- | ---: | ---: | ---: |
-| fixed_mixed_whisper | 0.622589 | 0.4706 | 20 |
+| fixed_mixed_whisper | 0.622588 | 0.4706 | 20 |
 | fixed_separated_whisper | 0.171687 | 0.7872 | 20 |
 | fixed_separated_whisper_cleaned | 0.171687 | 0.7872 | 20 |
 | router_v2_synthetic_costed | 0.171687 | 0.7872 | 20 |

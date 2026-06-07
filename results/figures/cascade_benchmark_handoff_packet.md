@@ -92,6 +92,10 @@ This generated packet consolidates the benchmark readiness scaffold, staged plan
 
 - order `1` / operator `phase1_gold_runtime_foundation` / action `collect_controlled_runtime` / queue head `meeteval_compatibility` / goal `Verify the frontier bridge for phase1_gold_runtime_foundation before advancing the benchmark stack.` / reason `The benchmark runtime foundation still matters because it is the strongest shared evidence layer before narrower frontier follow-ups.` / next `Confirm this bridge before opening the frontier queue head.`
 
+## Receipt Bridge Checklist
+
+- order `1` / step `phase1_gold_runtime_foundation` / prerequisite `results/figures/cascade_benchmark_handoff_packet.md` / receipt `results/figures/cascade_benchmark_evidence_receipt.md` / goal `Verify the receipt bridge for phase1_gold_runtime_foundation before the benchmark writeback is advanced.` / note `Open the handoff packet first, then write back through the evidence receipt after the current benchmark step.` / next `Confirm this bridge before opening the evidence receipt target.`
+
 ## Evidence Receipt
 
 - step `phase1_gold_runtime_foundation` / action `collect_controlled_runtime` / evidence `hardware_label;device;repeat_count;warmup_count;batch_shape;timing_notes` / completion `Gold runtime foundation artifacts are rebuilt from controlled timing.` / follow-up `collect_controlled_runtime -> Gold runtime foundation artifacts are rebuilt from controlled timing.` / note `After phase1_gold_runtime_foundation, write back the evidence payload and confirm the foundation completion signal.`
