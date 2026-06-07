@@ -1,0 +1,7 @@
+{
+  "case_id": "HeavyOverlap",
+  "redistribution_mismatch_count": "2",
+  "speaker_redistribution_match": "False",
+  "dominant_blocker": "SPEAKER_1 hypothesis_merged",
+  "diagnostic_note": "Per-speaker redistribution drift detected for HeavyOverlap; redistribution_mismatch_count=2. Reconciled alignment and cpWER execution remain pending."
+}
