@@ -599,6 +599,18 @@ Update: `meeteval_compatibility` now also has a cpWER alignment drift segment re
 - Summary view: `results/figures/meeteval_cpwer_alignment_drift_segment_redistribution_diagnostic_bridge_checklist.md`
 - This connects the redistribution diagnostic to the granularity handoff bridge without claiming cpWER execution.
 
+Update: `meeteval_compatibility` now also has a cpWER alignment drift segment redistribution diagnostic handoff.
+
+- Drift segment redistribution diagnostic handoff: `results/tables/meeteval_cpwer_alignment_drift_segment_redistribution_diagnostic_handoff.csv`
+- Summary view: `results/figures/meeteval_cpwer_alignment_drift_segment_redistribution_diagnostic_handoff.md`
+- This hands off `HeavyOverlap` to the cpWER bridge handoff while cpWER execution remains pending.
+
+Update: `meeteval_compatibility` now also has a cpWER alignment drift segment redistribution diagnostic handoff bridge checklist.
+
+- Drift segment redistribution diagnostic handoff bridge checklist: `results/tables/meeteval_cpwer_alignment_drift_segment_redistribution_diagnostic_handoff_bridge_checklist.csv`
+- Summary view: `results/figures/meeteval_cpwer_alignment_drift_segment_redistribution_diagnostic_handoff_bridge_checklist.md`
+- This connects the redistribution handoff to the cpWER bridge handoff without claiming cpWER execution.
+
 Update: `meeteval_compatibility` now also has a cpWER bridge handoff.
 
 - cpWER bridge handoff: `results/tables/meeteval_cpwer_bridge_handoff.csv`

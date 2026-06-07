@@ -832,6 +832,18 @@ MeetEval cpWER alignment drift segment redistribution diagnostic bridge checklis
 - `results/tables/meeteval_cpwer_alignment_drift_segment_redistribution_diagnostic_bridge_checklist.csv`
 - This checklist connects the redistribution diagnostic to the granularity handoff bridge without claiming cpWER execution.
 
+MeetEval cpWER alignment drift segment redistribution diagnostic handoff:
+
+- `results/figures/meeteval_cpwer_alignment_drift_segment_redistribution_diagnostic_handoff.md`
+- `results/tables/meeteval_cpwer_alignment_drift_segment_redistribution_diagnostic_handoff.csv`
+- The redistribution diagnostic handoff targets the cpWER bridge handoff for `HeavyOverlap`; reconciled alignment and cpWER execution remain pending.
+
+MeetEval cpWER alignment drift segment redistribution diagnostic handoff bridge checklist:
+
+- `results/figures/meeteval_cpwer_alignment_drift_segment_redistribution_diagnostic_handoff_bridge_checklist.md`
+- `results/tables/meeteval_cpwer_alignment_drift_segment_redistribution_diagnostic_handoff_bridge_checklist.csv`
+- This checklist connects the redistribution handoff to the cpWER bridge handoff without claiming cpWER execution.
+
 MeetEval cpWER bridge handoff:
 
 - `results/figures/meeteval_cpwer_bridge_handoff.md`
@@ -1330,6 +1342,8 @@ python -m src.meeteval_cpwer_alignment_drift_segment_granularity_diagnostic_hand
 python -m src.meeteval_cpwer_alignment_drift_segment_redistribution_diagnostic
 python -m src.meeteval_cpwer_alignment_drift_segment_granularity_diagnostic_handoff_bridge_checklist
 python -m src.meeteval_cpwer_alignment_drift_segment_redistribution_diagnostic_bridge_checklist
+python -m src.meeteval_cpwer_alignment_drift_segment_redistribution_diagnostic_handoff
+python -m src.meeteval_cpwer_alignment_drift_segment_redistribution_diagnostic_handoff_bridge_checklist
 python -m src.demo_walkthrough_review_pass
 python -m src.demo_walkthrough_review_pass_advance
 python -m src.demo_walkthrough_review_pass_continue
