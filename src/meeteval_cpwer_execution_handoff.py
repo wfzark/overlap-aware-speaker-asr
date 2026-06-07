@@ -6,6 +6,7 @@ from pathlib import Path
 from typing import Any
 
 from .config import PROJECT_ROOT
+from .meeteval_dry_run import select_preferred_case
 
 
 HANDOFF_COLUMNS = [
@@ -28,8 +29,16 @@ def load_execution_scaffold() -> dict[str, Any]:
     return payload if isinstance(payload, dict) else {}
 
 
-def build_handoff_row(scaffold: dict[str, Any]) -> dict[str, str]:
+def resolve_execution_case_id(scaffold: dict[str, Any]) -> str:
     case_id = str(scaffold.get("case_id", "NoOverlap"))
+    if case_id in {"", "ALL"}:
+        checklist_path = PROJECT_ROOT / "results" / "tables" / "meeteval_dry_run_checklist.csv"
+        return select_preferred_case(checklist_path)
+    return case_id
+
+
+def build_handoff_row(scaffold: dict[str, Any]) -> dict[str, str]:
+    case_id = resolve_execution_case_id(scaffold)
     scaffold_status = str(scaffold.get("scaffold_status", "scaffold_only"))
     cpwer_value = str(scaffold.get("cpwer_bridge_lite", ""))
     return {
