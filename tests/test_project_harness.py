@@ -13,6 +13,8 @@ from src.project_harness import (
     build_frontier_parallel_picklist_rows,
     build_frontier_parallel_picklist_checklist_lines,
     build_frontier_parallel_picklist_checklist_rows,
+    build_frontier_coordination_checklist_lines,
+    build_frontier_coordination_checklist_rows,
     build_frontier_coordination_matrix_lines,
     build_frontier_coordination_matrix_rows,
     build_frontier_receipt_board_lines,
@@ -542,6 +544,49 @@ class ProjectHarnessTest(unittest.TestCase):
         self.assertIn("MeetEval readiness card", rendered)
         self.assertIn("meeteval_dry_run_handoff.md", rendered)
         self.assertIn("meeteval_dry_run_receipt.json", rendered)
+
+    def test_build_frontier_coordination_checklist_rows_point_queue_head_to_scan_step(self) -> None:
+        rows = build_frontier_coordination_checklist_rows(
+            [
+                {
+                    "queue_order": "1",
+                    "frontier_id": "meeteval_compatibility",
+                    "status": "documented_skill",
+                    "entry_artifact": "MeetEval readiness card",
+                    "why_now": "Use the readiness card to stage one narrow dry run before claiming any benchmark bridge.",
+                }
+            ]
+        )
+
+        self.assertEqual(len(rows), 1)
+        self.assertEqual(rows[0]["checklist_order"], "1")
+        self.assertEqual(rows[0]["frontier_id"], "meeteval_compatibility")
+        self.assertEqual(rows[0]["entry_artifact"], "MeetEval readiness card")
+        self.assertEqual(rows[0]["pickup_artifact"], "results/figures/meeteval_dry_run_handoff.md")
+        self.assertEqual(rows[0]["receipt_target"], "results/tables/meeteval_dry_run_receipt.json")
+        self.assertIn("coordination matrix", rows[0]["checklist_goal"].lower())
+
+    def test_build_frontier_coordination_checklist_lines_render_queue(self) -> None:
+        lines = build_frontier_coordination_checklist_lines(
+            [
+                {
+                    "checklist_order": "1",
+                    "frontier_id": "meeteval_compatibility",
+                    "entry_artifact": "MeetEval readiness card",
+                    "pickup_artifact": "results/figures/meeteval_dry_run_handoff.md",
+                    "receipt_target": "results/tables/meeteval_dry_run_receipt.json",
+                    "checklist_goal": "Use the coordination matrix to stage the next frontier pass for meeteval_compatibility.",
+                    "coordination_note": "Open the entry artifact first, then keep the pickup artifact and receipt target visible for the next step.",
+                    "next_gate": "Confirm the coordination matrix snapshot before advancing the queue.",
+                }
+            ]
+        )
+        rendered = "\n".join(lines)
+
+        self.assertIn("# Frontier Coordination Checklist", rendered)
+        self.assertIn("meeteval_compatibility", rendered)
+        self.assertIn("meeteval_dry_run_receipt.json", rendered)
+        self.assertIn("scan path", rendered)
 
     def test_build_frontier_writeback_index_rows_cover_all_current_frontiers(self) -> None:
         rows = build_frontier_writeback_index_rows(
