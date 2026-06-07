@@ -5,6 +5,8 @@ import unittest
 from src.demo_storyboard import (
     build_demo_storyboard_cards,
     build_demo_storyboard_lines,
+    build_demo_storyboard_receipt_lines,
+    build_demo_storyboard_receipt_rows,
     build_demo_storyboard_bridge_checklist_lines,
     build_demo_storyboard_bridge_checklist_rows,
     build_demo_walkthrough_bridge_checklist_lines,
@@ -52,6 +54,40 @@ class DemoStoryboardTest(unittest.TestCase):
         self.assertIn("Problem", rendered)
         self.assertIn("router_v2", rendered)
         self.assertIn("critic bridges now exist", rendered)
+
+    def test_build_demo_storyboard_receipt_rows_create_template_evidence_target(self) -> None:
+        rows = build_demo_storyboard_receipt_rows(
+            [
+                {"title": "Problem", "body": "Overlap-aware ASR should separate selectively."},
+                {"title": "Pipeline", "body": "Mixed ASR, separated ASR, routing, and evaluation compose the main flow."},
+            ]
+        )
+
+        self.assertEqual(len(rows), 1)
+        self.assertEqual(rows[0]["execution_status"], "template_only")
+        self.assertEqual(rows[0]["storyboard_scope"], "problem")
+        self.assertIn("review note", rows[0]["expected_inputs"].lower())
+        self.assertIn("narrow storyboard review note", rows[0]["expected_outputs"].lower())
+        self.assertIn("has been executed yet", rows[0]["writeback_note"].lower())
+
+    def test_build_demo_storyboard_receipt_lines_render_template(self) -> None:
+        lines = build_demo_storyboard_receipt_lines(
+            [
+                {
+                    "execution_status": "template_only",
+                    "storyboard_scope": "problem",
+                    "expected_inputs": "Demo storyboard cards plus one review note stub.",
+                    "expected_outputs": "Narrow storyboard review note and a demo narrative writeback.",
+                    "writeback_note": "No storyboard review pass has been executed yet; fill this receipt only after the first review.",
+                }
+            ]
+        )
+        rendered = "\n".join(lines)
+
+        self.assertIn("# Demo Storyboard Receipt", rendered)
+        self.assertIn("template_only", rendered)
+        self.assertIn("problem", rendered)
+        self.assertIn("has been executed yet", rendered)
 
     def test_build_demo_storyboard_bridge_checklist_rows_link_story_to_walkthrough(self) -> None:
         rows = build_demo_storyboard_bridge_checklist_rows(
