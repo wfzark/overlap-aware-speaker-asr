@@ -499,6 +499,12 @@ Current demo storyboard receipt board result:
 - `results/tables/demo_storyboard_receipt_board.csv`
 - This board now condenses the storyboard receipt path into a single snapshot. It stays demo support only and keeps the storyboard receipt target visible without claiming that any live demo has been completed.
 
+Current demo storyboard receipt map result:
+
+- `results/figures/demo_storyboard_receipt_map.md`
+- `results/tables/demo_storyboard_receipt_map.csv`
+- This map now condenses the storyboard receipt path across the receipt, checklist, and board views. It stays demo support only and keeps the storyboard receipt target visible without claiming that any live demo has been completed.
+
 Current demo storyboard bridge checklist result:
 
 - `results/figures/demo_storyboard_bridge_checklist.md`

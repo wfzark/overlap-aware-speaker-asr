@@ -487,6 +487,12 @@ Update: `demo_excellence` now also has a storyboard receipt board.
 - Summary view: `results/figures/demo_storyboard_receipt_board.md`
 - This keeps the storyboard receipt path visible in one compact snapshot while staying explicit that no live demo or recording has yet been completed.
 
+Update: `demo_excellence` now also has a storyboard receipt map.
+
+- Storyboard receipt map: `results/tables/demo_storyboard_receipt_map.csv`
+- Summary view: `results/figures/demo_storyboard_receipt_map.md`
+- This keeps the storyboard receipt path visible across the receipt, checklist, and board layers while staying explicit that no live demo or recording has yet been completed.
+
 Update: `demo_excellence` now also has a storyboard bridge checklist.
 
 - Storyboard bridge checklist: `results/tables/demo_storyboard_bridge_checklist.csv`
