@@ -1,0 +1,42 @@
+[
+  {
+    "case_id": "NoOverlap",
+    "character_level_cpwer": "0.053957",
+    "cpwer_bridge_lite": "0.054312",
+    "reconciliation_delta": "-0.000355",
+    "reconciliation_status": "aligned",
+    "audit_note": "Character-spaced MeetEval cpWER aligns with bridge-lite within tolerance."
+  },
+  {
+    "case_id": "LightOverlap",
+    "character_level_cpwer": "0.135714",
+    "cpwer_bridge_lite": "0.135164",
+    "reconciliation_delta": "0.00055",
+    "reconciliation_status": "aligned",
+    "audit_note": "Character-spaced MeetEval cpWER aligns with bridge-lite within tolerance."
+  },
+  {
+    "case_id": "MidOverlap",
+    "character_level_cpwer": "0.168421",
+    "cpwer_bridge_lite": "0.16862",
+    "reconciliation_delta": "-0.000199",
+    "reconciliation_status": "aligned",
+    "audit_note": "Character-spaced MeetEval cpWER aligns with bridge-lite within tolerance."
+  },
+  {
+    "case_id": "HeavyOverlap",
+    "character_level_cpwer": "0.163121",
+    "cpwer_bridge_lite": "0.162827",
+    "reconciliation_delta": "0.000294",
+    "reconciliation_status": "aligned",
+    "audit_note": "Character-spaced MeetEval cpWER aligns with bridge-lite within tolerance."
+  },
+  {
+    "case_id": "OppositeOverlap",
+    "character_level_cpwer": "0.083333",
+    "cpwer_bridge_lite": "0.083193",
+    "reconciliation_delta": "0.00014",
+    "reconciliation_status": "aligned",
+    "audit_note": "Character-spaced MeetEval cpWER aligns with bridge-lite within tolerance."
+  }
+]
