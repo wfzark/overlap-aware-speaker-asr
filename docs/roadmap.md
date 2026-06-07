@@ -193,6 +193,12 @@ Update: a generated external validation slice receipt now creates the first evid
 - Summary view: `results/figures/external_validation_slice_receipt.md`
 - This stays on the same safe side of the line: it prepares the template-only receipt for a future narrow dry run without implying that any external sanity-check has already happened.
 
+Update: the first external validation slice scaffold now exists.
+
+- Slice mapping stub: `results/tables/external_validation_slice_mapping.json`
+- Summary view: `results/figures/external_validation_slice_scaffold.md`
+- AISHELL-4 remains `scaffold_only` with `license_status = pending_confirmation`; no external audio or benchmark evaluation has been run yet.
+
 Update: a generated demo walkthrough now turns the storyboard into a short presentation sequence.
 
 - Demo walkthrough: `results/tables/demo_walkthrough_steps.json`

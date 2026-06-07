@@ -724,6 +724,12 @@ External validation slice receipt bridge:
 - `results/tables/external_validation_slice_receipt.json`
 - This bridge now materializes the expected evidence slot for that first slice as a template-only receipt. It still does not claim any executed external sanity-check; it simply defines what the first narrow follow-up should write back once it actually happens.
 
+External validation slice scaffold bridge:
+
+- `results/figures/external_validation_slice_scaffold.md`
+- `results/tables/external_validation_slice_mapping.json`
+- The first AISHELL-4 mapping stub is `scaffold_only` with `license_status = pending_confirmation`. No external audio or benchmark evaluation has been run yet.
+
 External validation checklist bridge:
 
 - `results/figures/external_validation_checklist.md`
@@ -818,6 +824,7 @@ python -m src.router_ablation_split
 python -m src.export_meeteval_compatibility
 python -m src.meeteval_dry_run
 python -m src.meeteval_cpwer_bridge
+python -m src.external_validation_slice_scaffold
 python -m src.project_harness
 ```
 

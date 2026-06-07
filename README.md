@@ -491,6 +491,12 @@ Current external validation slice receipt result:
 - `results/figures/external_validation_slice_receipt.md` now materializes the expected evidence target for that first external slice
 - This still does not claim any external execution: it defines the template-only writeback slot, expected inputs, and expected outputs so a future narrow dry run has a concrete receipt to fill
 
+Current external validation slice scaffold result:
+
+- `results/figures/external_validation_slice_scaffold.md`
+- `results/tables/external_validation_slice_mapping.json`
+- The first AISHELL-4 mapping stub is `scaffold_only` with `license_status = pending_confirmation`. No external audio or benchmark evaluation has been run yet.
+
 Current external validation slice bridge checklist result:
 
 - `results/figures/external_validation_slice_bridge_checklist.md`
@@ -607,6 +613,7 @@ python -m src.router_ablation_split
 python -m src.export_meeteval_compatibility
 python -m src.meeteval_dry_run
 python -m src.meeteval_cpwer_bridge
+python -m src.external_validation_slice_scaffold
 python -m src.project_harness
 ```
 
