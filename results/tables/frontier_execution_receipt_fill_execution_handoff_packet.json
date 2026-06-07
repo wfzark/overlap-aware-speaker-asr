@@ -5,6 +5,21 @@
     "section_role": "Top-level fill execution queue snapshot"
   },
   {
+    "packet_section": "dashboard_bridge_checklist",
+    "artifact_path": "results/figures/frontier_execution_receipt_fill_execution_dashboard_bridge_checklist.md",
+    "section_role": "Dashboard to runbook verification"
+  },
+  {
+    "packet_section": "frontier_bridge",
+    "artifact_path": "results/figures/frontier_execution_receipt_fill_execution_frontier_bridge.md",
+    "section_role": "Fill execution to breadth-first frontier queue bridge"
+  },
+  {
+    "packet_section": "frontier_bridge_checklist",
+    "artifact_path": "results/figures/frontier_execution_receipt_fill_execution_frontier_bridge_checklist.md",
+    "section_role": "Frontier bridge verification path"
+  },
+  {
     "packet_section": "runbook",
     "artifact_path": "results/figures/frontier_execution_receipt_fill_execution_runbook_card.md",
     "section_role": "One-page first action execution card"

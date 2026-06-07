@@ -16,6 +16,9 @@ HANDOFF_PACKET_COLUMNS = [
 
 PACKET_SECTIONS = [
     ("dashboard", "results/figures/frontier_execution_receipt_fill_execution_completion_dashboard.md", "Top-level fill execution queue snapshot"),
+    ("dashboard_bridge_checklist", "results/figures/frontier_execution_receipt_fill_execution_dashboard_bridge_checklist.md", "Dashboard to runbook verification"),
+    ("frontier_bridge", "results/figures/frontier_execution_receipt_fill_execution_frontier_bridge.md", "Fill execution to breadth-first frontier queue bridge"),
+    ("frontier_bridge_checklist", "results/figures/frontier_execution_receipt_fill_execution_frontier_bridge_checklist.md", "Frontier bridge verification path"),
     ("runbook", "results/figures/frontier_execution_receipt_fill_execution_runbook_card.md", "One-page first action execution card"),
     ("milestone", "results/figures/frontier_execution_receipt_fill_execution_milestone_card.md", "Immediate completion boundary"),
     ("entry", "results/figures/frontier_execution_receipt_fill_execution_completion_summary.md", "Queue completion status rollup"),
