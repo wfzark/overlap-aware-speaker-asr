@@ -1173,6 +1173,19 @@ Update: the frontier handoff now has a bridge checklist.
 - Summary view: `results/figures/frontier_execution_queue_handoff_bridge_checklist.md`
 - This connects the execution handoff to per-frontier receipt fill gates without claiming benchmark completion.
 
+Update: the frontier now has per-frontier receipt readiness bridge checklists.
+
+- MeetEval receipt readiness bridge: `results/tables/meeteval_cpwer_execution_receipt_readiness_bridge_checklist.csv`
+- Speaker profile receipt readiness bridge: `results/tables/speaker_profile_embedding_trial_execution_receipt_readiness_bridge_checklist.csv`
+- External staging receipt readiness bridge: `results/tables/external_validation_slice_staging_handoff_receipt_readiness_bridge_checklist.csv`
+- No benchmark execution is claimed.
+
+Update: the frontier receipt layer now has a coordination queue completion summary and handoff.
+
+- Receipt queue completion summary: `results/tables/frontier_execution_receipt_queue_completion_summary.csv`
+- Receipt queue handoff: `results/tables/frontier_execution_receipt_queue_handoff.csv`
+- `queue_status = queue_complete` at `3/3` receipt-ready frontiers; receipt-fill actions remain coordination-only.
+
 ## Healthy Project Principles
 
 - New experiments should be isolated.

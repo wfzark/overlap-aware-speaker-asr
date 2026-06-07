@@ -1351,6 +1351,48 @@ Frontier execution receipt queue status:
 - `results/tables/frontier_execution_receipt_queue_status.csv`
 - The unified receipt readiness rollup reports `combined_readiness_status = receipt_ready_to_fill`; no benchmark execution is claimed.
 
+MeetEval cpWER execution receipt readiness bridge checklist:
+
+- `results/figures/meeteval_cpwer_execution_receipt_readiness_bridge_checklist.md`
+- `results/tables/meeteval_cpwer_execution_receipt_readiness_bridge_checklist.csv`
+- This checklist connects the cpWER receipt readiness rollup to the execution receipt without claiming official evaluation.
+
+Speaker profile embedding trial execution receipt readiness bridge checklist:
+
+- `results/figures/speaker_profile_embedding_trial_execution_receipt_readiness_bridge_checklist.md`
+- `results/tables/speaker_profile_embedding_trial_execution_receipt_readiness_bridge_checklist.csv`
+- This checklist connects the embedding receipt readiness rollup to the execution receipt without claiming voiceprint success.
+
+External validation slice staging handoff receipt readiness bridge checklist:
+
+- `results/figures/external_validation_slice_staging_handoff_receipt_readiness_bridge_checklist.md`
+- `results/tables/external_validation_slice_staging_handoff_receipt_readiness_bridge_checklist.csv`
+- This checklist connects the staging receipt readiness rollup to the staging receipt without claiming benchmark execution.
+
+Frontier execution receipt queue status bridge checklist:
+
+- `results/figures/frontier_execution_receipt_queue_status_bridge_checklist.md`
+- `results/tables/frontier_execution_receipt_queue_status_bridge_checklist.csv`
+- This checklist connects the unified receipt readiness rollup to the completion summary without claiming benchmark execution.
+
+Frontier execution receipt queue completion summary:
+
+- `results/figures/frontier_execution_receipt_queue_completion_summary.md`
+- `results/tables/frontier_execution_receipt_queue_completion_summary.csv`
+- The receipt coordination queue rollup reports `queue_status = queue_complete` at `3/3`; no benchmark execution is claimed.
+
+Frontier execution receipt queue completion summary bridge checklist:
+
+- `results/figures/frontier_execution_receipt_queue_completion_summary_bridge_checklist.md`
+- `results/tables/frontier_execution_receipt_queue_completion_summary_bridge_checklist.csv`
+- This checklist connects the receipt coordination completion summary to the receipt-fill handoff without claiming benchmark execution.
+
+Frontier execution receipt queue handoff:
+
+- `results/figures/frontier_execution_receipt_queue_handoff.md`
+- `results/tables/frontier_execution_receipt_queue_handoff.csv`
+- This handoff turns the unified receipt readiness rollup into per-frontier receipt-fill actions for MeetEval, speaker profile, and external staging.
+
 MeetEval compatibility skill card:
 
 - `docs/skills/skill_04_meeteval_compatibility.md`
@@ -1716,6 +1758,13 @@ python -m src.meeteval_cpwer_execution_receipt_readiness
 python -m src.speaker_profile_embedding_trial_execution_receipt_readiness
 python -m src.external_validation_slice_staging_handoff_receipt_readiness
 python -m src.frontier_execution_receipt_queue_status
+python -m src.meeteval_cpwer_execution_receipt_readiness_bridge_checklist
+python -m src.speaker_profile_embedding_trial_execution_receipt_readiness_bridge_checklist
+python -m src.external_validation_slice_staging_handoff_receipt_readiness_bridge_checklist
+python -m src.frontier_execution_receipt_queue_status_bridge_checklist
+python -m src.frontier_execution_receipt_queue_completion_summary
+python -m src.frontier_execution_receipt_queue_completion_summary_bridge_checklist
+python -m src.frontier_execution_receipt_queue_handoff
 python -m src.speaker_profile_embedding_trial_execution_handoff
 python -m src.speaker_profile_embedding_trial_execution_handoff_bridge_checklist
 python -m src.speaker_profile_embedding_trial_execution_preflight
