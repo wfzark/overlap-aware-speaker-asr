@@ -424,6 +424,12 @@ Current llm critic review receipt result:
 - `results/figures/llm_critic_review_receipt.md` now materializes the expected evidence slot for that first review pass
 - This still does not claim any successful repair: it defines the review scope, expected inputs, expected outputs, and writeback note so the first critic-style pass has a concrete receipt to fill
 
+Current llm critic review bridge checklist result:
+
+- `results/figures/llm_critic_review_bridge_checklist.md`
+- `results/tables/llm_critic_review_bridge_checklist.csv`
+- This checklist now turns the review queue into an ordered bridge verification path. It stays qualitative/demo and keeps the queue and receipt targets visible without claiming any repaired transcript.
+
 Current llm critic review checklist result:
 
 - `results/figures/llm_critic_review_checklist.md` now turns the review queue into an ordered execution checklist

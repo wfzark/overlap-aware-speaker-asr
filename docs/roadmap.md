@@ -451,6 +451,12 @@ Update: `llm_critic` now has a first qualitative artifact.
 - Table: `results/tables/llm_critic_qualitative_summary.csv`
 - This is intentionally a qualitative/demo bridge only: it converts structured risk cues into critic-style explanations, candidate repairs, and uncertainty notes without claiming that an actual LLM has verified or fixed the transcript.
 
+Update: `llm_critic` now also has a review bridge checklist.
+
+- Review bridge checklist: `results/tables/llm_critic_review_bridge_checklist.csv`
+- Summary view: `results/figures/llm_critic_review_bridge_checklist.md`
+- This keeps the critic queue and receipt visible together while staying explicit that no repaired transcript has yet been verified.
+
 Update: `demo_excellence` now has a first lightweight onboarding artifact.
 
 - Demo storyboard: `results/figures/demo_storyboard.md`
