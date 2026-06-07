@@ -35,8 +35,11 @@ The frontier receipt-fill execution stack now has an operator brief and receipt 
 - MeetEval official execution bridge checklist: `results/figures/meeteval_cpwer_official_execution_bridge_checklist.md`
 - MeetEval official execution completion summary: `results/figures/meeteval_cpwer_official_execution_completion_summary.md`
 - MeetEval official execution alignment audit: `results/figures/meeteval_cpwer_official_execution_alignment_audit.md`
+- MeetEval tokenization diagnostic: `results/figures/meeteval_cpwer_official_execution_tokenization_diagnostic.md`
+- MeetEval character-level official execution: `results/figures/meeteval_cpwer_character_level_official_execution.md`
+- MeetEval reconciliation audit: `results/figures/meeteval_cpwer_official_execution_reconciliation_audit.md`
 
-MeetEval compatibility remains the recommended first fill target. All-gold official cpWER narrow dry run is now available via `python -m src.meeteval_cpwer_official_execution --all`. Results are labeled `experimental/frontier`; alignment audit shows moderate drift vs bridge-lite due to Chinese tokenization, not a full benchmark claim.
+MeetEval compatibility remains the recommended first fill target. Character-spaced official cpWER (`python -m src.meeteval_cpwer_character_level_official_execution --all`) reconciles `5/5` gold cases with bridge-lite. Raw word-level official cpWER drift is diagnosed as a Chinese tokenization artifact, not a speaker-mapping failure.
 
 ## Level 1: Documentation / Presentation
 

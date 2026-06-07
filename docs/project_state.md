@@ -1655,6 +1655,21 @@ MeetEval cpWER official execution completion summary bridge checklist:
 - `results/figures/meeteval_cpwer_official_execution_completion_summary_bridge_checklist.md`
 - Connects completion summary to alignment audit verification path.
 
+MeetEval cpWER official execution tokenization diagnostic:
+
+- `results/figures/meeteval_cpwer_official_execution_tokenization_diagnostic.md`
+- All five gold cases report `no_whitespace_word_tokenization` root cause for raw official cpWER drift.
+
+MeetEval cpWER character-level official execution:
+
+- `results/figures/meeteval_cpwer_character_level_official_execution.md`
+- Character-spaced MeetEval cpWER via `python -m src.meeteval_cpwer_character_level_official_execution --all`.
+
+MeetEval cpWER official execution reconciliation audit:
+
+- `results/figures/meeteval_cpwer_official_execution_reconciliation_audit.md`
+- After character tokenization, `5/5` cases align with bridge-lite within tolerance.
+
 MeetEval compatibility skill card:
 
 - `docs/skills/skill_04_meeteval_compatibility.md`

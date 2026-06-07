@@ -96,6 +96,11 @@ python -m src.meeteval_cpwer_official_execution_bridge_checklist
 python -m src.meeteval_cpwer_official_execution_completion_summary
 python -m src.meeteval_cpwer_official_execution_completion_summary_bridge_checklist
 python -m src.meeteval_cpwer_official_execution_alignment_audit
+python -m src.meeteval_cpwer_official_execution_alignment_audit_bridge_checklist
+python -m src.meeteval_cpwer_official_execution_tokenization_diagnostic
+python -m src.meeteval_cpwer_character_level_official_execution --all
+python -m src.meeteval_cpwer_official_execution_reconciliation_audit
+python -m src.meeteval_cpwer_official_execution_reconciliation_audit_bridge_checklist
 python -m src.frontier_execution_receipt_fill_execution_handoff_bridge_checklist
 ```
 

@@ -1425,6 +1425,14 @@ Update: `meeteval_compatibility` now also has an all-gold official cpWER executi
 - Completion summary bridge checklist: `results/tables/meeteval_cpwer_official_execution_completion_summary_bridge_checklist.csv`
 - All five gold cases report `queue_complete`; alignment audit shows `moderate_drift` vs bridge-lite due to Chinese tokenization mismatch in MeetEval word-level cpWER.
 
+Update: `meeteval_compatibility` now also has a character-level tokenization adaptation stack.
+
+- Tokenization diagnostic: `results/tables/meeteval_cpwer_official_execution_tokenization_diagnostic.csv`
+- Character-level execution: `results/tables/meeteval_cpwer_character_level_official_execution.csv`
+- Reconciliation audit: `results/tables/meeteval_cpwer_official_execution_reconciliation_audit.csv`
+- Script: `python -m src.meeteval_cpwer_character_level_official_execution --all`
+- Root cause: raw MeetEval word-level cpWER treats each speaker aggregate as one token without whitespace; character-spaced tokenization reconciles `5/5` cases with bridge-lite.
+
 Update: `demo_excellence` now has a lightweight Streamlit viewer scaffold.
 
 - Demo app: `demo/app.py`
