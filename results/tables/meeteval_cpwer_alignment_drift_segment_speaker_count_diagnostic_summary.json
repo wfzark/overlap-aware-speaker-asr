@@ -1,0 +1,7 @@
+{
+  "case_id": "HeavyOverlap",
+  "mismatched_speaker_count": "2",
+  "speaker_segment_count_match": "False",
+  "dominant_blocker": "SPEAKER_1 delta=-1",
+  "diagnostic_note": "Per-speaker segment count drift detected for HeavyOverlap; mismatched_speaker_count=2. Reconciled alignment and cpWER execution remain pending."
+}
