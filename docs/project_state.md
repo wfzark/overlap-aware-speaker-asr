@@ -1399,6 +1399,31 @@ Frontier execution receipt queue handoff bridge checklist:
 - `results/tables/frontier_execution_receipt_queue_handoff_bridge_checklist.csv`
 - This checklist connects the receipt-fill handoff to per-frontier execution receipts without claiming benchmark execution.
 
+Frontier execution receipt fill queue status:
+
+- `results/figures/frontier_execution_receipt_fill_queue_status.md`
+- `results/tables/frontier_execution_receipt_fill_queue_status.csv`
+- `results/tables/frontier_execution_receipt_fill_queue_summary.json`
+- The fill queue rollup reports `combined_fill_status = fill_queue_ready` with `awaiting_fill_count = 3/3`; template-only receipts remain unfilled and no benchmark execution is claimed.
+
+Frontier execution receipt fill queue status bridge checklist:
+
+- `results/figures/frontier_execution_receipt_fill_queue_status_bridge_checklist.md`
+- `results/tables/frontier_execution_receipt_fill_queue_status_bridge_checklist.csv`
+- This checklist connects the fill queue status to per-frontier execution receipts without claiming benchmark execution.
+
+Frontier execution receipt fill queue completion summary:
+
+- `results/figures/frontier_execution_receipt_fill_queue_completion_summary.md`
+- `results/tables/frontier_execution_receipt_fill_queue_completion_summary.csv`
+- The fill coordination queue rollup reports `combined_fill_status = fill_queue_ready` at `3/3` awaiting fill; no benchmark execution is claimed.
+
+Frontier execution receipt fill queue handoff:
+
+- `results/figures/frontier_execution_receipt_fill_queue_handoff.md`
+- `results/tables/frontier_execution_receipt_fill_queue_handoff.csv`
+- This handoff turns the fill queue status into per-frontier fill execution actions for MeetEval, speaker profile, and external staging.
+
 MeetEval compatibility skill card:
 
 - `docs/skills/skill_04_meeteval_compatibility.md`
@@ -1655,6 +1680,12 @@ Demo excellence queue status:
 - `results/tables/demo_excellence_queue_status.csv`
 - `combined_queue_status = queue_complete` when both walkthrough and storyboard queues are complete; no live demo delivery is claimed.
 
+Streamlit demo scaffold:
+
+- `demo/app.py`
+- `requirements-demo.txt`
+- Run with `streamlit run demo/app.py` after installing `requirements-demo.txt`; this is qualitative/demo support only and does not run live ASR.
+
 ## How to Resume Work
 
 Common commands:
@@ -1772,6 +1803,10 @@ python -m src.frontier_execution_receipt_queue_completion_summary
 python -m src.frontier_execution_receipt_queue_completion_summary_bridge_checklist
 python -m src.frontier_execution_receipt_queue_handoff
 python -m src.frontier_execution_receipt_queue_handoff_bridge_checklist
+python -m src.frontier_execution_receipt_fill_queue_status
+python -m src.frontier_execution_receipt_fill_queue_status_bridge_checklist
+python -m src.frontier_execution_receipt_fill_queue_completion_summary
+python -m src.frontier_execution_receipt_fill_queue_handoff
 python -m src.speaker_profile_embedding_trial_execution_handoff
 python -m src.speaker_profile_embedding_trial_execution_handoff_bridge_checklist
 python -m src.speaker_profile_embedding_trial_execution_preflight

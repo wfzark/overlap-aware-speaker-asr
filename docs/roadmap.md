@@ -1192,6 +1192,37 @@ Update: the frontier receipt layer now has a handoff bridge checklist.
 - Summary view: `results/figures/frontier_execution_receipt_queue_handoff_bridge_checklist.md`
 - This connects the receipt-fill handoff to per-frontier execution receipts without claiming benchmark execution.
 
+Update: the frontier receipt layer now has a fill queue status rollup.
+
+- Fill queue status: `results/tables/frontier_execution_receipt_fill_queue_status.csv`
+- Fill queue summary: `results/tables/frontier_execution_receipt_fill_queue_summary.json`
+- Summary view: `results/figures/frontier_execution_receipt_fill_queue_status.md`
+- `combined_fill_status = fill_queue_ready` with `awaiting_fill_count = 3/3`; template-only receipts remain unfilled.
+
+Update: the frontier receipt layer now has a fill queue status bridge checklist.
+
+- Fill queue status bridge checklist: `results/tables/frontier_execution_receipt_fill_queue_status_bridge_checklist.csv`
+- Summary view: `results/figures/frontier_execution_receipt_fill_queue_status_bridge_checklist.md`
+- This connects the fill queue status to per-frontier execution receipts without claiming benchmark execution.
+
+Update: the frontier receipt layer now has a fill queue completion summary.
+
+- Fill queue completion summary: `results/tables/frontier_execution_receipt_fill_queue_completion_summary.csv`
+- Summary view: `results/figures/frontier_execution_receipt_fill_queue_completion_summary.md`
+- `combined_fill_status = fill_queue_ready` at `3/3` awaiting fill; no benchmark execution is claimed.
+
+Update: the frontier receipt layer now has a fill queue handoff.
+
+- Fill queue handoff: `results/tables/frontier_execution_receipt_fill_queue_handoff.csv`
+- Summary view: `results/figures/frontier_execution_receipt_fill_queue_handoff.md`
+- This turns the fill queue status into per-frontier fill execution actions.
+
+Update: `demo_excellence` now has a lightweight Streamlit viewer scaffold.
+
+- Demo app: `demo/app.py`
+- Demo requirements: `requirements-demo.txt`
+- Run with `streamlit run demo/app.py`; this is qualitative/demo support only and does not run live ASR.
+
 ## Healthy Project Principles
 
 - New experiments should be isolated.
