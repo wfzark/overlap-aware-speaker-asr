@@ -463,6 +463,12 @@ Update: `demo_excellence` now has a first lightweight onboarding artifact.
 - Story cards: `results/tables/demo_storyboard_cards.json`
 - This is a simple demo-facing bridge rather than a full app: it gives a new visitor a one-page explanation of the problem, pipeline, findings, and frontier directions before heavier UI work exists.
 
+Update: `demo_excellence` now also has a walkthrough bridge checklist.
+
+- Walkthrough bridge checklist: `results/tables/demo_walkthrough_bridge_checklist.csv`
+- Summary view: `results/figures/demo_walkthrough_bridge_checklist.md`
+- This keeps the walkthrough and receipt visible together while staying explicit that no live demo or recording has yet been completed.
+
 Update: `external_validation` now has a dedicated skill card.
 
 - Skill card: `docs/skills/skill_07_external_validation.md`

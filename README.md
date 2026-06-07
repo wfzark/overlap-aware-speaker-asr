@@ -485,6 +485,12 @@ Current demo walkthrough receipt result:
 - `results/figures/demo_walkthrough_receipt.md` now materializes the expected evidence slot for that first walkthrough pass
 - This still does not claim a completed live demo or recording: it defines the walkthrough scope, expected inputs, expected outputs, and writeback note so the first presentation pass has a concrete receipt to fill
 
+Current demo walkthrough bridge checklist result:
+
+- `results/figures/demo_walkthrough_bridge_checklist.md`
+- `results/tables/demo_walkthrough_bridge_checklist.csv`
+- This checklist now turns the walkthrough into an ordered bridge verification path. It stays presentation support only and keeps the walkthrough and receipt targets visible without claiming any live demo has been completed.
+
 Current demo walkthrough checklist result:
 
 - `results/figures/demo_walkthrough_checklist.md` now turns the walkthrough steps into an ordered presentation checklist

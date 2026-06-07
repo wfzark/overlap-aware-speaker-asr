@@ -717,6 +717,12 @@ Demo walkthrough receipt bridge:
 - `results/tables/demo_walkthrough_receipt.json`
 - This bridge now materializes the expected evidence slot for that walkthrough as a template-only receipt. It still does not claim any executed demo delivery; it simply defines what the first narrow presentation follow-up should write back once it actually happens.
 
+Demo walkthrough bridge checklist:
+
+- `results/figures/demo_walkthrough_bridge_checklist.md`
+- `results/tables/demo_walkthrough_bridge_checklist.csv`
+- This checklist turns the walkthrough into an ordered bridge verification path between the walkthrough and receipt. It stays presentation support only and does not claim that any live demo or recording has already happened.
+
 Demo walkthrough checklist bridge:
 
 - `results/figures/demo_walkthrough_checklist.md`
