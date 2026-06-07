@@ -1580,6 +1580,18 @@ Frontier execution receipt fill execution dashboard bridge checklist:
 - `results/tables/frontier_execution_receipt_fill_execution_dashboard_bridge_checklist.csv`
 - This checklist connects the completion dashboard to the runbook card target.
 
+MeetEval cpWER execution receipt batch scaffold:
+
+- `results/figures/meeteval_cpwer_execution_receipt_batch_scaffold.md`
+- `results/tables/meeteval_cpwer_execution_receipt_batch_scaffold.csv`
+- Template-only official cpWER execution receipt scaffolds for all five verified gold cases; official evaluation remains pending.
+
+MeetEval cpWER execution receipt batch scaffold bridge checklist:
+
+- `results/figures/meeteval_cpwer_execution_receipt_batch_scaffold_bridge_checklist.md`
+- `results/tables/meeteval_cpwer_execution_receipt_batch_scaffold_bridge_checklist.csv`
+- This checklist connects the batch receipt scaffold to the official execution receipt target.
+
 MeetEval compatibility skill card:
 
 - `docs/skills/skill_04_meeteval_compatibility.md`

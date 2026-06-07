@@ -1373,6 +1373,18 @@ Update: the frontier receipt layer now has a fill execution dashboard bridge che
 - Summary view: `results/figures/frontier_execution_receipt_fill_execution_dashboard_bridge_checklist.md`
 - Connects the completion dashboard to the runbook card target.
 
+Update: `meeteval_compatibility` now has an all-gold execution receipt batch scaffold.
+
+- Receipt batch scaffold: `results/tables/meeteval_cpwer_execution_receipt_batch_scaffold.csv`
+- Summary view: `results/figures/meeteval_cpwer_execution_receipt_batch_scaffold.md`
+- Template-only official cpWER execution receipt scaffolds for all five verified gold cases.
+
+Update: the MeetEval receipt layer now has a batch scaffold bridge checklist.
+
+- Batch scaffold bridge checklist: `results/tables/meeteval_cpwer_execution_receipt_batch_scaffold_bridge_checklist.csv`
+- Summary view: `results/figures/meeteval_cpwer_execution_receipt_batch_scaffold_bridge_checklist.md`
+- Connects the batch receipt scaffold to the official execution receipt target.
+
 Update: `demo_excellence` now has a lightweight Streamlit viewer scaffold.
 
 - Demo app: `demo/app.py`
