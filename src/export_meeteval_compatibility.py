@@ -47,6 +47,16 @@ DRY_RUN_RECEIPT_COLUMNS = [
     "writeback_note",
 ]
 
+DRY_RUN_BRIDGE_CHECKLIST_COLUMNS = [
+    "checklist_order",
+    "bridge_status",
+    "prerequisite_artifact",
+    "receipt_target",
+    "checklist_goal",
+    "bridge_note",
+    "next_gate",
+]
+
 DRY_RUN_CHECKLIST_COLUMNS = [
     "case_id",
     "hypothesis_source",
@@ -264,6 +274,48 @@ def build_meeteval_dry_run_receipt_lines(rows: list[dict[str, str]]) -> list[str
     return lines
 
 
+def build_meeteval_dry_run_bridge_checklist_rows(
+    handoff_rows: list[dict[str, str]],
+    receipt_rows: list[dict[str, str]],
+) -> list[dict[str, str]]:
+    if not handoff_rows or not receipt_rows:
+        return []
+
+    handoff = handoff_rows[0]
+    receipt = receipt_rows[0]
+    bridge_status = str(handoff.get("bridge_status", ""))
+    run_scope = str(receipt.get("run_scope", ""))
+    return [
+        {
+            "checklist_order": "1",
+            "bridge_status": bridge_status,
+            "prerequisite_artifact": "results/figures/meeteval_dry_run_handoff.md",
+            "receipt_target": "results/figures/meeteval_dry_run_receipt.md",
+            "checklist_goal": f"Verify the first MeetEval dry run bridge for {bridge_status} before any writeback is advanced.",
+            "bridge_note": f"Open the handoff packet first, then write back through the receipt target for {run_scope}.",
+            "next_gate": "Confirm this bridge before opening the receipt target.",
+        }
+    ]
+
+
+def build_meeteval_dry_run_bridge_checklist_lines(
+    rows: list[dict[str, str]],
+) -> list[str]:
+    lines = [
+        "# MeetEval Dry Run Bridge Checklist",
+        "",
+        "This generated checklist turns the dry-run handoff into a row-by-row bridge verification path. It remains coordination-only and does not claim that MeetEval or cpWER has already been executed.",
+        "",
+        "| checklist_order | bridge_status | prerequisite_artifact | receipt_target | checklist_goal | bridge_note | next_gate |",
+        "| --- | --- | --- | --- | --- | --- | --- |",
+    ]
+    for row in rows:
+        lines.append(
+            f"| {row['checklist_order']} | {row['bridge_status']} | {row['prerequisite_artifact']} | {row['receipt_target']} | {row['checklist_goal']} | {row['bridge_note']} | {row['next_gate']} |"
+        )
+    return lines
+
+
 def build_meeteval_dry_run_checklist_rows(rows: list[dict[str, Any]]) -> list[dict[str, str]]:
     checklist_rows: list[dict[str, str]] = []
     for row in rows:
@@ -333,6 +385,13 @@ def write_outputs(
     dry_run_receipt_rows = build_meeteval_dry_run_receipt_rows(dry_run_handoff_rows)
     dry_run_receipt_json_path = tables_dir / "meeteval_dry_run_receipt.json"
     dry_run_receipt_note_path = figures_dir / "meeteval_dry_run_receipt.md"
+    dry_run_bridge_checklist_rows = build_meeteval_dry_run_bridge_checklist_rows(
+        dry_run_handoff_rows,
+        dry_run_receipt_rows,
+    )
+    dry_run_bridge_checklist_csv_path = tables_dir / "meeteval_dry_run_bridge_checklist.csv"
+    dry_run_bridge_checklist_json_path = tables_dir / "meeteval_dry_run_bridge_checklist.json"
+    dry_run_bridge_checklist_note_path = figures_dir / "meeteval_dry_run_bridge_checklist.md"
     dry_run_checklist_rows = build_meeteval_dry_run_checklist_rows(rows)
     dry_run_checklist_csv_path = tables_dir / "meeteval_dry_run_checklist.csv"
     dry_run_checklist_json_path = tables_dir / "meeteval_dry_run_checklist.json"
@@ -366,6 +425,18 @@ def write_outputs(
         "\n".join(build_meeteval_dry_run_receipt_lines(dry_run_receipt_rows)) + "\n",
         encoding="utf-8",
     )
+    with dry_run_bridge_checklist_csv_path.open("w", newline="", encoding="utf-8-sig") as f:
+        writer = csv.DictWriter(f, fieldnames=DRY_RUN_BRIDGE_CHECKLIST_COLUMNS)
+        writer.writeheader()
+        writer.writerows(dry_run_bridge_checklist_rows)
+    dry_run_bridge_checklist_json_path.write_text(
+        json.dumps(dry_run_bridge_checklist_rows, ensure_ascii=False, indent=2),
+        encoding="utf-8",
+    )
+    dry_run_bridge_checklist_note_path.write_text(
+        "\n".join(build_meeteval_dry_run_bridge_checklist_lines(dry_run_bridge_checklist_rows)) + "\n",
+        encoding="utf-8",
+    )
     with dry_run_checklist_csv_path.open("w", newline="", encoding="utf-8-sig") as f:
         writer = csv.DictWriter(f, fieldnames=DRY_RUN_CHECKLIST_COLUMNS)
         writer.writeheader()
@@ -389,6 +460,9 @@ def write_outputs(
         dry_run_handoff_note_path,
         dry_run_receipt_json_path,
         dry_run_receipt_note_path,
+        dry_run_bridge_checklist_csv_path,
+        dry_run_bridge_checklist_json_path,
+        dry_run_bridge_checklist_note_path,
         dry_run_checklist_csv_path,
         dry_run_checklist_json_path,
         dry_run_checklist_note_path,
@@ -423,6 +497,9 @@ def main() -> None:
         dry_run_handoff_note_path,
         dry_run_receipt_json_path,
         dry_run_receipt_note_path,
+        dry_run_bridge_checklist_csv_path,
+        dry_run_bridge_checklist_json_path,
+        dry_run_bridge_checklist_note_path,
         dry_run_checklist_csv_path,
         dry_run_checklist_json_path,
         dry_run_checklist_note_path,
@@ -440,6 +517,9 @@ def main() -> None:
     print(f"Wrote MeetEval dry run handoff note: {dry_run_handoff_note_path.relative_to(PROJECT_ROOT)}")
     print(f"Wrote MeetEval dry run receipt JSON: {dry_run_receipt_json_path.relative_to(PROJECT_ROOT)}")
     print(f"Wrote MeetEval dry run receipt note: {dry_run_receipt_note_path.relative_to(PROJECT_ROOT)}")
+    print(f"Wrote MeetEval dry run bridge checklist CSV: {dry_run_bridge_checklist_csv_path.relative_to(PROJECT_ROOT)}")
+    print(f"Wrote MeetEval dry run bridge checklist JSON: {dry_run_bridge_checklist_json_path.relative_to(PROJECT_ROOT)}")
+    print(f"Wrote MeetEval dry run bridge checklist note: {dry_run_bridge_checklist_note_path.relative_to(PROJECT_ROOT)}")
     print(f"Wrote MeetEval dry run checklist CSV: {dry_run_checklist_csv_path.relative_to(PROJECT_ROOT)}")
     print(f"Wrote MeetEval dry run checklist JSON: {dry_run_checklist_json_path.relative_to(PROJECT_ROOT)}")
     print(f"Wrote MeetEval dry run checklist note: {dry_run_checklist_note_path.relative_to(PROJECT_ROOT)}")

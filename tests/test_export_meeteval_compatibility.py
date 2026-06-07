@@ -8,6 +8,8 @@ from src.export_meeteval_compatibility import (
     build_meeteval_compatibility_rows,
     build_meeteval_dry_run_handoff_lines,
     build_meeteval_dry_run_handoff_rows,
+    build_meeteval_dry_run_bridge_checklist_lines,
+    build_meeteval_dry_run_bridge_checklist_rows,
     build_meeteval_dry_run_checklist_lines,
     build_meeteval_dry_run_checklist_rows,
     build_meeteval_dry_run_receipt_lines,
@@ -223,6 +225,58 @@ class MeetEvalCompatibilityTest(unittest.TestCase):
         self.assertIn("template_only", rendered)
         self.assertIn("single_verified_case", rendered)
         self.assertIn("not been executed yet", rendered)
+
+    def test_build_meeteval_dry_run_bridge_checklist_rows_link_handoff_to_receipt(self) -> None:
+        handoff_rows = [
+            {
+                "bridge_status": "ready_for_dry_run",
+                "source_mix": "cleaned_fallback_dominant",
+                "recommended_slice": "single_verified_case",
+                "dry_run_goal": "Run one narrow diagnostic pass to validate the export path before any broader MeetEval or cpWER claim.",
+                "primary_blocker": "Cleaned fallback still dominates the current hypothesis mix, so the first dry run should stay diagnostic.",
+                "expected_evidence": "results/tables/meeteval_dry_run_receipt.json",
+                "handoff_note": "MeetEval / cpWER has not been run yet; this card only frames the first dry run.",
+            }
+        ]
+        receipt_rows = [
+            {
+                "execution_status": "template_only",
+                "run_scope": "single_verified_case",
+                "expected_inputs": "results/tables/meeteval_reference_segments.jsonl; results/tables/meeteval_hypothesis_segments.jsonl",
+                "expected_outputs": "Diagnostic export-path confirmation and a narrow run note.",
+                "writeback_note": "MeetEval / cpWER has not been executed yet; fill this receipt only after the first dry run.",
+            }
+        ]
+
+        rows = build_meeteval_dry_run_bridge_checklist_rows(handoff_rows, receipt_rows)
+
+        self.assertEqual(len(rows), 1)
+        self.assertEqual(rows[0]["checklist_order"], "1")
+        self.assertEqual(rows[0]["bridge_status"], "ready_for_dry_run")
+        self.assertEqual(rows[0]["prerequisite_artifact"], "results/figures/meeteval_dry_run_handoff.md")
+        self.assertEqual(rows[0]["receipt_target"], "results/figures/meeteval_dry_run_receipt.md")
+        self.assertIn("dry run", rows[0]["checklist_goal"].lower())
+
+    def test_build_meeteval_dry_run_bridge_checklist_lines_render_bridge(self) -> None:
+        lines = build_meeteval_dry_run_bridge_checklist_lines(
+            [
+                {
+                    "checklist_order": "1",
+                    "bridge_status": "ready_for_dry_run",
+                    "prerequisite_artifact": "results/figures/meeteval_dry_run_handoff.md",
+                    "receipt_target": "results/figures/meeteval_dry_run_receipt.md",
+                    "checklist_goal": "Verify the first MeetEval dry run bridge before any writeback is advanced.",
+                    "bridge_note": "Open the handoff packet first, then write back through the receipt target for single_verified_case.",
+                    "next_gate": "Confirm this bridge before opening the receipt target.",
+                }
+            ]
+        )
+        rendered = "\n".join(lines)
+
+        self.assertIn("# MeetEval Dry Run Bridge Checklist", rendered)
+        self.assertIn("ready_for_dry_run", rendered)
+        self.assertIn("meeteval_dry_run_handoff.md", rendered)
+        self.assertIn("meeteval_dry_run_receipt.md", rendered)
 
     def test_build_meeteval_dry_run_checklist_rows_rank_verified_cases(self) -> None:
         rows = build_meeteval_dry_run_checklist_rows(
