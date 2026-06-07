@@ -439,6 +439,12 @@ Frontier receipt packet:
 - `results/tables/frontier_receipt_packet.json`
 - This packet now pushes the same coordination layer one step further down to the receipt level. It still does not claim any executed frontier work; it only shows which prerequisite artifact should be opened first and which receipt target should eventually receive the writeback.
 
+Frontier receipt checklist:
+
+- `results/figures/frontier_receipt_checklist.md`
+- `results/tables/frontier_receipt_checklist.csv`
+- This checklist now turns the receipt packet into an ordered writeback path. It stays explicitly coordination-only, keeps the receipt target visible, and helps a future agent complete the frontier closeout sequence in order.
+
 Frontier receipt map:
 
 - `results/figures/frontier_receipt_map.md`

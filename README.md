@@ -278,6 +278,11 @@ Current frontier receipt packet result:
 - `results/figures/frontier_receipt_packet.md` now points that same queue head directly at its receipt-level writeback target
 - This remains coordination-only as well: it links the current frontier, prerequisite artifact, and receipt target without claiming that the queued frontier work has already been executed
 
+Current frontier receipt checklist result:
+
+- `results/figures/frontier_receipt_checklist.md` now turns that receipt packet into an ordered writeback checklist
+- This checklist remains coordination-only and keeps the receipt target explicit without claiming that any frontier work has already been executed
+
 Current frontier receipt map result:
 
 - `results/figures/frontier_receipt_map.md` now lays out the receipt path for all current frontiers, not just the queue head
