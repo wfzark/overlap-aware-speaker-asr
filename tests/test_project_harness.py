@@ -6,6 +6,8 @@ from src.project_harness import (
     build_frontier_execution_queue_lines,
     build_frontier_execution_queue_rows,
     build_frontier_focus_card_lines,
+    build_frontier_focus_card_checklist_lines,
+    build_frontier_focus_card_checklist_rows,
     build_frontier_focus_card_rows,
     build_frontier_handoff_packet_lines,
     build_frontier_handoff_packet_rows,
@@ -191,6 +193,44 @@ class ProjectHarnessTest(unittest.TestCase):
         self.assertIn("# Frontier Focus Card", rendered)
         self.assertIn("meeteval_compatibility", rendered)
         self.assertIn("MeetEval readiness card", rendered)
+
+    def test_build_frontier_focus_card_checklist_rows_point_queue_head_to_focus_step(self) -> None:
+        rows = build_frontier_focus_card_checklist_rows(
+            [
+                {
+                    "queue_order": "1",
+                    "current_frontier": "meeteval_compatibility",
+                    "entry_artifact": "MeetEval readiness card",
+                    "current_action": "Use the readiness card to stage one narrow dry run before claiming any benchmark bridge.",
+                }
+            ]
+        )
+
+        self.assertEqual(len(rows), 1)
+        self.assertEqual(rows[0]["checklist_order"], "1")
+        self.assertEqual(rows[0]["current_frontier"], "meeteval_compatibility")
+        self.assertIn("focus card", rows[0]["checklist_goal"].lower())
+        self.assertIn("current action", rows[0]["focus_note"].lower())
+
+    def test_build_frontier_focus_card_checklist_lines_render_card(self) -> None:
+        lines = build_frontier_focus_card_checklist_lines(
+            [
+                {
+                    "checklist_order": "1",
+                    "current_frontier": "meeteval_compatibility",
+                    "entry_artifact": "MeetEval readiness card",
+                    "current_action": "Use the readiness card to stage one narrow dry run before claiming any benchmark bridge.",
+                    "checklist_goal": "Confirm the current focus card for meeteval_compatibility before reading farther.",
+                    "focus_note": "Read the queue head first, then keep the entry artifact and current action visible while you decide the next pass.",
+                    "next_gate": "Confirm the focus card snapshot before moving to the next frontier.",
+                }
+            ]
+        )
+        rendered = "\n".join(lines)
+
+        self.assertIn("# Frontier Focus Card Checklist", rendered)
+        self.assertIn("meeteval_compatibility", rendered)
+        self.assertIn("current action", rendered)
 
     def test_build_frontier_handoff_packet_rows_point_queue_head_to_next_artifact(self) -> None:
         rows = build_frontier_handoff_packet_rows(
