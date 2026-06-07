@@ -255,9 +255,16 @@ Current benchmark receipt bridge result:
 - `results/figures/cascade_benchmark_receipt_bridge.md` now links the benchmark handoff packet directly to the benchmark evidence receipt
 - This bridge is still coordination-only: it names the current benchmark step, the prerequisite packet, and the receipt target without claiming that any benchmark execution has already happened
 
+Current benchmark receipt bridge checklist result:
+
+- `results/figures/cascade_benchmark_receipt_bridge_checklist.md`
+- `results/tables/cascade_benchmark_receipt_bridge_checklist.csv`
+- This checklist now turns the receipt bridge into an ordered writeback path. It stays explicitly coordination-only, keeps the receipt target visible, and helps a future agent complete the benchmark closeout sequence in order.
+
 Current benchmark handoff packet result:
 
 - `results/figures/cascade_benchmark_handoff_packet.md` now acts as the single-entry benchmark handoff note across readiness, plan, checklist, manifest template, execution summary, execution queue, session ledger, dependency graph, blocker matrix, runbook card, milestone card, phase checkpoint card, completion dashboard, operator brief, evidence receipt, and status tracking
+- That packet also includes the frontier bridge checklist and receipt bridge checklist so the benchmark closeout path stays visible in one place
 
 Current frontier harness breadth result:
 

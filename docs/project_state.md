@@ -344,7 +344,7 @@ Benchmark evidence receipt:
 Benchmark handoff packet:
 
 - `results/figures/cascade_benchmark_handoff_packet.md`
-- This generated note now provides one benchmark-entry document that points to the readiness, plan, checklist, manifest template, execution-summary, execution-queue, session-ledger, dependency-graph, blocker-matrix, runbook-card, milestone-card, phase-checkpoint-card, completion-dashboard, operator-brief, evidence-receipt, and status-board layers together.
+- This generated note now provides one benchmark-entry document that points to the readiness, plan, checklist, manifest template, execution-summary, execution-queue, session-ledger, dependency-graph, blocker-matrix, runbook-card, milestone-card, phase-checkpoint-card, completion-dashboard, operator-brief, frontier-bridge-checklist, receipt-bridge-checklist, evidence-receipt, and status-board layers together.
 
 ## Synthetic Split Cascade Validation
 
@@ -546,6 +546,12 @@ Benchmark receipt bridge:
 - `results/figures/cascade_benchmark_receipt_bridge.md`
 - `results/tables/cascade_benchmark_receipt_bridge.csv`
 - This bridge now links the benchmark handoff packet directly to the benchmark evidence receipt. It still does not claim any executed benchmark run; it simply shows which packet should be opened first and which receipt target should eventually capture the writeback.
+
+Benchmark receipt bridge checklist:
+
+- `results/figures/cascade_benchmark_receipt_bridge_checklist.md`
+- `results/tables/cascade_benchmark_receipt_bridge_checklist.csv`
+- This checklist now turns the receipt bridge into an ordered writeback path. It stays explicitly coordination-only, keeps the receipt target visible, and helps a future agent complete the benchmark closeout sequence in order.
 
 Benchmark evidence checklist:
 

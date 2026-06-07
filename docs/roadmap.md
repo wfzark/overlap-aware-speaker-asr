@@ -282,6 +282,12 @@ Update: a generated benchmark receipt bridge now connects that entrypoint to the
 - Summary view: `results/figures/cascade_benchmark_receipt_bridge.md`
 - This keeps the benchmark coordination stack easier to finish without overstating progress: it points the current benchmark step from the handoff packet down to the evidence receipt without implying that any timing capture has already happened.
 
+Update: a generated benchmark receipt bridge checklist now turns that bridge into an ordered writeback path.
+
+- Benchmark receipt bridge checklist: `results/tables/cascade_benchmark_receipt_bridge_checklist.csv`
+- Summary view: `results/figures/cascade_benchmark_receipt_bridge_checklist.md`
+- This keeps the same receipt-target link visible while making the bridge itself row-by-row checkable before the benchmark closeout sequence advances.
+
 Remaining stretch work:
 
 - replace proxy costs with a controlled hardware/runtime benchmark
