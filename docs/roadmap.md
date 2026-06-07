@@ -211,6 +211,12 @@ Update: `external_validation` now also has a license gate bridge checklist.
 - Summary view: `results/figures/external_validation_license_gate_bridge_checklist.md`
 - This connects the license gate to the slice manifest while staging remains blocked.
 
+Update: `external_validation` now also has a license confirmation scaffold.
+
+- License confirmation scaffold: `results/tables/external_validation_license_confirmation_scaffold.json`
+- Summary view: `results/figures/external_validation_license_confirmation_scaffold.md`
+- `confirmation_status = template_only`; no license decision has been recorded yet.
+
 Update: `external_validation` now also has a slice manifest.
 
 - Slice manifest: `results/tables/external_validation_slice_manifest.json`
@@ -276,7 +282,7 @@ Update: `llm_critic` now also has a review pass status rollup.
 
 - Review pass status table: `results/tables/llm_critic_review_pass_status.csv`
 - Summary view: `results/figures/llm_critic_review_pass_status.md`
-- `completed_count = 3/5` with `next_case_id = NoOverlap`; no verified repair claim is made.
+- `completed_count = 4/5` with `next_case_id = OppositeOverlap`; no verified repair claim is made.
 
 Update: `llm_critic` now also has a third qualitative review pass.
 
@@ -290,6 +296,19 @@ Update: `llm_critic` now also has a review pass status bridge checklist.
 - Review pass status bridge checklist: `results/tables/llm_critic_review_pass_status_bridge_checklist.csv`
 - Summary view: `results/figures/llm_critic_review_pass_status_bridge_checklist.md`
 - This connects the status rollup to the next pass receipt without claiming verified repair.
+
+Update: `llm_critic` now also has a fourth qualitative review pass continue layer.
+
+- Review pass continue table: `results/tables/llm_critic_review_pass_continue.csv`
+- Fourth pass table: `results/tables/llm_critic_review_pass_fourth.csv`
+- Summary view: `results/figures/llm_critic_review_pass_fourth.md`
+- `NoOverlap` is the fourth queue pass; no verified repair claim is made.
+
+Update: `llm_critic` now also has a review pass continue bridge checklist.
+
+- Review pass continue bridge checklist: `results/tables/llm_critic_review_pass_continue_bridge_checklist.csv`
+- Summary view: `results/figures/llm_critic_review_pass_continue_bridge_checklist.md`
+- This connects the fourth qualitative pass to the continue receipt without claiming verified repair.
 
 Update: a generated demo walkthrough now turns the storyboard into a short presentation sequence.
 
@@ -380,6 +399,18 @@ Update: `meeteval_compatibility` now also has a cpWER alignment drift handoff br
 - Drift handoff bridge checklist: `results/tables/meeteval_cpwer_alignment_drift_handoff_bridge_checklist.csv`
 - Summary view: `results/figures/meeteval_cpwer_alignment_drift_handoff_bridge_checklist.md`
 - This connects the drift handoff back to the drift bridge checklist without claiming MeetEval execution.
+
+Update: `meeteval_compatibility` now also has a cpWER alignment drift segment scaffold.
+
+- Drift segment scaffold: `results/tables/meeteval_cpwer_alignment_drift_segment_scaffold.json`
+- Summary view: `results/figures/meeteval_cpwer_alignment_drift_segment_scaffold.md`
+- `HeavyOverlap` segment inspection remains `scaffold_only`; cpWER execution is still pending.
+
+Update: `meeteval_compatibility` now also has a cpWER alignment drift segment scaffold bridge checklist.
+
+- Drift segment scaffold bridge checklist: `results/tables/meeteval_cpwer_alignment_drift_segment_scaffold_bridge_checklist.csv`
+- Summary view: `results/figures/meeteval_cpwer_alignment_drift_segment_scaffold_bridge_checklist.md`
+- This connects the segment scaffold to the drift handoff bridge checklist without claiming reconciliation.
 
 Update: `meeteval_compatibility` now also has a cpWER bridge handoff.
 

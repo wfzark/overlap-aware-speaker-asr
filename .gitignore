@@ -71,6 +71,11 @@ results/synthetic_overlap_v2/
 !results/tables/meeteval_cpwer_alignment_drift_handoff_receipt.json
 !results/tables/meeteval_cpwer_alignment_drift_handoff_bridge_checklist.csv
 !results/tables/meeteval_cpwer_alignment_drift_handoff_bridge_checklist.json
+!results/tables/meeteval_cpwer_alignment_drift_segment_scaffold.csv
+!results/tables/meeteval_cpwer_alignment_drift_segment_scaffold.json
+!results/tables/meeteval_cpwer_alignment_drift_segment_scaffold_receipt.json
+!results/tables/meeteval_cpwer_alignment_drift_segment_scaffold_bridge_checklist.csv
+!results/tables/meeteval_cpwer_alignment_drift_segment_scaffold_bridge_checklist.json
 !results/tables/llm_critic_review_pass.csv
 !results/tables/llm_critic_review_pass.json
 !results/tables/llm_critic_review_pass_bridge_checklist.csv
@@ -93,6 +98,13 @@ results/synthetic_overlap_v2/
 !results/tables/llm_critic_review_pass_next_receipt.json
 !results/tables/llm_critic_review_pass_status_bridge_checklist.csv
 !results/tables/llm_critic_review_pass_status_bridge_checklist.json
+!results/tables/llm_critic_review_pass_continue.csv
+!results/tables/llm_critic_review_pass_continue.json
+!results/tables/llm_critic_review_pass_fourth.csv
+!results/tables/llm_critic_review_pass_fourth.json
+!results/tables/llm_critic_review_pass_continue_receipt.json
+!results/tables/llm_critic_review_pass_continue_bridge_checklist.csv
+!results/tables/llm_critic_review_pass_continue_bridge_checklist.json
 !results/tables/external_validation_slice_manifest.csv
 !results/tables/external_validation_slice_manifest.json
 !results/tables/external_validation_slice_manifest_receipt.json
@@ -108,6 +120,9 @@ results/synthetic_overlap_v2/
 !results/tables/external_validation_license_gate_receipt.json
 !results/tables/external_validation_license_gate_bridge_checklist.csv
 !results/tables/external_validation_license_gate_bridge_checklist.json
+!results/tables/external_validation_license_confirmation_scaffold.csv
+!results/tables/external_validation_license_confirmation_scaffold.json
+!results/tables/external_validation_license_confirmation_scaffold_receipt.json
 !results/tables/speaker_profile_embedding_scaffold.csv
 !results/tables/speaker_profile_embedding_scaffold.json
 !results/tables/speaker_profile_embedding_scaffold_receipt.json
@@ -137,6 +152,9 @@ results/synthetic_overlap_v2/
 !results/figures/meeteval_cpwer_alignment_drift_handoff.md
 !results/figures/meeteval_cpwer_alignment_drift_handoff_receipt.md
 !results/figures/meeteval_cpwer_alignment_drift_handoff_bridge_checklist.md
+!results/figures/meeteval_cpwer_alignment_drift_segment_scaffold.md
+!results/figures/meeteval_cpwer_alignment_drift_segment_scaffold_receipt.md
+!results/figures/meeteval_cpwer_alignment_drift_segment_scaffold_bridge_checklist.md
 !results/figures/llm_critic_review_pass.md
 !results/figures/llm_critic_review_pass_bridge_checklist.md
 !results/figures/llm_critic_review_pass_advance.md
@@ -149,6 +167,10 @@ results/synthetic_overlap_v2/
 !results/figures/llm_critic_review_pass_third.md
 !results/figures/llm_critic_review_pass_next_receipt.md
 !results/figures/llm_critic_review_pass_status_bridge_checklist.md
+!results/figures/llm_critic_review_pass_continue.md
+!results/figures/llm_critic_review_pass_fourth.md
+!results/figures/llm_critic_review_pass_continue_receipt.md
+!results/figures/llm_critic_review_pass_continue_bridge_checklist.md
 !results/figures/external_validation_slice_manifest.md
 !results/figures/external_validation_slice_manifest_receipt.md
 !results/figures/external_validation_slice_manifest_bridge_checklist.md
@@ -158,6 +180,8 @@ results/synthetic_overlap_v2/
 !results/figures/external_validation_license_gate.md
 !results/figures/external_validation_license_gate_receipt.md
 !results/figures/external_validation_license_gate_bridge_checklist.md
+!results/figures/external_validation_license_confirmation_scaffold.md
+!results/figures/external_validation_license_confirmation_scaffold_receipt.md
 !results/figures/speaker_profile_embedding_scaffold.md
 !results/figures/speaker_profile_embedding_scaffold_receipt.md
 !results/figures/speaker_profile_embedding_scaffold_bridge_checklist.md

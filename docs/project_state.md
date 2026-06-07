@@ -676,6 +676,18 @@ MeetEval cpWER alignment drift handoff bridge checklist:
 - `results/tables/meeteval_cpwer_alignment_drift_handoff_bridge_checklist.csv`
 - This checklist connects the drift handoff back to the drift bridge checklist without claiming MeetEval execution.
 
+MeetEval cpWER alignment drift segment scaffold:
+
+- `results/figures/meeteval_cpwer_alignment_drift_segment_scaffold.md`
+- `results/tables/meeteval_cpwer_alignment_drift_segment_scaffold.json`
+- The segment inspection scaffold for `HeavyOverlap` remains `scaffold_only` with no reconciliation claim.
+
+MeetEval cpWER alignment drift segment scaffold bridge checklist:
+
+- `results/figures/meeteval_cpwer_alignment_drift_segment_scaffold_bridge_checklist.md`
+- `results/tables/meeteval_cpwer_alignment_drift_segment_scaffold_bridge_checklist.csv`
+- This checklist connects the segment scaffold to the drift handoff bridge checklist while cpWER execution remains pending.
+
 MeetEval cpWER bridge handoff:
 
 - `results/figures/meeteval_cpwer_bridge_handoff.md`
@@ -776,7 +788,7 @@ LLM critic review pass status rollup:
 
 - `results/figures/llm_critic_review_pass_status.md`
 - `results/tables/llm_critic_review_pass_status.csv`
-- The queue rollup reports `completed_count = 3/5` with `next_case_id = NoOverlap` and no verified repair claim.
+- The queue rollup reports `completed_count = 4/5` with `next_case_id = OppositeOverlap` and no verified repair claim.
 
 LLM critic review pass third bridge:
 
@@ -795,6 +807,24 @@ LLM critic review pass status bridge checklist:
 - `results/figures/llm_critic_review_pass_status_bridge_checklist.md`
 - `results/tables/llm_critic_review_pass_status_bridge_checklist.csv`
 - This checklist connects the status rollup to the next pass receipt without claiming verified repair.
+
+LLM critic review pass fourth bridge:
+
+- `results/figures/llm_critic_review_pass_fourth.md`
+- `results/tables/llm_critic_review_pass_fourth.csv`
+- The fourth qualitative pass records critic-style notes for `NoOverlap` only; no verified transcript repair is claimed.
+
+LLM critic review pass continue bridge:
+
+- `results/figures/llm_critic_review_pass_continue.md`
+- `results/tables/llm_critic_review_pass_continue.csv`
+- The continue note records queue advancement to the fourth qualitative pass without any verified repair claim.
+
+LLM critic review pass continue bridge checklist:
+
+- `results/figures/llm_critic_review_pass_continue_bridge_checklist.md`
+- `results/tables/llm_critic_review_pass_continue_bridge_checklist.csv`
+- This checklist connects the fourth qualitative pass to the continue receipt without claiming verified repair.
 
 LLM critic review bridge checklist:
 
@@ -849,6 +879,12 @@ External validation license gate bridge checklist:
 - `results/figures/external_validation_license_gate_bridge_checklist.md`
 - `results/tables/external_validation_license_gate_bridge_checklist.csv`
 - This checklist connects the license gate to the slice manifest while external audio staging remains blocked.
+
+External validation license confirmation scaffold:
+
+- `results/figures/external_validation_license_confirmation_scaffold.md`
+- `results/tables/external_validation_license_confirmation_scaffold.json`
+- The license confirmation scaffold remains `template_only` with `license_status = pending_confirmation`.
 
 External validation slice manifest bridge:
 
@@ -974,9 +1010,12 @@ python -m src.meeteval_cpwer_alignment_drift_diagnostic
 python -m src.meeteval_cpwer_alignment_drift_bridge_checklist
 python -m src.meeteval_cpwer_alignment_drift_handoff
 python -m src.meeteval_cpwer_alignment_drift_handoff_bridge_checklist
+python -m src.meeteval_cpwer_alignment_drift_segment_scaffold
+python -m src.meeteval_cpwer_alignment_drift_segment_scaffold_bridge_checklist
 python -m src.external_validation_slice_scaffold
 python -m src.external_validation_license_gate
 python -m src.external_validation_license_gate_bridge_checklist
+python -m src.external_validation_license_confirmation_scaffold
 python -m src.external_validation_slice_manifest
 python -m src.external_validation_slice_manifest_bridge_checklist
 python -m src.external_validation_slice_staging_readiness
@@ -989,7 +1028,9 @@ python -m src.llm_critic_review_pass_advance
 python -m src.llm_critic_review_pass_advance_bridge_checklist
 python -m src.llm_critic_review_pass_status
 python -m src.llm_critic_review_pass_next
+python -m src.llm_critic_review_pass_continue
 python -m src.llm_critic_review_pass_status_bridge_checklist
+python -m src.llm_critic_review_pass_continue_bridge_checklist
 python -m src.project_harness
 ```
 
