@@ -1,0 +1,9 @@
+# Frontier Execution Queue Handoff
+
+This generated note turns the unified frontier execution-chain rollup into per-frontier handoff actions. It remains experimental/frontier coordination only and does not claim benchmark completion.
+
+| handoff_order | frontier_name | chain_status | recommended_action | expected_inputs | expected_outputs | handoff_note |
+| --- | --- | --- | --- | --- | --- | --- |
+| 1 | meeteval_compatibility | execution_chain_ready | Fill the execution receipt at results/tables/meeteval_cpwer_execution_receipt.json after final bridge verification. | results/figures/frontier_execution_queue_status.md; per-frontier status bridge checklist. | results/tables/meeteval_cpwer_execution_receipt.json | Coordination handoff for meeteval_compatibility while chain_status=execution_chain_ready; no benchmark execution or external audio staging is claimed. |
+| 2 | speaker_profile | execution_chain_ready | Fill the execution receipt at results/tables/speaker_profile_embedding_trial_execution_receipt.json after final bridge verification. | results/figures/frontier_execution_queue_status.md; per-frontier status bridge checklist. | results/tables/speaker_profile_embedding_trial_execution_receipt.json | Coordination handoff for speaker_profile while chain_status=execution_chain_ready; no benchmark execution or external audio staging is claimed. |
+| 3 | external_validation | execution_chain_ready | Fill the execution receipt at results/tables/external_validation_slice_staging_handoff_receipt.json after final bridge verification. | results/figures/frontier_execution_queue_status.md; per-frontier status bridge checklist. | results/tables/external_validation_slice_staging_handoff_receipt.json | Coordination handoff for external_validation while chain_status=execution_chain_ready; no benchmark execution or external audio staging is claimed. |
