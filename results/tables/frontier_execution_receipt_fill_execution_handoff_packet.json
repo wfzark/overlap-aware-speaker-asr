@@ -50,6 +50,16 @@
     "section_role": "Handoff packet to evidence receipt verification"
   },
   {
+    "packet_section": "runbook_bridge_checklist",
+    "artifact_path": "results/figures/frontier_execution_receipt_fill_execution_runbook_bridge_checklist.md",
+    "section_role": "Runbook card to evidence receipt verification"
+  },
+  {
+    "packet_section": "phase_checkpoint",
+    "artifact_path": "results/figures/frontier_execution_receipt_fill_execution_phase_checkpoint_card.md",
+    "section_role": "Per-phase completion signal check"
+  },
+  {
     "packet_section": "execution_receipt_bridge",
     "artifact_path": "results/figures/frontier_execution_receipt_fill_execution_execution_receipt_bridge.md",
     "section_role": "Evidence receipt to JSON execution receipt bridge"

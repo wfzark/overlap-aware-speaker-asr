@@ -1343,6 +1343,18 @@ Update: the frontier receipt layer now has a fill execution execution receipt br
 - Summary view: `results/figures/frontier_execution_receipt_fill_execution_execution_receipt_bridge_checklist.md`
 - Ordered verification path before opening the JSON execution receipt.
 
+Update: the frontier receipt layer now has a fill execution phase checkpoint card.
+
+- Phase checkpoint card: `results/tables/frontier_execution_receipt_fill_execution_phase_checkpoint_card.csv`
+- Summary view: `results/figures/frontier_execution_receipt_fill_execution_phase_checkpoint_card.md`
+- Per-phase completion signal for the current fill execution step.
+
+Update: the frontier receipt layer now has a fill execution runbook bridge checklist.
+
+- Runbook bridge checklist: `results/tables/frontier_execution_receipt_fill_execution_runbook_bridge_checklist.csv`
+- Summary view: `results/figures/frontier_execution_receipt_fill_execution_runbook_bridge_checklist.md`
+- Connects the runbook card to the evidence receipt target.
+
 Update: `demo_excellence` now has a lightweight Streamlit viewer scaffold.
 
 - Demo app: `demo/app.py`
