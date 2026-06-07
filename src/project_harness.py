@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import csv
 import json
 from pathlib import Path
 
@@ -245,6 +246,17 @@ def frontier_next_artifact(frontier_id: str) -> tuple[str, str]:
     return mapping.get(frontier_id, ("", ""))
 
 
+FRONTIER_RECEIPT_CHECKLIST_COLUMNS = [
+    "checklist_order",
+    "current_frontier",
+    "prerequisite_artifact",
+    "receipt_target",
+    "checklist_goal",
+    "preflight_step",
+    "next_gate",
+]
+
+
 def build_frontier_handoff_packet_rows(queue_rows: list[dict[str, str]]) -> list[dict[str, str]]:
     if not queue_rows:
         return []
@@ -310,6 +322,42 @@ def build_frontier_receipt_packet_lines(rows: list[dict[str, str]]) -> list[str]
     for row in rows:
         lines.append(
             f"| {row['current_frontier']} | {row['prerequisite_artifact']} | {row['receipt_target']} | {row['execution_note']} | {row['packet_scope']} |"
+        )
+    return lines
+
+
+def build_frontier_receipt_checklist_rows(queue_rows: list[dict[str, str]]) -> list[dict[str, str]]:
+    if not queue_rows:
+        return []
+
+    head = queue_rows[0]
+    frontier_id = str(head.get("frontier_id", ""))
+    prerequisite_artifact, receipt_target = frontier_next_artifact(frontier_id)
+    return [
+        {
+            "checklist_order": "1",
+            "current_frontier": frontier_id,
+            "prerequisite_artifact": prerequisite_artifact,
+            "receipt_target": receipt_target,
+            "checklist_goal": f"Write back the receipt for {frontier_id} before any broader frontier claim.",
+            "preflight_step": "Open the prerequisite artifact and confirm the receipt target before the writeback step.",
+            "next_gate": "Fill the receipt target and confirm the frontier writeback before advancing the queue.",
+        }
+    ]
+
+
+def build_frontier_receipt_checklist_lines(rows: list[dict[str, str]]) -> list[str]:
+    lines = [
+        "# Frontier Receipt Checklist",
+        "",
+        "This generated checklist turns the frontier receipt packet into an ordered writeback path. It remains coordination-only and does not claim that any frontier work has already been executed.",
+        "",
+        "| checklist_order | current_frontier | prerequisite_artifact | receipt_target | checklist_goal | preflight_step | next_gate |",
+        "| --- | --- | --- | --- | --- | --- | --- |",
+    ]
+    for row in rows:
+        lines.append(
+            f"| {row['checklist_order']} | {row['current_frontier']} | {row['prerequisite_artifact']} | {row['receipt_target']} | {row['checklist_goal']} | {row['preflight_step']} | {row['next_gate']} |"
         )
     return lines
 
@@ -625,6 +673,26 @@ def write_frontier_receipt_packet(frontier_status: list[dict[str, str]]) -> tupl
     return json_path, md_path
 
 
+def write_frontier_receipt_checklist(frontier_status: list[dict[str, str]]) -> tuple[Path, Path, Path]:
+    tables_dir = PROJECT_ROOT / "results" / "tables"
+    figures_dir = PROJECT_ROOT / "results" / "figures"
+    tables_dir.mkdir(parents=True, exist_ok=True)
+    figures_dir.mkdir(parents=True, exist_ok=True)
+
+    queue_rows = build_frontier_execution_queue_rows(frontier_status)
+    checklist_rows = build_frontier_receipt_checklist_rows(queue_rows)
+    csv_path = tables_dir / "frontier_receipt_checklist.csv"
+    json_path = tables_dir / "frontier_receipt_checklist.json"
+    md_path = figures_dir / "frontier_receipt_checklist.md"
+    with csv_path.open("w", newline="", encoding="utf-8-sig") as f:
+        writer = csv.DictWriter(f, fieldnames=FRONTIER_RECEIPT_CHECKLIST_COLUMNS)
+        writer.writeheader()
+        writer.writerows(checklist_rows)
+    json_path.write_text(json.dumps(checklist_rows, ensure_ascii=False, indent=2), encoding="utf-8")
+    md_path.write_text("\n".join(build_frontier_receipt_checklist_lines(checklist_rows)) + "\n", encoding="utf-8")
+    return csv_path, json_path, md_path
+
+
 def write_frontier_receipt_map(frontier_status: list[dict[str, str]]) -> tuple[Path, Path]:
     tables_dir = PROJECT_ROOT / "results" / "tables"
     figures_dir = PROJECT_ROOT / "results" / "figures"
@@ -707,6 +775,7 @@ def main() -> None:
     focus_json_path, focus_md_path = write_frontier_focus_card(report["frontier_status"])
     handoff_json_path, handoff_md_path = write_frontier_handoff_packet(report["frontier_status"])
     receipt_json_path, receipt_md_path = write_frontier_receipt_packet(report["frontier_status"])
+    receipt_checklist_csv_path, receipt_checklist_json_path, receipt_checklist_md_path = write_frontier_receipt_checklist(report["frontier_status"])
     receipt_map_json_path, receipt_map_md_path = write_frontier_receipt_map(report["frontier_status"])
     parallel_picklist_json_path, parallel_picklist_md_path = write_frontier_parallel_picklist(report["frontier_status"])
     receipt_board_json_path, receipt_board_md_path = write_frontier_receipt_board(report["frontier_status"])
@@ -722,6 +791,9 @@ def main() -> None:
     print(f"Wrote frontier handoff note: {handoff_md_path.relative_to(PROJECT_ROOT)}")
     print(f"Wrote frontier receipt JSON: {receipt_json_path.relative_to(PROJECT_ROOT)}")
     print(f"Wrote frontier receipt note: {receipt_md_path.relative_to(PROJECT_ROOT)}")
+    print(f"Wrote frontier receipt checklist CSV: {receipt_checklist_csv_path.relative_to(PROJECT_ROOT)}")
+    print(f"Wrote frontier receipt checklist JSON: {receipt_checklist_json_path.relative_to(PROJECT_ROOT)}")
+    print(f"Wrote frontier receipt checklist note: {receipt_checklist_md_path.relative_to(PROJECT_ROOT)}")
     print(f"Wrote frontier receipt map JSON: {receipt_map_json_path.relative_to(PROJECT_ROOT)}")
     print(f"Wrote frontier receipt map note: {receipt_map_md_path.relative_to(PROJECT_ROOT)}")
     print(f"Wrote frontier parallel picklist JSON: {parallel_picklist_json_path.relative_to(PROJECT_ROOT)}")

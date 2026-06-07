@@ -15,6 +15,8 @@ from src.project_harness import (
     build_frontier_coordination_matrix_rows,
     build_frontier_receipt_board_lines,
     build_frontier_receipt_board_rows,
+    build_frontier_receipt_checklist_lines,
+    build_frontier_receipt_checklist_rows,
     build_frontier_receipt_map_lines,
     build_frontier_receipt_map_rows,
     build_frontier_receipt_packet_lines,
@@ -218,6 +220,47 @@ class ProjectHarnessTest(unittest.TestCase):
         self.assertIn("meeteval_compatibility", rendered)
         self.assertIn("meeteval_dry_run_handoff.md", rendered)
         self.assertIn("meeteval_dry_run_receipt.json", rendered)
+
+    def test_build_frontier_receipt_checklist_rows_point_queue_head_to_writeback_step(self) -> None:
+        rows = build_frontier_receipt_checklist_rows(
+            [
+                {
+                    "queue_order": "1",
+                    "frontier_id": "meeteval_compatibility",
+                    "status": "documented_skill",
+                    "entry_artifact": "MeetEval readiness card",
+                    "why_now": "Use the readiness card to stage one narrow dry run before claiming any benchmark bridge.",
+                }
+            ]
+        )
+
+        self.assertEqual(len(rows), 1)
+        self.assertEqual(rows[0]["checklist_order"], "1")
+        self.assertEqual(rows[0]["current_frontier"], "meeteval_compatibility")
+        self.assertEqual(rows[0]["receipt_target"], "results/tables/meeteval_dry_run_receipt.json")
+        self.assertIn("write back", rows[0]["checklist_goal"].lower())
+        self.assertIn("receipt target", rows[0]["next_gate"].lower())
+
+    def test_build_frontier_receipt_checklist_lines_render_queue(self) -> None:
+        lines = build_frontier_receipt_checklist_lines(
+            [
+                {
+                    "checklist_order": "1",
+                    "current_frontier": "meeteval_compatibility",
+                    "prerequisite_artifact": "results/figures/meeteval_dry_run_handoff.md",
+                    "receipt_target": "results/tables/meeteval_dry_run_receipt.json",
+                    "checklist_goal": "Write back the receipt for meeteval_compatibility before any broader frontier claim.",
+                    "preflight_step": "Open the prerequisite artifact and confirm the receipt target before the writeback step.",
+                    "next_gate": "Fill the receipt target and confirm the frontier writeback before advancing the queue.",
+                }
+            ]
+        )
+        rendered = "\n".join(lines)
+
+        self.assertIn("# Frontier Receipt Checklist", rendered)
+        self.assertIn("meeteval_compatibility", rendered)
+        self.assertIn("meeteval_dry_run_receipt.json", rendered)
+        self.assertIn("writeback path", rendered)
 
     def test_build_frontier_receipt_map_rows_cover_all_current_frontiers(self) -> None:
         rows = build_frontier_receipt_map_rows(
