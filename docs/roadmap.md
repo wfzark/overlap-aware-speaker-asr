@@ -1579,6 +1579,13 @@ Update: the frontier handoff now also has a receipt readiness board.
 - Script: `python3 -m src.frontier_execution_queue_receipt_readiness_board`
 - Current evidence separates receipt targets that are ready to fill from those still waiting on bridge or scaffold work, without claiming benchmark execution.
 
+Update: the frontier handoff now also has a receipt readiness bridge checklist.
+
+- Frontier execution queue receipt readiness bridge checklist: `results/tables/frontier_execution_queue_receipt_readiness_bridge_checklist.csv`
+- Summary view: `results/figures/frontier_execution_queue_receipt_readiness_bridge_checklist.md`
+- Script: `python3 -m src.frontier_execution_queue_receipt_readiness_bridge_checklist`
+- Current evidence turns the readiness board into a verification gate before reopening the unified frontier receipt queue status.
+
 Update: the frontier now has per-frontier receipt readiness bridge checklists.
 
 - MeetEval receipt readiness bridge: `results/tables/meeteval_cpwer_execution_receipt_readiness_bridge_checklist.csv`

@@ -1757,6 +1757,12 @@ Frontier execution queue receipt readiness board:
 - `results/tables/frontier_execution_queue_receipt_readiness_board.csv`
 - This board splits the frontier receipts into `ready_for_receipt_fill` vs `bridge_or_scaffold_pending` after the execution handoff has already been verified.
 
+Frontier execution queue receipt readiness bridge checklist:
+
+- `results/figures/frontier_execution_queue_receipt_readiness_bridge_checklist.md`
+- `results/tables/frontier_execution_queue_receipt_readiness_bridge_checklist.csv`
+- This checklist verifies each execution queue receipt readiness row before the unified frontier receipt queue status is reopened.
+
 MeetEval cpWER execution receipt readiness:
 
 - `results/figures/meeteval_cpwer_execution_receipt_readiness.md`
@@ -2565,11 +2571,9 @@ python -m src.frontier_execution_queue_status_preflight_bridge_checklist
 python -m src.frontier_execution_queue_status_reentry_card
 python -m src.frontier_execution_queue_status_reentry_bridge_checklist
 python -m src.frontier_execution_queue_handoff_bridge_checklist
-<<<<<<< HEAD
 python -m src.frontier_execution_queue_receipt_open_card
-=======
 python -m src.frontier_execution_queue_receipt_readiness_board
->>>>>>> c1366e8 (docs: record frontier execution receipt coordination artifacts)
+python -m src.frontier_execution_queue_receipt_readiness_bridge_checklist
 python -m src.meeteval_cpwer_execution_receipt_readiness
 python -m src.speaker_profile_embedding_trial_execution_receipt_readiness
 python -m src.external_validation_slice_staging_handoff_receipt_readiness
