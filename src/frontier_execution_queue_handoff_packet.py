@@ -73,6 +73,12 @@ PACKET_SECTIONS = [
     ),
     (
         "10",
+        "execution_queue_milestone_card",
+        "results/figures/frontier_execution_queue_milestone_card.md",
+        "Immediate milestone boundary and next unlock for the current first execution-queue action.",
+    ),
+    (
+        "11",
         "execution_queue_handoff_bridge_checklist",
         "results/figures/frontier_execution_queue_handoff_bridge_checklist.md",
         "Verify each execution handoff before opening the receipt target for that frontier.",
