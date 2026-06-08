@@ -242,8 +242,14 @@ results/synthetic_overlap_v2/
 !results/tables/speaker_profile_audio_proxy_trial.json
 !results/tables/speaker_profile_audio_proxy_summary.csv
 !results/tables/speaker_profile_audio_proxy_summary.json
+!results/tables/speaker_profile_multisignal_diagnostic.csv
+!results/tables/speaker_profile_multisignal_diagnostic.json
+!results/tables/speaker_profile_multisignal_summary.csv
+!results/tables/speaker_profile_multisignal_summary.json
 !results/figures/speaker_profile_audio_proxy_trial.md
 !results/figures/speaker_profile_audio_proxy_summary.md
+!results/figures/speaker_profile_multisignal_diagnostic.md
+!results/figures/speaker_profile_multisignal_summary.md
 !results/tables/demo_walkthrough_review_pass_continue_bridge_checklist.csv
 !results/tables/demo_walkthrough_review_pass_continue_bridge_checklist.json
 !results/tables/demo_walkthrough_review_pass_completion_summary.csv
