@@ -1733,6 +1733,12 @@ Frontier execution queue status preflight bridge checklist:
 - `results/tables/frontier_execution_queue_status_preflight_bridge_checklist.csv`
 - This checklist verifies the completion-dashboard bridge before the execution queue status rollup is reopened.
 
+Frontier execution queue status reentry card:
+
+- `results/figures/frontier_execution_queue_status_reentry_card.md`
+- `results/tables/frontier_execution_queue_status_reentry_card.csv`
+- This card gives the next contributor a one-page instruction for reopening the execution queue status rollup after preflight.
+
 MeetEval cpWER execution receipt readiness:
 
 - `results/figures/meeteval_cpwer_execution_receipt_readiness.md`
@@ -2538,6 +2544,7 @@ python -m src.frontier_execution_queue_milestone_bridge_checklist
 python -m src.frontier_execution_queue_completion_dashboard
 python -m src.frontier_execution_queue_completion_dashboard_bridge_checklist
 python -m src.frontier_execution_queue_status_preflight_bridge_checklist
+python -m src.frontier_execution_queue_status_reentry_card
 python -m src.frontier_execution_queue_handoff_bridge_checklist
 python -m src.meeteval_cpwer_execution_receipt_readiness
 python -m src.speaker_profile_embedding_trial_execution_receipt_readiness

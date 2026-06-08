@@ -410,6 +410,12 @@ Current frontier execution queue status preflight bridge checklist result:
 - `results/tables/frontier_execution_queue_status_preflight_bridge_checklist.csv`
 - The checklist verifies the completion-dashboard bridge before the execution-queue status rollup is reopened.
 
+Current frontier execution queue status reentry card result:
+
+- `results/figures/frontier_execution_queue_status_reentry_card.md`
+- `results/tables/frontier_execution_queue_status_reentry_card.csv`
+- The card gives the next contributor a one-page instruction for reopening the execution-queue status rollup after preflight.
+
 Current frontier operator next-action frontier bridge checklist result:
 
 - `results/figures/frontier_operator_next_action_frontier_bridge_checklist.md`

@@ -109,6 +109,12 @@ PACKET_SECTIONS = [
     ),
     (
         "16",
+        "execution_queue_status_reentry_card",
+        "results/figures/frontier_execution_queue_status_reentry_card.md",
+        "One-page reentry instruction for reopening the execution queue status rollup.",
+    ),
+    (
+        "17",
         "execution_queue_handoff_bridge_checklist",
         "results/figures/frontier_execution_queue_handoff_bridge_checklist.md",
         "Verify each execution handoff before opening the receipt target for that frontier.",

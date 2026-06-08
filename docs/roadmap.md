@@ -1537,6 +1537,13 @@ Update: the frontier now also has an execution queue status preflight bridge che
 - Script: `python3 -m src.frontier_execution_queue_status_preflight_bridge_checklist`
 - Current evidence verifies the completion-dashboard bridge before reopening the execution queue status rollup.
 
+Update: the frontier now also has an execution queue status reentry card.
+
+- Frontier execution queue status reentry card: `results/tables/frontier_execution_queue_status_reentry_card.csv`
+- Summary view: `results/figures/frontier_execution_queue_status_reentry_card.md`
+- Script: `python3 -m src.frontier_execution_queue_status_reentry_card`
+- Current evidence gives the next contributor a one-page instruction for reopening the execution queue status rollup after preflight.
+
 Update: the frontier now has execution receipt readiness rollups.
 
 - MeetEval receipt readiness: `results/tables/meeteval_cpwer_execution_receipt_readiness.csv`
