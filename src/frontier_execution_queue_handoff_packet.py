@@ -61,6 +61,12 @@ PACKET_SECTIONS = [
     ),
     (
         "8",
+        "execution_queue_runbook_bridge_checklist",
+        "results/figures/frontier_execution_queue_runbook_bridge_checklist.md",
+        "Verify the runbook card before opening the current execution queue receipt target.",
+    ),
+    (
+        "9",
         "execution_queue_handoff_bridge_checklist",
         "results/figures/frontier_execution_queue_handoff_bridge_checklist.md",
         "Verify each execution handoff before opening the receipt target for that frontier.",
