@@ -410,6 +410,12 @@ Current frontier operator next-action status handoff completion summary result:
 - `results/tables/frontier_operator_next_action_status_handoff_completion_summary.csv`
 - The summary compresses the top-level ready/block handoff into one queue-level state row.
 
+Current frontier operator next-action status handoff completion summary bridge checklist result:
+
+- `results/figures/frontier_operator_next_action_status_handoff_completion_summary_bridge_checklist.md`
+- `results/tables/frontier_operator_next_action_status_handoff_completion_summary_bridge_checklist.csv`
+- The checklist verifies that queue-level top-level handoff summary before the next contributor reopens the lane-level handoff.
+
 Current frontier focus checklist result:
 
 - `results/figures/frontier_focus_card_checklist.md` now turns that focus card into a one-glance verification checklist

@@ -1328,6 +1328,13 @@ Update: the frontier now also has a top-level operator status handoff completion
 - Script: `python3 -m src.frontier_operator_next_action_status_handoff_completion_summary`
 - Current evidence compresses the lane-specific top-level handoff into one queue-level row and currently records `queue_complete`.
 
+Update: the frontier now also has a top-level operator status handoff completion summary bridge checklist.
+
+- Frontier operator status handoff completion summary bridge checklist: `results/tables/frontier_operator_next_action_status_handoff_completion_summary_bridge_checklist.csv`
+- Summary view: `results/figures/frontier_operator_next_action_status_handoff_completion_summary_bridge_checklist.md`
+- Script: `python3 -m src.frontier_operator_next_action_status_handoff_completion_summary_bridge_checklist`
+- Current evidence requires verifying the queue-level top-level handoff summary before the lane-level handoff is reopened.
+
 Update: the frontier now has a per-frontier execution handoff.
 
 - Frontier execution queue handoff: `results/tables/frontier_execution_queue_handoff.csv`
