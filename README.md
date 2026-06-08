@@ -386,6 +386,12 @@ Current frontier operator next-action status result:
 - `results/tables/frontier_operator_next_action_status.csv`
 - The status rollup compresses the ready lane, blocker lane, milestone, and dashboard bridge into one machine-friendly top-level coordination snapshot.
 
+Current frontier operator next-action status bridge checklist result:
+
+- `results/figures/frontier_operator_next_action_status_bridge_checklist.md`
+- `results/tables/frontier_operator_next_action_status_bridge_checklist.csv`
+- The checklist verifies that unified top-level status snapshot before the next contributor opens the broader handoff packet.
+
 Current frontier focus checklist result:
 
 - `results/figures/frontier_focus_card_checklist.md` now turns that focus card into a one-glance verification checklist

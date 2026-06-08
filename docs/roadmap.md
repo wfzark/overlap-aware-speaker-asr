@@ -1300,6 +1300,13 @@ Update: the frontier now also has a top-level operator status rollup.
 - Script: `python3 -m src.frontier_operator_next_action_status`
 - Current evidence compresses the ready lane, blocker lane, milestone, and dashboard bridge into one machine-readable snapshot with `operator_status_mixed_ready` as the present top-level coordination state.
 
+Update: the frontier now also has a top-level operator status bridge checklist.
+
+- Frontier operator status bridge checklist: `results/tables/frontier_operator_next_action_status_bridge_checklist.csv`
+- Summary view: `results/figures/frontier_operator_next_action_status_bridge_checklist.md`
+- Script: `python3 -m src.frontier_operator_next_action_status_bridge_checklist`
+- Current evidence requires verifying the unified top-level status snapshot before the operator handoff packet is reopened.
+
 Update: the frontier now has a per-frontier execution handoff.
 
 - Frontier execution queue handoff: `results/tables/frontier_execution_queue_handoff.csv`
