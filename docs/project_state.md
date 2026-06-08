@@ -2432,6 +2432,7 @@ MeetEval cpWER official execution completion summary:
 MeetEval cpWER official execution alignment audit:
 
 - `results/figures/meeteval_cpwer_official_execution_alignment_audit.md`
+- The audit now explicitly ties the observed moderate drift to Chinese word-level tokenization mismatch when tokenization diagnostic and character-spaced reconciliation evidence are both present, instead of ambiguously blaming segment or speaker mapping.
 - Compares official cpWER against bridge-lite; all five gold cases currently report `moderate_drift`.
 
 MeetEval cpWER official execution completion summary bridge checklist:

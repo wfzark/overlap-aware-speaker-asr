@@ -5,7 +5,7 @@
     "cpwer_bridge_lite": "0.054312",
     "alignment_delta": "3.945688",
     "alignment_status": "moderate_drift",
-    "audit_note": "Moderate drift detected; segment or speaker mapping may need inspection."
+    "audit_note": "Moderate drift is explained by Chinese word-level tokenization mismatch in raw MeetEval cpWER; character-spaced reconciliation already realigns with bridge-lite."
   },
   {
     "case_id": "LightOverlap",
@@ -13,7 +13,7 @@
     "cpwer_bridge_lite": "0.135164",
     "alignment_delta": "3.864836",
     "alignment_status": "moderate_drift",
-    "audit_note": "Moderate drift detected; segment or speaker mapping may need inspection."
+    "audit_note": "Moderate drift is explained by Chinese word-level tokenization mismatch in raw MeetEval cpWER; character-spaced reconciliation already realigns with bridge-lite."
   },
   {
     "case_id": "MidOverlap",
@@ -21,7 +21,7 @@
     "cpwer_bridge_lite": "0.16862",
     "alignment_delta": "3.83138",
     "alignment_status": "moderate_drift",
-    "audit_note": "Moderate drift detected; segment or speaker mapping may need inspection."
+    "audit_note": "Moderate drift is explained by Chinese word-level tokenization mismatch in raw MeetEval cpWER; character-spaced reconciliation already realigns with bridge-lite."
   },
   {
     "case_id": "HeavyOverlap",
@@ -29,7 +29,7 @@
     "cpwer_bridge_lite": "0.162827",
     "alignment_delta": "3.337173",
     "alignment_status": "moderate_drift",
-    "audit_note": "Moderate drift detected; segment or speaker mapping may need inspection."
+    "audit_note": "Moderate drift is explained by Chinese word-level tokenization mismatch in raw MeetEval cpWER; character-spaced reconciliation already realigns with bridge-lite."
   },
   {
     "case_id": "OppositeOverlap",
@@ -37,6 +37,6 @@
     "cpwer_bridge_lite": "0.083193",
     "alignment_delta": "3.416807",
     "alignment_status": "moderate_drift",
-    "audit_note": "Moderate drift detected; segment or speaker mapping may need inspection."
+    "audit_note": "Moderate drift is explained by Chinese word-level tokenization mismatch in raw MeetEval cpWER; character-spaced reconciliation already realigns with bridge-lite."
   }
 ]

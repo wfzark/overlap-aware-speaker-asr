@@ -2216,7 +2216,7 @@ Update: `meeteval_compatibility` now also has an all-gold official cpWER executi
 - Completion summary: `results/tables/meeteval_cpwer_official_execution_completion_summary.csv`
 - Alignment audit: `results/tables/meeteval_cpwer_official_execution_alignment_audit.csv`
 - Completion summary bridge checklist: `results/tables/meeteval_cpwer_official_execution_completion_summary_bridge_checklist.csv`
-- All five gold cases report `queue_complete`; alignment audit shows `moderate_drift` vs bridge-lite due to Chinese tokenization mismatch in MeetEval word-level cpWER.
+- All five gold cases report `queue_complete`; alignment audit now explicitly attributes the `moderate_drift` vs bridge-lite to Chinese word-level tokenization mismatch, while the character-spaced reconciliation audit shows the mapping path is already aligned.
 
 Update: `meeteval_compatibility` now also has a character-level tokenization adaptation stack.
 
