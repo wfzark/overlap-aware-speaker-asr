@@ -1347,7 +1347,7 @@ Update: the frontier now also has a top-level operator status handoff packet bri
 - Frontier operator status handoff packet bridge checklist: `results/tables/frontier_operator_next_action_status_handoff_packet_bridge_checklist.csv`
 - Summary view: `results/figures/frontier_operator_next_action_status_handoff_packet_bridge_checklist.md`
 - Script: `python3 -m src.frontier_operator_next_action_status_handoff_packet_bridge_checklist`
-- Current evidence requires verifying that packet before the queue-level top-level handoff summary is reopened.
+- Current evidence requires verifying that packet before the newer `status/handoff` status rollup is reopened.
 
 Update: the frontier now also has a top-level operator status handoff operator brief.
 

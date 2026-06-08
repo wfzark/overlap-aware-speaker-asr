@@ -9,9 +9,7 @@ from .config import PROJECT_ROOT
 
 BRIDGE_CHECKLIST_COLUMNS = [
     "checklist_order",
-    "queue_status",
-    "ready_lane_count",
-    "blocked_lane_count",
+    "combined_status_handoff_state",
     "prerequisite_artifact",
     "receipt_target",
     "checklist_goal",
@@ -20,35 +18,32 @@ BRIDGE_CHECKLIST_COLUMNS = [
 ]
 
 
-def load_completion_summary() -> dict[str, str]:
-    path = PROJECT_ROOT / "results" / "tables" / "frontier_operator_next_action_status_handoff_completion_summary.json"
+def load_status_row() -> dict[str, str]:
+    path = PROJECT_ROOT / "results" / "tables" / "frontier_operator_next_action_status_handoff_status.json"
     if not path.exists():
         return {}
     payload = json.loads(path.read_text(encoding="utf-8"))
     return payload if isinstance(payload, dict) else {}
 
 
-def build_bridge_checklist_rows(summary: dict[str, str]) -> list[dict[str, str]]:
-    queue_status = str(summary.get("queue_status", "queue_empty"))
-    ready_count = str(summary.get("ready_lane_count", "0"))
-    blocked_count = str(summary.get("blocked_lane_count", "0"))
+def build_bridge_checklist_rows(status_row: dict[str, str]) -> list[dict[str, str]]:
+    combined_state = str(status_row.get("combined_status_handoff_state", "status_handoff_unset"))
+    primary_target = str(status_row.get("primary_status_target", "no_primary_target"))
     return [
         {
             "checklist_order": "1",
-            "queue_status": queue_status,
-            "ready_lane_count": ready_count,
-            "blocked_lane_count": blocked_count,
+            "combined_status_handoff_state": combined_state,
             "prerequisite_artifact": "results/figures/frontier_operator_next_action_status_handoff_packet.md",
-            "receipt_target": "results/figures/frontier_operator_next_action_status_handoff_completion_summary.md",
+            "receipt_target": "results/figures/frontier_operator_next_action_status_handoff_status.md",
             "checklist_goal": (
-                "Verify the top-level operator status handoff packet before reopening the queue-level handoff summary."
+                "Verify the top-level operator status handoff packet before reopening the status/handoff status rollup."
             ),
             "bridge_note": (
-                f"Packet context reports queue_status={queue_status} with ready_lane_count={ready_count} "
-                f"and blocked_lane_count={blocked_count}; "
-                "confirm packet context before reopening the queue-level handoff summary."
+                f"Packet context reports combined_status_handoff_state={combined_state}; "
+                f"current primary target is {primary_target}. "
+                "Confirm packet context before reopening the status/handoff status rollup."
             ),
-            "next_gate": "Confirm this bridge before opening the frontier operator next-action status handoff completion summary target.",
+            "next_gate": "Confirm this bridge before opening the frontier operator next-action status handoff status target.",
         }
     ]
 
@@ -60,13 +55,13 @@ def build_bridge_checklist_lines(rows: list[dict[str, str]]) -> list[str]:
         "This generated checklist turns the top-level operator status handoff packet into a bridge verification path. "
         "It remains experimental/frontier coordination only and does not claim experiment completion.",
         "",
-        "| checklist_order | queue_status | ready_lane_count | blocked_lane_count | prerequisite_artifact | receipt_target | checklist_goal | bridge_note | next_gate |",
-        "| --- | --- | ---: | ---: | --- | --- | --- | --- | --- |",
+        "| checklist_order | combined_status_handoff_state | prerequisite_artifact | receipt_target | checklist_goal | bridge_note | next_gate |",
+        "| --- | --- | --- | --- | --- | --- | --- |",
     ]
     for row in rows:
         lines.append(
-            f"| {row['checklist_order']} | {row['queue_status']} | {row['ready_lane_count']} | "
-            f"{row['blocked_lane_count']} | {row['prerequisite_artifact']} | {row['receipt_target']} | "
+            f"| {row['checklist_order']} | {row['combined_status_handoff_state']} | "
+            f"{row['prerequisite_artifact']} | {row['receipt_target']} | "
             f"{row['checklist_goal']} | {row['bridge_note']} | {row['next_gate']} |"
         )
     return lines
@@ -92,7 +87,7 @@ def write_outputs(rows: list[dict[str, str]]) -> tuple[Path, Path, Path]:
 
 
 def main() -> None:
-    rows = build_bridge_checklist_rows(load_completion_summary())
+    rows = build_bridge_checklist_rows(load_status_row())
     csv_path, json_path, md_path = write_outputs(rows)
     print(
         "Wrote frontier operator next-action status handoff packet bridge checklist CSV: "

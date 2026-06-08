@@ -1,13 +1,11 @@
 [
   {
     "checklist_order": "1",
-    "queue_status": "queue_complete",
-    "ready_lane_count": "1",
-    "blocked_lane_count": "1",
+    "combined_status_handoff_state": "status_handoff_mixed_ready",
     "prerequisite_artifact": "results/figures/frontier_operator_next_action_status_handoff_packet.md",
-    "receipt_target": "results/figures/frontier_operator_next_action_status_handoff_completion_summary.md",
-    "checklist_goal": "Verify the top-level operator status handoff packet before reopening the queue-level handoff summary.",
-    "bridge_note": "Packet context reports queue_status=queue_complete with ready_lane_count=1 and blocked_lane_count=1; confirm packet context before reopening the queue-level handoff summary.",
-    "next_gate": "Confirm this bridge before opening the frontier operator next-action status handoff completion summary target."
+    "receipt_target": "results/figures/frontier_operator_next_action_status_handoff_status.md",
+    "checklist_goal": "Verify the top-level operator status handoff packet before reopening the status/handoff status rollup.",
+    "bridge_note": "Packet context reports combined_status_handoff_state=status_handoff_mixed_ready; current primary target is meeteval_compatibility. Confirm packet context before reopening the status/handoff status rollup.",
+    "next_gate": "Confirm this bridge before opening the frontier operator next-action status handoff status target."
   }
 ]
