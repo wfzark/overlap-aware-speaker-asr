@@ -1913,6 +1913,18 @@ Frontier execution receipt queue status reentry card:
 - `results/tables/frontier_execution_receipt_queue_status_reentry_card.csv`
 - This card gives the next contributor a one-page instruction for reopening the receipt queue status rollup after preflight.
 
+Frontier execution receipt queue status reentry bridge checklist:
+
+- `results/figures/frontier_execution_receipt_queue_status_reentry_bridge_checklist.md`
+- `results/tables/frontier_execution_receipt_queue_status_reentry_bridge_checklist.csv`
+- This checklist verifies the receipt queue status reentry card before the handoff bridge is reopened.
+
+Frontier execution receipt queue receipt open card:
+
+- `results/figures/frontier_execution_receipt_queue_receipt_open_card.md`
+- `results/tables/frontier_execution_receipt_queue_receipt_open_card.csv`
+- This card gives the next contributor the first receipt target to open after the receipt queue handoff bridge is confirmed.
+
 Frontier execution receipt fill queue status:
 
 - `results/figures/frontier_execution_receipt_fill_queue_status.md`
@@ -2663,6 +2675,8 @@ python -m src.frontier_execution_receipt_queue_completion_dashboard
 python -m src.frontier_execution_receipt_queue_completion_dashboard_bridge_checklist
 python -m src.frontier_execution_receipt_queue_status_preflight_bridge_checklist
 python -m src.frontier_execution_receipt_queue_status_reentry_card
+python -m src.frontier_execution_receipt_queue_status_reentry_bridge_checklist
+python -m src.frontier_execution_receipt_queue_receipt_open_card
 python -m src.frontier_execution_receipt_fill_queue_status
 python -m src.frontier_execution_receipt_fill_queue_status_bridge_checklist
 python -m src.frontier_execution_receipt_fill_queue_completion_summary

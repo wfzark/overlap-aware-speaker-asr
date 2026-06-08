@@ -1682,6 +1682,20 @@ Update: the frontier receipt layer now has a status reentry card.
 - Script: `python3 -m src.frontier_execution_receipt_queue_status_reentry_card`
 - This gives the next contributor a one-page reentry instruction for reopening the receipt queue status rollup after preflight.
 
+Update: the frontier receipt layer now has a status reentry bridge checklist.
+
+- Status reentry bridge checklist: `results/tables/frontier_execution_receipt_queue_status_reentry_bridge_checklist.csv`
+- Summary view: `results/figures/frontier_execution_receipt_queue_status_reentry_bridge_checklist.md`
+- Script: `python3 -m src.frontier_execution_receipt_queue_status_reentry_bridge_checklist`
+- This verifies the status reentry card before reopening the receipt queue handoff bridge.
+
+Update: the frontier receipt layer now has a receipt open card.
+
+- Receipt open card: `results/tables/frontier_execution_receipt_queue_receipt_open_card.csv`
+- Summary view: `results/figures/frontier_execution_receipt_queue_receipt_open_card.md`
+- Script: `python3 -m src.frontier_execution_receipt_queue_receipt_open_card`
+- This gives the next contributor the first receipt target to open after the receipt queue handoff bridge is confirmed.
+
 Update: the frontier receipt layer now has a fill queue status rollup.
 
 - Fill queue status: `results/tables/frontier_execution_receipt_fill_queue_status.csv`
