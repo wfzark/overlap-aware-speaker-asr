@@ -32,7 +32,12 @@ def load_status_batch_rows() -> list[dict[str, str]]:
 def build_bridge_checklist_rows(status_rows: list[dict[str, str]]) -> list[dict[str, str]]:
     if not status_rows:
         return []
-    ready_count = sum(1 for row in status_rows if row.get("execution_chain_status") == "execution_chain_ready")
+    ready_count = sum(
+        1
+        for row in status_rows
+        if row.get("execution_chain_status") in {"execution_chain_ready", "execution_chain_complete"}
+    )
+    complete_count = sum(1 for row in status_rows if row.get("execution_chain_status") == "execution_chain_complete")
     total_count = str(len(status_rows))
     return [
         {
@@ -45,8 +50,8 @@ def build_bridge_checklist_rows(status_rows: list[dict[str, str]]) -> list[dict[
                 "Verify the batch execution chain status before opening the official cpWER execution receipt."
             ),
             "bridge_note": (
-                f"Batch status reports {ready_count}/{total_count} cases execution_chain_ready; "
-                "confirm preflight and scaffold alignment before official cpWER execution."
+                f"Batch status reports {ready_count}/{total_count} cases at least execution-ready and "
+                f"{complete_count}/{total_count} already execution-complete; confirm preflight, scaffold, and receipt alignment."
             ),
             "next_gate": "Confirm this bridge before opening the official MeetEval cpWER execution receipt.",
         }

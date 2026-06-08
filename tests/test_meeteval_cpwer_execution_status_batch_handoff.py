@@ -27,6 +27,17 @@ class MeetEvalCpwerExecutionStatusBatchHandoffTest(unittest.TestCase):
 
         self.assertEqual(len(rows), 5)
 
+    def test_build_handoff_rows_mark_completed_case(self) -> None:
+        status_rows = [
+            {"case_id": "NoOverlap", "execution_chain_status": "execution_chain_complete"},
+        ]
+        preflight_rows = [
+            {"case_id": "NoOverlap", "hypothesis_source": "separated_whisper"},
+        ]
+        rows = build_handoff_rows(status_rows, preflight_rows)
+
+        self.assertEqual(rows[0]["handoff_status"], "execution_handoff_complete")
+
 
 if __name__ == "__main__":
     unittest.main()

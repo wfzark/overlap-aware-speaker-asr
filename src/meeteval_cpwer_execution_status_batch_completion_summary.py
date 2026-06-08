@@ -29,11 +29,18 @@ def load_status_batch_rows() -> list[dict[str, str]]:
 
 def build_completion_summary_row(status_rows: list[dict[str, str]]) -> dict[str, str]:
     total_count = len(status_rows)
-    ready_count = sum(
-        1 for row in status_rows if row.get("execution_chain_status") == "execution_chain_ready"
-    )
+    satisfied_statuses = {"execution_chain_ready", "execution_chain_complete"}
+    ready_count = sum(1 for row in status_rows if row.get("execution_chain_status") in satisfied_statuses)
+    complete_count = sum(1 for row in status_rows if row.get("execution_chain_status") == "execution_chain_complete")
     pending_count = total_count - ready_count
-    queue_status = "queue_complete" if pending_count == 0 and total_count > 0 else "queue_in_progress"
+    if total_count == 0:
+        queue_status = "queue_not_started"
+    elif complete_count == total_count:
+        queue_status = "queue_complete"
+    elif pending_count == 0:
+        queue_status = "queue_ready_to_execute"
+    else:
+        queue_status = "queue_in_progress"
     return {
         "scope": "meeteval_cpwer_execution_chain_batch",
         "ready_chain_count": str(ready_count),

@@ -30,16 +30,22 @@ def load_json_list(path_rel: str) -> list[dict[str, Any]]:
     return [row for row in payload if isinstance(row, dict)]
 
 
-def load_receipt_template_status(path_rel: str) -> str:
+def load_receipt_status_by_case(path_rel: str) -> dict[str, str]:
     path = PROJECT_ROOT / path_rel
     if not path.exists():
-        return "missing"
+        return {}
     payload = json.loads(path.read_text(encoding="utf-8"))
-    if isinstance(payload, list) and payload:
-        first = payload[0]
-        if isinstance(first, dict):
-            return str(first.get("execution_status", "unknown"))
-    return "unknown"
+    if not isinstance(payload, list):
+        return {}
+    receipt_by_case: dict[str, str] = {}
+    for row in payload:
+        if not isinstance(row, dict):
+            continue
+        case_id = str(row.get("case_id", "")).strip()
+        if not case_id:
+            continue
+        receipt_by_case[case_id] = str(row.get("execution_status", "unknown"))
+    return receipt_by_case
 
 
 def build_status_row(
@@ -50,8 +56,14 @@ def build_status_row(
     case_id = str(preflight.get("case_id", receipt_scaffold.get("case_id", "NoOverlap")))
     preflight_pass = bool(preflight.get("preflight_pass", False))
     scaffold_status = str(receipt_scaffold.get("scaffold_status", "missing"))
+    receipt_complete = execution_receipt_status == "official_cpwer_narrow_dry_run_complete"
     chain_ready = preflight_pass and scaffold_status == "receipt_batch_scaffold_only"
-    chain_status = "execution_chain_ready" if chain_ready else "execution_chain_in_progress"
+    if receipt_complete:
+        chain_status = "execution_chain_complete"
+    elif chain_ready:
+        chain_status = "execution_chain_ready"
+    else:
+        chain_status = "execution_chain_in_progress"
     return {
         "scope": "meeteval_cpwer_execution_chain_batch",
         "case_id": case_id,
@@ -69,7 +81,7 @@ def build_status_row(
 def build_status_rows(
     preflight_rows: list[dict[str, Any]],
     scaffold_rows: list[dict[str, Any]],
-    execution_receipt_status: str,
+    execution_receipt_by_case: dict[str, str],
 ) -> list[dict[str, str]]:
     scaffold_by_case = {str(row.get("case_id", "")): row for row in scaffold_rows}
     if preflight_rows:
@@ -80,7 +92,7 @@ def build_status_rows(
         build_status_row(
             preflight,
             scaffold_by_case.get(str(preflight.get("case_id", "")), {}),
-            execution_receipt_status,
+            execution_receipt_by_case.get(str(preflight.get("case_id", "")), "missing"),
         )
         for preflight in source_rows
     ]
@@ -88,13 +100,14 @@ def build_status_rows(
 
 def build_status_lines(rows: list[dict[str, str]]) -> list[str]:
     ready_count = sum(1 for row in rows if row.get("execution_chain_status") == "execution_chain_ready")
+    complete_count = sum(1 for row in rows if row.get("execution_chain_status") == "execution_chain_complete")
     lines = [
         "# MeetEval cpWER Execution Status Batch",
         "",
         "This generated note rolls up the cpWER execution chain status across all five verified gold cases. "
         "It does not claim official MeetEval evaluation or benchmark completion.",
         "",
-        f"Summary: `{ready_count}/{len(rows)}` cases report execution_chain_ready.",
+        f"Summary: `{ready_count}/{len(rows)}` cases are execution-ready and `{complete_count}/{len(rows)}` are execution-complete.",
         "",
         "| scope | case_id | preflight_pass | receipt_scaffold_status | execution_receipt_status | execution_chain_status | status_note |",
         "| --- | --- | --- | --- | --- | --- | --- |",
@@ -129,14 +142,18 @@ def write_outputs(status_rows: list[dict[str, str]]) -> tuple[Path, Path, Path]:
 def main() -> None:
     preflight_rows = load_json_list("results/tables/meeteval_cpwer_execution_preflight_batch.json")
     scaffold_rows = load_json_list("results/tables/meeteval_cpwer_execution_receipt_batch_scaffold.json")
-    execution_receipt_status = load_receipt_template_status("results/tables/meeteval_cpwer_execution_receipt.json")
-    status_rows = build_status_rows(preflight_rows, scaffold_rows, execution_receipt_status)
+    execution_receipt_by_case = load_receipt_status_by_case("results/tables/meeteval_cpwer_execution_receipt.json")
+    status_rows = build_status_rows(preflight_rows, scaffold_rows, execution_receipt_by_case)
     csv_path, json_path, md_path = write_outputs(status_rows)
-    ready_count = sum(1 for row in status_rows if row.get("execution_chain_status") == "execution_chain_ready")
+    ready_count = sum(
+        1
+        for row in status_rows
+        if row.get("execution_chain_status") in {"execution_chain_ready", "execution_chain_complete"}
+    )
     print(f"Wrote MeetEval cpWER execution status batch CSV: {csv_path.relative_to(PROJECT_ROOT)}")
     print(f"Wrote MeetEval cpWER execution status batch JSON: {json_path.relative_to(PROJECT_ROOT)}")
     print(f"Wrote MeetEval cpWER execution status batch note: {md_path.relative_to(PROJECT_ROOT)}")
-    print(f"Execution chain ready: {ready_count}/{len(status_rows)}")
+    print(f"Execution chain satisfied: {ready_count}/{len(status_rows)}")
 
 
 if __name__ == "__main__":

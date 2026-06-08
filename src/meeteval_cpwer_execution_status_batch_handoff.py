@@ -59,15 +59,24 @@ def build_handoff_rows(
         preflight = preflight_by_case.get(case_id, {})
         hypothesis_source = str(preflight.get("hypothesis_source", ""))
         is_first = case_id == first_case and chain_status == "execution_chain_ready"
+        if chain_status == "execution_chain_complete":
+            handoff_status = "execution_handoff_complete"
+        elif is_first:
+            handoff_status = "execution_handoff_ready"
+        else:
+            handoff_status = "execution_handoff_queued"
         handoff_rows.append(
             {
                 "handoff_order": str(order),
-                "handoff_status": "execution_handoff_ready" if is_first else "execution_handoff_queued",
+                "handoff_status": handoff_status,
                 "case_id": case_id,
                 "execution_chain_status": chain_status,
                 "hypothesis_source": hypothesis_source,
                 "execution_target": "results/tables/meeteval_cpwer_execution_receipt.json",
                 "handoff_goal": (
+                    f"Official MeetEval cpWER narrow dry run already recorded for {case_id}; audit alignment and receipt writeback only."
+                    if chain_status == "execution_chain_complete"
+                    else
                     f"Run official MeetEval cpWER narrow dry run for {case_id} after batch chain readiness audit."
                     if is_first
                     else f"Queue official MeetEval cpWER execution for {case_id} after the first narrow dry run."
@@ -84,13 +93,14 @@ def build_handoff_rows(
 
 def build_handoff_lines(rows: list[dict[str, str]]) -> list[str]:
     ready_count = sum(1 for row in rows if row.get("execution_chain_status") == "execution_chain_ready")
+    complete_count = sum(1 for row in rows if row.get("execution_chain_status") == "execution_chain_complete")
     lines = [
         "# MeetEval cpWER Execution Status Batch Handoff",
         "",
         "This generated handoff turns the batch execution-chain status into per-case official cpWER execution actions. "
         "It does not claim official cpWER evaluation or benchmark completion.",
         "",
-        f"Summary: `{ready_count}/{len(rows)}` cases are execution_chain_ready; first action targets the preferred ready case.",
+        f"Summary: `{ready_count}/{len(rows)}` cases are execution-ready and `{complete_count}/{len(rows)}` are already execution-complete.",
         "",
         "| handoff_order | handoff_status | case_id | execution_chain_status | hypothesis_source | execution_target | handoff_goal | expected_evidence | handoff_note |",
         "| --- | --- | --- | --- | --- | --- | --- | --- | --- |",

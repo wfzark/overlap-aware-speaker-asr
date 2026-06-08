@@ -6,10 +6,10 @@ from src.meeteval_cpwer_execution_status_batch_completion_summary import build_c
 
 
 class MeetEvalCpwerExecutionStatusBatchCompletionSummaryTest(unittest.TestCase):
-    def test_build_completion_summary_marks_queue_complete_when_all_ready(self) -> None:
+    def test_build_completion_summary_marks_queue_complete_when_all_complete(self) -> None:
         rows = [
-            {"execution_chain_status": "execution_chain_ready"},
-            {"execution_chain_status": "execution_chain_ready"},
+            {"execution_chain_status": "execution_chain_complete"},
+            {"execution_chain_status": "execution_chain_complete"},
         ]
         summary = build_completion_summary_row(rows)
 
@@ -26,6 +26,15 @@ class MeetEvalCpwerExecutionStatusBatchCompletionSummaryTest(unittest.TestCase):
 
         self.assertEqual(summary["queue_status"], "queue_in_progress")
         self.assertEqual(summary["pending_chain_count"], "1")
+
+    def test_build_completion_summary_marks_ready_to_execute_when_all_ready_but_not_complete(self) -> None:
+        rows = [
+            {"execution_chain_status": "execution_chain_ready"},
+            {"execution_chain_status": "execution_chain_ready"},
+        ]
+        summary = build_completion_summary_row(rows)
+
+        self.assertEqual(summary["queue_status"], "queue_ready_to_execute")
 
 
 if __name__ == "__main__":
