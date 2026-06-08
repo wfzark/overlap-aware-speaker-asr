@@ -1710,6 +1710,22 @@ Update: the frontier receipt layer now has a handoff packet bridge checklist.
 - Script: `python3 -m src.frontier_execution_receipt_queue_handoff_packet_bridge_checklist`
 - This verifies the packet layer before reopening the receipt queue operator brief.
 
+Update: the frontier receipt layer now has a frontier bridge.
+
+- Frontier bridge: `results/tables/frontier_execution_receipt_queue_frontier_bridge.csv`
+- Frontier bridge JSON: `results/tables/frontier_execution_receipt_queue_frontier_bridge.json`
+- Summary view: `results/figures/frontier_execution_receipt_queue_frontier_bridge.md`
+- Script: `python3 -m src.frontier_execution_receipt_queue_frontier_bridge`
+- This aligns the current receipt queue frontier with the breadth-first frontier queue head before downstream execution layers are reopened.
+
+Update: the frontier receipt layer now has a frontier bridge checklist.
+
+- Frontier bridge checklist: `results/tables/frontier_execution_receipt_queue_frontier_bridge_checklist.csv`
+- Frontier bridge checklist JSON: `results/tables/frontier_execution_receipt_queue_frontier_bridge_checklist.json`
+- Summary view: `results/figures/frontier_execution_receipt_queue_frontier_bridge_checklist.md`
+- Script: `python3 -m src.frontier_execution_receipt_queue_frontier_bridge_checklist`
+- This turns the frontier bridge into a verification gate before the receipt queue runbook card is reopened.
+
 Update: the frontier receipt layer now has a fill queue status rollup.
 
 - Fill queue status: `results/tables/frontier_execution_receipt_fill_queue_status.csv`
