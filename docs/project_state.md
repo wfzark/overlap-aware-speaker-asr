@@ -1859,6 +1859,18 @@ Frontier execution receipt queue runbook card:
 - `results/tables/frontier_execution_receipt_queue_runbook_card.csv`
 - This runbook card turns the receipt queue operator brief into a one-page first-action execution card for the current first receipt-queue target.
 
+Frontier execution receipt queue runbook bridge checklist:
+
+- `results/figures/frontier_execution_receipt_queue_runbook_bridge_checklist.md`
+- `results/tables/frontier_execution_receipt_queue_runbook_bridge_checklist.csv`
+- This checklist verifies the receipt queue runbook card before the current receipt target is reopened.
+
+Frontier execution receipt queue phase checkpoint card:
+
+- `results/figures/frontier_execution_receipt_queue_phase_checkpoint_card.md`
+- `results/tables/frontier_execution_receipt_queue_phase_checkpoint_card.csv`
+- This checkpoint card narrows the receipt queue runbook to the exact completion signal for the current first receipt-queue target.
+
 Frontier execution receipt fill queue status:
 
 - `results/figures/frontier_execution_receipt_fill_queue_status.md`
@@ -2600,6 +2612,8 @@ python -m src.frontier_execution_receipt_queue_handoff
 python -m src.frontier_execution_receipt_queue_handoff_bridge_checklist
 python -m src.frontier_execution_receipt_queue_operator_brief
 python -m src.frontier_execution_receipt_queue_runbook_card
+python -m src.frontier_execution_receipt_queue_runbook_bridge_checklist
+python -m src.frontier_execution_receipt_queue_phase_checkpoint_card
 python -m src.frontier_execution_receipt_fill_queue_status
 python -m src.frontier_execution_receipt_fill_queue_status_bridge_checklist
 python -m src.frontier_execution_receipt_fill_queue_completion_summary

@@ -1619,6 +1619,20 @@ Update: the frontier receipt layer now has a runbook card.
 - Script: `python3 -m src.frontier_execution_receipt_queue_runbook_card`
 - This condenses the first receipt-queue action into a one-page execution card while keeping the work explicitly coordination-only.
 
+Update: the frontier receipt layer now has a runbook bridge checklist.
+
+- Runbook bridge checklist: `results/tables/frontier_execution_receipt_queue_runbook_bridge_checklist.csv`
+- Summary view: `results/figures/frontier_execution_receipt_queue_runbook_bridge_checklist.md`
+- Script: `python3 -m src.frontier_execution_receipt_queue_runbook_bridge_checklist`
+- This turns the receipt queue runbook card into a verification gate before reopening the current receipt target.
+
+Update: the frontier receipt layer now has a phase checkpoint card.
+
+- Phase checkpoint card: `results/tables/frontier_execution_receipt_queue_phase_checkpoint_card.csv`
+- Summary view: `results/figures/frontier_execution_receipt_queue_phase_checkpoint_card.md`
+- Script: `python3 -m src.frontier_execution_receipt_queue_phase_checkpoint_card`
+- This narrows the receipt queue runbook to the exact completion signal that should be satisfied before the current first receipt-queue step is treated as advanced.
+
 Update: the frontier receipt layer now has a fill queue status rollup.
 
 - Fill queue status: `results/tables/frontier_execution_receipt_fill_queue_status.csv`
