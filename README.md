@@ -458,6 +458,12 @@ Current frontier operator next-action status handoff completion dashboard result
 - `results/tables/frontier_operator_next_action_status_handoff_completion_dashboard.csv`
 - The completion dashboard compresses the current `status/handoff` subchain into one glance: `meeteval_compatibility` still leads, `external_validation` remains the dominant blocker, and the next milestone is still `ready_lane_checkpoint_complete`.
 
+Current frontier operator next-action status handoff completion dashboard bridge checklist result:
+
+- `results/figures/frontier_operator_next_action_status_handoff_completion_dashboard_bridge_checklist.md`
+- `results/tables/frontier_operator_next_action_status_handoff_completion_dashboard_bridge_checklist.csv`
+- The bridge checklist turns that `status/handoff` dashboard into a verification gate before reopening the current runbook card target.
+
 Current frontier focus checklist result:
 
 - `results/figures/frontier_focus_card_checklist.md` now turns that focus card into a one-glance verification checklist

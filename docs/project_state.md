@@ -1589,6 +1589,12 @@ Frontier operator next-action status handoff completion dashboard:
 - `results/tables/frontier_operator_next_action_status_handoff_completion_dashboard.csv`
 - The completion dashboard compresses the current `status/handoff` subchain into one operator-facing view with the current first frontier, dominant blocker, next milestone, and remaining visible lane count.
 
+Frontier operator next-action status handoff completion dashboard bridge checklist:
+
+- `results/figures/frontier_operator_next_action_status_handoff_completion_dashboard_bridge_checklist.md`
+- `results/tables/frontier_operator_next_action_status_handoff_completion_dashboard_bridge_checklist.csv`
+- The bridge checklist verifies that `status/handoff` dashboard snapshot before the current runbook card is reopened, keeping the transition coordination-only.
+
 Frontier execution queue completion summary bridge checklist:
 
 - `results/figures/frontier_execution_queue_completion_summary_bridge_checklist.md`

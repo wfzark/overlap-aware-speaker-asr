@@ -1384,6 +1384,13 @@ Update: the frontier now also has a top-level operator status handoff completion
 - Script: `python3 -m src.frontier_operator_next_action_status_handoff_completion_dashboard`
 - Current evidence compresses the current `status/handoff` subchain into one operator-facing view with the current first frontier, dominant blocker, next milestone, and remaining visible lane count.
 
+Update: the frontier now also has a top-level operator status handoff completion dashboard bridge checklist.
+
+- Frontier operator status handoff completion dashboard bridge checklist: `results/tables/frontier_operator_next_action_status_handoff_completion_dashboard_bridge_checklist.csv`
+- Summary view: `results/figures/frontier_operator_next_action_status_handoff_completion_dashboard_bridge_checklist.md`
+- Script: `python3 -m src.frontier_operator_next_action_status_handoff_completion_dashboard_bridge_checklist`
+- Current evidence requires verifying the new `status/handoff` dashboard snapshot before the current runbook card target is reopened.
+
 Update: the frontier now has a per-frontier execution handoff.
 
 - Frontier execution queue handoff: `results/tables/frontier_execution_queue_handoff.csv`
