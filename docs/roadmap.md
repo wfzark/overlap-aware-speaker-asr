@@ -1279,6 +1279,13 @@ Update: the frontier now also has a top-level milestone card.
 - Script: `python3 -m src.frontier_operator_next_action_milestone_card`
 - Current evidence shows that completing the current ready-lane checkpoint would surface `external_validation` as the next explicit coordination target.
 
+Update: the frontier now also has a top-level completion dashboard.
+
+- Frontier completion dashboard: `results/tables/frontier_operator_next_action_completion_dashboard.csv`
+- Summary view: `results/figures/frontier_operator_next_action_completion_dashboard.md`
+- Script: `python3 -m src.frontier_operator_next_action_completion_dashboard`
+- Current evidence compresses the top-level operator state into one glance with `meeteval_compatibility` still first and `external_validation` still the dominant blocker.
+
 Update: the frontier now has a per-frontier execution handoff.
 
 - Frontier execution queue handoff: `results/tables/frontier_execution_queue_handoff.csv`

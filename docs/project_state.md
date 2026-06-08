@@ -1499,6 +1499,12 @@ Frontier operator next-action milestone card:
 - `results/tables/frontier_operator_next_action_milestone_card.csv`
 - The milestone card records the immediate unlock boundary after the current ready-lane checkpoint closes and keeps the next coordination target explicit.
 
+Frontier operator next-action completion dashboard:
+
+- `results/figures/frontier_operator_next_action_completion_dashboard.md`
+- `results/tables/frontier_operator_next_action_completion_dashboard.csv`
+- The dashboard summarizes the current first frontier, current blocker, next milestone, and remaining top-level frontier count in one operator-facing state view.
+
 Frontier execution queue completion summary bridge checklist:
 
 - `results/figures/frontier_execution_queue_completion_summary_bridge_checklist.md`

@@ -368,6 +368,12 @@ Current frontier operator next-action milestone card result:
 - `results/tables/frontier_operator_next_action_milestone_card.csv`
 - The milestone card shows what the current ready-lane checkpoint unlocks next, with `external_validation` now made explicit as the next visible coordination target after the first checkpoint closes.
 
+Current frontier operator next-action completion dashboard result:
+
+- `results/figures/frontier_operator_next_action_completion_dashboard.md`
+- `results/tables/frontier_operator_next_action_completion_dashboard.csv`
+- The dashboard compresses the current top-level operator state into one glance: `meeteval_compatibility` still leads, `external_validation` remains the dominant blocker, and the current milestone is still `ready_lane_checkpoint_complete`.
+
 Current frontier focus checklist result:
 
 - `results/figures/frontier_focus_card_checklist.md` now turns that focus card into a one-glance verification checklist
