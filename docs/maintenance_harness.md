@@ -121,6 +121,7 @@ python -m src.speaker_profile_embedding_trial_execution_scaffold_completion_summ
 python -m src.speaker_profile_embedding_trial_execution_scaffold_completion_summary_bridge_checklist
 python -m src.speaker_profile_embedding_trial_execution_preflight
 python -m src.speaker_profile_embedding_trial_execution_preflight_readiness
+python -m src.speaker_profile_embedding_trial_execution_preflight_readiness_bridge_checklist
 python -m src.frontier_execution_receipt_fill_execution_handoff_bridge_checklist
 ```
 

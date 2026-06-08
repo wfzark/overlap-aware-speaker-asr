@@ -1049,6 +1049,12 @@ Speaker profile embedding trial execution preflight readiness:
 - `results/tables/speaker_profile_embedding_trial_execution_preflight_readiness.csv`
 - `readiness_status = preflight_ready` when scaffold completion and preflight pass align; voiceprint execution remains pending.
 
+Speaker profile embedding trial execution preflight readiness bridge checklist:
+
+- `results/figures/speaker_profile_embedding_trial_execution_preflight_readiness_bridge_checklist.md`
+- `results/tables/speaker_profile_embedding_trial_execution_preflight_readiness_bridge_checklist.csv`
+- This checklist connects preflight readiness to the execution receipt target without claiming voiceprint success.
+
 Speaker profile embedding trial handoff bridge checklist:
 
 - `results/figures/speaker_profile_embedding_trial_handoff_bridge_checklist.md`
