@@ -1168,6 +1168,14 @@ Update: `speaker_profile` now also has execution status bridge checklists.
 - Summary view: `results/figures/speaker_profile_embedding_trial_execution_status_bridge_checklist.md`
 - This connects the embedding execution-chain status rollup to the execution receipt without claiming voiceprint success.
 
+Update: `speaker_profile` now also has an execution receipt open card.
+
+- Execution receipt open card: `results/tables/speaker_profile_embedding_trial_execution_receipt_open_card.csv`
+- Execution receipt open card JSON: `results/tables/speaker_profile_embedding_trial_execution_receipt_open_card.json`
+- Summary view: `results/figures/speaker_profile_embedding_trial_execution_receipt_open_card.md`
+- Script: `python3 -m src.speaker_profile_embedding_trial_execution_receipt_open_card`
+- This turns the existing receipt-readiness bridge into one immediate target card for `NoOverlap`, keeping the frontier narrow and explicitly not claiming voiceprint success.
+
 Update: `external_validation` now also has staging receipt scaffold bridge checklists and execution status.
 
 - Staging receipt scaffold bridge: `results/tables/external_validation_slice_staging_handoff_receipt_scaffold_bridge_checklist.csv`

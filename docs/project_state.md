@@ -1811,6 +1811,13 @@ Speaker profile embedding trial execution receipt readiness bridge checklist:
 - `results/tables/speaker_profile_embedding_trial_execution_receipt_readiness_bridge_checklist.csv`
 - This checklist connects the embedding receipt readiness rollup to the execution receipt without claiming voiceprint success.
 
+Speaker profile embedding trial execution receipt open card:
+
+- `results/figures/speaker_profile_embedding_trial_execution_receipt_open_card.md`
+- `results/tables/speaker_profile_embedding_trial_execution_receipt_open_card.csv`
+- `results/tables/speaker_profile_embedding_trial_execution_receipt_open_card.json`
+- This card gives the next contributor the current speaker-profile execution receipt target to open for `NoOverlap` after the readiness bridge is confirmed.
+
 External validation slice staging handoff receipt readiness bridge checklist:
 
 - `results/figures/external_validation_slice_staging_handoff_receipt_readiness_bridge_checklist.md`
@@ -2786,6 +2793,7 @@ python -m src.frontier_execution_queue_receipt_readiness_board
 python -m src.frontier_execution_queue_receipt_readiness_bridge_checklist
 python -m src.meeteval_cpwer_execution_receipt_readiness
 python -m src.speaker_profile_embedding_trial_execution_receipt_readiness
+python -m src.speaker_profile_embedding_trial_execution_receipt_open_card
 python -m src.external_validation_slice_staging_handoff_receipt_readiness
 python -m src.frontier_execution_receipt_queue_status
 python -m src.meeteval_cpwer_execution_receipt_readiness_bridge_checklist
