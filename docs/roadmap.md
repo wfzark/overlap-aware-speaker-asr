@@ -1453,6 +1453,13 @@ Update: the frontier now has a per-frontier execution handoff.
 - Summary view: `results/figures/frontier_execution_queue_handoff.md`
 - This turns the unified rollup into receipt-fill handoff actions for MeetEval, speaker profile, and external staging.
 
+Update: the frontier now also has an execution queue handoff packet.
+
+- Frontier execution queue handoff packet: `results/tables/frontier_execution_queue_handoff_packet.csv`
+- Summary view: `results/figures/frontier_execution_queue_handoff_packet.md`
+- Script: `python3 -m src.frontier_execution_queue_handoff_packet`
+- Current evidence consolidates the execution queue status, queue summary, and per-frontier handoff layers into one single-entry artifact.
+
 Update: the frontier now has execution receipt readiness rollups.
 
 - MeetEval receipt readiness: `results/tables/meeteval_cpwer_execution_receipt_readiness.csv`

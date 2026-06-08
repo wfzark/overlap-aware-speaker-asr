@@ -1661,6 +1661,12 @@ Frontier execution queue handoff bridge checklist:
 - `results/tables/frontier_execution_queue_handoff_bridge_checklist.csv`
 - This checklist connects the execution handoff to per-frontier execution receipts without claiming benchmark execution.
 
+Frontier execution queue handoff packet:
+
+- `results/figures/frontier_execution_queue_handoff_packet.md`
+- `results/tables/frontier_execution_queue_handoff_packet.csv`
+- This packet consolidates the execution queue status, queue summary, and per-frontier handoff layers into one single-entry coordination artifact.
+
 MeetEval cpWER execution receipt readiness:
 
 - `results/figures/meeteval_cpwer_execution_receipt_readiness.md`

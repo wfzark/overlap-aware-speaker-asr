@@ -1,0 +1,44 @@
+[
+  {
+    "packet_order": "1",
+    "section_name": "execution_queue_status",
+    "artifact_path": "results/figures/frontier_execution_queue_status.md",
+    "section_role": "Unified frontier execution-chain status rollup across MeetEval, speaker profile, and external staging.",
+    "packet_note": "Execution queue packet section while queue_status=queue_complete, ready_chain_count=3, pending_chain_count=0; no benchmark execution or external audio staging is claimed."
+  },
+  {
+    "packet_order": "2",
+    "section_name": "execution_queue_status_bridge_checklist",
+    "artifact_path": "results/figures/frontier_execution_queue_status_bridge_checklist.md",
+    "section_role": "Verify the unified execution-chain rollup before opening per-frontier execution receipt paths.",
+    "packet_note": "Execution queue packet section while queue_status=queue_complete, ready_chain_count=3, pending_chain_count=0; no benchmark execution or external audio staging is claimed."
+  },
+  {
+    "packet_order": "3",
+    "section_name": "execution_queue_completion_summary",
+    "artifact_path": "results/figures/frontier_execution_queue_completion_summary.md",
+    "section_role": "Queue-level ready/pending count rollup for the unified execution coordination chain.",
+    "packet_note": "Execution queue packet section while queue_status=queue_complete, ready_chain_count=3, pending_chain_count=0; no benchmark execution or external audio staging is claimed."
+  },
+  {
+    "packet_order": "4",
+    "section_name": "execution_queue_completion_summary_bridge_checklist",
+    "artifact_path": "results/figures/frontier_execution_queue_completion_summary_bridge_checklist.md",
+    "section_role": "Verify queue-level completion state before opening the unified execution handoff.",
+    "packet_note": "Execution queue packet section while queue_status=queue_complete, ready_chain_count=3, pending_chain_count=0; no benchmark execution or external audio staging is claimed."
+  },
+  {
+    "packet_order": "5",
+    "section_name": "execution_queue_handoff",
+    "artifact_path": "results/figures/frontier_execution_queue_handoff.md",
+    "section_role": "Per-frontier execution handoff actions for MeetEval, speaker profile, and external validation.",
+    "packet_note": "Execution queue packet section while queue_status=queue_complete, ready_chain_count=3, pending_chain_count=0; no benchmark execution or external audio staging is claimed."
+  },
+  {
+    "packet_order": "6",
+    "section_name": "execution_queue_handoff_bridge_checklist",
+    "artifact_path": "results/figures/frontier_execution_queue_handoff_bridge_checklist.md",
+    "section_role": "Verify each execution handoff before opening the receipt target for that frontier.",
+    "packet_note": "Execution queue packet section while queue_status=queue_complete, ready_chain_count=3, pending_chain_count=0; no benchmark execution or external audio staging is claimed."
+  }
+]
