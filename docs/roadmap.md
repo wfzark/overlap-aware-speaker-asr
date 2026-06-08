@@ -1223,6 +1223,13 @@ Update: the frontier now also has an operator bridge checklist.
 - Script: `python3 -m src.frontier_operator_next_action_bridge_checklist`
 - Current evidence keeps the same lane order and requires verifying the operator card before opening either the MeetEval receipt target or the external validation license bridge target.
 
+Update: the frontier now also has a top-level operator brief.
+
+- Frontier operator brief: `results/tables/frontier_operator_next_action_operator_brief.csv`
+- Summary view: `results/figures/frontier_operator_next_action_operator_brief.md`
+- Script: `python3 -m src.frontier_operator_next_action_operator_brief`
+- Current evidence compresses the two-lane operator state into one plain-language summary so the next contributor can start with `meeteval_compatibility` while keeping `external_validation` visible as the current unblock target.
+
 Update: the frontier now has a per-frontier execution handoff.
 
 - Frontier execution queue handoff: `results/tables/frontier_execution_queue_handoff.csv`

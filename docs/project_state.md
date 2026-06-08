@@ -1451,6 +1451,12 @@ Frontier operator next-action bridge checklist:
 - `results/tables/frontier_operator_next_action_bridge_checklist.csv`
 - The checklist preserves the operator-lane order and bridges the top-level card to the next target artifacts without claiming that either lane has already been completed.
 
+Frontier operator next-action operator brief:
+
+- `results/figures/frontier_operator_next_action_operator_brief.md`
+- `results/tables/frontier_operator_next_action_operator_brief.csv`
+- The brief converts the two-lane operator state into one plain-language summary with `meeteval_compatibility` as the first action and `external_validation` as the current unblock target.
+
 Frontier execution queue completion summary bridge checklist:
 
 - `results/figures/frontier_execution_queue_completion_summary_bridge_checklist.md`

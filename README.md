@@ -320,6 +320,12 @@ Current frontier operator next-action bridge checklist result:
 - `results/tables/frontier_operator_next_action_bridge_checklist.csv`
 - The checklist turns that two-lane operator card into a pre-open verification path so the next contributor checks the card before opening either the MeetEval receipt target or the external validation license bridge.
 
+Current frontier operator next-action operator brief result:
+
+- `results/figures/frontier_operator_next_action_operator_brief.md`
+- `results/tables/frontier_operator_next_action_operator_brief.csv`
+- The brief compresses the same two-lane state into a plain-language operator summary: advance `meeteval_compatibility` first, keep `external_validation` visible as the current unblock target, and follow the card plus bridge checklist as the evidence path.
+
 Current frontier focus checklist result:
 
 - `results/figures/frontier_focus_card_checklist.md` now turns that focus card into a one-glance verification checklist
