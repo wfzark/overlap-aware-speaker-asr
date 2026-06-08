@@ -15,7 +15,7 @@ class FrontierOperatorNextActionStatusHandoffPacketTest(unittest.TestCase):
             }
         )
 
-        self.assertEqual(len(rows), 19)
+        self.assertEqual(len(rows), 20)
         self.assertEqual(rows[0]["section_name"], "status")
         self.assertEqual(rows[6]["section_name"], "status_handoff_operator_brief")
         self.assertEqual(rows[7]["section_name"], "status_handoff_operator_brief_bridge")
@@ -24,6 +24,7 @@ class FrontierOperatorNextActionStatusHandoffPacketTest(unittest.TestCase):
         self.assertEqual(rows[12]["section_name"], "status_handoff_phase_checkpoint_bridge_checklist")
         self.assertEqual(rows[14]["section_name"], "status_handoff_milestone_bridge_checklist")
         self.assertEqual(rows[16]["section_name"], "status_handoff_completion_dashboard_bridge_checklist")
+        self.assertEqual(rows[17]["section_name"], "status_handoff_status_preflight_bridge_checklist")
         self.assertEqual(rows[-1]["section_name"], "status_handoff_status_bridge_checklist")
 
 

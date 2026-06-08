@@ -116,12 +116,18 @@ PACKET_SECTIONS = [
     ),
     (
         "18",
+        "status_handoff_status_preflight_bridge_checklist",
+        "results/figures/frontier_operator_next_action_status_handoff_status_preflight_bridge_checklist.md",
+        "Verify the completion-dashboard bridge layer before reopening the machine-readable status rollup",
+    ),
+    (
+        "19",
         "status_handoff_status",
         "results/figures/frontier_operator_next_action_status_handoff_status.md",
         "Machine-readable status rollup for the current status/handoff queue state",
     ),
     (
-        "19",
+        "20",
         "status_handoff_status_bridge_checklist",
         "results/figures/frontier_operator_next_action_status_handoff_status_bridge_checklist.md",
         "Verify the status/handoff status rollup before reopening the broader status/handoff packet target",

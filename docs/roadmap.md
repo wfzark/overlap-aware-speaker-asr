@@ -1340,7 +1340,7 @@ Update: the frontier now also has a top-level operator status handoff packet.
 - Frontier operator status handoff packet: `results/tables/frontier_operator_next_action_status_handoff_packet.csv`
 - Summary view: `results/figures/frontier_operator_next_action_status_handoff_packet.md`
 - Script: `python3 -m src.frontier_operator_next_action_status_handoff_packet`
-- Current evidence consolidates the top-level status snapshot, lane handoff, queue summary, operator brief, operator-brief bridge, operator-brief bridge checklist, runbook, runbook bridge checklist, checkpoint, phase-checkpoint bridge checklist, milestone, milestone bridge checklist, completion dashboard, bridge checkpoints, and the newer `status_handoff_status` rollup layer into one single-entry artifact.
+- Current evidence consolidates the top-level status snapshot, lane handoff, queue summary, operator brief, operator-brief bridge, operator-brief bridge checklist, runbook, runbook bridge checklist, checkpoint, phase-checkpoint bridge checklist, milestone, milestone bridge checklist, completion dashboard, status preflight bridge checklist, bridge checkpoints, and the newer `status_handoff_status` rollup layer into one single-entry artifact.
 
 Update: the frontier now also has a top-level operator status handoff packet bridge checklist.
 
@@ -1425,6 +1425,13 @@ Update: the frontier now also has a top-level operator status handoff completion
 - Summary view: `results/figures/frontier_operator_next_action_status_handoff_completion_dashboard_bridge_checklist.md`
 - Script: `python3 -m src.frontier_operator_next_action_status_handoff_completion_dashboard_bridge_checklist`
 - Current evidence requires verifying the new `status/handoff` dashboard snapshot before the current runbook card target is reopened.
+
+Update: the frontier now also has a top-level operator status handoff status preflight bridge checklist.
+
+- Frontier operator status handoff status preflight bridge checklist: `results/tables/frontier_operator_next_action_status_handoff_status_preflight_bridge_checklist.csv`
+- Summary view: `results/figures/frontier_operator_next_action_status_handoff_status_preflight_bridge_checklist.md`
+- Script: `python3 -m src.frontier_operator_next_action_status_handoff_status_preflight_bridge_checklist`
+- Current evidence requires verifying the completion-dashboard bridge layer before the machine-readable status rollup target is reopened.
 
 Update: the frontier now also has a top-level operator status handoff status rollup.
 

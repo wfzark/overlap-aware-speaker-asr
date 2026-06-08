@@ -1551,7 +1551,7 @@ Frontier operator next-action status handoff packet:
 
 - `results/figures/frontier_operator_next_action_status_handoff_packet.md`
 - `results/tables/frontier_operator_next_action_status_handoff_packet.csv`
-- The packet consolidates the top-level status snapshot, lane handoff, queue summary, operator brief, operator-brief bridge, operator-brief bridge checklist, runbook, runbook bridge checklist, checkpoint, phase-checkpoint bridge checklist, milestone, milestone bridge checklist, completion dashboard, bridge checkpoints, and the newer `status_handoff_status` rollup layer into one single-entry coordination artifact.
+- The packet consolidates the top-level status snapshot, lane handoff, queue summary, operator brief, operator-brief bridge, operator-brief bridge checklist, runbook, runbook bridge checklist, checkpoint, phase-checkpoint bridge checklist, milestone, milestone bridge checklist, completion dashboard, status preflight bridge checklist, bridge checkpoints, and the newer `status_handoff_status` rollup layer into one single-entry coordination artifact.
 
 Frontier operator next-action status handoff packet bridge checklist:
 
@@ -1624,6 +1624,12 @@ Frontier operator next-action status handoff completion dashboard bridge checkli
 - `results/figures/frontier_operator_next_action_status_handoff_completion_dashboard_bridge_checklist.md`
 - `results/tables/frontier_operator_next_action_status_handoff_completion_dashboard_bridge_checklist.csv`
 - The bridge checklist verifies that `status/handoff` dashboard snapshot before the current runbook card is reopened, keeping the transition coordination-only.
+
+Frontier operator next-action status handoff status preflight bridge checklist:
+
+- `results/figures/frontier_operator_next_action_status_handoff_status_preflight_bridge_checklist.md`
+- `results/tables/frontier_operator_next_action_status_handoff_status_preflight_bridge_checklist.csv`
+- The checklist verifies that completion-dashboard bridge layer before the machine-readable status rollup is reopened, keeping the transition coordination-only.
 
 Frontier operator next-action status handoff status:
 
