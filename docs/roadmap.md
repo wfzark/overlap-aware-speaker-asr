@@ -1633,6 +1633,20 @@ Update: the frontier receipt layer now has a phase checkpoint card.
 - Script: `python3 -m src.frontier_execution_receipt_queue_phase_checkpoint_card`
 - This narrows the receipt queue runbook to the exact completion signal that should be satisfied before the current first receipt-queue step is treated as advanced.
 
+Update: the frontier receipt layer now has a phase checkpoint bridge checklist.
+
+- Phase checkpoint bridge checklist: `results/tables/frontier_execution_receipt_queue_phase_checkpoint_bridge_checklist.csv`
+- Summary view: `results/figures/frontier_execution_receipt_queue_phase_checkpoint_bridge_checklist.md`
+- Script: `python3 -m src.frontier_execution_receipt_queue_phase_checkpoint_bridge_checklist`
+- This turns the receipt queue phase checkpoint card into a verification step before reopening the current milestone boundary.
+
+Update: the frontier receipt layer now has a milestone card.
+
+- Milestone card: `results/tables/frontier_execution_receipt_queue_milestone_card.csv`
+- Summary view: `results/figures/frontier_execution_receipt_queue_milestone_card.md`
+- Script: `python3 -m src.frontier_execution_receipt_queue_milestone_card`
+- This records what the current first receipt-queue checkpoint unlocks next and how many visible receipt fronts remain afterward.
+
 Update: the frontier receipt layer now has a fill queue status rollup.
 
 - Fill queue status: `results/tables/frontier_execution_receipt_fill_queue_status.csv`

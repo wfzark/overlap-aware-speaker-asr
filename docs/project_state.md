@@ -1871,6 +1871,18 @@ Frontier execution receipt queue phase checkpoint card:
 - `results/tables/frontier_execution_receipt_queue_phase_checkpoint_card.csv`
 - This checkpoint card narrows the receipt queue runbook to the exact completion signal for the current first receipt-queue target.
 
+Frontier execution receipt queue phase checkpoint bridge checklist:
+
+- `results/figures/frontier_execution_receipt_queue_phase_checkpoint_bridge_checklist.md`
+- `results/tables/frontier_execution_receipt_queue_phase_checkpoint_bridge_checklist.csv`
+- This checklist verifies the receipt queue phase checkpoint card before the milestone card is reopened for the current first receipt-queue target.
+
+Frontier execution receipt queue milestone card:
+
+- `results/figures/frontier_execution_receipt_queue_milestone_card.md`
+- `results/tables/frontier_execution_receipt_queue_milestone_card.csv`
+- This milestone card records what the current first receipt-queue checkpoint unlocks next and how many visible receipt fronts remain afterward.
+
 Frontier execution receipt fill queue status:
 
 - `results/figures/frontier_execution_receipt_fill_queue_status.md`
@@ -2614,6 +2626,8 @@ python -m src.frontier_execution_receipt_queue_operator_brief
 python -m src.frontier_execution_receipt_queue_runbook_card
 python -m src.frontier_execution_receipt_queue_runbook_bridge_checklist
 python -m src.frontier_execution_receipt_queue_phase_checkpoint_card
+python -m src.frontier_execution_receipt_queue_phase_checkpoint_bridge_checklist
+python -m src.frontier_execution_receipt_queue_milestone_card
 python -m src.frontier_execution_receipt_fill_queue_status
 python -m src.frontier_execution_receipt_fill_queue_status_bridge_checklist
 python -m src.frontier_execution_receipt_fill_queue_completion_summary
