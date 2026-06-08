@@ -1481,6 +1481,21 @@ Update: `speaker_profile` now also has execution scaffold readiness.
 - Script: `python -m src.speaker_profile_embedding_trial_execution_scaffold_readiness`
 - Links handoff completion to the existing execution scaffold for `NoOverlap`; voiceprint execution remains pending.
 
+Update: `speaker_profile` now also has an execution scaffold completion stack.
+
+- Scaffold readiness bridge: `results/tables/speaker_profile_embedding_trial_execution_scaffold_readiness_bridge_checklist.csv`
+- Scaffold completion summary: `results/tables/speaker_profile_embedding_trial_execution_scaffold_completion_summary.csv`
+- Scaffold completion bridge: `results/tables/speaker_profile_embedding_trial_execution_scaffold_completion_summary_bridge_checklist.csv`
+- Preflight readiness: `results/tables/speaker_profile_embedding_trial_execution_preflight_readiness.csv`
+- `queue_status = queue_complete` at scaffold layer; `preflight_ready` when preflight passes for `NoOverlap`.
+
+Update: `meeteval_compatibility` now also has a tokenization handoff completion stack.
+
+- Handoff completion summary: `results/tables/meeteval_tokenization_adaptation_handoff_completion_summary.csv`
+- Handoff completion bridge: `results/tables/meeteval_tokenization_adaptation_handoff_completion_summary_bridge_checklist.csv`
+- Scripts: `python -m src.meeteval_tokenization_adaptation_handoff_completion_summary`, `python -m src.meeteval_tokenization_adaptation_handoff_completion_summary_bridge_checklist`
+- `queue_status = queue_complete` at `5/5` reconciled cases; frontier fill runbook remains coordination-only.
+
 ## Healthy Project Principles
 
 - New experiments should be isolated.

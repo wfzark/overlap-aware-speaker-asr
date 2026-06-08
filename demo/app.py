@@ -189,6 +189,15 @@ def render_frontier_fill_status() -> None:
         st.markdown("**Tokenization adaptation handoff**")
         st.metric("Handoff status", tokenization_handoff.get("handoff_status", "unknown"))
         st.caption(f"Target: `{tokenization_handoff.get('handoff_target', '')}`")
+    tokenization_handoff_completion = load_json_dict(
+        "results/tables/meeteval_tokenization_adaptation_handoff_completion_summary.json"
+    )
+    if tokenization_handoff_completion:
+        st.caption(
+            f"Tokenization handoff queue: `{tokenization_handoff_completion.get('queue_status', '')}` "
+            f"({tokenization_handoff_completion.get('aligned_count', '')}/"
+            f"{tokenization_handoff_completion.get('total_count', '')})"
+        )
     if dashboard:
         st.markdown("**Fill execution dashboard**")
         st.write(dashboard.get("dashboard_note", ""))
@@ -282,6 +291,29 @@ def render_speaker_profile_status() -> None:
         st.markdown("**Execution scaffold readiness**")
         st.metric("Scaffold readiness", scaffold_readiness.get("readiness_status", "unknown"))
         st.caption(f"Case: `{scaffold_readiness.get('case_id', '')}`")
+    scaffold_completion = load_json_dict(
+        "results/tables/speaker_profile_embedding_trial_execution_scaffold_completion_summary.json"
+    )
+    preflight = load_json_dict("results/tables/speaker_profile_embedding_trial_execution_preflight.json")
+    preflight_readiness = load_json_dict(
+        "results/tables/speaker_profile_embedding_trial_execution_preflight_readiness.json"
+    )
+    if scaffold_completion:
+        st.caption(f"Scaffold queue: `{scaffold_completion.get('queue_status', '')}`")
+    if preflight:
+        st.markdown("**Execution preflight**")
+        st.table(
+            {
+                "field": ["preflight_pass", "swapped_bias", "confidence_gap"],
+                "value": [
+                    str(preflight.get("preflight_pass", "")),
+                    str(preflight.get("swapped_bias_detected", "")),
+                    preflight.get("profile_confidence_gap", ""),
+                ],
+            }
+        )
+    if preflight_readiness:
+        st.metric("Preflight readiness", preflight_readiness.get("readiness_status", "unknown"))
     st.info(
         "Text-profile proxy is a risk signal only — not deployment-ready speaker identification. "
         "All gold cases currently prefer swapped alignment."
