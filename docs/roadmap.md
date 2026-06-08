@@ -1318,7 +1318,7 @@ Update: the frontier now has a unified execution queue status rollup.
 - Frontier execution queue status: `results/tables/frontier_execution_queue_status.csv`
 - Frontier execution queue status bridge: `results/tables/frontier_execution_queue_status_bridge_checklist.csv`
 - Summary views: `results/figures/frontier_execution_queue_status.md`, `results/figures/frontier_execution_queue_status_bridge_checklist.md`
-- `combined_chain_status = execution_chain_ready` when MeetEval, speaker profile, and external staging chains are all ready; no benchmark execution is claimed.
+- `combined_chain_status = execution_chain_ready` only when the full five-track frontier surface is ready: MeetEval, speaker profile, external staging, LLM critic, and demo excellence; no benchmark execution is claimed.
 
 Update: `meeteval_compatibility` now has a dedicated skill card.
 

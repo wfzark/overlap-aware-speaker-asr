@@ -1407,7 +1407,7 @@ Frontier execution queue status:
 
 - `results/figures/frontier_execution_queue_status.md`
 - `results/tables/frontier_execution_queue_status.csv`
-- The unified frontier rollup reports `combined_chain_status = execution_chain_ready` across MeetEval, speaker profile, and external staging; no benchmark execution is claimed.
+- The unified frontier rollup now uses the same five-track surface as the top-level frontier board and reports `combined_chain_status = execution_chain_ready` only when MeetEval, speaker profile, external staging, LLM critic, and demo excellence are all chain-ready; no benchmark execution is claimed.
 
 Frontier execution queue status bridge checklist:
 
@@ -1419,7 +1419,7 @@ Frontier execution queue completion summary:
 
 - `results/figures/frontier_execution_queue_completion_summary.md`
 - `results/tables/frontier_execution_queue_completion_summary.csv`
-- The coordination queue rollup reports `queue_status = queue_complete` at `3/3` ready chains; no benchmark execution is claimed.
+- The coordination queue rollup reports `queue_status = queue_complete` at `5/5` ready chains; no benchmark execution is claimed.
 
 Frontier go-no-go board:
 

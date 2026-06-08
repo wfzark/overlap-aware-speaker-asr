@@ -302,6 +302,12 @@ Current frontier go-no-go summary result:
 - `results/tables/frontier_go_no_go_summary.csv`
 - The summary records `highest_priority_ready_frontier = meeteval_compatibility`, `highest_priority_blocked_frontier = external_validation`, and keeps the whole conclusion explicitly at the coordination layer rather than claiming frontier completion.
 
+Current frontier execution queue status result:
+
+- `results/figures/frontier_execution_queue_status.md`
+- `results/tables/frontier_execution_queue_status.csv`
+- The unified queue status now uses the same five-track frontier surface as the top-level go/no-go board, so `combined_chain_status` only becomes ready when `meeteval_compatibility`, `speaker_profile`, `external_validation`, `llm_critic`, and `demo_excellence` are all in their narrow execution-ready states.
+
 Current frontier operator next-action card result:
 
 - `results/figures/frontier_operator_next_action_card.md`
