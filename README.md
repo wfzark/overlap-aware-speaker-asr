@@ -344,6 +344,12 @@ Current frontier operator next-action frontier bridge checklist result:
 - `results/tables/frontier_operator_next_action_frontier_bridge_checklist.csv`
 - The checklist turns that top-level frontier bridge into a pre-open verification step so the next contributor confirms queue alignment before reopening the runbook card.
 
+Current frontier operator next-action handoff packet result:
+
+- `results/figures/frontier_operator_next_action_handoff_packet.md`
+- `results/tables/frontier_operator_next_action_handoff_packet.csv`
+- The packet consolidates the whole top-level operator chain into one entrypoint so the next contributor can open the right artifacts in order without reconstructing the chain manually.
+
 Current frontier focus checklist result:
 
 - `results/figures/frontier_focus_card_checklist.md` now turns that focus card into a one-glance verification checklist

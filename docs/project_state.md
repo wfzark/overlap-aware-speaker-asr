@@ -1475,6 +1475,12 @@ Frontier operator next-action frontier bridge checklist:
 - `results/tables/frontier_operator_next_action_frontier_bridge_checklist.csv`
 - The checklist verifies top-level queue alignment before the runbook card is reopened and keeps the whole transition coordination-only.
 
+Frontier operator next-action handoff packet:
+
+- `results/figures/frontier_operator_next_action_handoff_packet.md`
+- `results/tables/frontier_operator_next_action_handoff_packet.csv`
+- The packet collects the whole top-level operator chain into one single-entry coordination artifact with an explicit first-open sequence.
+
 Frontier execution queue completion summary bridge checklist:
 
 - `results/figures/frontier_execution_queue_completion_summary_bridge_checklist.md`
