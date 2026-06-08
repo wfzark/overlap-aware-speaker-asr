@@ -55,6 +55,12 @@ PACKET_SECTIONS = [
     ),
     (
         "7",
+        "execution_queue_runbook_card",
+        "results/figures/frontier_execution_queue_runbook_card.md",
+        "One-page first-action execution card for the current first execution-queue target.",
+    ),
+    (
+        "8",
         "execution_queue_handoff_bridge_checklist",
         "results/figures/frontier_execution_queue_handoff_bridge_checklist.md",
         "Verify each execution handoff before opening the receipt target for that frontier.",

@@ -1665,7 +1665,7 @@ Frontier execution queue handoff packet:
 
 - `results/figures/frontier_execution_queue_handoff_packet.md`
 - `results/tables/frontier_execution_queue_handoff_packet.csv`
-- This packet consolidates the execution queue status, queue summary, per-frontier handoff layers, and the new operator brief into one single-entry coordination artifact.
+- This packet consolidates the execution queue status, queue summary, per-frontier handoff layers, the operator brief, and the new runbook card into one single-entry coordination artifact.
 
 Frontier execution queue handoff packet bridge checklist:
 
@@ -1678,6 +1678,12 @@ Frontier execution queue operator brief:
 - `results/figures/frontier_execution_queue_operator_brief.md`
 - `results/tables/frontier_execution_queue_operator_brief.csv`
 - This brief turns the first execution-queue handoff row into a plain-language next-step card for the current operator.
+
+Frontier execution queue runbook card:
+
+- `results/figures/frontier_execution_queue_runbook_card.md`
+- `results/tables/frontier_execution_queue_runbook_card.csv`
+- This runbook card turns the execution queue operator brief into a one-page first-action execution card for the current first execution-queue target.
 
 MeetEval cpWER execution receipt readiness:
 
