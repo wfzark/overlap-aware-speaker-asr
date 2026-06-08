@@ -1709,6 +1709,12 @@ Frontier execution queue completion dashboard:
 - `results/tables/frontier_execution_queue_completion_dashboard.csv`
 - This dashboard compresses the current execution queue state into one operator-facing view with the current first frontier, next milestone, remaining visible fronts, and the dominant coordination blocker.
 
+Frontier execution queue completion dashboard bridge checklist:
+
+- `results/figures/frontier_execution_queue_completion_dashboard_bridge_checklist.md`
+- `results/tables/frontier_execution_queue_completion_dashboard_bridge_checklist.csv`
+- This checklist turns the execution queue dashboard into a verification gate before the runbook card is reopened for the current first frontier.
+
 MeetEval cpWER execution receipt readiness:
 
 - `results/figures/meeteval_cpwer_execution_receipt_readiness.md`
@@ -2502,6 +2508,15 @@ python -m src.frontier_execution_queue_status_bridge_checklist
 python -m src.frontier_execution_queue_completion_summary
 python -m src.frontier_execution_queue_completion_summary_bridge_checklist
 python -m src.frontier_execution_queue_handoff
+python -m src.frontier_execution_queue_handoff_packet
+python -m src.frontier_execution_queue_handoff_packet_bridge_checklist
+python -m src.frontier_execution_queue_operator_brief
+python -m src.frontier_execution_queue_runbook_card
+python -m src.frontier_execution_queue_runbook_bridge_checklist
+python -m src.frontier_execution_queue_phase_checkpoint_card
+python -m src.frontier_execution_queue_milestone_card
+python -m src.frontier_execution_queue_completion_dashboard
+python -m src.frontier_execution_queue_completion_dashboard_bridge_checklist
 python -m src.frontier_execution_queue_handoff_bridge_checklist
 python -m src.meeteval_cpwer_execution_receipt_readiness
 python -m src.speaker_profile_embedding_trial_execution_receipt_readiness

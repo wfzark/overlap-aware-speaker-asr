@@ -1509,6 +1509,13 @@ Update: the frontier now also has an execution queue completion dashboard.
 - Script: `python3 -m src.frontier_execution_queue_completion_dashboard`
 - Current evidence compresses the current execution queue state into one operator-facing view with the current first frontier, next milestone, remaining visible fronts, and the dominant coordination blocker.
 
+Update: the frontier now also has an execution queue completion dashboard bridge checklist.
+
+- Frontier execution queue completion dashboard bridge checklist: `results/tables/frontier_execution_queue_completion_dashboard_bridge_checklist.csv`
+- Summary view: `results/figures/frontier_execution_queue_completion_dashboard_bridge_checklist.md`
+- Script: `python3 -m src.frontier_execution_queue_completion_dashboard_bridge_checklist`
+- Current evidence turns that execution queue dashboard into a verification step before reopening the runbook card for the current first frontier.
+
 Update: the frontier now has execution receipt readiness rollups.
 
 - MeetEval receipt readiness: `results/tables/meeteval_cpwer_execution_receipt_readiness.csv`

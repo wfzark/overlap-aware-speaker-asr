@@ -386,6 +386,12 @@ Current frontier execution queue completion dashboard result:
 - `results/tables/frontier_execution_queue_completion_dashboard.csv`
 - The dashboard compresses the current execution-queue state into one glance: current first frontier, next milestone, remaining visible fronts, and the dominant coordination blocker.
 
+Current frontier execution queue completion dashboard bridge checklist result:
+
+- `results/figures/frontier_execution_queue_completion_dashboard_bridge_checklist.md`
+- `results/tables/frontier_execution_queue_completion_dashboard_bridge_checklist.csv`
+- The checklist turns that execution-queue dashboard into a pre-open verification step before the runbook card is reopened for the current first frontier.
+
 Current frontier operator next-action frontier bridge checklist result:
 
 - `results/figures/frontier_operator_next_action_frontier_bridge_checklist.md`
