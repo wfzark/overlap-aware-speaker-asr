@@ -41,6 +41,102 @@ PACKET_SECTIONS = [
         "results/figures/speaker_profile_embedding_trial_execution_receipt_open_card_bridge_checklist.md",
         "Final gate before reopening the current speaker-profile execution receipt target.",
     ),
+    (
+        "5",
+        "receipt_handoff_packet",
+        "results/figures/speaker_profile_embedding_trial_execution_receipt_handoff_packet.md",
+        "Compact speaker-profile receipt coordination packet covering the current reentry and execution path.",
+    ),
+    (
+        "6",
+        "receipt_handoff_packet_bridge_checklist",
+        "results/figures/speaker_profile_embedding_trial_execution_receipt_handoff_packet_bridge_checklist.md",
+        "Verify the current speaker-profile receipt packet before reopening the readiness rollup.",
+    ),
+    (
+        "7",
+        "receipt_operator_brief",
+        "results/figures/speaker_profile_embedding_trial_execution_receipt_operator_brief.md",
+        "Plain-language operator summary for the current speaker-profile receipt action.",
+    ),
+    (
+        "8",
+        "receipt_operator_brief_bridge",
+        "results/figures/speaker_profile_embedding_trial_execution_receipt_operator_brief_bridge.md",
+        "Bridge the plain-language operator brief back to the current speaker-profile readiness target.",
+    ),
+    (
+        "9",
+        "receipt_operator_brief_bridge_checklist",
+        "results/figures/speaker_profile_embedding_trial_execution_receipt_operator_brief_bridge_checklist.md",
+        "Verify the operator brief bridge before reopening the current speaker-profile readiness target.",
+    ),
+    (
+        "10",
+        "receipt_runbook_card",
+        "results/figures/speaker_profile_embedding_trial_execution_receipt_runbook_card.md",
+        "One-page execution card for the current speaker-profile receipt action.",
+    ),
+    (
+        "11",
+        "receipt_runbook_bridge_checklist",
+        "results/figures/speaker_profile_embedding_trial_execution_receipt_runbook_bridge_checklist.md",
+        "Verify the current speaker-profile runbook card before reopening the readiness target.",
+    ),
+    (
+        "12",
+        "receipt_phase_checkpoint_card",
+        "results/figures/speaker_profile_embedding_trial_execution_receipt_phase_checkpoint_card.md",
+        "Current explicit completion checkpoint for the speaker-profile receipt runbook path.",
+    ),
+    (
+        "13",
+        "receipt_phase_checkpoint_bridge_checklist",
+        "results/figures/speaker_profile_embedding_trial_execution_receipt_phase_checkpoint_bridge_checklist.md",
+        "Verify the speaker-profile phase checkpoint before reopening the readiness target.",
+    ),
+    (
+        "14",
+        "receipt_milestone_card",
+        "results/figures/speaker_profile_embedding_trial_execution_receipt_milestone_card.md",
+        "Immediate milestone boundary and next unlock for the current speaker-profile receipt path.",
+    ),
+    (
+        "15",
+        "receipt_milestone_bridge_checklist",
+        "results/figures/speaker_profile_embedding_trial_execution_receipt_milestone_bridge_checklist.md",
+        "Verify the speaker-profile milestone card before reopening the readiness target.",
+    ),
+    (
+        "16",
+        "receipt_completion_dashboard",
+        "results/figures/speaker_profile_embedding_trial_execution_receipt_completion_dashboard.md",
+        "One-glance operator-facing dashboard for the current speaker-profile receipt state.",
+    ),
+    (
+        "17",
+        "receipt_completion_dashboard_bridge_checklist",
+        "results/figures/speaker_profile_embedding_trial_execution_receipt_completion_dashboard_bridge_checklist.md",
+        "Verify the speaker-profile completion dashboard before reopening the readiness target.",
+    ),
+    (
+        "18",
+        "receipt_status_preflight_bridge_checklist",
+        "results/figures/speaker_profile_embedding_trial_execution_receipt_status_preflight_bridge_checklist.md",
+        "Verify the completion-dashboard bridge before reopening the speaker-profile status rollup.",
+    ),
+    (
+        "19",
+        "receipt_status_reentry_card",
+        "results/figures/speaker_profile_embedding_trial_execution_receipt_status_reentry_card.md",
+        "One-page reentry instruction for reopening the speaker-profile status rollup.",
+    ),
+    (
+        "20",
+        "receipt_status_reentry_bridge_checklist",
+        "results/figures/speaker_profile_embedding_trial_execution_receipt_status_reentry_bridge_checklist.md",
+        "Verify the speaker-profile status reentry card before reopening the receipt readiness target.",
+    ),
 ]
 
 
