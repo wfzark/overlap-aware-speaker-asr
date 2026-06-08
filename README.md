@@ -426,7 +426,7 @@ Current frontier operator next-action status handoff packet bridge checklist res
 
 - `results/figures/frontier_operator_next_action_status_handoff_packet_bridge_checklist.md`
 - `results/tables/frontier_operator_next_action_status_handoff_packet_bridge_checklist.csv`
-- The checklist now verifies that packet before the next contributor reopens the newer `status/handoff` status rollup layer.
+- The checklist now verifies that packet before the next contributor reopens the plain-language `status/handoff` operator brief.
 
 Current frontier operator next-action status handoff operator brief result:
 
