@@ -326,6 +326,12 @@ Current frontier operator next-action operator brief result:
 - `results/tables/frontier_operator_next_action_operator_brief.csv`
 - The brief compresses the same two-lane state into a plain-language operator summary: advance `meeteval_compatibility` first, keep `external_validation` visible as the current unblock target, and follow the card plus bridge checklist as the evidence path.
 
+Current frontier operator next-action runbook card result:
+
+- `results/figures/frontier_operator_next_action_runbook_card.md`
+- `results/tables/frontier_operator_next_action_runbook_card.csv`
+- The runbook card turns that operator summary into a one-page first-action execution card with the ready-lane target, required evidence path, and narrow completion signal.
+
 Current frontier focus checklist result:
 
 - `results/figures/frontier_focus_card_checklist.md` now turns that focus card into a one-glance verification checklist

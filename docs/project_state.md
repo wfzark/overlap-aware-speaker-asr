@@ -1457,6 +1457,12 @@ Frontier operator next-action operator brief:
 - `results/tables/frontier_operator_next_action_operator_brief.csv`
 - The brief converts the two-lane operator state into one plain-language summary with `meeteval_compatibility` as the first action and `external_validation` as the current unblock target.
 
+Frontier operator next-action runbook card:
+
+- `results/figures/frontier_operator_next_action_runbook_card.md`
+- `results/tables/frontier_operator_next_action_runbook_card.csv`
+- The runbook card condenses the ready lane into a one-page execution card with the required evidence path and the narrow coordination completion signal.
+
 Frontier execution queue completion summary bridge checklist:
 
 - `results/figures/frontier_execution_queue_completion_summary_bridge_checklist.md`

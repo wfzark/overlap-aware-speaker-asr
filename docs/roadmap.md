@@ -1230,6 +1230,13 @@ Update: the frontier now also has a top-level operator brief.
 - Script: `python3 -m src.frontier_operator_next_action_operator_brief`
 - Current evidence compresses the two-lane operator state into one plain-language summary so the next contributor can start with `meeteval_compatibility` while keeping `external_validation` visible as the current unblock target.
 
+Update: the frontier now also has a top-level runbook card.
+
+- Frontier runbook card: `results/tables/frontier_operator_next_action_runbook_card.csv`
+- Summary view: `results/figures/frontier_operator_next_action_runbook_card.md`
+- Script: `python3 -m src.frontier_operator_next_action_runbook_card`
+- Current evidence condenses the ready lane into a one-page first-action card so the next contributor can open the MeetEval receipt path with the operator evidence chain already defined.
+
 Update: the frontier now has a per-frontier execution handoff.
 
 - Frontier execution queue handoff: `results/tables/frontier_execution_queue_handoff.csv`
