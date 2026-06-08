@@ -1661,6 +1661,27 @@ Update: the frontier receipt layer now has a completion dashboard.
 - Script: `python3 -m src.frontier_execution_receipt_queue_completion_dashboard`
 - This compresses the current receipt queue state into one operator-facing dashboard while keeping the layer explicitly coordination-only.
 
+Update: the frontier receipt layer now has a completion dashboard bridge checklist.
+
+- Completion dashboard bridge checklist: `results/tables/frontier_execution_receipt_queue_completion_dashboard_bridge_checklist.csv`
+- Summary view: `results/figures/frontier_execution_receipt_queue_completion_dashboard_bridge_checklist.md`
+- Script: `python3 -m src.frontier_execution_receipt_queue_completion_dashboard_bridge_checklist`
+- This turns the receipt queue dashboard into a verification step before reopening the runbook card for the current first frontier.
+
+Update: the frontier receipt layer now has a status preflight bridge checklist.
+
+- Status preflight bridge checklist: `results/tables/frontier_execution_receipt_queue_status_preflight_bridge_checklist.csv`
+- Summary view: `results/figures/frontier_execution_receipt_queue_status_preflight_bridge_checklist.md`
+- Script: `python3 -m src.frontier_execution_receipt_queue_status_preflight_bridge_checklist`
+- This verifies the completion-dashboard bridge before reopening the receipt queue status rollup.
+
+Update: the frontier receipt layer now has a status reentry card.
+
+- Status reentry card: `results/tables/frontier_execution_receipt_queue_status_reentry_card.csv`
+- Summary view: `results/figures/frontier_execution_receipt_queue_status_reentry_card.md`
+- Script: `python3 -m src.frontier_execution_receipt_queue_status_reentry_card`
+- This gives the next contributor a one-page reentry instruction for reopening the receipt queue status rollup after preflight.
+
 Update: the frontier receipt layer now has a fill queue status rollup.
 
 - Fill queue status: `results/tables/frontier_execution_receipt_fill_queue_status.csv`

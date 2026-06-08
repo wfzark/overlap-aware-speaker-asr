@@ -1895,6 +1895,24 @@ Frontier execution receipt queue completion dashboard:
 - `results/tables/frontier_execution_receipt_queue_completion_dashboard.csv`
 - This dashboard compresses the current receipt queue state into one operator-facing view with the current first frontier, next milestone, remaining visible fronts, and the dominant coordination blocker.
 
+Frontier execution receipt queue completion dashboard bridge checklist:
+
+- `results/figures/frontier_execution_receipt_queue_completion_dashboard_bridge_checklist.md`
+- `results/tables/frontier_execution_receipt_queue_completion_dashboard_bridge_checklist.csv`
+- This checklist turns the receipt queue dashboard into a verification gate before the runbook card is reopened for the current first frontier.
+
+Frontier execution receipt queue status preflight bridge checklist:
+
+- `results/figures/frontier_execution_receipt_queue_status_preflight_bridge_checklist.md`
+- `results/tables/frontier_execution_receipt_queue_status_preflight_bridge_checklist.csv`
+- This checklist verifies the completion-dashboard bridge before the receipt queue status rollup is reopened.
+
+Frontier execution receipt queue status reentry card:
+
+- `results/figures/frontier_execution_receipt_queue_status_reentry_card.md`
+- `results/tables/frontier_execution_receipt_queue_status_reentry_card.csv`
+- This card gives the next contributor a one-page instruction for reopening the receipt queue status rollup after preflight.
+
 Frontier execution receipt fill queue status:
 
 - `results/figures/frontier_execution_receipt_fill_queue_status.md`
@@ -2642,6 +2660,9 @@ python -m src.frontier_execution_receipt_queue_phase_checkpoint_bridge_checklist
 python -m src.frontier_execution_receipt_queue_milestone_card
 python -m src.frontier_execution_receipt_queue_milestone_bridge_checklist
 python -m src.frontier_execution_receipt_queue_completion_dashboard
+python -m src.frontier_execution_receipt_queue_completion_dashboard_bridge_checklist
+python -m src.frontier_execution_receipt_queue_status_preflight_bridge_checklist
+python -m src.frontier_execution_receipt_queue_status_reentry_card
 python -m src.frontier_execution_receipt_fill_queue_status
 python -m src.frontier_execution_receipt_fill_queue_status_bridge_checklist
 python -m src.frontier_execution_receipt_fill_queue_completion_summary
