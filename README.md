@@ -422,6 +422,12 @@ Current frontier operator next-action status handoff packet result:
 - `results/tables/frontier_operator_next_action_status_handoff_packet.csv`
 - The packet consolidates the whole top-level status/handoff subchain into one single-entry coordination artifact.
 
+Current frontier operator next-action status handoff packet bridge checklist result:
+
+- `results/figures/frontier_operator_next_action_status_handoff_packet_bridge_checklist.md`
+- `results/tables/frontier_operator_next_action_status_handoff_packet_bridge_checklist.csv`
+- The checklist verifies that packet before the next contributor reopens the queue-level top-level handoff summary.
+
 Current frontier focus checklist result:
 
 - `results/figures/frontier_focus_card_checklist.md` now turns that focus card into a one-glance verification checklist
