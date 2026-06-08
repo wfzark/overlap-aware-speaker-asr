@@ -1799,6 +1799,14 @@ Update: the frontier receipt layer now has a writeback status rollup.
 - Script: `python3 -m src.frontier_execution_receipt_queue_writeback_status`
 - This makes the current writeback truth explicit: `meeteval` is already written back while the speaker-profile and external-staging receipts remain template-only, so the combined writeback state is still in progress.
 
+Update: the frontier receipt layer now has a writeback handoff.
+
+- Writeback handoff: `results/tables/frontier_execution_receipt_queue_writeback_handoff.csv`
+- Writeback handoff JSON: `results/tables/frontier_execution_receipt_queue_writeback_handoff.json`
+- Summary view: `results/figures/frontier_execution_receipt_queue_writeback_handoff.md`
+- Script: `python3 -m src.frontier_execution_receipt_queue_writeback_handoff`
+- This turns that mixed writeback state into concrete next actions: review/archive the already-written `meeteval` receipt, while `speaker_profile` and `external_validation` still need real writeback execution.
+
 Update: the frontier receipt layer now has a fill queue status rollup.
 
 - Fill queue status: `results/tables/frontier_execution_receipt_fill_queue_status.csv`

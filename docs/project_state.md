@@ -2015,6 +2015,13 @@ Frontier execution receipt queue writeback status:
 - `results/tables/frontier_execution_receipt_queue_writeback_summary.json`
 - This dynamic rollup records which receipt-queue execution receipts are already written back, which remain template-only, and whether the overall writeback stack is still in progress.
 
+Frontier execution receipt queue writeback handoff:
+
+- `results/figures/frontier_execution_receipt_queue_writeback_handoff.md`
+- `results/tables/frontier_execution_receipt_queue_writeback_handoff.csv`
+- `results/tables/frontier_execution_receipt_queue_writeback_handoff.json`
+- This handoff turns the dynamic writeback status into per-frontier next actions, correctly separating `meeteval` review/archive from the still-pending `speaker_profile` and `external_validation` writeback paths.
+
 Frontier execution receipt fill queue status:
 
 - `results/figures/frontier_execution_receipt_fill_queue_status.md`
@@ -2780,6 +2787,7 @@ python -m src.frontier_execution_receipt_queue_execution_receipt_bridge_checklis
 python -m src.frontier_execution_receipt_queue_writeback_packet
 python -m src.frontier_execution_receipt_queue_writeback_packet_bridge_checklist
 python -m src.frontier_execution_receipt_queue_writeback_status
+python -m src.frontier_execution_receipt_queue_writeback_handoff
 python -m src.frontier_execution_receipt_fill_queue_status
 python -m src.frontier_execution_receipt_fill_queue_status_bridge_checklist
 python -m src.frontier_execution_receipt_fill_queue_completion_summary
