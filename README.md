@@ -433,6 +433,18 @@ Current MeetEval cpWER bridge handoff result:
 - `results/tables/meeteval_cpwer_bridge_handoff.csv`
 - This handoff turns the bridge-lite result into the next narrow frontier step while keeping full MeetEval evaluation explicitly pending.
 
+Current MeetEval cpWER tokenization gain scorecard result:
+
+- `results/figures/meeteval_cpwer_tokenization_gain_scorecard.md`
+- `results/tables/meeteval_cpwer_tokenization_gain_scorecard.csv`
+- The scorecard shows `5/5` gold cases with positive raw-to-character adaptation gain and aligned character-level scores against bridge-lite, supporting `character_spaced` as the default MeetEval mode for this CJK gold benchmark family.
+
+Current MeetEval cpWER tokenization gain summary result:
+
+- `results/figures/meeteval_cpwer_tokenization_gain_scorecard_summary.md`
+- `results/tables/meeteval_cpwer_tokenization_gain_scorecard_summary.csv`
+- The summary reports `average_raw_to_character_gain = 3.679091`, `max_gain_case = NoOverlap`, and keeps the conclusion explicitly in `experimental/frontier` scope rather than claiming a finished benchmark.
+
 Current speaker profile result:
 
 - `results/figures/speaker_profile_risk_summary.md` now provides a lightweight text-profile overlap report that compares direct vs swapped alignment and currently exposes a useful failure mode rather than a speaker-ID success claim
@@ -663,6 +675,7 @@ python -m src.export_meeteval_compatibility
 python -m src.meeteval_dry_run
 python -m src.meeteval_cpwer_bridge --case all
 python -m src.meeteval_cpwer_alignment
+python -m src.meeteval_cpwer_tokenization_gain_scorecard
 python -m src.external_validation_slice_scaffold
 python -m src.external_validation_license_gate
 python -m src.external_validation_slice_manifest

@@ -1776,6 +1776,18 @@ MeetEval cpWER tokenization adaptation completion summary:
 - `results/tables/meeteval_cpwer_tokenization_adaptation_completion_summary.csv`
 - `queue_status = queue_complete` at `5/5` reconciled cases; no full MeetEval benchmark claim.
 
+MeetEval cpWER tokenization gain scorecard:
+
+- `results/figures/meeteval_cpwer_tokenization_gain_scorecard.md`
+- `results/tables/meeteval_cpwer_tokenization_gain_scorecard.csv`
+- All five gold cases show positive raw-to-character adaptation gain and aligned character-level scores against bridge-lite.
+
+MeetEval cpWER tokenization gain scorecard summary:
+
+- `results/figures/meeteval_cpwer_tokenization_gain_scorecard_summary.md`
+- `results/tables/meeteval_cpwer_tokenization_gain_scorecard_summary.csv`
+- `average_raw_to_character_gain = 3.679091`, `max_gain_case = NoOverlap`, and `recommended_default_mode = character_spaced`.
+
 MeetEval cpWER tokenization adaptation completion summary bridge checklist:
 
 - `results/figures/meeteval_cpwer_tokenization_adaptation_completion_summary_bridge_checklist.md`

@@ -1461,6 +1461,13 @@ Update: `meeteval_compatibility` now also has a tokenization adaptation completi
 - Script: `python -m src.meeteval_cpwer_tokenization_adaptation_completion_summary_bridge_checklist`
 - Connects reconciled character-spaced cpWER to frontier fill execution without claiming full MeetEval benchmark completion.
 
+Update: `meeteval_compatibility` now also has a tokenization gain scorecard.
+
+- Scorecard: `results/tables/meeteval_cpwer_tokenization_gain_scorecard.csv`
+- Summary: `results/tables/meeteval_cpwer_tokenization_gain_scorecard_summary.csv`
+- Script: `python -m src.meeteval_cpwer_tokenization_gain_scorecard`
+- Current evidence shows positive raw-to-character gain on all five gold cases and supports `character_spaced` as the default MeetEval mode for this CJK gold benchmark family.
+
 Update: `speaker_profile` now also has a text-proxy diagnostic completion stack.
 
 - Diagnostic bridge checklist: `results/tables/speaker_profile_text_proxy_trial_diagnostic_bridge_checklist.csv`
