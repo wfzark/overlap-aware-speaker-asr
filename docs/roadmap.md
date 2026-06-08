@@ -1774,6 +1774,22 @@ Update: the frontier receipt layer now has an execution receipt bridge checklist
 - Script: `python3 -m src.frontier_execution_receipt_queue_execution_receipt_bridge_checklist`
 - This turns the execution receipt bridge into a verification gate before the current execution receipt JSON is reopened.
 
+Update: the frontier receipt layer now has a writeback packet.
+
+- Writeback packet: `results/tables/frontier_execution_receipt_queue_writeback_packet.csv`
+- Writeback packet JSON: `results/tables/frontier_execution_receipt_queue_writeback_packet.json`
+- Summary view: `results/figures/frontier_execution_receipt_queue_writeback_packet.md`
+- Script: `python3 -m src.frontier_execution_receipt_queue_writeback_packet`
+- This gives the current receipt-queue writeback path one compact entrypoint from operator brief through execution receipt bridge.
+
+Update: the frontier receipt layer now has a writeback packet bridge checklist.
+
+- Writeback packet bridge checklist: `results/tables/frontier_execution_receipt_queue_writeback_packet_bridge_checklist.csv`
+- Writeback packet bridge checklist JSON: `results/tables/frontier_execution_receipt_queue_writeback_packet_bridge_checklist.json`
+- Summary view: `results/figures/frontier_execution_receipt_queue_writeback_packet_bridge_checklist.md`
+- Script: `python3 -m src.frontier_execution_receipt_queue_writeback_packet_bridge_checklist`
+- This verifies the writeback packet before the current receipt-queue operator brief is reopened.
+
 Update: the frontier receipt layer now has a fill queue status rollup.
 
 - Fill queue status: `results/tables/frontier_execution_receipt_fill_queue_status.csv`

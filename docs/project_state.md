@@ -1993,6 +1993,20 @@ Frontier execution receipt queue execution receipt bridge checklist:
 - `results/tables/frontier_execution_receipt_queue_execution_receipt_bridge_checklist.json`
 - This checklist turns the execution receipt bridge into an ordered verification gate before the current execution receipt JSON is reopened.
 
+Frontier execution receipt queue writeback packet:
+
+- `results/figures/frontier_execution_receipt_queue_writeback_packet.md`
+- `results/tables/frontier_execution_receipt_queue_writeback_packet.csv`
+- `results/tables/frontier_execution_receipt_queue_writeback_packet.json`
+- This packet provides a single entrypoint for the current receipt-queue writeback sub-stack from operator brief through execution receipt bridge.
+
+Frontier execution receipt queue writeback packet bridge checklist:
+
+- `results/figures/frontier_execution_receipt_queue_writeback_packet_bridge_checklist.md`
+- `results/tables/frontier_execution_receipt_queue_writeback_packet_bridge_checklist.csv`
+- `results/tables/frontier_execution_receipt_queue_writeback_packet_bridge_checklist.json`
+- This checklist verifies the writeback packet before the current receipt-queue operator brief is reopened.
+
 Frontier execution receipt fill queue status:
 
 - `results/figures/frontier_execution_receipt_fill_queue_status.md`
@@ -2755,6 +2769,8 @@ python -m src.frontier_execution_receipt_queue_evidence_receipt
 python -m src.frontier_execution_receipt_queue_evidence_receipt_bridge_checklist
 python -m src.frontier_execution_receipt_queue_execution_receipt_bridge
 python -m src.frontier_execution_receipt_queue_execution_receipt_bridge_checklist
+python -m src.frontier_execution_receipt_queue_writeback_packet
+python -m src.frontier_execution_receipt_queue_writeback_packet_bridge_checklist
 python -m src.frontier_execution_receipt_fill_queue_status
 python -m src.frontier_execution_receipt_fill_queue_status_bridge_checklist
 python -m src.frontier_execution_receipt_fill_queue_completion_summary
