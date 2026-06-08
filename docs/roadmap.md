@@ -1356,6 +1356,13 @@ Update: the frontier now also has a top-level operator status handoff operator b
 - Script: `python3 -m src.frontier_operator_next_action_status_handoff_operator_brief`
 - Current evidence turns the queue-level status/handoff stack into a single plain-language next-step card for the current operator.
 
+Update: the frontier now also has a top-level operator status handoff runbook card.
+
+- Frontier operator status handoff runbook card: `results/tables/frontier_operator_next_action_status_handoff_runbook_card.csv`
+- Summary view: `results/figures/frontier_operator_next_action_status_handoff_runbook_card.md`
+- Script: `python3 -m src.frontier_operator_next_action_status_handoff_runbook_card`
+- Current evidence condenses the current ready-lane action into a one-page execution card with a concrete completion signal tied to the ready target artifact.
+
 Update: the frontier now has a per-frontier execution handoff.
 
 - Frontier execution queue handoff: `results/tables/frontier_execution_queue_handoff.csv`

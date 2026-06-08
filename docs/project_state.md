@@ -1565,6 +1565,12 @@ Frontier operator next-action status handoff operator brief:
 - `results/tables/frontier_operator_next_action_status_handoff_operator_brief.csv`
 - The brief turns the queue-level status/handoff stack into one plain-language next-step card with the current ready frontier, blocked frontier, and evidence path.
 
+Frontier operator next-action status handoff runbook card:
+
+- `results/figures/frontier_operator_next_action_status_handoff_runbook_card.md`
+- `results/tables/frontier_operator_next_action_status_handoff_runbook_card.csv`
+- The runbook card condenses the current ready-lane action into a one-page execution card with a concrete completion signal tied to the ready target artifact.
+
 Frontier execution queue completion summary bridge checklist:
 
 - `results/figures/frontier_execution_queue_completion_summary_bridge_checklist.md`

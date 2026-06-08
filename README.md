@@ -434,6 +434,12 @@ Current frontier operator next-action status handoff operator brief result:
 - `results/tables/frontier_operator_next_action_status_handoff_operator_brief.csv`
 - The brief turns the queue-level status/handoff stack into one plain-language next-step card for the current operator.
 
+Current frontier operator next-action status handoff runbook card result:
+
+- `results/figures/frontier_operator_next_action_status_handoff_runbook_card.md`
+- `results/tables/frontier_operator_next_action_status_handoff_runbook_card.csv`
+- The runbook card condenses the current ready-lane action into one one-page execution card.
+
 Current frontier focus checklist result:
 
 - `results/figures/frontier_focus_card_checklist.md` now turns that focus card into a one-glance verification checklist
