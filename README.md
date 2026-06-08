@@ -362,6 +362,12 @@ Current frontier operator next-action phase checkpoint card result:
 - `results/tables/frontier_operator_next_action_phase_checkpoint_card.csv`
 - The checkpoint card isolates the current ready-lane completion signal so the next contributor can see exactly what must be true before the top-level operator chain should advance.
 
+Current frontier operator next-action milestone card result:
+
+- `results/figures/frontier_operator_next_action_milestone_card.md`
+- `results/tables/frontier_operator_next_action_milestone_card.csv`
+- The milestone card shows what the current ready-lane checkpoint unlocks next, with `external_validation` now made explicit as the next visible coordination target after the first checkpoint closes.
+
 Current frontier focus checklist result:
 
 - `results/figures/frontier_focus_card_checklist.md` now turns that focus card into a one-glance verification checklist

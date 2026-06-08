@@ -1493,6 +1493,12 @@ Frontier operator next-action phase checkpoint card:
 - `results/tables/frontier_operator_next_action_phase_checkpoint_card.csv`
 - The checkpoint card isolates the current frontier, action, and narrow completion signal for the top-level ready lane.
 
+Frontier operator next-action milestone card:
+
+- `results/figures/frontier_operator_next_action_milestone_card.md`
+- `results/tables/frontier_operator_next_action_milestone_card.csv`
+- The milestone card records the immediate unlock boundary after the current ready-lane checkpoint closes and keeps the next coordination target explicit.
+
 Frontier execution queue completion summary bridge checklist:
 
 - `results/figures/frontier_execution_queue_completion_summary_bridge_checklist.md`
