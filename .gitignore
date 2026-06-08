@@ -238,6 +238,12 @@ results/synthetic_overlap_v2/
 !results/tables/demo_walkthrough_review_pass_third_continue_receipt.json
 !results/tables/demo_walkthrough_review_pass_status.csv
 !results/tables/demo_walkthrough_review_pass_status.json
+!results/tables/speaker_profile_audio_proxy_trial.csv
+!results/tables/speaker_profile_audio_proxy_trial.json
+!results/tables/speaker_profile_audio_proxy_summary.csv
+!results/tables/speaker_profile_audio_proxy_summary.json
+!results/figures/speaker_profile_audio_proxy_trial.md
+!results/figures/speaker_profile_audio_proxy_summary.md
 !results/tables/demo_walkthrough_review_pass_continue_bridge_checklist.csv
 !results/tables/demo_walkthrough_review_pass_continue_bridge_checklist.json
 !results/tables/demo_walkthrough_review_pass_completion_summary.csv

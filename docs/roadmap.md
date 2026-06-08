@@ -905,6 +905,13 @@ Update: `speaker_profile` now also has a method bridge checklist.
 - Summary view: `results/figures/speaker_profile_method_bridge_checklist.md`
 - This keeps the method handoff and receipt visible together while staying explicit that no stronger speaker-profile method has yet been executed.
 
+Update: `speaker_profile` now also has a lightweight audio-profile proxy trial.
+
+- Audio proxy table: `results/tables/speaker_profile_audio_proxy_trial.csv`
+- Audio proxy view: `results/figures/speaker_profile_audio_proxy_trial.md`
+- Audio proxy summary: `results/figures/speaker_profile_audio_proxy_summary.md`
+- This is the first real acoustic-side speaker-profile experiment in the repo. It still lands on the cautious side: the lightweight proxy reproduces `swapped_bias`, but the average confidence gap is only `0.000013`, so the signal is currently too weak to support attribution claims and should remain diagnostic-only.
+
 Update: `llm_critic` now has a first qualitative artifact.
 
 - Critic note: `results/figures/llm_critic_qualitative_note.md`

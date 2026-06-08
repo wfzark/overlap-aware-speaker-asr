@@ -1,0 +1,7 @@
+# Speaker Profile Audio Proxy Summary
+
+This generated card summarizes the lightweight audio-profile trial. It remains experimental/frontier and does not claim speaker identification.
+
+| case_count | dominant_alignment | average_confidence_gap | signal_strength | next_action |
+| ---: | --- | ---: | --- | --- |
+| 5 | swapped_bias | 0.000013 | weak_near_tie | Current lightweight audio proxy does not yet justify attribution claims; keep it as frontier diagnostics only. |

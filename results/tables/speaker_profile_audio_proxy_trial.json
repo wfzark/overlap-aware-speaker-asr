@@ -1,0 +1,52 @@
+[
+  {
+    "case_id": "NoOverlap",
+    "hypothesis_source": "separated_whisper",
+    "best_audio_alignment": "swapped",
+    "direct_audio_score": "0.954776",
+    "swapped_audio_score": "0.954788",
+    "audio_confidence_gap": "0.000012",
+    "result_label": "experimental/frontier",
+    "observation": "Lightweight audio-profile proxy only; this is not voiceprint identification."
+  },
+  {
+    "case_id": "LightOverlap",
+    "hypothesis_source": "separated_whisper_cleaned",
+    "best_audio_alignment": "swapped",
+    "direct_audio_score": "0.955040",
+    "swapped_audio_score": "0.955052",
+    "audio_confidence_gap": "0.000012",
+    "result_label": "experimental/frontier",
+    "observation": "Lightweight audio-profile proxy only; this is not voiceprint identification."
+  },
+  {
+    "case_id": "MidOverlap",
+    "hypothesis_source": "separated_whisper_cleaned",
+    "best_audio_alignment": "swapped",
+    "direct_audio_score": "0.955450",
+    "swapped_audio_score": "0.955463",
+    "audio_confidence_gap": "0.000013",
+    "result_label": "experimental/frontier",
+    "observation": "Lightweight audio-profile proxy only; this is not voiceprint identification."
+  },
+  {
+    "case_id": "HeavyOverlap",
+    "hypothesis_source": "separated_whisper_cleaned",
+    "best_audio_alignment": "swapped",
+    "direct_audio_score": "0.956085",
+    "swapped_audio_score": "0.956099",
+    "audio_confidence_gap": "0.000014",
+    "result_label": "experimental/frontier",
+    "observation": "Lightweight audio-profile proxy only; this is not voiceprint identification."
+  },
+  {
+    "case_id": "OppositeOverlap",
+    "hypothesis_source": "separated_whisper_cleaned",
+    "best_audio_alignment": "swapped",
+    "direct_audio_score": "0.957091",
+    "swapped_audio_score": "0.957106",
+    "audio_confidence_gap": "0.000015",
+    "result_label": "experimental/frontier",
+    "observation": "Lightweight audio-profile proxy only; this is not voiceprint identification."
+  }
+]

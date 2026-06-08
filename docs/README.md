@@ -87,6 +87,8 @@ This folder is the documentation entry point for the project.
 - [results/figures/meeteval_dry_run_handoff.md](../results/figures/meeteval_dry_run_handoff.md)
 - [results/figures/meeteval_dry_run_receipt.md](../results/figures/meeteval_dry_run_receipt.md)
 - [results/figures/meeteval_dry_run_checklist.md](../results/figures/meeteval_dry_run_checklist.md)
+- [results/figures/speaker_profile_audio_proxy_trial.md](../results/figures/speaker_profile_audio_proxy_trial.md)
+- [results/figures/speaker_profile_audio_proxy_summary.md](../results/figures/speaker_profile_audio_proxy_summary.md)
 - [results/figures/cpcer_lite_summary.md](../results/figures/cpcer_lite_summary.md)
 
 ## Frontier Coordination

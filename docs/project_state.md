@@ -953,6 +953,14 @@ Speaker profile embedding scaffold bridge:
 - `results/tables/speaker_profile_embedding_scaffold.json`
 - The stronger-method scaffold is `scaffold_only` and points toward `embedding_or_voiceprint_baseline` without claiming improved speaker attribution.
 
+Speaker profile audio proxy bridge:
+
+- `results/figures/speaker_profile_audio_proxy_trial.md`
+- `results/tables/speaker_profile_audio_proxy_trial.csv`
+- `results/figures/speaker_profile_audio_proxy_summary.md`
+- `results/tables/speaker_profile_audio_proxy_summary.csv`
+- The first narrow audio-profile proxy trial now exists as a real acoustic-side experiment rather than a text-only scaffold. It still argues for caution, not confidence: all five gold cases remain `swapped_bias`, but the average confidence gap is only `0.000013`, so the lightweight proxy currently looks too weak for attribution claims and is best treated as diagnostic-only frontier evidence.
+
 Speaker profile embedding scaffold bridge checklist:
 
 - `results/figures/speaker_profile_embedding_scaffold_bridge_checklist.md`

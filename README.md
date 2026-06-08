@@ -464,6 +464,13 @@ Current speaker profile embedding scaffold result:
 - `results/tables/speaker_profile_embedding_scaffold.json`
 - The stronger-method scaffold is `scaffold_only` and points toward `embedding_or_voiceprint_baseline` without claiming improved speaker attribution.
 
+Current speaker profile audio proxy result:
+
+- `results/figures/speaker_profile_audio_proxy_trial.md`
+- `results/figures/speaker_profile_audio_proxy_summary.md`
+- `results/tables/speaker_profile_audio_proxy_trial.csv`
+- This first real audio-side proxy trial stays explicitly `experimental/frontier`: it reproduces the earlier `swapped_bias` pattern, but with an average confidence gap of only `0.000013`, so the current lightweight acoustic profile does not yet justify attribution claims.
+
 Current llm critic result:
 
 - `results/figures/llm_critic_qualitative_note.md` now provides a qualitative/demo critic bridge that turns structured risk cues into critique, repair direction, and uncertainty notes without claiming verified transcript correction

@@ -45,6 +45,8 @@ The frontier receipt-fill execution stack now has an operator brief and receipt 
 - Speaker profile text-proxy completion bridge checklist: `results/figures/speaker_profile_text_proxy_trial_diagnostic_completion_summary_bridge_checklist.md`
 - Speaker profile embedding handoff readiness: `results/figures/speaker_profile_embedding_trial_handoff_readiness.md`
 - Speaker profile embedding handoff completion summary: `results/figures/speaker_profile_embedding_trial_handoff_completion_summary.md`
+- Speaker profile audio proxy trial: `results/figures/speaker_profile_audio_proxy_trial.md`
+- Speaker profile audio proxy summary: `results/figures/speaker_profile_audio_proxy_summary.md`
 - MeetEval tokenization adaptation handoff: `results/figures/meeteval_tokenization_adaptation_handoff.md`
 - MeetEval tokenization handoff completion: `results/figures/meeteval_tokenization_adaptation_handoff_completion_summary.md`
 - Speaker profile scaffold completion: `results/figures/speaker_profile_embedding_trial_execution_scaffold_completion_summary.md`
@@ -52,7 +54,7 @@ The frontier receipt-fill execution stack now has an operator brief and receipt 
 
 MeetEval compatibility remains the recommended first fill target. Character-spaced official cpWER (`python -m src.meeteval_cpwer_character_level_official_execution --all`) reconciles `5/5` gold cases with bridge-lite. Tokenization handoff completion is `queue_complete`; next coordination step is the frontier fill runbook card.
 
-Speaker profile execution scaffold completion is `queue_complete` for `NoOverlap`; preflight readiness tracks swapped-bias proxy data before any voiceprint execution — still diagnostic-only.
+Speaker profile execution scaffold completion is `queue_complete` for `NoOverlap`; preflight readiness tracks swapped-bias proxy data before any voiceprint execution — still diagnostic-only. The new lightweight audio-profile proxy trial also stays in that lane: it reproduces the swapped-bias pattern, but with only a near-tie confidence gap, so it does not yet support attribution claims.
 
 ## Level 1: Documentation / Presentation
 
