@@ -67,6 +67,12 @@ PACKET_SECTIONS = [
     ),
     (
         "9",
+        "execution_queue_phase_checkpoint_card",
+        "results/figures/frontier_execution_queue_phase_checkpoint_card.md",
+        "Narrow completion checkpoint for the current first execution-queue action.",
+    ),
+    (
+        "10",
         "execution_queue_handoff_bridge_checklist",
         "results/figures/frontier_execution_queue_handoff_bridge_checklist.md",
         "Verify each execution handoff before opening the receipt target for that frontier.",

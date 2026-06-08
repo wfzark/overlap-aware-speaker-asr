@@ -342,7 +342,7 @@ Current frontier execution queue handoff packet result:
 
 - `results/figures/frontier_execution_queue_handoff_packet.md`
 - `results/tables/frontier_execution_queue_handoff_packet.csv`
-- The packet consolidates the execution queue status, queue summary, per-frontier handoff layers, the operator brief, the runbook card, and the new runbook bridge checklist into one single-entry coordination artifact.
+- The packet consolidates the execution queue status, queue summary, per-frontier handoff layers, the operator brief, the runbook card, the runbook bridge checklist, and the new phase checkpoint card into one single-entry coordination artifact.
 
 Current frontier execution queue handoff packet bridge checklist result:
 
@@ -367,6 +367,12 @@ Current frontier execution queue runbook bridge checklist result:
 - `results/figures/frontier_execution_queue_runbook_bridge_checklist.md`
 - `results/tables/frontier_execution_queue_runbook_bridge_checklist.csv`
 - The checklist verifies that execution queue runbook card before the next contributor opens the current receipt target.
+
+Current frontier execution queue phase checkpoint card result:
+
+- `results/figures/frontier_execution_queue_phase_checkpoint_card.md`
+- `results/tables/frontier_execution_queue_phase_checkpoint_card.csv`
+- The checkpoint card narrows that execution-queue runbook to the exact completion signal for the current first target.
 
 Current frontier operator next-action frontier bridge checklist result:
 

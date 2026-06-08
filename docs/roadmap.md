@@ -1458,7 +1458,7 @@ Update: the frontier now also has an execution queue handoff packet.
 - Frontier execution queue handoff packet: `results/tables/frontier_execution_queue_handoff_packet.csv`
 - Summary view: `results/figures/frontier_execution_queue_handoff_packet.md`
 - Script: `python3 -m src.frontier_execution_queue_handoff_packet`
-- Current evidence consolidates the execution queue status, queue summary, per-frontier handoff layers, the operator brief, the runbook card, and the new runbook bridge checklist into one single-entry artifact.
+- Current evidence consolidates the execution queue status, queue summary, per-frontier handoff layers, the operator brief, the runbook card, the runbook bridge checklist, and the new phase checkpoint card into one single-entry artifact.
 
 Update: the frontier now also has an execution queue handoff packet bridge checklist.
 
@@ -1487,6 +1487,13 @@ Update: the frontier now also has an execution queue runbook bridge checklist.
 - Summary view: `results/figures/frontier_execution_queue_runbook_bridge_checklist.md`
 - Script: `python3 -m src.frontier_execution_queue_runbook_bridge_checklist`
 - Current evidence requires verifying the execution queue runbook card before the current receipt target is reopened.
+
+Update: the frontier now also has an execution queue phase checkpoint card.
+
+- Frontier execution queue phase checkpoint card: `results/tables/frontier_execution_queue_phase_checkpoint_card.csv`
+- Summary view: `results/figures/frontier_execution_queue_phase_checkpoint_card.md`
+- Script: `python3 -m src.frontier_execution_queue_phase_checkpoint_card`
+- Current evidence narrows the execution queue runbook to the exact completion signal that should be satisfied before the current first execution-queue step is treated as advanced.
 
 Update: the frontier now has execution receipt readiness rollups.
 
