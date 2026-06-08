@@ -396,6 +396,10 @@ results/synthetic_overlap_v2/
 !results/tables/frontier_execution_queue_status.json
 !results/tables/frontier_execution_queue_status_bridge_checklist.csv
 !results/tables/frontier_execution_queue_status_bridge_checklist.json
+!results/tables/frontier_go_no_go_board.csv
+!results/tables/frontier_go_no_go_board.json
+!results/tables/frontier_go_no_go_summary.csv
+!results/tables/frontier_go_no_go_summary.json
 !results/tables/external_validation_slice_staging_execution_status_bridge_checklist.csv
 !results/tables/external_validation_slice_staging_execution_status_bridge_checklist.json
 !results/tables/frontier_execution_queue_completion_summary.csv
@@ -789,6 +793,8 @@ results/synthetic_overlap_v2/
 !results/figures/frontier_writeback_checklist.md
 !results/figures/frontier_execution_queue_status.md
 !results/figures/frontier_execution_queue_status_bridge_checklist.md
+!results/figures/frontier_go_no_go_board.md
+!results/figures/frontier_go_no_go_summary.md
 !results/figures/external_validation_slice_staging_execution_status_bridge_checklist.md
 !results/figures/frontier_execution_queue_completion_summary.md
 !results/figures/frontier_execution_queue_completion_summary_bridge_checklist.md

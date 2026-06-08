@@ -1,0 +1,30 @@
+from __future__ import annotations
+
+import unittest
+
+from src.frontier_go_no_go_board import build_summary_row, classify_go_no_go_state
+
+
+class FrontierGoNoGoBoardTest(unittest.TestCase):
+    def test_classify_go_no_go_state_marks_receipt_ready_as_go(self) -> None:
+        self.assertEqual(classify_go_no_go_state("receipt_ready_to_fill"), "go")
+
+    def test_classify_go_no_go_state_marks_blocked_as_no_go(self) -> None:
+        self.assertEqual(classify_go_no_go_state("blocked_by_license_confirmation"), "no_go")
+
+    def test_build_summary_row_uses_queue_priority(self) -> None:
+        rows = [
+            {"frontier_name": "demo_excellence", "go_no_go_state": "go"},
+            {"frontier_name": "external_validation", "go_no_go_state": "no_go"},
+            {"frontier_name": "meeteval_compatibility", "go_no_go_state": "go"},
+            {"frontier_name": "speaker_profile", "go_no_go_state": "go"},
+        ]
+
+        row = build_summary_row(rows)
+
+        self.assertEqual(row["highest_priority_ready_frontier"], "meeteval_compatibility")
+        self.assertEqual(row["highest_priority_blocked_frontier"], "external_validation")
+
+
+if __name__ == "__main__":
+    unittest.main()
