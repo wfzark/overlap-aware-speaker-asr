@@ -420,7 +420,7 @@ Current frontier operator next-action status handoff packet result:
 
 - `results/figures/frontier_operator_next_action_status_handoff_packet.md`
 - `results/tables/frontier_operator_next_action_status_handoff_packet.csv`
-- The packet now consolidates the whole top-level status/handoff subchain into one single-entry coordination artifact, including the operator brief, operator-brief bridge, operator-brief bridge checklist, runbook, runbook bridge checklist, checkpoint, milestone, completion dashboard, and the newer `status_handoff_status` rollup layers.
+- The packet now consolidates the whole top-level status/handoff subchain into one single-entry coordination artifact, including the operator brief, operator-brief bridge, operator-brief bridge checklist, runbook, runbook bridge checklist, checkpoint, phase-checkpoint bridge checklist, milestone, completion dashboard, and the newer `status_handoff_status` rollup layers.
 
 Current frontier operator next-action status handoff packet bridge checklist result:
 
@@ -463,6 +463,12 @@ Current frontier operator next-action status handoff phase checkpoint card resul
 - `results/figures/frontier_operator_next_action_status_handoff_phase_checkpoint_card.md`
 - `results/tables/frontier_operator_next_action_status_handoff_phase_checkpoint_card.csv`
 - The phase checkpoint card narrows that runbook to the exact completion signal for the current step.
+
+Current frontier operator next-action status handoff phase checkpoint bridge checklist result:
+
+- `results/figures/frontier_operator_next_action_status_handoff_phase_checkpoint_bridge_checklist.md`
+- `results/tables/frontier_operator_next_action_status_handoff_phase_checkpoint_bridge_checklist.csv`
+- The checklist verifies that phase checkpoint card before the next contributor opens the milestone card target.
 
 Current frontier operator next-action status handoff milestone card result:
 

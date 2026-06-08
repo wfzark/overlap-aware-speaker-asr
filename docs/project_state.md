@@ -1551,7 +1551,7 @@ Frontier operator next-action status handoff packet:
 
 - `results/figures/frontier_operator_next_action_status_handoff_packet.md`
 - `results/tables/frontier_operator_next_action_status_handoff_packet.csv`
-- The packet consolidates the top-level status snapshot, lane handoff, queue summary, operator brief, operator-brief bridge, operator-brief bridge checklist, runbook, runbook bridge checklist, checkpoint, milestone, completion dashboard, bridge checkpoints, and the newer `status_handoff_status` rollup layer into one single-entry coordination artifact.
+- The packet consolidates the top-level status snapshot, lane handoff, queue summary, operator brief, operator-brief bridge, operator-brief bridge checklist, runbook, runbook bridge checklist, checkpoint, phase-checkpoint bridge checklist, milestone, completion dashboard, bridge checkpoints, and the newer `status_handoff_status` rollup layer into one single-entry coordination artifact.
 
 Frontier operator next-action status handoff packet bridge checklist:
 
@@ -1594,6 +1594,12 @@ Frontier operator next-action status handoff phase checkpoint card:
 - `results/figures/frontier_operator_next_action_status_handoff_phase_checkpoint_card.md`
 - `results/tables/frontier_operator_next_action_status_handoff_phase_checkpoint_card.csv`
 - The phase checkpoint card narrows that runbook to the exact completion signal that should be satisfied before the `status/handoff` subchain advances.
+
+Frontier operator next-action status handoff phase checkpoint bridge checklist:
+
+- `results/figures/frontier_operator_next_action_status_handoff_phase_checkpoint_bridge_checklist.md`
+- `results/tables/frontier_operator_next_action_status_handoff_phase_checkpoint_bridge_checklist.csv`
+- The checklist verifies that phase checkpoint card before the milestone card is reopened, keeping the transition coordination-only.
 
 Frontier operator next-action status handoff milestone card:
 
