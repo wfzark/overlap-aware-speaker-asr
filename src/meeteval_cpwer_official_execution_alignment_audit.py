@@ -36,6 +36,23 @@ def load_bridge_lite_by_case() -> dict[str, str]:
         return {str(row.get("case_id", "")): str(row.get("cpwer_bridge_lite", "")) for row in reader}
 
 
+def load_json_rows_by_case(path_rel: str, case_key: str = "case_id") -> dict[str, dict[str, str]]:
+    path = PROJECT_ROOT / path_rel
+    if not path.exists():
+        return {}
+    payload = json.loads(path.read_text(encoding="utf-8"))
+    if not isinstance(payload, list):
+        return {}
+    rows_by_case: dict[str, dict[str, str]] = {}
+    for row in payload:
+        if not isinstance(row, dict):
+            continue
+        case_id = str(row.get(case_key, "")).strip()
+        if case_id:
+            rows_by_case[case_id] = {str(k): str(v) for k, v in row.items()}
+    return rows_by_case
+
+
 def compute_alignment_delta(official: str, bridge_lite: str) -> str:
     if not official or not bridge_lite:
         return ""
@@ -63,6 +80,12 @@ def build_alignment_rows(
     execution_rows: list[dict[str, str]],
     bridge_lite_by_case: dict[str, str],
 ) -> list[dict[str, str]]:
+    tokenization_by_case = load_json_rows_by_case(
+        "results/tables/meeteval_cpwer_official_execution_tokenization_diagnostic.json"
+    )
+    reconciliation_by_case = load_json_rows_by_case(
+        "results/tables/meeteval_cpwer_official_execution_reconciliation_audit.json"
+    )
     alignment_rows: list[dict[str, str]] = []
     for row in execution_rows:
         case_id = str(row.get("case_id", ""))
@@ -70,6 +93,10 @@ def build_alignment_rows(
         bridge_lite = bridge_lite_by_case.get(case_id, "")
         delta = compute_alignment_delta(official_cpwer, bridge_lite)
         alignment_status = classify_alignment(delta)
+        tokenization_row = tokenization_by_case.get(case_id, {})
+        reconciliation_row = reconciliation_by_case.get(case_id, {})
+        tokenization_root_cause = tokenization_row.get("root_cause", "")
+        reconciliation_status = reconciliation_row.get("reconciliation_status", "")
         if not official_cpwer:
             audit_note = "Official cpWER not yet available for alignment audit."
         elif alignment_status == "aligned":
@@ -77,7 +104,19 @@ def build_alignment_rows(
         elif alignment_status == "minor_drift":
             audit_note = "Minor drift between official cpWER and bridge-lite; review segment aggregation."
         elif alignment_status == "moderate_drift":
-            audit_note = "Moderate drift detected; segment or speaker mapping may need inspection."
+            if tokenization_root_cause == "no_whitespace_word_tokenization":
+                if reconciliation_status == "aligned":
+                    audit_note = (
+                        "Moderate drift is explained by Chinese word-level tokenization mismatch in raw MeetEval cpWER; "
+                        "character-spaced reconciliation already realigns with bridge-lite."
+                    )
+                else:
+                    audit_note = (
+                        "Moderate drift is consistent with Chinese word-level tokenization mismatch; "
+                        "verify character-spaced reconciliation before escalating mapping concerns."
+                    )
+            else:
+                audit_note = "Moderate drift detected; segment or speaker mapping may need inspection."
         else:
             audit_note = "Alignment audit pending official cpWER execution."
         alignment_rows.append(

@@ -10,6 +10,7 @@ from src.meeteval_cpwer_official_execution import (
     resolve_case_ids,
 )
 from src.meeteval_cpwer_official_execution_alignment_audit import (
+    build_alignment_rows,
     classify_alignment,
     compute_alignment_delta,
 )
@@ -100,6 +101,21 @@ class MeetEvalCpwerOfficialExecutionAlignmentAuditTest(unittest.TestCase):
 
     def test_classify_alignment_aligned(self) -> None:
         self.assertEqual(classify_alignment("0.005"), "aligned")
+
+    def test_build_alignment_rows_prefers_tokenization_root_cause_when_supported(self) -> None:
+        execution_rows = [{"case_id": "NoOverlap", "official_cpwer": "4.0"}]
+        bridge_lite_by_case = {"NoOverlap": "0.05"}
+        with patch(
+            "src.meeteval_cpwer_official_execution_alignment_audit.load_json_rows_by_case",
+            side_effect=[
+                {"NoOverlap": {"root_cause": "no_whitespace_word_tokenization"}},
+                {"NoOverlap": {"reconciliation_status": "aligned"}},
+            ],
+        ):
+            rows = build_alignment_rows(execution_rows, bridge_lite_by_case)
+
+        self.assertEqual(rows[0]["alignment_status"], "moderate_drift")
+        self.assertIn("tokenization mismatch", rows[0]["audit_note"])
 
 
 if __name__ == "__main__":
