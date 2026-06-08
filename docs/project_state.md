@@ -1583,6 +1583,12 @@ Frontier operator next-action status handoff milestone card:
 - `results/tables/frontier_operator_next_action_status_handoff_milestone_card.csv`
 - The milestone card records the immediate unlock boundary after the current ready-lane checkpoint closes, keeping `external_validation` visible as the next explicit coordination target inside the `status/handoff` subchain.
 
+Frontier operator next-action status handoff completion dashboard:
+
+- `results/figures/frontier_operator_next_action_status_handoff_completion_dashboard.md`
+- `results/tables/frontier_operator_next_action_status_handoff_completion_dashboard.csv`
+- The completion dashboard compresses the current `status/handoff` subchain into one operator-facing view with the current first frontier, dominant blocker, next milestone, and remaining visible lane count.
+
 Frontier execution queue completion summary bridge checklist:
 
 - `results/figures/frontier_execution_queue_completion_summary_bridge_checklist.md`

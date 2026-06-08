@@ -1377,6 +1377,13 @@ Update: the frontier now also has a top-level operator status handoff milestone 
 - Script: `python3 -m src.frontier_operator_next_action_status_handoff_milestone_card`
 - Current evidence records what the current ready-lane checkpoint unlocks next inside the `status/handoff` subchain and how many visible top-level lanes remain after that checkpoint closes.
 
+Update: the frontier now also has a top-level operator status handoff completion dashboard.
+
+- Frontier operator status handoff completion dashboard: `results/tables/frontier_operator_next_action_status_handoff_completion_dashboard.csv`
+- Summary view: `results/figures/frontier_operator_next_action_status_handoff_completion_dashboard.md`
+- Script: `python3 -m src.frontier_operator_next_action_status_handoff_completion_dashboard`
+- Current evidence compresses the current `status/handoff` subchain into one operator-facing view with the current first frontier, dominant blocker, next milestone, and remaining visible lane count.
+
 Update: the frontier now has a per-frontier execution handoff.
 
 - Frontier execution queue handoff: `results/tables/frontier_execution_queue_handoff.csv`
