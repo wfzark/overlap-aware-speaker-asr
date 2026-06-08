@@ -526,6 +526,18 @@ Current llm critic review checklist result:
 - `results/figures/llm_critic_review_checklist.md` now turns the review queue into an ordered execution checklist
 - This checklist remains `qualitative/demo`: it helps a future contributor pick the first critic-style pass and keeps the receipt target explicit without claiming any verified repair
 
+Current llm critic go-no-go board result:
+
+- `results/figures/llm_critic_go_no_go_board.md`
+- `results/tables/llm_critic_go_no_go_board.csv`
+- The board shows the qualitative critic chain is largely ready for a narrow writeback path, while still blocking any verified repair claim.
+
+Current llm critic go-no-go summary result:
+
+- `results/figures/llm_critic_go_no_go_summary.md`
+- `results/tables/llm_critic_go_no_go_summary.csv`
+- The summary records `overall_state = qualitative_writeback_ready` together with `primary_boundary = verified_repair_claims_still_blocked`, so any next step must stay explicitly qualitative/demo.
+
 Current external validation candidate result:
 
 - `results/figures/external_validation_candidates.md` now provides an `external/sanity-check` candidate card across AISHELL-4, AliMeeting, AMI, and LibriCSS with source note, license note, fit note, first preprocessing step, and next action

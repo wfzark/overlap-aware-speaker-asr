@@ -1264,6 +1264,18 @@ LLM critic review checklist bridge:
 - `results/tables/llm_critic_review_checklist.csv`
 - This bridge now turns the review queue into an ordered execution checklist. It stays explicitly `qualitative/demo`, keeps the receipt target visible, and helps a future agent pick the first critic-style pass without implying that any repair has already been verified.
 
+LLM critic go-no-go board:
+
+- `results/figures/llm_critic_go_no_go_board.md`
+- `results/tables/llm_critic_go_no_go_board.csv`
+- The board shows `4/5` checkpoints are ready for a narrow qualitative writeback path.
+
+LLM critic go-no-go summary:
+
+- `results/figures/llm_critic_go_no_go_summary.md`
+- `results/tables/llm_critic_go_no_go_summary.csv`
+- `overall_state = qualitative_writeback_ready` while `primary_boundary = verified_repair_claims_still_blocked`.
+
 External validation candidate bridge:
 
 - `results/figures/external_validation_candidates.md`

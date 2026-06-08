@@ -395,6 +395,14 @@ Update: `llm_critic` now also has a final qualitative review pass.
 - Summary view: `results/figures/llm_critic_review_pass_fifth.md`
 - `OppositeOverlap` closes the gold queue at `5/5`; no verified repair claim is made.
 
+Update: `llm_critic` now also has a go-no-go board.
+
+- Go-no-go board: `results/tables/llm_critic_go_no_go_board.csv`
+- Summary view: `results/figures/llm_critic_go_no_go_board.md`
+- Go-no-go summary: `results/tables/llm_critic_go_no_go_summary.csv`
+- Script: `python3 -m src.llm_critic_go_no_go_board`
+- Current evidence keeps the chain qualitative: narrow writeback is ready, but verified repair claims remain blocked until real evidence receipts are filled.
+
 Update: `llm_critic` now also has a review pass completion summary.
 
 - Completion summary table: `results/tables/llm_critic_review_pass_completion_summary.csv`
