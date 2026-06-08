@@ -314,6 +314,12 @@ Current frontier operator next-action summary result:
 - `results/tables/frontier_operator_next_action_summary.csv`
 - The summary records the operator sequence `ready_lane:meeteval_compatibility -> blocked_lane:external_validation` without claiming either frontier has been completed.
 
+Current frontier operator next-action bridge checklist result:
+
+- `results/figures/frontier_operator_next_action_bridge_checklist.md`
+- `results/tables/frontier_operator_next_action_bridge_checklist.csv`
+- The checklist turns that two-lane operator card into a pre-open verification path so the next contributor checks the card before opening either the MeetEval receipt target or the external validation license bridge.
+
 Current frontier focus checklist result:
 
 - `results/figures/frontier_focus_card_checklist.md` now turns that focus card into a one-glance verification checklist

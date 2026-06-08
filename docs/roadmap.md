@@ -1216,6 +1216,13 @@ Update: the frontier now also has a top-level operator next-action card.
 - Script: `python3 -m src.frontier_operator_next_action_card`
 - Current evidence turns the unified board into one ordered sequence: push `meeteval_compatibility` first as the ready lane, and separately clear `external_validation` as the only blocked lane.
 
+Update: the frontier now also has an operator bridge checklist.
+
+- Frontier operator bridge checklist: `results/tables/frontier_operator_next_action_bridge_checklist.csv`
+- Summary view: `results/figures/frontier_operator_next_action_bridge_checklist.md`
+- Script: `python3 -m src.frontier_operator_next_action_bridge_checklist`
+- Current evidence keeps the same lane order and requires verifying the operator card before opening either the MeetEval receipt target or the external validation license bridge target.
+
 Update: the frontier now has a per-frontier execution handoff.
 
 - Frontier execution queue handoff: `results/tables/frontier_execution_queue_handoff.csv`

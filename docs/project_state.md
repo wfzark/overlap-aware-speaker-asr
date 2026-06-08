@@ -1445,6 +1445,12 @@ Frontier operator next-action summary:
 - `results/tables/frontier_operator_next_action_summary.csv`
 - `operator_sequence = ready_lane:meeteval_compatibility -> blocked_lane:external_validation`.
 
+Frontier operator next-action bridge checklist:
+
+- `results/figures/frontier_operator_next_action_bridge_checklist.md`
+- `results/tables/frontier_operator_next_action_bridge_checklist.csv`
+- The checklist preserves the operator-lane order and bridges the top-level card to the next target artifacts without claiming that either lane has already been completed.
+
 Frontier execution queue completion summary bridge checklist:
 
 - `results/figures/frontier_execution_queue_completion_summary_bridge_checklist.md`
