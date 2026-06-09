@@ -96,5 +96,19 @@
     "artifact_path": "results/figures/meeteval_tokenization_gain_to_frontier_fill_handoff_bridge_checklist.md",
     "section_role": "Verify tokenization-to-fill handoff before opening the frontier fill operator brief.",
     "packet_note": "MeetEval tokenization adaptation packet section while handoff_status=tokenization_adaptation_handoff_ready, aligned_count=5, total_count=5, queue_status=queue_complete; this remains experimental/frontier coordination and does not claim full benchmark completion."
+  },
+  {
+    "packet_order": "15",
+    "section_name": "tokenization_gain_frontier_fill_runbook_card",
+    "artifact_path": "results/figures/meeteval_tokenization_gain_frontier_fill_runbook_card.md",
+    "section_role": "Execution card for advancing tokenization gain evidence into the frontier fill path.",
+    "packet_note": "MeetEval tokenization adaptation packet section while handoff_status=tokenization_adaptation_handoff_ready, aligned_count=5, total_count=5, queue_status=queue_complete; this remains experimental/frontier coordination and does not claim full benchmark completion."
+  },
+  {
+    "packet_order": "16",
+    "section_name": "tokenization_gain_frontier_fill_runbook_bridge_checklist",
+    "artifact_path": "results/figures/meeteval_tokenization_gain_frontier_fill_runbook_bridge_checklist.md",
+    "section_role": "Verify the tokenization gain runbook before updating the MeetEval execution receipt.",
+    "packet_note": "MeetEval tokenization adaptation packet section while handoff_status=tokenization_adaptation_handoff_ready, aligned_count=5, total_count=5, queue_status=queue_complete; this remains experimental/frontier coordination and does not claim full benchmark completion."
   }
 ]

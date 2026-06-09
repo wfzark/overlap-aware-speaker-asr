@@ -101,6 +101,18 @@ PACKET_SECTIONS = [
         "results/figures/meeteval_tokenization_gain_to_frontier_fill_handoff_bridge_checklist.md",
         "Verify tokenization-to-fill handoff before opening the frontier fill operator brief.",
     ),
+    (
+        "15",
+        "tokenization_gain_frontier_fill_runbook_card",
+        "results/figures/meeteval_tokenization_gain_frontier_fill_runbook_card.md",
+        "Execution card for advancing tokenization gain evidence into the frontier fill path.",
+    ),
+    (
+        "16",
+        "tokenization_gain_frontier_fill_runbook_bridge_checklist",
+        "results/figures/meeteval_tokenization_gain_frontier_fill_runbook_bridge_checklist.md",
+        "Verify the tokenization gain runbook before updating the MeetEval execution receipt.",
+    ),
 ]
 
 
