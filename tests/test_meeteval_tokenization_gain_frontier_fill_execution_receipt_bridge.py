@@ -21,7 +21,7 @@ class MeetEvalTokenizationGainFrontierFillExecutionReceiptBridgeTest(unittest.Te
         self.assertEqual(row["recommended_frontier"], "meeteval_compatibility")
         self.assertIn("meeteval_tokenization_gain_frontier_fill_runbook_bridge_checklist", row["prerequisite_artifact"])
         self.assertEqual(row["execution_receipt_target"], "results/tables/meeteval_cpwer_execution_receipt.json")
-        self.assertIn("not claimed by this bridge alone", row["bridge_note"])
+        self.assertIn("is claimed by this bridge alone", row["bridge_note"])
 
     def test_build_execution_receipt_bridge_row_empty_when_bridge_missing(self) -> None:
         self.assertEqual(build_execution_receipt_bridge_row({}), {})
