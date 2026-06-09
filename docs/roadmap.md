@@ -331,6 +331,7 @@ Update: `speaker_profile` now also has a go-no-go board.
 - Go-no-go bridge checklist: `results/tables/speaker_profile_go_no_go_board_bridge_checklist.csv`
 - Go-no-go handoff: `results/tables/speaker_profile_go_no_go_board_handoff.csv`
 - Go-no-go handoff completion summary: `results/tables/speaker_profile_go_no_go_board_handoff_completion_summary.csv`
+- Go-no-go handoff packet: `results/tables/speaker_profile_go_no_go_handoff_packet.csv`
 - Script: `python3 -m src.speaker_profile_go_no_go_board`
 - Current evidence keeps the chain narrow: `NoOverlap` is execution-ready for one embedding-baseline writeback, but attribution claims remain blocked by weak support.
 
@@ -2259,6 +2260,7 @@ Update: `meeteval_compatibility` now also has a tokenization gain scorecard.
 - Handoff completion summary: `results/tables/meeteval_cpwer_tokenization_gain_scorecard_handoff_completion_summary.csv`
 - Handoff completion bridge checklist: `results/tables/meeteval_cpwer_tokenization_gain_scorecard_handoff_completion_summary_bridge_checklist.csv`
 - Tokenization-to-fill handoff: `results/tables/meeteval_tokenization_gain_to_frontier_fill_handoff.csv`
+- Tokenization-to-fill bridge checklist: `results/tables/meeteval_tokenization_gain_to_frontier_fill_handoff_bridge_checklist.csv`
 - Current evidence shows positive raw-to-character gain on all five gold cases and supports `character_spaced` as the default MeetEval mode for this CJK gold benchmark family.
 
 Update: `speaker_profile` now also has a text-proxy diagnostic completion stack.

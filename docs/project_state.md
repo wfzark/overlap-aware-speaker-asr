@@ -1815,6 +1815,12 @@ Speaker profile go-no-go board handoff completion summary bridge checklist:
 - `results/figures/speaker_profile_go_no_go_board_handoff_completion_summary_bridge_checklist.md`
 - `results/tables/speaker_profile_go_no_go_board_handoff_completion_summary_bridge_checklist.csv`
 
+Speaker profile go-no-go handoff packet:
+
+- `results/figures/speaker_profile_go_no_go_handoff_packet.md`
+- `results/tables/speaker_profile_go_no_go_handoff_packet.csv`
+- Consolidates the go-no-go board through handoff completion layers into one coordination entrypoint.
+
 External validation slice staging handoff receipt readiness:
 
 - `results/figures/external_validation_slice_staging_handoff_receipt_readiness.md`
@@ -2572,6 +2578,12 @@ MeetEval tokenization gain to frontier fill handoff:
 - `results/figures/meeteval_tokenization_gain_to_frontier_fill_handoff.md`
 - `results/tables/meeteval_tokenization_gain_to_frontier_fill_handoff.csv`
 - `handoff_status = tokenization_gain_frontier_fill_handoff_ready` at `5/5` adapted-and-aligned cases; frontier fill runbook remains coordination-only.
+
+MeetEval tokenization gain to frontier fill handoff bridge checklist:
+
+- `results/figures/meeteval_tokenization_gain_to_frontier_fill_handoff_bridge_checklist.md`
+- `results/tables/meeteval_tokenization_gain_to_frontier_fill_handoff_bridge_checklist.csv`
+- This checklist connects tokenization-to-fill handoff to the frontier fill operator brief without claiming benchmark completion.
 
 MeetEval cpWER tokenization adaptation completion summary bridge checklist:
 
