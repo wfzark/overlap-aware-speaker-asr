@@ -2620,7 +2620,7 @@ MeetEval cpWER tokenization adaptation handoff packet:
 - `results/figures/meeteval_tokenization_adaptation_handoff_packet.md`
 - `results/tables/meeteval_tokenization_adaptation_handoff_packet.csv`
 - `results/tables/meeteval_tokenization_adaptation_handoff_packet.json`
-- This packet consolidates the tokenization diagnostic, character-level execution, reconciliation audit, gain scorecard, gain scorecard bridge, gain scorecard handoff, gain handoff completion, completion summary, and handoff layers into one coordination entrypoint without claiming full benchmark completion.
+- This packet consolidates the tokenization diagnostic through adaptation handoff completion, tokenization-to-fill handoff, and frontier fill bridge layers into one coordination entrypoint without claiming full benchmark completion.
 
 MeetEval compatibility skill card:
 
