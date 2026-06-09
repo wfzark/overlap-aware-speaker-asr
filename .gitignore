@@ -904,6 +904,9 @@ results/synthetic_overlap_v2/
 !results/tables/speaker_profile_go_no_go_board_handoff.csv
 !results/tables/speaker_profile_go_no_go_board_handoff.json
 !results/figures/speaker_profile_go_no_go_board_handoff.md
+!results/tables/speaker_profile_go_no_go_board_handoff_bridge_checklist.csv
+!results/tables/speaker_profile_go_no_go_board_handoff_bridge_checklist.json
+!results/figures/speaker_profile_go_no_go_board_handoff_bridge_checklist.md
 !results/figures/external_validation_slice_staging_handoff_receipt_scaffold_bridge_checklist.md
 !results/figures/external_validation_slice_staging_execution_status.md
 !results/figures/external_validation_go_no_go_board.md
