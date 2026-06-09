@@ -1189,5 +1189,68 @@ If you are continuing the project, read the docs above first, then inspect the c
 ## Notes
 
 - The repository keeps verified references for all five benchmark cases.
-- `LLM` and `RAG` are future extensions rather than the core quantitative path.
+- `LLM` and `RAG` are now integrated as a collaborative repair loop (see below).
 - The current research focus is adaptive routing, error analysis, speaker-aware evaluation, stability checking, and ambitious frontier exploration.
+
+
+## LLM-ASR Collaborative Repair
+
+### Architecture
+
+```
+ASR Output → Risk Detection → RAG Retrieval → LLM Repair → CER Evaluation
+     ↑                                                           |
+     └──────────────── Iterate if improved ──────────────────────┘
+```
+
+### Core Modules
+
+| Module | Description |
+|--------|-------------|
+| `src/llm_repair_loop.py` | Iterative LLM transcript correction, convergence detection (max 3 rounds), offline/online dual mode |
+| `src/rag_repair.py` | RAG retrieval using verified reference segments as knowledge base, character n-gram Jaccard similarity |
+| `src/router_feature_importance.py` | Per-feature contribution analysis for Router v2 + bar chart visualization |
+
+### Usage
+
+```bash
+# Offline baseline (no API key, oracle method selection)
+python -m src.llm_repair_loop --offline
+
+# Online LLM repair (set OPENAI_API_KEY or LLM_API_KEY)
+python -m src.llm_repair_loop --model deepseek-chat
+
+# Disable RAG
+python -m src.llm_repair_loop --model deepseek-chat --no-rag
+
+# RAG retrieval demo
+python -m src.rag_repair
+
+# Router feature importance
+python -m src.router_feature_importance
+```
+
+### RAG Integration
+
+- **Knowledge Base**: `references/reference_transcripts.json` verified gold segments
+- **Retrieval**: Character 3-gram Jaccard similarity (replaceable with embedding-based)
+- **Context Injection**: Top-3 retrieved segments → LLM prompt
+
+### Design Rationale
+
+1. **Iterative**: Max 3 rounds, CER evaluated each round, only improvements accepted
+2. **Risk-Aware**: Prioritizes cases flagged by risk-aware selector
+3. **Conservative**: Rolls back to previous best if CER degrades
+4. **Offline Fallback**: Oracle baseline available without API key
+
+### Expected Results
+
+| Strategy | Avg CER (Gold) |
+| --- | ---: |
+| Router v2 (no repair) | 0.120 |
+| + Offline Oracle | ~0.100 |
+| + LLM Repair (with RAG) | TBD |
+
+## Team Contributions
+
+See [CONTRIBUTIONS.md](CONTRIBUTIONS.md) for role assignments.
