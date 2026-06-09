@@ -329,6 +329,7 @@ Update: `speaker_profile` now also has a go-no-go board.
 - Summary view: `results/figures/speaker_profile_go_no_go_board.md`
 - Go-no-go summary: `results/tables/speaker_profile_go_no_go_summary.csv`
 - Go-no-go bridge checklist: `results/tables/speaker_profile_go_no_go_board_bridge_checklist.csv`
+- Go-no-go handoff: `results/tables/speaker_profile_go_no_go_board_handoff.csv`
 - Script: `python3 -m src.speaker_profile_go_no_go_board`
 - Current evidence keeps the chain narrow: `NoOverlap` is execution-ready for one embedding-baseline writeback, but attribution claims remain blocked by weak support.
 
@@ -2203,6 +2204,7 @@ Update: `meeteval_compatibility` now also has a batch execution handoff.
 - Summary view: `results/figures/meeteval_cpwer_execution_status_batch_handoff.md`
 - Handoff completion summary: `results/tables/meeteval_cpwer_execution_status_batch_handoff_completion_summary.csv`
 - Handoff completion bridge checklist: `results/tables/meeteval_cpwer_execution_status_batch_handoff_completion_summary_bridge_checklist.csv`
+- Handoff completion handoff: `results/tables/meeteval_cpwer_execution_status_batch_handoff_completion_summary_handoff.csv`
 - This turns batch chain readiness into per-case official cpWER execution actions with a preferred first target.
 
 Update: `meeteval_compatibility` now also has an official cpWER narrow dry-run execution module.

@@ -1793,6 +1793,12 @@ Speaker profile go-no-go board bridge checklist:
 - `results/tables/speaker_profile_go_no_go_board_bridge_checklist.csv`
 - This checklist connects the go-no-go board to the embedding trial execution preflight without claiming speaker identification success.
 
+Speaker profile go-no-go board handoff:
+
+- `results/figures/speaker_profile_go_no_go_board_handoff.md`
+- `results/tables/speaker_profile_go_no_go_board_handoff.csv`
+- `handoff_status = speaker_profile_go_handoff_ready` for `NoOverlap`; narrow embedding preflight remains coordination-only.
+
 External validation slice staging handoff receipt readiness:
 
 - `results/figures/external_validation_slice_staging_handoff_receipt_readiness.md`
@@ -2423,6 +2429,12 @@ MeetEval cpWER execution status batch handoff completion summary bridge checklis
 - `results/figures/meeteval_cpwer_execution_status_batch_handoff_completion_summary_bridge_checklist.md`
 - `results/tables/meeteval_cpwer_execution_status_batch_handoff_completion_summary_bridge_checklist.csv`
 - Connects batch handoff completion to official cpWER execution completion review.
+
+MeetEval cpWER execution status batch handoff completion summary handoff:
+
+- `results/figures/meeteval_cpwer_execution_status_batch_handoff_completion_summary_handoff.md`
+- `results/tables/meeteval_cpwer_execution_status_batch_handoff_completion_summary_handoff.csv`
+- `handoff_status = batch_handoff_completion_handoff_ready` at `5/5` complete handoffs; official execution completion review remains next.
 
 MeetEval cpWER execution status batch handoff bridge checklist:
 

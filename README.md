@@ -831,6 +831,12 @@ Current speaker profile go-no-go board bridge checklist result:
 - `results/tables/speaker_profile_go_no_go_board_bridge_checklist.csv`
 - This checklist verifies the go-no-go board before reopening the embedding trial execution preflight.
 
+Current speaker profile go-no-go board handoff result:
+
+- `results/figures/speaker_profile_go_no_go_board_handoff.md`
+- `results/tables/speaker_profile_go_no_go_board_handoff.csv`
+- The handoff records `speaker_profile_go_handoff_ready` for the narrow `NoOverlap` embedding-baseline path.
+
 Current llm critic result:
 
 - `results/figures/llm_critic_qualitative_note.md` now provides a qualitative/demo critic bridge that turns structured risk cues into critique, repair direction, and uncertainty notes without claiming verified transcript correction
@@ -1067,12 +1073,14 @@ python -m src.meeteval_cpwer_tokenization_gain_scorecard_handoff_completion_summ
 python -m src.meeteval_cpwer_tokenization_gain_scorecard_handoff_completion_summary_bridge_checklist
 python -m src.meeteval_cpwer_execution_status_batch_handoff_completion_summary
 python -m src.meeteval_cpwer_execution_status_batch_handoff_completion_summary_bridge_checklist
+python -m src.meeteval_cpwer_execution_status_batch_handoff_completion_summary_handoff
 python -m src.external_validation_slice_scaffold
 python -m src.external_validation_license_gate
 python -m src.external_validation_slice_manifest
 python -m src.speaker_profile_embedding_scaffold
 python -m src.speaker_profile_go_no_go_board
 python -m src.speaker_profile_go_no_go_board_bridge_checklist
+python -m src.speaker_profile_go_no_go_board_handoff
 python -m src.llm_critic_review_pass
 python -m src.project_harness
 ```
