@@ -89,6 +89,18 @@ PACKET_SECTIONS = [
         "results/figures/meeteval_tokenization_adaptation_handoff_completion_summary.md",
         "Completion rollup for the tokenization adaptation handoff path.",
     ),
+    (
+        "13",
+        "tokenization_gain_to_frontier_fill_handoff",
+        "results/figures/meeteval_tokenization_gain_to_frontier_fill_handoff.md",
+        "Handoff from tokenization gain completion to the frontier fill runbook card.",
+    ),
+    (
+        "14",
+        "tokenization_gain_to_frontier_fill_handoff_bridge_checklist",
+        "results/figures/meeteval_tokenization_gain_to_frontier_fill_handoff_bridge_checklist.md",
+        "Verify tokenization-to-fill handoff before opening the frontier fill operator brief.",
+    ),
 ]
 
 
