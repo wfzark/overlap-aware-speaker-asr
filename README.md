@@ -1056,7 +1056,9 @@ python -m src.meeteval_cpwer_alignment
 python -m src.meeteval_cpwer_tokenization_gain_scorecard
 python -m src.meeteval_cpwer_tokenization_gain_scorecard_bridge_checklist
 python -m src.meeteval_cpwer_tokenization_gain_scorecard_handoff
+python -m src.meeteval_cpwer_tokenization_gain_scorecard_handoff_bridge_checklist
 python -m src.meeteval_cpwer_execution_status_batch_handoff_completion_summary
+python -m src.meeteval_cpwer_execution_status_batch_handoff_completion_summary_bridge_checklist
 python -m src.external_validation_slice_scaffold
 python -m src.external_validation_license_gate
 python -m src.external_validation_slice_manifest

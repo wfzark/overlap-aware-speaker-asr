@@ -2412,6 +2412,12 @@ MeetEval cpWER execution status batch handoff completion summary:
 - `results/tables/meeteval_cpwer_execution_status_batch_handoff_completion_summary.csv`
 - `queue_status = queue_complete` across all five batch handoff rows; official MeetEval evaluation is not claimed.
 
+MeetEval cpWER execution status batch handoff completion summary bridge checklist:
+
+- `results/figures/meeteval_cpwer_execution_status_batch_handoff_completion_summary_bridge_checklist.md`
+- `results/tables/meeteval_cpwer_execution_status_batch_handoff_completion_summary_bridge_checklist.csv`
+- Connects batch handoff completion to official cpWER execution completion review.
+
 MeetEval cpWER execution status batch handoff bridge checklist:
 
 - `results/figures/meeteval_cpwer_execution_status_batch_handoff_bridge_checklist.md`
@@ -2502,6 +2508,12 @@ MeetEval cpWER tokenization gain scorecard handoff:
 - `results/figures/meeteval_cpwer_tokenization_gain_scorecard_handoff.md`
 - `results/tables/meeteval_cpwer_tokenization_gain_scorecard_handoff.csv`
 - `handoff_status = tokenization_gain_handoff_ready` at `5/5` adapted-and-aligned cases; adaptation completion remains coordination-only.
+
+MeetEval cpWER tokenization gain scorecard handoff bridge checklist:
+
+- `results/figures/meeteval_cpwer_tokenization_gain_scorecard_handoff_bridge_checklist.md`
+- `results/tables/meeteval_cpwer_tokenization_gain_scorecard_handoff_bridge_checklist.csv`
+- This checklist connects the gain handoff to the tokenization adaptation handoff without claiming benchmark completion.
 
 MeetEval cpWER tokenization adaptation completion summary bridge checklist:
 
