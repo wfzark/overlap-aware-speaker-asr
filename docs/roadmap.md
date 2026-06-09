@@ -330,6 +330,7 @@ Update: `speaker_profile` now also has a go-no-go board.
 - Go-no-go summary: `results/tables/speaker_profile_go_no_go_summary.csv`
 - Go-no-go bridge checklist: `results/tables/speaker_profile_go_no_go_board_bridge_checklist.csv`
 - Go-no-go handoff: `results/tables/speaker_profile_go_no_go_board_handoff.csv`
+- Go-no-go handoff completion summary: `results/tables/speaker_profile_go_no_go_board_handoff_completion_summary.csv`
 - Script: `python3 -m src.speaker_profile_go_no_go_board`
 - Current evidence keeps the chain narrow: `NoOverlap` is execution-ready for one embedding-baseline writeback, but attribution claims remain blocked by weak support.
 
@@ -2205,6 +2206,7 @@ Update: `meeteval_compatibility` now also has a batch execution handoff.
 - Handoff completion summary: `results/tables/meeteval_cpwer_execution_status_batch_handoff_completion_summary.csv`
 - Handoff completion bridge checklist: `results/tables/meeteval_cpwer_execution_status_batch_handoff_completion_summary_bridge_checklist.csv`
 - Handoff completion handoff: `results/tables/meeteval_cpwer_execution_status_batch_handoff_completion_summary_handoff.csv`
+- Handoff completion handoff bridge checklist: `results/tables/meeteval_cpwer_execution_status_batch_handoff_completion_summary_handoff_bridge_checklist.csv`
 - This turns batch chain readiness into per-case official cpWER execution actions with a preferred first target.
 
 Update: `meeteval_compatibility` now also has an official cpWER narrow dry-run execution module.
@@ -2256,6 +2258,7 @@ Update: `meeteval_compatibility` now also has a tokenization gain scorecard.
 - Handoff bridge checklist: `results/tables/meeteval_cpwer_tokenization_gain_scorecard_handoff_bridge_checklist.csv`
 - Handoff completion summary: `results/tables/meeteval_cpwer_tokenization_gain_scorecard_handoff_completion_summary.csv`
 - Handoff completion bridge checklist: `results/tables/meeteval_cpwer_tokenization_gain_scorecard_handoff_completion_summary_bridge_checklist.csv`
+- Tokenization-to-fill handoff: `results/tables/meeteval_tokenization_gain_to_frontier_fill_handoff.csv`
 - Current evidence shows positive raw-to-character gain on all five gold cases and supports `character_spaced` as the default MeetEval mode for this CJK gold benchmark family.
 
 Update: `speaker_profile` now also has a text-proxy diagnostic completion stack.

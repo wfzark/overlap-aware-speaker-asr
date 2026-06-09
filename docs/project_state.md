@@ -1804,6 +1804,17 @@ Speaker profile go-no-go board handoff bridge checklist:
 - `results/figures/speaker_profile_go_no_go_board_handoff_bridge_checklist.md`
 - `results/tables/speaker_profile_go_no_go_board_handoff_bridge_checklist.csv`
 
+Speaker profile go-no-go board handoff completion summary:
+
+- `results/figures/speaker_profile_go_no_go_board_handoff_completion_summary.md`
+- `results/tables/speaker_profile_go_no_go_board_handoff_completion_summary.csv`
+- `queue_status = queue_complete` for `NoOverlap`; embedding trial execution scaffold readiness remains next.
+
+Speaker profile go-no-go board handoff completion summary bridge checklist:
+
+- `results/figures/speaker_profile_go_no_go_board_handoff_completion_summary_bridge_checklist.md`
+- `results/tables/speaker_profile_go_no_go_board_handoff_completion_summary_bridge_checklist.csv`
+
 External validation slice staging handoff receipt readiness:
 
 - `results/figures/external_validation_slice_staging_handoff_receipt_readiness.md`
@@ -2441,6 +2452,12 @@ MeetEval cpWER execution status batch handoff completion summary handoff:
 - `results/tables/meeteval_cpwer_execution_status_batch_handoff_completion_summary_handoff.csv`
 - `handoff_status = batch_handoff_completion_handoff_ready` at `5/5` complete handoffs; official execution completion review remains next.
 
+MeetEval cpWER execution status batch handoff completion summary handoff bridge checklist:
+
+- `results/figures/meeteval_cpwer_execution_status_batch_handoff_completion_summary_handoff_bridge_checklist.md`
+- `results/tables/meeteval_cpwer_execution_status_batch_handoff_completion_summary_handoff_bridge_checklist.csv`
+- Connects batch handoff completion handoff to official cpWER execution completion review.
+
 MeetEval cpWER execution status batch handoff bridge checklist:
 
 - `results/figures/meeteval_cpwer_execution_status_batch_handoff_bridge_checklist.md`
@@ -2549,6 +2566,12 @@ MeetEval cpWER tokenization gain scorecard handoff completion summary bridge che
 - `results/figures/meeteval_cpwer_tokenization_gain_scorecard_handoff_completion_summary_bridge_checklist.md`
 - `results/tables/meeteval_cpwer_tokenization_gain_scorecard_handoff_completion_summary_bridge_checklist.csv`
 - This checklist verifies gain handoff completion before advancing the tokenization adaptation handoff.
+
+MeetEval tokenization gain to frontier fill handoff:
+
+- `results/figures/meeteval_tokenization_gain_to_frontier_fill_handoff.md`
+- `results/tables/meeteval_tokenization_gain_to_frontier_fill_handoff.csv`
+- `handoff_status = tokenization_gain_frontier_fill_handoff_ready` at `5/5` adapted-and-aligned cases; frontier fill runbook remains coordination-only.
 
 MeetEval cpWER tokenization adaptation completion summary bridge checklist:
 
