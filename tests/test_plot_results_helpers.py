@@ -1,9 +1,11 @@
 from __future__ import annotations
 
+import tempfile
 import unittest
+from pathlib import Path
 
 from src.config import load_config
-from src.plot_results import build_adaptive_rows, grouped_cer_rows, to_float
+from src.plot_results import build_adaptive_rows, ensure_dir, grouped_cer_rows, to_float
 
 
 class PlotResultsHelpersTest(unittest.TestCase):
@@ -23,6 +25,12 @@ class PlotResultsHelpersTest(unittest.TestCase):
         )
         self.assertEqual(grouped["NoOverlap"]["mixed_whisper"], 0.21)
         self.assertEqual(grouped["NoOverlap"]["separated_whisper"], 0.05)
+
+    def test_ensure_dir_creates_missing_directory(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp_dir:
+            target = Path(tmp_dir) / "nested" / "tables"
+            ensure_dir(target)
+            self.assertTrue(target.is_dir())
 
     def test_build_adaptive_rows_selects_lowest_cer_method(self) -> None:
         grouped = {
