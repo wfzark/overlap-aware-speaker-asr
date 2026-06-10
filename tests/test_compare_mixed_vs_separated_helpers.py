@@ -6,7 +6,7 @@ import json
 import tempfile
 from pathlib import Path
 
-from src.compare_mixed_vs_separated import find_case, preview, read_json, select_cases, upsert_row
+from src.compare_mixed_vs_separated import find_case, preview, read_existing_rows, read_json, select_cases, upsert_row
 from src.config import get_audio_cases, load_config
 
 
@@ -40,6 +40,10 @@ class CompareMixedVsSeparatedHelpersTest(unittest.TestCase):
         config = load_config()
         cases = select_cases(config, "all")
         self.assertEqual(len(cases), len(get_audio_cases(config)))
+
+    def test_read_existing_rows_returns_empty_for_missing_csv(self) -> None:
+        missing = Path("/tmp/__missing_compare_rows__.csv")
+        self.assertEqual(read_existing_rows(missing), [])
 
     def test_read_json_loads_payload_from_path(self) -> None:
         with tempfile.TemporaryDirectory() as tmp_dir:
