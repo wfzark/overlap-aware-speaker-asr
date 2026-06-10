@@ -3,6 +3,7 @@ from __future__ import annotations
 import unittest
 
 from src.evaluate_error_types import (
+    cleaned_removed_count,
     detect_repetition,
     dominant_error_type,
     levenshtein_alignment_counts,
