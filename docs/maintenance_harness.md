@@ -59,6 +59,12 @@ Core unit tests should run without optional frontier plotting dependencies:
 python3 -m unittest discover -s tests -p 'test_*.py' -q
 ```
 
+Install full requirements when running modules that render figures or use scipy-heavy paths:
+
+```bash
+pip install -r requirements.txt
+```
+
 ## Recommended Command Discipline
 
 ```powershell
