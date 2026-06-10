@@ -9,6 +9,8 @@ from src.transcribe_whisper import (
     get_model_name,
     get_transcript_text_length,
     preview,
+    resolve_audio_path,
+    select_cases,
     transcript_path_for,
 )
 
@@ -43,6 +45,17 @@ class TranscribeWhisperHelpersTest(unittest.TestCase):
     def test_get_transcript_text_length_counts_characters(self) -> None:
         self.assertEqual(get_transcript_text_length({"text": "你好世界"}), 4)
         self.assertEqual(get_transcript_text_length({}, "full_text"), 0)
+
+    def test_select_cases_returns_single_case_or_all(self) -> None:
+        config = load_config()
+        self.assertEqual(len(select_cases(config, "NoOverlap")), 1)
+        self.assertGreater(len(select_cases(config, "all")), 1)
+
+    def test_resolve_audio_path_points_to_mixed_audio(self) -> None:
+        config = load_config()
+        case = find_case(config, "NoOverlap")
+        audio_path = resolve_audio_path(config, case, "mixed")
+        self.assertTrue(audio_path.name.endswith(".wav"))
 
 
 if __name__ == "__main__":
