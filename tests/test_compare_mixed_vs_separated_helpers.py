@@ -2,7 +2,11 @@ from __future__ import annotations
 
 import unittest
 
-from src.compare_mixed_vs_separated import find_case, preview, select_cases, upsert_row
+import json
+import tempfile
+from pathlib import Path
+
+from src.compare_mixed_vs_separated import find_case, preview, read_json, select_cases, upsert_row
 from src.config import get_audio_cases, load_config
 
 
@@ -36,6 +40,13 @@ class CompareMixedVsSeparatedHelpersTest(unittest.TestCase):
         config = load_config()
         cases = select_cases(config, "all")
         self.assertEqual(len(cases), len(get_audio_cases(config)))
+
+    def test_read_json_loads_payload_from_path(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp_dir:
+            json_path = Path(tmp_dir) / "payload.json"
+            json_path.write_text(json.dumps({"text": "demo"}), encoding="utf-8")
+            payload = read_json(json_path)
+            self.assertEqual(payload["text"], "demo")
 
 
 if __name__ == "__main__":
