@@ -1,12 +1,18 @@
 from __future__ import annotations
 
+import json
+import tempfile
 import unittest
+from pathlib import Path
 
+from src.config import PROJECT_ROOT
 from src.evaluate_cer import (
+    build_row,
     compute_cer,
     levenshtein_distance,
     list_verified_cases,
     normalize_text,
+    read_existing_rows,
     sanitize_existing_rows,
     upsert_row,
 )
@@ -45,6 +51,29 @@ class EvaluateCerHelpersTest(unittest.TestCase):
         updated = upsert_row(rows, {"case_id": "A", "method": "mixed_whisper", "cer": 0.2})
         self.assertEqual(len(updated), 1)
         self.assertEqual(updated[0]["cer"], 0.2)
+
+    def test_build_row_includes_cer_metrics(self) -> None:
+        row = build_row(
+            "NoOverlap",
+            "mixed_whisper",
+            "你好世界",
+            "你好世",
+            PROJECT_ROOT / "results" / "demo.json",
+        )
+        self.assertEqual(row["case_id"], "NoOverlap")
+        self.assertEqual(row["method"], "mixed_whisper")
+        self.assertEqual(row["cer"], 0.25)
+
+    def test_read_existing_rows_returns_empty_for_missing_path(self) -> None:
+        missing = Path("/tmp/__missing_cer_rows__.json")
+        self.assertEqual(read_existing_rows(missing), [])
+
+    def test_read_existing_rows_loads_json_list_payload(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp_dir:
+            json_path = Path(tmp_dir) / "rows.json"
+            json_path.write_text(json.dumps([{"case_id": "A", "method": "mixed_whisper"}]), encoding="utf-8")
+            rows = read_existing_rows(json_path)
+        self.assertEqual(len(rows), 1)
 
 
 if __name__ == "__main__":
