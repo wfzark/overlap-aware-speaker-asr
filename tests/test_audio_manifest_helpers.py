@@ -5,7 +5,7 @@ import unittest
 import wave
 from pathlib import Path
 
-from src.audio_manifest import read_wav_info, write_manifest
+from src.audio_manifest import add_audio_row, read_wav_info, write_manifest
 
 
 class AudioManifestHelpersTest(unittest.TestCase):
@@ -43,6 +43,26 @@ class AudioManifestHelpersTest(unittest.TestCase):
             content = output_path.read_text(encoding="utf-8")
             self.assertIn("case_id", content)
             self.assertIn("Demo", content)
+
+    def test_add_audio_row_appends_manifest_entry_from_wav(self) -> None:
+        from src.config import PROJECT_ROOT
+
+        with tempfile.TemporaryDirectory(dir=PROJECT_ROOT) as tmp_dir:
+            tmp_path = Path(tmp_dir)
+            wav_path = tmp_path / "demo.wav"
+            with wave.open(str(wav_path), "wb") as handle:
+                handle.setnchannels(1)
+                handle.setsampwidth(2)
+                handle.setframerate(16000)
+                handle.writeframes(b"\x00\x00" * 8000)
+
+            rows: list[dict] = []
+            rel_path = wav_path.relative_to(PROJECT_ROOT)
+            add_audio_row(rows, "Demo", "mixed", rel_path, overlap_level=0)
+
+            self.assertEqual(len(rows), 1)
+            self.assertEqual(rows[0]["case_id"], "Demo")
+            self.assertEqual(rows[0]["duration_sec"], 0.5)
 
 
 if __name__ == "__main__":
