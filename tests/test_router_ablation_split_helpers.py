@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import unittest
 
-from src.router_ablation_split import choose_strategy, dataset_paths, repetition_count, to_float, to_int
+from src.router_ablation_split import choose_strategy, compute_scope_average, dataset_paths, repetition_count, to_float, to_int
 
 
 class RouterAblationSplitHelpersTest(unittest.TestCase):
@@ -39,6 +39,30 @@ class RouterAblationSplitHelpersTest(unittest.TestCase):
         method, rule = choose_strategy(entry, "fixed_mixed_whisper")
         self.assertEqual(method, "mixed_whisper")
         self.assertIn("fixed baseline", rule)
+
+    def test_compute_scope_average_averages_oracle_best_cers(self) -> None:
+        cer_lookup = {
+            ("s1", "mixed_whisper"): 0.3,
+            ("s1", "separated_whisper"): 0.1,
+        }
+        entries = [
+            {
+                "sample_id": "s1",
+                "overlap_level": 0,
+                "mixed_text_length": 100,
+                "separated_text_length": 110,
+                "cleaned_text_length": 0,
+                "repetition_count": 0,
+                "duplicate_removed_count": 0,
+                "runtime_ratio": 1.0,
+                "cleaned_closer_to_mixed": False,
+                "mixed_segments_count": 3,
+                "text_length_ratio": 1.1,
+            }
+        ]
+        average, count = compute_scope_average(cer_lookup, entries, "oracle_best")
+        self.assertEqual(average, 0.1)
+        self.assertEqual(count, 1)
 
     def test_choose_strategy_repetition_only_falls_back_to_mixed(self) -> None:
         entry = {
