@@ -3,6 +3,7 @@ from __future__ import annotations
 import unittest
 
 from src.analyze_cer_errors import (
+    build_report,
     extract_hypothesis_text,
     find_repeated_phrases,
     hypothesis_path_for,
@@ -39,6 +40,14 @@ class AnalyzeCerErrorsTest(unittest.TestCase):
         phrases = find_repeated_phrases(text)
         chunk_hits = [p for p in phrases if p["type"] == "high_frequency_chunk"]
         self.assertTrue(any(p["count"] >= 3 for p in chunk_hits))
+
+    def test_build_report_includes_cer_metrics_for_gold_case(self) -> None:
+        report = build_report("NoOverlap", "mixed_whisper")
+        self.assertEqual(report["case_id"], "NoOverlap")
+        self.assertEqual(report["method"], "mixed_whisper")
+        self.assertGreater(report["reference_length"], 0)
+        self.assertIn("cer", report)
+        self.assertIn("suspected_repeated_phrases", report)
 
 
 if __name__ == "__main__":
