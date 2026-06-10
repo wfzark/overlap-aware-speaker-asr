@@ -27,6 +27,21 @@ class AuditSyntheticBenchmarkHelpersTest(unittest.TestCase):
         )
         self.assertEqual(issue, "missing_file")
 
+    def test_issue_for_row_flags_empty_reference_text(self) -> None:
+        with __import__("tempfile").TemporaryDirectory() as tmp_dir:
+            ref_path = Path(tmp_dir) / "ref.json"
+            hyp_path = Path(tmp_dir) / "hyp.json"
+            ref_path.write_text("{}", encoding="utf-8")
+            hyp_path.write_text("{}", encoding="utf-8")
+            issue = issue_for_row(
+                {"reference_length": 0, "hypothesis_length": 0, "cer": 0.0},
+                reference_text="",
+                hypothesis_text="",
+                reference_path=ref_path,
+                hypothesis_path=hyp_path,
+            )
+            self.assertEqual(issue, "empty_reference")
+
 
 if __name__ == "__main__":
     unittest.main()
