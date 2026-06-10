@@ -51,6 +51,46 @@ class RiskAwareSelectorChooseFinalMethodTest(unittest.TestCase):
         self.assertEqual(method, "manual_review")
         self.assertIn("not reliable", action)
 
+    def test_choose_final_method_keeps_stable_separated_output(self) -> None:
+        method, action = choose_final_method(
+            _features("separated_whisper", duplicate_removed_count=0),
+            "low",
+            [],
+        )
+        self.assertEqual(method, "separated_whisper")
+        self.assertIn("stable", action)
+
+    def test_choose_final_method_prefers_separated_for_high_overlap_mixed_base(self) -> None:
+        method, action = choose_final_method(
+            _features("mixed_whisper", base_v2_row={"overlap_level": 4}),
+            "low",
+            [],
+        )
+        self.assertEqual(method, "separated_whisper")
+        self.assertIn("high-overlap", action)
+
+    def test_choose_final_method_keeps_mixed_when_separated_looks_risky(self) -> None:
+        method, action = choose_final_method(
+            _features(
+                "mixed_whisper",
+                base_v2_row={"overlap_level": 1},
+                text_length_ratio=1.8,
+            ),
+            "medium",
+            ["repetition_hallucination_risk"],
+        )
+        self.assertEqual(method, "mixed_whisper")
+        self.assertIn("risky", action)
+
+    def test_choose_final_method_uses_cleaned_when_base_is_cleaned_and_stable(self) -> None:
+        method, action = choose_final_method(
+            _features("separated_whisper_cleaned", duplicate_removed_count=2),
+            "low",
+            [],
+        )
+        self.assertEqual(method, "separated_whisper_cleaned")
+        self.assertIn("stable", action)
+
 
 if __name__ == "__main__":
     unittest.main()
