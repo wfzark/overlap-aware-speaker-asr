@@ -2,10 +2,10 @@ from __future__ import annotations
 
 import tempfile
 import unittest
+import wave
 from pathlib import Path
 
 import numpy as np
-from scipy.io import wavfile
 
 from src.speaker_profile_audio_proxy_trial import (
     build_audio_proxy_row,
@@ -26,7 +26,12 @@ class SpeakerProfileAudioProxyTrialTest(unittest.TestCase):
             seconds = 1.0
             t = np.linspace(0.0, seconds, int(sample_rate * seconds), endpoint=False)
             waveform = 0.5 * np.sin(2 * np.pi * 440.0 * t)
-            wavfile.write(audio_path, sample_rate, np.int16(waveform * 32767))
+            pcm = np.int16(np.clip(waveform * 32767, -32768, 32767))
+            with wave.open(str(audio_path), "w") as wav_file:
+                wav_file.setnchannels(1)
+                wav_file.setsampwidth(2)
+                wav_file.setframerate(sample_rate)
+                wav_file.writeframes(pcm.tobytes())
 
             vector = extract_audio_profile_vector(audio_path)
 
