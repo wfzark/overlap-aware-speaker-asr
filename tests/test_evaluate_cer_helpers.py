@@ -2,7 +2,14 @@ from __future__ import annotations
 
 import unittest
 
-from src.evaluate_cer import compute_cer, levenshtein_distance, list_verified_cases, normalize_text
+from src.evaluate_cer import (
+    compute_cer,
+    levenshtein_distance,
+    list_verified_cases,
+    normalize_text,
+    sanitize_existing_rows,
+    upsert_row,
+)
 
 
 class EvaluateCerHelpersTest(unittest.TestCase):
@@ -23,6 +30,21 @@ class EvaluateCerHelpersTest(unittest.TestCase):
     def test_levenshtein_distance_counts_minimum_edits(self) -> None:
         self.assertEqual(levenshtein_distance("你好世界", "你好世"), 1)
         self.assertEqual(levenshtein_distance("", "abc"), 3)
+
+    def test_sanitize_existing_rows_skips_incomplete_rows(self) -> None:
+        rows = sanitize_existing_rows(
+            [
+                {"case_id": "Demo", "method": "mixed_whisper"},
+                {"case_id": "", "method": "mixed_whisper"},
+            ]
+        )
+        self.assertEqual(len(rows), 1)
+
+    def test_upsert_row_replaces_matching_case_method(self) -> None:
+        rows = [{"case_id": "A", "method": "mixed_whisper", "cer": 0.1}]
+        updated = upsert_row(rows, {"case_id": "A", "method": "mixed_whisper", "cer": 0.2})
+        self.assertEqual(len(updated), 1)
+        self.assertEqual(updated[0]["cer"], 0.2)
 
 
 if __name__ == "__main__":
