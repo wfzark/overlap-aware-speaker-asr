@@ -53,6 +53,9 @@ class EvaluateErrorTypesHelpersTest(unittest.TestCase):
         note = observation_for("NoOverlap", "mixed_whisper", {}, {}, {})
         self.assertIn("Mixed baseline", note)
 
+    def test_cleaned_removed_count_returns_zero_for_non_cleaned_methods(self) -> None:
+        self.assertEqual(cleaned_removed_count("NoOverlap", "mixed_whisper"), 0)
+
 
 if __name__ == "__main__":
     unittest.main()
