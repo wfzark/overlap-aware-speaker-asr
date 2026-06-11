@@ -181,6 +181,19 @@ def upsert_row(rows: list[dict[str, Any]], row: dict[str, Any]) -> list[dict[str
     return sorted(filtered, key=lambda item: (str(item.get("case_id", "")), str(item.get("method", ""))))
 
 
+def write_cer_results(rows: list[dict[str, Any]], output_dir: Path | None = None) -> tuple[Path, Path]:
+    table_dir = output_dir or (PROJECT_ROOT / "results" / "tables")
+    table_dir.mkdir(parents=True, exist_ok=True)
+    csv_path = table_dir / "cer_results.csv"
+    json_path = table_dir / "cer_results.json"
+    with csv_path.open("w", newline="", encoding="utf-8-sig") as f:
+        writer = csv.DictWriter(f, fieldnames=CSV_COLUMNS)
+        writer.writeheader()
+        writer.writerows(rows)
+    json_path.write_text(json.dumps(rows, ensure_ascii=False, indent=2), encoding="utf-8")
+    return csv_path, json_path
+
+
 def rows_for_case(case_id: str) -> list[dict[str, Any]]:
     reference = load_reference(case_id)
     reference_text = reference.get("full_text", "")
@@ -252,15 +265,7 @@ def main() -> None:
         for row in rows_for_case(case_id):
             rows = upsert_row(rows, row)
 
-    output_dir = PROJECT_ROOT / "results" / "tables"
-    output_dir.mkdir(parents=True, exist_ok=True)
-    csv_path = output_dir / "cer_results.csv"
-    json_path = output_dir / "cer_results.json"
-    with csv_path.open("w", newline="", encoding="utf-8-sig") as f:
-        writer = csv.DictWriter(f, fieldnames=CSV_COLUMNS)
-        writer.writeheader()
-        writer.writerows(rows)
-    json_path.write_text(json.dumps(rows, ensure_ascii=False, indent=2), encoding="utf-8")
+    csv_path, json_path = write_cer_results(rows)
 
     print(f"Wrote CER CSV: {csv_path.relative_to(PROJECT_ROOT)}")
     print(f"Wrote CER JSON: {json_path.relative_to(PROJECT_ROOT)}")
