@@ -73,6 +73,13 @@ class ProjectHarnessTest(unittest.TestCase):
         self.assertIn("tiny sanity-check slice", by_id["external_validation"]["next_step"])
         self.assertIn("walkthrough", by_id["demo_excellence"]["expected_output"])
         self.assertIn("demo walk", by_id["demo_excellence"]["next_step"].lower())
+        self.assertIn("wave1_separation_phase_diagram", by_id)
+        self.assertIn("wave2_cascade_boundary_bridge", by_id)
+        self.assertIn(by_id["wave1_separation_phase_diagram"]["status"], {"module_delivered", "module_present"})
+        self.assertEqual(
+            by_id["wave2_llm_critic_qualitative_brief_light_mid"]["evidence_path"],
+            "src/llm_critic_qualitative_brief_light_mid.py",
+        )
 
     def test_build_frontier_status_checklist_rows_preserve_frontier_order(self) -> None:
         rows = build_frontier_status_checklist_rows(
