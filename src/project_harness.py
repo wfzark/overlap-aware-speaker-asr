@@ -166,6 +166,12 @@ WAVE_FRONTIER_MODULES = [
         "expected_output": "results/figures/external_validation_mini_sanity_check.md",
         "next_step": "Run python -m src.external_validation_mini_sanity_check after license confirmation.",
     },
+    {
+        "frontier_id": "wave3_external_validation_audio_excerpt_staging_plan",
+        "module_path": "src/external_validation_audio_excerpt_staging_plan.py",
+        "expected_output": "results/figures/external_validation_audio_excerpt_staging_plan.md",
+        "next_step": "Run python -m src.external_validation_audio_excerpt_staging_plan before local AISHELL-4 download.",
+    },
 ]
 
 

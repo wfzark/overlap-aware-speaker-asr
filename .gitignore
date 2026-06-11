@@ -1134,6 +1134,7 @@ results/synthetic_overlap_v2/
 
 # Large synthetic benchmark assets
 resources/synthetic_overlap_v2/audio/
+resources/external_sanity_check/**/*.wav
 
 # Large temporary files
 *.tmp
