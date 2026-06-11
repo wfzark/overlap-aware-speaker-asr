@@ -14,6 +14,11 @@ class EvaluateCpcerLiteBuildRowTest(unittest.TestCase):
         self.assertIn("cpcer_lite", row)
         self.assertIn(row["best_mapping"], {"direct", "swapped"})
 
+    def test_build_row_supports_cleaned_separated_method(self) -> None:
+        row = build_row("NoOverlap", "separated_whisper_cleaned")
+        self.assertEqual(row["method"], "separated_whisper_cleaned")
+        self.assertGreater(row["cpcer_lite"], 0.0)
+
 
 if __name__ == "__main__":
     unittest.main()
