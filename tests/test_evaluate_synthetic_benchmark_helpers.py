@@ -18,6 +18,15 @@ class EvaluateSyntheticBenchmarkHelpersTest(unittest.TestCase):
         paths = dataset_paths("synthetic_overlap")
         self.assertTrue(str(paths["manifest"]).endswith("synthetic_manifest.csv"))
 
+    def test_dataset_paths_returns_v2_split_artifacts(self) -> None:
+        paths = dataset_paths("synthetic_overlap_v2")
+        self.assertTrue(str(paths["manifest"]).endswith("synthetic_split_manifest.csv"))
+        self.assertIn("synthetic_overlap_v2", str(paths["raw_dir"]))
+
+    def test_dataset_paths_rejects_unknown_dataset(self) -> None:
+        with self.assertRaises(ValueError):
+            dataset_paths("unknown_dataset")
+
     def test_transcript_path_builders_use_expected_suffixes(self) -> None:
         directory = Path("results/synthetic_transcripts_raw")
         self.assertEqual(
