@@ -44,6 +44,12 @@ class ConfigTest(unittest.TestCase):
         cases = get_audio_cases(config)
         self.assertTrue(all("id" in case for case in cases))
 
+    def test_get_audio_cases_returns_empty_list_when_key_missing(self) -> None:
+        self.assertEqual(get_audio_cases({}), [])
+
+    def test_get_audio_cases_returns_empty_list_for_empty_audio_cases(self) -> None:
+        self.assertEqual(get_audio_cases({"audio_cases": []}), [])
+
     def test_main_prints_configured_audio_cases(self) -> None:
         buffer = io.StringIO()
         with redirect_stdout(buffer):
