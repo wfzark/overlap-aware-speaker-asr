@@ -74,6 +74,13 @@ def cleaned_transcript_path(sample_id: str, directory: Path) -> Path:
     return directory / f"{sample_id}_separated_speaker_transcript_cleaned.json"
 
 
+def _display_path(path: Path) -> str:
+    try:
+        return str(path.relative_to(PROJECT_ROOT))
+    except ValueError:
+        return str(path)
+
+
 def read_or_transcribe(
     model: Any,
     audio_path: Path,
@@ -83,13 +90,13 @@ def read_or_transcribe(
     overwrite: bool,
 ) -> dict[str, Any]:
     if output_path.exists() and not overwrite:
-        print(f"skip existing transcript: {output_path.relative_to(PROJECT_ROOT)}")
+        print(f"skip existing transcript: {_display_path(output_path)}")
         return read_json(output_path)
     result = transcribe_audio(model, audio_path, language)
     output_path.parent.mkdir(parents=True, exist_ok=True)
     payload = payload_builder(result)
     output_path.write_text(json.dumps(payload, ensure_ascii=False, indent=2), encoding="utf-8")
-    print(f"Wrote transcript: {output_path.relative_to(PROJECT_ROOT)}")
+    print(f"Wrote transcript: {_display_path(output_path)}")
     return payload
 
 
