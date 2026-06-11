@@ -1046,6 +1046,17 @@ Current demo go-no-go summary result:
 
 The stable baseline is complete, but this repository is designed as an open-ended agentic research playground. Future contributors are encouraged to attempt ambitious extensions while keeping gold/silver/experimental results clearly separated.
 
+## Development and Testing
+
+Verify changes before opening a pull request:
+
+```bash
+python3 -m unittest discover -s tests -p 'test_*.py' -q
+python3 -m src.project_harness
+```
+
+See [docs/maintenance_harness.md](docs/maintenance_harness.md) and [docs/repo_evolver.md](docs/repo_evolver.md) for the maintenance harness and repo-evolver automation workflow.
+
 ## How to Reproduce
 
 Run the main evaluation chain:
