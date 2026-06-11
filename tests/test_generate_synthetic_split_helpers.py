@@ -1,10 +1,15 @@
 from __future__ import annotations
 
+import tempfile
 import unittest
 from pathlib import Path
 
+import numpy as np
+
 from src.generate_synthetic_split import (
+    AudioClip,
     choose_pair,
+    list_snippets,
     sample_index_within_split,
     split_for_index,
     tier_gap_sec,
@@ -35,6 +40,17 @@ class GenerateSyntheticSplitHelpersTest(unittest.TestCase):
 
     def test_tier_gap_sec_returns_zero_for_overlap_only_tiers(self) -> None:
         self.assertEqual(tier_gap_sec("SyntheticHeavyOverlap", 3), 0.0)
+
+    def test_audio_clip_duration_sec_scales_with_sample_count(self) -> None:
+        clip = AudioClip(filename="demo.wav", samples=np.zeros(16000, dtype=np.float32), sample_rate=16000)
+        self.assertAlmostEqual(clip.duration_sec, 1.0)
+
+    def test_list_snippets_raises_when_snippet_pool_is_empty(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp_dir:
+            empty_dir = Path(tmp_dir) / "snippets"
+            empty_dir.mkdir()
+            with self.assertRaises((FileNotFoundError, ValueError)):
+                list_snippets(empty_dir)
 
 
 if __name__ == "__main__":
