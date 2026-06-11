@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import io
+import tempfile
 import unittest
 from contextlib import redirect_stdout
 from pathlib import Path
@@ -19,6 +20,19 @@ class ConfigTest(unittest.TestCase):
         self.assertIn("audio_cases", config)
         self.assertIsInstance(config["audio_cases"], list)
         self.assertGreater(len(config["audio_cases"]), 0)
+
+    def test_load_config_raises_for_missing_file(self) -> None:
+        missing = PROJECT_ROOT / "configs" / "__missing_config__.yaml"
+        with self.assertRaises(FileNotFoundError) as ctx:
+            load_config(str(missing))
+        self.assertIn("Missing config file", str(ctx.exception))
+
+    def test_load_config_raises_for_malformed_yaml(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp_dir:
+            bad_path = Path(tmp_dir) / "bad.yaml"
+            bad_path.write_text("audio_cases: [unclosed", encoding="utf-8")
+            with self.assertRaises(Exception):
+                load_config(str(bad_path))
 
     def test_load_config_accepts_absolute_path(self) -> None:
         config_path = PROJECT_ROOT / "configs" / "config.yaml"

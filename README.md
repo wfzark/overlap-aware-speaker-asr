@@ -1046,6 +1046,17 @@ Current demo go-no-go summary result:
 
 The stable baseline is complete, but this repository is designed as an open-ended agentic research playground. Future contributors are encouraged to attempt ambitious extensions while keeping gold/silver/experimental results clearly separated.
 
+## Development and Testing
+
+Verify changes before opening a pull request:
+
+```bash
+python3 -m unittest discover -s tests -p 'test_*.py' -q
+python3 -m src.project_harness
+```
+
+See [docs/maintenance_harness.md](docs/maintenance_harness.md) and [docs/repo_evolver.md](docs/repo_evolver.md) for the maintenance harness and repo-evolver automation workflow.
+
 ## How to Reproduce
 
 Run the main evaluation chain:
@@ -1059,6 +1070,10 @@ python -m src.evaluate_cpcer_lite --case all
 python -m src.risk_aware_selector --case all
 python -m src.compute_aware_cascade
 python -m src.compute_aware_cascade --dataset synthetic_split
+python -m src.evaluate_synthetic_benchmark --case all --dataset synthetic_overlap
+python -m src.evaluate_synthetic_routing --dataset synthetic_overlap
+python -m src.evaluate_synthetic_benchmark --case all --dataset synthetic_overlap_v2
+python -m src.evaluate_synthetic_routing --dataset synthetic_overlap_v2
 python -m src.router_ablation
 python -m src.router_ablation_split
 python -m src.export_meeteval_compatibility
