@@ -20,6 +20,12 @@ class ConfigTest(unittest.TestCase):
         self.assertIsInstance(config["audio_cases"], list)
         self.assertGreater(len(config["audio_cases"]), 0)
 
+    def test_load_config_raises_for_missing_file(self) -> None:
+        missing = PROJECT_ROOT / "configs" / "__missing_config__.yaml"
+        with self.assertRaises(FileNotFoundError) as ctx:
+            load_config(str(missing))
+        self.assertIn("Missing config file", str(ctx.exception))
+
     def test_load_config_accepts_absolute_path(self) -> None:
         config_path = PROJECT_ROOT / "configs" / "config.yaml"
         config = load_config(str(config_path))
