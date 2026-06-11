@@ -22,6 +22,13 @@ class AdaptiveRouterV2LoadHelpersTest(unittest.TestCase):
         with self.assertRaises(FileNotFoundError):
             read_json(missing)
 
+    def test_load_case_map_returns_empty_when_no_audio_cases(self) -> None:
+        self.assertEqual(load_case_map({}), {})
+        self.assertEqual(load_case_map({"audio_cases": []}), {})
+
+    def test_is_unstable_returns_false_for_zero_mixed_length(self) -> None:
+        self.assertFalse(is_unstable(mixed_len=0, separated_len=200, duplicate_removed_count=12, runtime_ratio=3.0))
+
     def test_is_unstable_flags_high_runtime_ratio(self) -> None:
         self.assertTrue(is_unstable(mixed_len=100, separated_len=110, duplicate_removed_count=0, runtime_ratio=2.0))
 
