@@ -11,6 +11,8 @@ from src.compute_aware_cascade import parse_args as compute_aware_cascade_parse_
 from src.evaluate_cer import parse_args as evaluate_cer_parse_args
 from src.evaluate_synthetic_benchmark import parse_args as evaluate_synthetic_benchmark_parse_args
 from src.evaluate_synthetic_routing import parse_args as evaluate_synthetic_routing_parse_args
+from src.merge_speaker_tracks import parse_args as merge_speaker_tracks_parse_args
+from src.prepare_reference_bundle import parse_args as prepare_reference_bundle_parse_args
 from src.generate_synthetic_overlap import parse_args as generate_synthetic_overlap_parse_args
 from src.generate_synthetic_split import parse_args as generate_synthetic_split_parse_args
 from src.postprocess_transcript import parse_args as postprocess_transcript_parse_args
@@ -21,6 +23,8 @@ from src.plot_results import parse_args as plot_results_parse_args
 from src.router_ablation import parse_args as router_ablation_parse_args
 from src.risk_aware_selector import parse_args as risk_aware_parse_args
 from src.run_experiment import parse_args as run_experiment_parse_args
+from src.summarize_results import parse_args as summarize_results_parse_args
+from src.transcribe_snippets import parse_args as transcribe_snippets_parse_args
 from src.transcribe_whisper import parse_args as transcribe_whisper_parse_args
 
 
@@ -124,6 +128,22 @@ class ModuleParseArgsSmokeTest(unittest.TestCase):
             args = run_experiment_parse_args()
             self.assertEqual(args.stage, "compare")
             self.assertTrue(args.overwrite)
+
+    def test_merge_speaker_tracks_parse_args(self) -> None:
+        with unittest.mock.patch("sys.argv", ["merge_speaker_tracks", "--case", "NoOverlap"]):
+            self.assertEqual(merge_speaker_tracks_parse_args().case, "NoOverlap")
+
+    def test_prepare_reference_bundle_parse_args(self) -> None:
+        with unittest.mock.patch("sys.argv", ["prepare_reference_bundle", "--case", "NoOverlap"]):
+            self.assertEqual(prepare_reference_bundle_parse_args().case, "NoOverlap")
+
+    def test_transcribe_snippets_parse_args(self) -> None:
+        with unittest.mock.patch("sys.argv", ["transcribe_snippets", "--overwrite"]):
+            self.assertTrue(transcribe_snippets_parse_args().overwrite)
+
+    def test_summarize_results_parse_args(self) -> None:
+        with unittest.mock.patch("sys.argv", ["summarize_results"]):
+            self.assertIsNotNone(summarize_results_parse_args())
 
 
 if __name__ == "__main__":
