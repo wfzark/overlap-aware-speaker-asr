@@ -19,6 +19,9 @@ def load_config(path: str = "configs/config.yaml") -> dict[str, Any]:
     if not config_path.is_absolute():
         config_path = PROJECT_ROOT / config_path
 
+    if not config_path.exists():
+        raise FileNotFoundError(f"Missing config file: {config_path.relative_to(PROJECT_ROOT)}")
+
     with config_path.open("r", encoding="utf-8") as f:
         return yaml.safe_load(f)
 
