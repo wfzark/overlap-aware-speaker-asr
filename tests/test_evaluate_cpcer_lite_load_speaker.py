@@ -23,6 +23,10 @@ class EvaluateCpcerLiteLoadSpeakerTest(unittest.TestCase):
         with self.assertRaises(FileNotFoundError):
             load_speaker_payload("__missing_case__", "separated_whisper")
 
+    def test_load_speaker_payload_raises_for_missing_cleaned_file(self) -> None:
+        with self.assertRaises(FileNotFoundError):
+            load_speaker_payload("__missing_case__", "separated_whisper_cleaned")
+
     def test_load_speaker_payload_raises_for_unsupported_method(self) -> None:
         with self.assertRaises(ValueError):
             load_speaker_payload("NoOverlap", "mixed_whisper")
