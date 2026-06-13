@@ -48,5 +48,14 @@ def write_csv_json(
     json_path.write_text(json.dumps(rows, ensure_ascii=False, indent=2), encoding="utf-8")
 
 
+def load_json_dict(path_rel: str, project_root: Path | None = None) -> dict[str, Any]:
+    base = project_root or Path(__file__).resolve().parent.parent
+    path = base / path_rel
+    if not path.exists():
+        return {}
+    payload = json.loads(path.read_text(encoding="utf-8"))
+    return payload if isinstance(payload, dict) else {}
+
+
 def load_case_map(config: dict[str, Any]) -> dict[str, dict[str, Any]]:
     return {case["id"]: case for case in config.get("audio_cases", [])}
