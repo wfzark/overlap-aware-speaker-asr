@@ -104,6 +104,16 @@ def levenshtein_distance(a: str, b: str) -> int:
     return prev[-1]
 
 
+def aggregate_speaker_text(segments: list[dict[str, Any]], speaker: str) -> str:
+    texts: list[str] = []
+    for segment in segments:
+        if str(segment.get("speaker", "")).upper() == speaker:
+            text = str(segment.get("text", "")).strip()
+            if text:
+                texts.append(text)
+    return "".join(texts)
+
+
 def build_row(case_id: str, method: str, reference_text: str, hypothesis_text: str, hypothesis_path: Path) -> dict[str, Any]:
     metrics = compute_cer(reference_text, hypothesis_text)
     return {
