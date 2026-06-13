@@ -7,6 +7,7 @@ from pathlib import Path
 from typing import Any
 
 from .config import PROJECT_ROOT
+from .io_helpers import load_json_dict
 
 
 CARD_COLUMNS = [
@@ -37,14 +38,6 @@ RECEIPT_COLUMNS = [
     "expected_inputs",
     "writeback_note",
 ]
-
-
-def load_json_dict(path_rel: str) -> dict[str, Any]:
-    path = PROJECT_ROOT / path_rel
-    if not path.exists():
-        return {}
-    payload = json.loads(path.read_text(encoding="utf-8"))
-    return payload if isinstance(payload, dict) else {}
 
 
 def assert_writeback_preconditions(
