@@ -270,6 +270,16 @@ def build_performance(rows: list[dict[str, Any]], cer_lookup: dict[tuple[str, st
         "oracle_best",
     ]
     selected_map = {row["case_id"]: row for row in rows}
+
+    routing_decisions_path = PROJECT_ROOT / "results" / "tables" / "routing_decisions.csv"
+    router_v1_lookup: dict[str, str] = {}
+    if routing_decisions_path.exists():
+        for rrow in load_table(routing_decisions_path):
+            cid = str(rrow.get("case_id", "")).strip()
+            method = str(rrow.get("selected_method", "")).strip()
+            if cid:
+                router_v1_lookup[cid] = method
+
     performance: list[dict[str, Any]] = []
 
     for strategy in strategies:
@@ -291,9 +301,7 @@ def build_performance(rows: list[dict[str, Any]], cer_lookup: dict[tuple[str, st
             elif strategy == "fixed_separated_whisper_cleaned":
                 method = "separated_whisper_cleaned"
             elif strategy == "router_v1":
-                method = row["base_router_method"].replace("cleaned_", "separated_")
-                # router_v1 is stored separately in routing_decisions.csv; treat base_router_method as v2 only if v1 file unavailable
-                method = None
+                method = router_v1_lookup.get(case_id, "")
             elif strategy == "router_v2":
                 method = row["base_router_method"]
             elif strategy == "risk_aware_selector":
@@ -301,8 +309,6 @@ def build_performance(rows: list[dict[str, Any]], cer_lookup: dict[tuple[str, st
             else:
                 method = None
 
-            if strategy == "router_v1":
-                method = _router_v1_method(case_id)
             if method and method != "manual_review":
                 cer = cer_lookup.get((case_id, method))
                 if cer is not None:
@@ -315,15 +321,6 @@ def build_performance(rows: list[dict[str, Any]], cer_lookup: dict[tuple[str, st
             }
         )
     return performance
-
-
-def _router_v1_method(case_id: str) -> str:
-    path = PROJECT_ROOT / "results" / "tables" / "routing_decisions.csv"
-    rows = load_table(path)
-    for row in rows:
-        if str(row.get("case_id", "")).strip() == case_id:
-            return str(row.get("selected_method", "")).strip()
-    return ""
 
 
 def render_summary(rows: list[dict[str, Any]], performance: list[dict[str, Any]], manual_review_count: int, coverage: float) -> Path:
