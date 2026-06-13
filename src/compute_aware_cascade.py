@@ -1388,180 +1388,113 @@ def build_benchmark_receipt_bridge_checklist_lines(rows: list[dict[str, Any]]) -
     return lines
 
 
-def write_benchmark_evidence_receipt_outputs(
+def write_benchmark_outputs(
     rows: list[dict[str, Any]],
     csv_path: Path,
     json_path: Path,
     summary_path: Path,
+    columns: list[str],
+    line_fn: Any,
 ) -> None:
-    write_csv_json(rows, csv_path, json_path, BENCHMARK_EVIDENCE_RECEIPT_COLUMNS)
+    write_csv_json(rows, csv_path, json_path, columns)
     summary_path.parent.mkdir(parents=True, exist_ok=True)
-    summary_path.write_text("\n".join(build_benchmark_evidence_receipt_lines(rows)) + "\n", encoding="utf-8")
+    summary_path.write_text("\n".join(line_fn(rows)) + "\n", encoding="utf-8")
+
+
+def write_benchmark_evidence_receipt_outputs(
+    rows: list[dict[str, Any]], csv_path: Path, json_path: Path, summary_path: Path,
+) -> None:
+    write_benchmark_outputs(rows, csv_path, json_path, summary_path, BENCHMARK_EVIDENCE_RECEIPT_COLUMNS, build_benchmark_evidence_receipt_lines)
 
 
 def write_benchmark_evidence_checklist_outputs(
-    rows: list[dict[str, Any]],
-    csv_path: Path,
-    json_path: Path,
-    summary_path: Path,
+    rows: list[dict[str, Any]], csv_path: Path, json_path: Path, summary_path: Path,
 ) -> None:
-    write_csv_json(rows, csv_path, json_path, BENCHMARK_EVIDENCE_CHECKLIST_COLUMNS)
-    summary_path.parent.mkdir(parents=True, exist_ok=True)
-    summary_path.write_text("\n".join(build_benchmark_evidence_checklist_lines(rows)) + "\n", encoding="utf-8")
+    write_benchmark_outputs(rows, csv_path, json_path, summary_path, BENCHMARK_EVIDENCE_CHECKLIST_COLUMNS, build_benchmark_evidence_checklist_lines)
 
 
 def write_benchmark_receipt_bridge_outputs(
-    rows: list[dict[str, Any]],
-    csv_path: Path,
-    json_path: Path,
-    summary_path: Path,
+    rows: list[dict[str, Any]], csv_path: Path, json_path: Path, summary_path: Path,
 ) -> None:
-    write_csv_json(rows, csv_path, json_path, BENCHMARK_RECEIPT_BRIDGE_COLUMNS)
-    summary_path.parent.mkdir(parents=True, exist_ok=True)
-    summary_path.write_text("\n".join(build_benchmark_receipt_bridge_lines(rows)) + "\n", encoding="utf-8")
+    write_benchmark_outputs(rows, csv_path, json_path, summary_path, BENCHMARK_RECEIPT_BRIDGE_COLUMNS, build_benchmark_receipt_bridge_lines)
 
 
 def write_benchmark_receipt_bridge_checklist_outputs(
-    rows: list[dict[str, Any]],
-    csv_path: Path,
-    json_path: Path,
-    summary_path: Path,
+    rows: list[dict[str, Any]], csv_path: Path, json_path: Path, summary_path: Path,
 ) -> None:
-    write_csv_json(rows, csv_path, json_path, BENCHMARK_RECEIPT_BRIDGE_CHECKLIST_COLUMNS)
-    summary_path.parent.mkdir(parents=True, exist_ok=True)
-    summary_path.write_text("\n".join(build_benchmark_receipt_bridge_checklist_lines(rows)) + "\n", encoding="utf-8")
+    write_benchmark_outputs(rows, csv_path, json_path, summary_path, BENCHMARK_RECEIPT_BRIDGE_CHECKLIST_COLUMNS, build_benchmark_receipt_bridge_checklist_lines)
 
 
 def write_benchmark_operator_brief_outputs(
-    rows: list[dict[str, Any]],
-    csv_path: Path,
-    json_path: Path,
-    summary_path: Path,
+    rows: list[dict[str, Any]], csv_path: Path, json_path: Path, summary_path: Path,
 ) -> None:
-    write_csv_json(rows, csv_path, json_path, BENCHMARK_OPERATOR_BRIEF_COLUMNS)
-    summary_path.parent.mkdir(parents=True, exist_ok=True)
-    summary_path.write_text("\n".join(build_benchmark_operator_brief_lines(rows)) + "\n", encoding="utf-8")
+    write_benchmark_outputs(rows, csv_path, json_path, summary_path, BENCHMARK_OPERATOR_BRIEF_COLUMNS, build_benchmark_operator_brief_lines)
 
 
 def write_benchmark_frontier_bridge_outputs(
-    rows: list[dict[str, Any]],
-    csv_path: Path,
-    json_path: Path,
-    summary_path: Path,
+    rows: list[dict[str, Any]], csv_path: Path, json_path: Path, summary_path: Path,
 ) -> None:
-    write_csv_json(rows, csv_path, json_path, BENCHMARK_FRONTIER_BRIDGE_COLUMNS)
-    summary_path.parent.mkdir(parents=True, exist_ok=True)
-    summary_path.write_text("\n".join(build_benchmark_frontier_bridge_lines(rows)) + "\n", encoding="utf-8")
+    write_benchmark_outputs(rows, csv_path, json_path, summary_path, BENCHMARK_FRONTIER_BRIDGE_COLUMNS, build_benchmark_frontier_bridge_lines)
 
 
 def write_benchmark_frontier_bridge_checklist_outputs(
-    rows: list[dict[str, Any]],
-    csv_path: Path,
-    json_path: Path,
-    summary_path: Path,
+    rows: list[dict[str, Any]], csv_path: Path, json_path: Path, summary_path: Path,
 ) -> None:
-    write_csv_json(rows, csv_path, json_path, BENCHMARK_FRONTIER_BRIDGE_CHECKLIST_COLUMNS)
-    summary_path.parent.mkdir(parents=True, exist_ok=True)
-    summary_path.write_text("\n".join(build_benchmark_frontier_bridge_checklist_lines(rows)) + "\n", encoding="utf-8")
+    write_benchmark_outputs(rows, csv_path, json_path, summary_path, BENCHMARK_FRONTIER_BRIDGE_CHECKLIST_COLUMNS, build_benchmark_frontier_bridge_checklist_lines)
 
 
 def write_benchmark_completion_dashboard_outputs(
-    rows: list[dict[str, Any]],
-    csv_path: Path,
-    json_path: Path,
-    summary_path: Path,
+    rows: list[dict[str, Any]], csv_path: Path, json_path: Path, summary_path: Path,
 ) -> None:
-    write_csv_json(rows, csv_path, json_path, BENCHMARK_COMPLETION_DASHBOARD_COLUMNS)
-    summary_path.parent.mkdir(parents=True, exist_ok=True)
-    summary_path.write_text("\n".join(build_benchmark_completion_dashboard_lines(rows)) + "\n", encoding="utf-8")
+    write_benchmark_outputs(rows, csv_path, json_path, summary_path, BENCHMARK_COMPLETION_DASHBOARD_COLUMNS, build_benchmark_completion_dashboard_lines)
 
 
 def write_benchmark_phase_checkpoint_card_outputs(
-    rows: list[dict[str, Any]],
-    csv_path: Path,
-    json_path: Path,
-    summary_path: Path,
+    rows: list[dict[str, Any]], csv_path: Path, json_path: Path, summary_path: Path,
 ) -> None:
-    write_csv_json(rows, csv_path, json_path, BENCHMARK_PHASE_CHECKPOINT_CARD_COLUMNS)
-    summary_path.parent.mkdir(parents=True, exist_ok=True)
-    summary_path.write_text("\n".join(build_benchmark_phase_checkpoint_card_lines(rows)) + "\n", encoding="utf-8")
+    write_benchmark_outputs(rows, csv_path, json_path, summary_path, BENCHMARK_PHASE_CHECKPOINT_CARD_COLUMNS, build_benchmark_phase_checkpoint_card_lines)
 
 
 def write_benchmark_milestone_card_outputs(
-    rows: list[dict[str, Any]],
-    csv_path: Path,
-    json_path: Path,
-    summary_path: Path,
+    rows: list[dict[str, Any]], csv_path: Path, json_path: Path, summary_path: Path,
 ) -> None:
-    write_csv_json(rows, csv_path, json_path, BENCHMARK_MILESTONE_CARD_COLUMNS)
-    summary_path.parent.mkdir(parents=True, exist_ok=True)
-    summary_path.write_text("\n".join(build_benchmark_milestone_card_lines(rows)) + "\n", encoding="utf-8")
+    write_benchmark_outputs(rows, csv_path, json_path, summary_path, BENCHMARK_MILESTONE_CARD_COLUMNS, build_benchmark_milestone_card_lines)
 
 
 def write_benchmark_runbook_card_outputs(
-    rows: list[dict[str, Any]],
-    csv_path: Path,
-    json_path: Path,
-    summary_path: Path,
+    rows: list[dict[str, Any]], csv_path: Path, json_path: Path, summary_path: Path,
 ) -> None:
-    write_csv_json(rows, csv_path, json_path, BENCHMARK_RUNBOOK_CARD_COLUMNS)
-    summary_path.parent.mkdir(parents=True, exist_ok=True)
-    summary_path.write_text("\n".join(build_benchmark_runbook_card_lines(rows)) + "\n", encoding="utf-8")
+    write_benchmark_outputs(rows, csv_path, json_path, summary_path, BENCHMARK_RUNBOOK_CARD_COLUMNS, build_benchmark_runbook_card_lines)
 
 
 def write_benchmark_blocker_matrix_outputs(
-    rows: list[dict[str, Any]],
-    csv_path: Path,
-    json_path: Path,
-    summary_path: Path,
+    rows: list[dict[str, Any]], csv_path: Path, json_path: Path, summary_path: Path,
 ) -> None:
-    write_csv_json(rows, csv_path, json_path, BENCHMARK_BLOCKER_MATRIX_COLUMNS)
-    summary_path.parent.mkdir(parents=True, exist_ok=True)
-    summary_path.write_text("\n".join(build_benchmark_blocker_matrix_lines(rows)) + "\n", encoding="utf-8")
+    write_benchmark_outputs(rows, csv_path, json_path, summary_path, BENCHMARK_BLOCKER_MATRIX_COLUMNS, build_benchmark_blocker_matrix_lines)
 
 
 def write_benchmark_dependency_graph_outputs(
-    rows: list[dict[str, Any]],
-    csv_path: Path,
-    json_path: Path,
-    summary_path: Path,
+    rows: list[dict[str, Any]], csv_path: Path, json_path: Path, summary_path: Path,
 ) -> None:
-    write_csv_json(rows, csv_path, json_path, BENCHMARK_DEPENDENCY_GRAPH_COLUMNS)
-    summary_path.parent.mkdir(parents=True, exist_ok=True)
-    summary_path.write_text("\n".join(build_benchmark_dependency_graph_lines(rows)) + "\n", encoding="utf-8")
+    write_benchmark_outputs(rows, csv_path, json_path, summary_path, BENCHMARK_DEPENDENCY_GRAPH_COLUMNS, build_benchmark_dependency_graph_lines)
 
 
 def write_benchmark_session_ledger_outputs(
-    rows: list[dict[str, Any]],
-    csv_path: Path,
-    json_path: Path,
-    summary_path: Path,
+    rows: list[dict[str, Any]], csv_path: Path, json_path: Path, summary_path: Path,
 ) -> None:
-    write_csv_json(rows, csv_path, json_path, BENCHMARK_SESSION_LEDGER_COLUMNS)
-    summary_path.parent.mkdir(parents=True, exist_ok=True)
-    summary_path.write_text("\n".join(build_benchmark_session_ledger_lines(rows)) + "\n", encoding="utf-8")
+    write_benchmark_outputs(rows, csv_path, json_path, summary_path, BENCHMARK_SESSION_LEDGER_COLUMNS, build_benchmark_session_ledger_lines)
 
 
 def write_benchmark_execution_queue_outputs(
-    rows: list[dict[str, Any]],
-    csv_path: Path,
-    json_path: Path,
-    summary_path: Path,
+    rows: list[dict[str, Any]], csv_path: Path, json_path: Path, summary_path: Path,
 ) -> None:
-    write_csv_json(rows, csv_path, json_path, BENCHMARK_EXECUTION_QUEUE_COLUMNS)
-    summary_path.parent.mkdir(parents=True, exist_ok=True)
-    summary_path.write_text("\n".join(build_benchmark_execution_queue_lines(rows)) + "\n", encoding="utf-8")
+    write_benchmark_outputs(rows, csv_path, json_path, summary_path, BENCHMARK_EXECUTION_QUEUE_COLUMNS, build_benchmark_execution_queue_lines)
 
 
 def write_benchmark_execution_summary_outputs(
-    rows: list[dict[str, Any]],
-    csv_path: Path,
-    json_path: Path,
-    summary_path: Path,
+    rows: list[dict[str, Any]], csv_path: Path, json_path: Path, summary_path: Path,
 ) -> None:
-    write_csv_json(rows, csv_path, json_path, BENCHMARK_EXECUTION_SUMMARY_COLUMNS)
-    summary_path.parent.mkdir(parents=True, exist_ok=True)
-    summary_path.write_text("\n".join(build_benchmark_execution_summary_lines(rows)) + "\n", encoding="utf-8")
+    write_benchmark_outputs(rows, csv_path, json_path, summary_path, BENCHMARK_EXECUTION_SUMMARY_COLUMNS, build_benchmark_execution_summary_lines)
 
 
 def write_benchmark_packet_output(
@@ -2905,14 +2838,9 @@ def build_benchmark_readiness_lines(rows: list[dict[str, Any]]) -> list[str]:
 
 
 def write_benchmark_readiness_outputs(
-    rows: list[dict[str, Any]],
-    csv_path: Path,
-    json_path: Path,
-    summary_path: Path,
+    rows: list[dict[str, Any]], csv_path: Path, json_path: Path, summary_path: Path,
 ) -> None:
-    write_csv_json(rows, csv_path, json_path, BENCHMARK_READINESS_COLUMNS)
-    summary_path.parent.mkdir(parents=True, exist_ok=True)
-    summary_path.write_text("\n".join(build_benchmark_readiness_lines(rows)) + "\n", encoding="utf-8")
+    write_benchmark_outputs(rows, csv_path, json_path, summary_path, BENCHMARK_READINESS_COLUMNS, build_benchmark_readiness_lines)
 
 
 def build_benchmark_plan_rows(readiness_rows: list[dict[str, Any]]) -> list[dict[str, Any]]:
@@ -3000,14 +2928,9 @@ def build_benchmark_plan_lines(rows: list[dict[str, Any]]) -> list[str]:
 
 
 def write_benchmark_plan_outputs(
-    rows: list[dict[str, Any]],
-    csv_path: Path,
-    json_path: Path,
-    summary_path: Path,
+    rows: list[dict[str, Any]], csv_path: Path, json_path: Path, summary_path: Path,
 ) -> None:
-    write_csv_json(rows, csv_path, json_path, BENCHMARK_PLAN_COLUMNS)
-    summary_path.parent.mkdir(parents=True, exist_ok=True)
-    summary_path.write_text("\n".join(build_benchmark_plan_lines(rows)) + "\n", encoding="utf-8")
+    write_benchmark_outputs(rows, csv_path, json_path, summary_path, BENCHMARK_PLAN_COLUMNS, build_benchmark_plan_lines)
 
 
 def build_profile_playbook_rows(decision_matrix_rows: list[dict[str, Any]]) -> list[dict[str, Any]]:
@@ -3143,14 +3066,9 @@ def build_benchmark_checklist_lines(rows: list[dict[str, Any]]) -> list[str]:
 
 
 def write_benchmark_checklist_outputs(
-    rows: list[dict[str, Any]],
-    csv_path: Path,
-    json_path: Path,
-    summary_path: Path,
+    rows: list[dict[str, Any]], csv_path: Path, json_path: Path, summary_path: Path,
 ) -> None:
-    write_csv_json(rows, csv_path, json_path, BENCHMARK_CHECKLIST_COLUMNS)
-    summary_path.parent.mkdir(parents=True, exist_ok=True)
-    summary_path.write_text("\n".join(build_benchmark_checklist_lines(rows)) + "\n", encoding="utf-8")
+    write_benchmark_outputs(rows, csv_path, json_path, summary_path, BENCHMARK_CHECKLIST_COLUMNS, build_benchmark_checklist_lines)
 
 
 def build_benchmark_manifest_template_rows(checklist_rows: list[dict[str, Any]]) -> list[dict[str, Any]]:
@@ -3216,14 +3134,9 @@ def build_benchmark_status_lines(rows: list[dict[str, Any]]) -> list[str]:
 
 
 def write_benchmark_status_outputs(
-    rows: list[dict[str, Any]],
-    csv_path: Path,
-    json_path: Path,
-    summary_path: Path,
+    rows: list[dict[str, Any]], csv_path: Path, json_path: Path, summary_path: Path,
 ) -> None:
-    write_csv_json(rows, csv_path, json_path, BENCHMARK_STATUS_COLUMNS)
-    summary_path.parent.mkdir(parents=True, exist_ok=True)
-    summary_path.write_text("\n".join(build_benchmark_status_lines(rows)) + "\n", encoding="utf-8")
+    write_benchmark_outputs(rows, csv_path, json_path, summary_path, BENCHMARK_STATUS_COLUMNS, build_benchmark_status_lines)
 
 
 def set_pixel(pixels: bytearray, width: int, height: int, x: int, y: int, color: tuple[int, int, int]) -> None:
