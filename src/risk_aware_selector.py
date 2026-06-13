@@ -7,7 +7,15 @@ from pathlib import Path
 from typing import Any
 
 from .config import PROJECT_ROOT, load_config
-from .evaluate_cer import levenshtein_distance, list_verified_cases, load_json, load_reference, normalize_text
+from .evaluate_cer import (
+    aggregate_speaker_text,
+    compute_cer,
+    levenshtein_distance,
+    list_verified_cases,
+    load_json,
+    load_reference,
+    normalize_text,
+)
 
 
 CSV_COLUMNS = [
@@ -34,32 +42,6 @@ def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description="Reference-free risk-aware final selector.")
     parser.add_argument("--case", required=True, help="Audio case id, e.g. NoOverlap, or all")
     return parser.parse_args()
-
-
-def compute_cer(reference_text: str, hypothesis_text: str) -> dict[str, Any]:
-    ref_norm = normalize_text(reference_text)
-    hyp_norm = normalize_text(hypothesis_text)
-    distance = levenshtein_distance(ref_norm, hyp_norm)
-    reference_length = len(ref_norm)
-    cer = round(distance / reference_length, 6) if reference_length else 0.0
-    return {
-        "normalized_reference": ref_norm,
-        "normalized_hypothesis": hyp_norm,
-        "reference_length": reference_length,
-        "hypothesis_length": len(hyp_norm),
-        "edit_distance": distance,
-        "cer": cer,
-    }
-
-
-def aggregate_speaker_text(segments: list[dict[str, Any]], speaker: str) -> str:
-    texts: list[str] = []
-    for segment in segments:
-        if str(segment.get("speaker", "")).upper() == speaker:
-            text = str(segment.get("text", "")).strip()
-            if text:
-                texts.append(text)
-    return "".join(texts)
 
 
 def repeat_phrase_count(text: str) -> int:
