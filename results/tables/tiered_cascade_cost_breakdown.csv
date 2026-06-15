@@ -1,0 +1,4 @@
+﻿tier,strategy,call_count,cost_per_call,total_tier_cost,percentage_of_total,notes
+Tier 1 (small),router_v2_tier3_cascade,5,1.6,8.0,8.3,
+Tier 2 (medium),router_v2_tier3_cascade,5,4.8,24.0,25.0,
+Tier 3 (large+LLM),router_v2_tier3_cascade,5,12.8,64.0,66.7,

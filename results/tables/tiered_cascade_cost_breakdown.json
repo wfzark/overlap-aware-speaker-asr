@@ -1,0 +1,29 @@
+[
+  {
+    "tier": "Tier 1 (small)",
+    "strategy": "router_v2_tier3_cascade",
+    "call_count": 5,
+    "cost_per_call": 1.6,
+    "total_tier_cost": 8.0,
+    "percentage_of_total": 8.3,
+    "notes": ""
+  },
+  {
+    "tier": "Tier 2 (medium)",
+    "strategy": "router_v2_tier3_cascade",
+    "call_count": 5,
+    "cost_per_call": 4.8,
+    "total_tier_cost": 24.0,
+    "percentage_of_total": 25.0,
+    "notes": ""
+  },
+  {
+    "tier": "Tier 3 (large+LLM)",
+    "strategy": "router_v2_tier3_cascade",
+    "call_count": 5,
+    "cost_per_call": 12.8,
+    "total_tier_cost": 64.0,
+    "percentage_of_total": 66.7,
+    "notes": ""
+  }
+]

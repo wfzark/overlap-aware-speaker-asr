@@ -1,0 +1,92 @@
+[
+  {
+    "strategy": "fixed_mixed_small",
+    "tier_1_calls": 0,
+    "tier_2_calls": 0,
+    "tier_3_calls": 0,
+    "llm_critic_calls": 0,
+    "total_model_calls": 0,
+    "total_cost": 1.0,
+    "coverage": 1.0
+  },
+  {
+    "strategy": "fixed_separated_small",
+    "tier_1_calls": 0,
+    "tier_2_calls": 0,
+    "tier_3_calls": 0,
+    "llm_critic_calls": 0,
+    "total_model_calls": 0,
+    "total_cost": 2.0,
+    "coverage": 1.0
+  },
+  {
+    "strategy": "fixed_separated_small_cleaned",
+    "tier_1_calls": 0,
+    "tier_2_calls": 0,
+    "tier_3_calls": 0,
+    "llm_critic_calls": 0,
+    "total_model_calls": 0,
+    "total_cost": 2.1,
+    "coverage": 1.0
+  },
+  {
+    "strategy": "router_v2_tier1_only",
+    "tier_1_calls": 5,
+    "tier_2_calls": 0,
+    "tier_3_calls": 0,
+    "llm_critic_calls": 0,
+    "total_model_calls": 5,
+    "total_cost": 1.6,
+    "coverage": 1.0
+  },
+  {
+    "strategy": "router_v2_tier2_cascade",
+    "tier_1_calls": 5,
+    "tier_2_calls": 5,
+    "tier_3_calls": 0,
+    "llm_critic_calls": 0,
+    "total_model_calls": 10,
+    "total_cost": 6.4,
+    "coverage": 1.0
+  },
+  {
+    "strategy": "router_v2_tier3_cascade",
+    "tier_1_calls": 5,
+    "tier_2_calls": 5,
+    "tier_3_calls": 5,
+    "llm_critic_calls": 5,
+    "total_model_calls": 15,
+    "total_cost": 19.2,
+    "coverage": 1.0
+  },
+  {
+    "strategy": "cost_first_cascade",
+    "tier_1_calls": 5,
+    "tier_2_calls": 0,
+    "tier_3_calls": 0,
+    "llm_critic_calls": 0,
+    "total_model_calls": 5,
+    "total_cost": 1.6,
+    "coverage": 1.0
+  },
+  {
+    "strategy": "accuracy_first_cascade",
+    "tier_1_calls": 5,
+    "tier_2_calls": 5,
+    "tier_3_calls": 5,
+    "llm_critic_calls": 5,
+    "total_model_calls": 15,
+    "total_cost": 19.2,
+    "coverage": 1.0
+  },
+  {
+    "strategy": "oracle_best",
+    "tier_1_calls": 0,
+    "tier_2_calls": 0,
+    "tier_3_calls": 0,
+    "llm_critic_calls": 0,
+    "total_model_calls": 0,
+    "total_cost": 999.0,
+    "coverage": 1.0
+  }
+]

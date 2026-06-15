@@ -1,0 +1,10 @@
+﻿strategy,tier_1_calls,tier_2_calls,tier_3_calls,llm_critic_calls,total_model_calls,total_cost,coverage
+fixed_mixed_small,0,0,0,0,0,1.0,1.0
+fixed_separated_small,0,0,0,0,0,2.0,1.0
+fixed_separated_small_cleaned,0,0,0,0,0,2.1,1.0
+router_v2_tier1_only,5,0,0,0,5,1.6,1.0
+router_v2_tier2_cascade,5,5,0,0,10,6.4,1.0
+router_v2_tier3_cascade,5,5,5,5,15,19.2,1.0
+cost_first_cascade,5,0,0,0,5,1.6,1.0
+accuracy_first_cascade,5,5,5,5,15,19.2,1.0
+oracle_best,0,0,0,0,0,999.0,1.0
