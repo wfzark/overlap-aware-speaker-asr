@@ -40,7 +40,9 @@ direction. This work treats overlapping speech as a time-frequency occlusion
 problem and explores whether pre-ASR acoustic representations can help routing
 or safety-aware triage. The AudioDepth work should be read as exploratory
 frontier research only. It is not claimed as a stable mainline feature, and it
-does not replace the documented mainline evaluation pipeline.
+does not replace the documented mainline evaluation pipeline. For the detailed
+AudioDepth exploratory study, see
+[AudioDepth Router Exploratory Study](docs/frontier/audio-depth-router.md).
 
 Known limitations remain: some controlled references are silver-plus or
 synthetic, real-meeting generalization is not fully proven, Stage-2 fallback /

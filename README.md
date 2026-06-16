@@ -89,6 +89,22 @@ Historical wave, receipt, writeback, checklist, and demo presentation records ha
 
 See [docs/branch-audit.md](docs/branch-audit.md) for the branch cleanup policy.
 
+## Frontier Research: AudioDepth Router
+
+AudioDepth is an exploratory frontier research line that treats overlapping
+speech as a time-frequency occlusion problem, inspired by depth-style
+representations in visual recognition. It studies whether pre-ASR acoustic maps
+can help decide when to use mixed ASR, separated ASR, cleaned routes, or
+review/fallback paths.
+
+See [AudioDepth Router Exploratory Study](docs/frontier/audio-depth-router.md)
+for the research motivation, visualization design, experiment stages,
+controlled results, limitations, and merge boundaries.
+
+AudioDepth is not currently a stable mainline claim and should not be merged
+from `frontier/audio-depth-router` without separating code, documentation,
+lightweight examples, tests, and large artifacts.
+
 ## Documentation
 
 | Need | Read |
