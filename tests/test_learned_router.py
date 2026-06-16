@@ -2,12 +2,9 @@
 from __future__ import annotations
 
 import csv
-import json
 import tempfile
+import unittest
 from pathlib import Path
-from unittest.mock import patch
-
-import pytest
 
 
 # ---------------------------------------------------------------------------
@@ -79,136 +76,144 @@ def _sample_routing_row(sid, tier, split):
 
 
 # ---------------------------------------------------------------------------
-# Fixtures
+# Base class with shared fixture logic
 # ---------------------------------------------------------------------------
-@pytest.fixture
-def sample_csvs(tmp_path):
+class _CSVFixtureMixin:
     """Create minimal dev+test CER and routing CSVs (10 dev + 10 test)."""
-    cer_rows = []
-    routing_rows = []
-    tiers = [
-        ("SyntheticNoOverlap", 0),
-        ("SyntheticLightOverlap", 1),
-    ]
-    for split_name, idx_range in [("dev", range(1, 6)), ("test", range(1, 6))]:
-        for tier_name, overlap in tiers:
-            for i in idx_range:
-                sid = f"{tier_name}_{split_name}_{i:02d}"
-                # mixed is best for NoOverlap, separated is best for Light
-                if overlap == 0:
-                    cer_rows.append(_sample_cer_row(sid, tier_name, split_name, overlap, "mixed_whisper", 0.05))
-                    cer_rows.append(_sample_cer_row(sid, tier_name, split_name, overlap, "separated_whisper", 0.30))
-                    cer_rows.append(_sample_cer_row(sid, tier_name, split_name, overlap, "separated_whisper_cleaned", 0.25))
-                else:
-                    cer_rows.append(_sample_cer_row(sid, tier_name, split_name, overlap, "mixed_whisper", 0.40))
-                    cer_rows.append(_sample_cer_row(sid, tier_name, split_name, overlap, "separated_whisper", 0.10))
-                    cer_rows.append(_sample_cer_row(sid, tier_name, split_name, overlap, "separated_whisper_cleaned", 0.08))
 
-                routing_rows.append(_sample_routing_row(sid, tier_name, split_name))
+    def setUp(self):
+        self._tmpdir = tempfile.TemporaryDirectory()
+        tmp = Path(self._tmpdir.name)
+        cer_rows: list[dict] = []
+        routing_rows: list[dict] = []
+        tiers = [
+            ("SyntheticNoOverlap", 0),
+            ("SyntheticLightOverlap", 1),
+        ]
+        for split_name, idx_range in [("dev", range(1, 6)), ("test", range(1, 6))]:
+            for tier_name, overlap in tiers:
+                for i in idx_range:
+                    sid = f"{tier_name}_{split_name}_{i:02d}"
+                    if overlap == 0:
+                        cer_rows.append(_sample_cer_row(sid, tier_name, split_name, overlap, "mixed_whisper", 0.05))
+                        cer_rows.append(_sample_cer_row(sid, tier_name, split_name, overlap, "separated_whisper", 0.30))
+                        cer_rows.append(_sample_cer_row(sid, tier_name, split_name, overlap, "separated_whisper_cleaned", 0.25))
+                    else:
+                        cer_rows.append(_sample_cer_row(sid, tier_name, split_name, overlap, "mixed_whisper", 0.40))
+                        cer_rows.append(_sample_cer_row(sid, tier_name, split_name, overlap, "separated_whisper", 0.10))
+                        cer_rows.append(_sample_cer_row(sid, tier_name, split_name, overlap, "separated_whisper_cleaned", 0.08))
+                    routing_rows.append(_sample_routing_row(sid, tier_name, split_name))
 
-    cer_csv = _make_cer_csv(tmp_path, cer_rows)
-    routing_csv = _make_routing_csv(tmp_path, routing_rows)
-    return cer_csv, routing_csv
+        self.cer_csv = _make_cer_csv(tmp, cer_rows)
+        self.routing_csv = _make_routing_csv(tmp, routing_rows)
+
+    def tearDown(self):
+        self._tmpdir.cleanup()
 
 
 # ---------------------------------------------------------------------------
 # Tests
 # ---------------------------------------------------------------------------
-class TestOracleLabels:
-    def test_load_oracle_picks_min_cer(self, sample_csvs):
+class TestOracleLabels(_CSVFixtureMixin, unittest.TestCase):
+    def test_load_oracle_picks_min_cer(self):
         from src.learned_router import load_oracle_labels
-        cer_csv, _ = sample_csvs
-        oracle = load_oracle_labels(cer_csv)
-        # NoOverlap samples should pick mixed_whisper (cer=0.05)
-        assert oracle["SyntheticNoOverlap_dev_01"] == "mixed_whisper"
-        # LightOverlap should pick separated_whisper_cleaned (cer=0.08)
-        assert oracle["SyntheticLightOverlap_dev_01"] == "separated_whisper_cleaned"
+        oracle = load_oracle_labels(self.cer_csv)
+        self.assertEqual(oracle["SyntheticNoOverlap_dev_01"], "mixed_whisper")
+        self.assertEqual(oracle["SyntheticLightOverlap_dev_01"], "separated_whisper_cleaned")
 
-    def test_oracle_returns_all_samples(self, sample_csvs):
+    def test_oracle_returns_all_samples(self):
         from src.learned_router import load_oracle_labels
-        cer_csv, _ = sample_csvs
-        oracle = load_oracle_labels(cer_csv)
-        assert len(oracle) == 20  # 10 dev + 10 test
+        oracle = load_oracle_labels(self.cer_csv)
+        self.assertEqual(len(oracle), 20)
 
 
-class TestLoadFeatures:
-    def test_load_features_returns_correct_keys(self, sample_csvs):
+class TestLoadFeatures(_CSVFixtureMixin, unittest.TestCase):
+    def test_load_features_returns_correct_keys(self):
         from src.learned_router import load_features, FEATURE_NAMES
-        _, routing_csv = sample_csvs
-        features = load_features(routing_csv)
-        assert len(features) == 20
+        features = load_features(self.routing_csv)
+        self.assertEqual(len(features), 20)
         for sid, feat in features.items():
             for fn in FEATURE_NAMES:
-                assert fn in feat, f"Missing feature {fn} for {sid}"
+                self.assertIn(fn, feat, f"Missing feature {fn} for {sid}")
 
-    def test_feature_values_parsed(self, sample_csvs):
+    def test_feature_values_parsed(self):
         from src.learned_router import load_features
-        _, routing_csv = sample_csvs
-        features = load_features(routing_csv)
+        features = load_features(self.routing_csv)
         f = features["SyntheticNoOverlap_dev_01"]
-        assert f["text_length_ratio"] == pytest.approx(2.4)
-        assert f["duplicate_removed_count"] == 5.0
+        self.assertAlmostEqual(f["text_length_ratio"], 2.4, places=5)
+        self.assertEqual(f["duplicate_removed_count"], 5.0)
 
 
-class TestRouterDataset:
-    def test_from_csvs_shape(self, sample_csvs):
+class TestRouterDataset(_CSVFixtureMixin, unittest.TestCase):
+    def test_from_csvs_shape(self):
         from src.learned_router import RouterDataset
-        cer_csv, routing_csv = sample_csvs
-        ds = RouterDataset.from_csvs(cer_csv, routing_csv)
-        assert ds.X.shape == (20, 10)  # 20 samples, 10 features
-        assert ds.y.shape == (20,)
+        ds = RouterDataset.from_csvs(self.cer_csv, self.routing_csv)
+        self.assertEqual(ds.X.shape, (20, 10))
+        self.assertEqual(ds.y.shape, (20,))
 
-    def test_train_test_split(self, sample_csvs):
+    def test_train_test_split(self):
         from src.learned_router import RouterDataset
-        cer_csv, routing_csv = sample_csvs
-        ds = RouterDataset.from_csvs(cer_csv, routing_csv)
+        ds = RouterDataset.from_csvs(self.cer_csv, self.routing_csv)
         train, test = ds.train_test_split()
-        assert len(train.sample_ids) == 10
-        assert len(test.sample_ids) == 10
+        self.assertEqual(len(train.sample_ids), 10)
+        self.assertEqual(len(test.sample_ids), 10)
 
 
-class TestTrainRouter:
-    @pytest.mark.parametrize("model_type", ["logistic_regression", "decision_tree"])
-    def test_train_returns_result(self, sample_csvs, model_type):
+class TestTrainRouter(_CSVFixtureMixin, unittest.TestCase):
+    def _run_model(self, model_type):
         from src.learned_router import RouterDataset, train_router
-        cer_csv, routing_csv = sample_csvs
-        ds = RouterDataset.from_csvs(cer_csv, routing_csv)
-        result = train_router(ds, model_type=model_type)
-        assert 0.0 <= result.train_accuracy <= 1.0
-        assert 0.0 <= result.test_accuracy <= 1.0
-        assert len(result.predictions) == 10  # test set size
+        ds = RouterDataset.from_csvs(self.cer_csv, self.routing_csv)
+        return train_router(ds, model_type=model_type)
 
-    def test_decision_tree_has_text(self, sample_csvs):
-        from src.learned_router import RouterDataset, train_router
-        cer_csv, routing_csv = sample_csvs
-        ds = RouterDataset.from_csvs(cer_csv, routing_csv)
-        result = train_router(ds, model_type="decision_tree")
-        assert len(result.tree_text) > 0
-        assert "overlap_level" in result.tree_text or "text_length_ratio" in result.tree_text
+    def test_train_returns_result_logistic_regression(self):
+        result = self._run_model("logistic_regression")
+        self.assertGreaterEqual(result.train_accuracy, 0.0)
+        self.assertLessEqual(result.train_accuracy, 1.0)
+        self.assertGreaterEqual(result.test_accuracy, 0.0)
+        self.assertLessEqual(result.test_accuracy, 1.0)
+        self.assertEqual(len(result.predictions), 10)
 
-    def test_summary_dict(self, sample_csvs):
-        from src.learned_router import RouterDataset, train_router
-        cer_csv, routing_csv = sample_csvs
-        ds = RouterDataset.from_csvs(cer_csv, routing_csv)
-        result = train_router(ds, model_type="logistic_regression")
+    def test_train_returns_result_decision_tree(self):
+        result = self._run_model("decision_tree")
+        self.assertGreaterEqual(result.train_accuracy, 0.0)
+        self.assertLessEqual(result.train_accuracy, 1.0)
+        self.assertGreaterEqual(result.test_accuracy, 0.0)
+        self.assertLessEqual(result.test_accuracy, 1.0)
+        self.assertEqual(len(result.predictions), 10)
+
+    def test_decision_tree_has_text(self):
+        result = self._run_model("decision_tree")
+        self.assertGreater(len(result.tree_text), 0)
+        self.assertTrue(
+            "overlap_level" in result.tree_text or "text_length_ratio" in result.tree_text
+        )
+
+    def test_summary_dict(self):
+        result = self._run_model("logistic_regression")
         summary = result.to_summary_dict()
-        assert "model_name" in summary
-        assert "train_accuracy" in summary
-        assert "test_accuracy" in summary
+        self.assertIn("model_name", summary)
+        self.assertIn("train_accuracy", summary)
+        self.assertIn("test_accuracy", summary)
 
 
-class TestCERComparison:
-    def test_comparison_structure(self, sample_csvs):
+class TestCERComparison(_CSVFixtureMixin, unittest.TestCase):
+    def test_comparison_structure(self):
         from src.learned_router import (
             RouterDataset, train_router, compute_cer_comparison,
         )
-        cer_csv, routing_csv = sample_csvs
-        ds = RouterDataset.from_csvs(cer_csv, routing_csv)
+        ds = RouterDataset.from_csvs(self.cer_csv, self.routing_csv)
         result = train_router(ds, model_type="decision_tree")
-        comp = compute_cer_comparison(cer_csv, result.predictions, split="test")
-        assert comp["split"] == "test"
-        assert comp["n_samples"] == 10
-        assert "learned_router" in comp["average_cer"]
-        assert "oracle_best" in comp["average_cer"]
+        comp = compute_cer_comparison(self.cer_csv, result.predictions, split="test")
+        self.assertEqual(comp["split"], "test")
+        self.assertEqual(comp["n_samples"], 10)
+        self.assertIn("learned_router", comp["average_cer"])
+        self.assertIn("oracle_best", comp["average_cer"])
         # Learned router CER should be >= oracle (can't beat oracle)
-        assert comp["average_cer"]["learned_router"] >= comp["average_cer"]["oracle_best"] - 1e-6
+        self.assertGreaterEqual(
+            comp["average_cer"]["learned_router"],
+            comp["average_cer"]["oracle_best"] - 1e-6,
+        )
+
+
+if __name__ == "__main__":
+    unittest.main()
