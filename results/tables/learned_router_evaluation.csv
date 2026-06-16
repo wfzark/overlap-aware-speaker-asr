@@ -1,0 +1,3 @@
+model,train_accuracy,test_accuracy,avg_cer_learned,avg_cer_oracle,avg_cer_mixed,avg_cer_separated,avg_cer_cleaned
+logistic_regression,0.76,0.78,0.167581,0.115181,0.44473,0.436666,0.185238
+decision_tree,0.88,0.7,0.204239,0.115181,0.44473,0.436666,0.185238

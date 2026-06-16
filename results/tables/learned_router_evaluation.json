@@ -1,0 +1,766 @@
+{
+  "logistic_regression": {
+    "model_name": "logistic_regression",
+    "train_accuracy": 0.76,
+    "test_accuracy": 0.78,
+    "feature_names": [
+      "overlap_level",
+      "mixed_segments_count",
+      "separated_segments_count",
+      "cleaned_segments_count",
+      "mixed_text_length",
+      "separated_text_length",
+      "cleaned_text_length",
+      "text_length_ratio",
+      "runtime_ratio",
+      "duplicate_removed_count"
+    ],
+    "tree_text": null,
+    "cer_comparison": {
+      "split": "test",
+      "n_samples": 50,
+      "average_cer": {
+        "fixed_mixed_whisper": 0.44473,
+        "fixed_separated_whisper": 0.436666,
+        "fixed_separated_whisper_cleaned": 0.185238,
+        "oracle_best": 0.115181,
+        "rule_router_v2": 0.0,
+        "learned_router": 0.167581
+      },
+      "sample_details": [
+        {
+          "sample_id": "SyntheticHeavyOverlap_test_01",
+          "learned_method": "mixed_whisper",
+          "learned_cer": 0.342857,
+          "oracle_cer": 0.342857,
+          "gap": 0.0
+        },
+        {
+          "sample_id": "SyntheticHeavyOverlap_test_02",
+          "learned_method": "separated_whisper",
+          "learned_cer": 0.76,
+          "oracle_cer": 0.44,
+          "gap": 0.32
+        },
+        {
+          "sample_id": "SyntheticHeavyOverlap_test_03",
+          "learned_method": "separated_whisper",
+          "learned_cer": 0.0,
+          "oracle_cer": 0.0,
+          "gap": 0.0
+        },
+        {
+          "sample_id": "SyntheticHeavyOverlap_test_04",
+          "learned_method": "separated_whisper",
+          "learned_cer": 0.052632,
+          "oracle_cer": 0.052632,
+          "gap": 0.0
+        },
+        {
+          "sample_id": "SyntheticHeavyOverlap_test_05",
+          "learned_method": "separated_whisper",
+          "learned_cer": 0.0,
+          "oracle_cer": 0.0,
+          "gap": 0.0
+        },
+        {
+          "sample_id": "SyntheticHeavyOverlap_test_06",
+          "learned_method": "separated_whisper",
+          "learned_cer": 0.038462,
+          "oracle_cer": 0.038462,
+          "gap": 0.0
+        },
+        {
+          "sample_id": "SyntheticHeavyOverlap_test_07",
+          "learned_method": "separated_whisper",
+          "learned_cer": 0.291667,
+          "oracle_cer": 0.291667,
+          "gap": 0.0
+        },
+        {
+          "sample_id": "SyntheticHeavyOverlap_test_08",
+          "learned_method": "separated_whisper",
+          "learned_cer": 0.0,
+          "oracle_cer": 0.0,
+          "gap": 0.0
+        },
+        {
+          "sample_id": "SyntheticHeavyOverlap_test_09",
+          "learned_method": "separated_whisper",
+          "learned_cer": 0.090909,
+          "oracle_cer": 0.090909,
+          "gap": 0.0
+        },
+        {
+          "sample_id": "SyntheticHeavyOverlap_test_10",
+          "learned_method": "separated_whisper",
+          "learned_cer": 0.0,
+          "oracle_cer": 0.0,
+          "gap": 0.0
+        },
+        {
+          "sample_id": "SyntheticLightOverlap_test_01",
+          "learned_method": "mixed_whisper",
+          "learned_cer": 0.0,
+          "oracle_cer": 0.0,
+          "gap": 0.0
+        },
+        {
+          "sample_id": "SyntheticLightOverlap_test_02",
+          "learned_method": "mixed_whisper",
+          "learned_cer": 0.08,
+          "oracle_cer": 0.08,
+          "gap": 0.0
+        },
+        {
+          "sample_id": "SyntheticLightOverlap_test_03",
+          "learned_method": "mixed_whisper",
+          "learned_cer": 0.266667,
+          "oracle_cer": 0.0,
+          "gap": 0.266667
+        },
+        {
+          "sample_id": "SyntheticLightOverlap_test_04",
+          "learned_method": "separated_whisper",
+          "learned_cer": 0.052632,
+          "oracle_cer": 0.052632,
+          "gap": 0.0
+        },
+        {
+          "sample_id": "SyntheticLightOverlap_test_05",
+          "learned_method": "separated_whisper",
+          "learned_cer": 0.2,
+          "oracle_cer": 0.2,
+          "gap": 0.0
+        },
+        {
+          "sample_id": "SyntheticLightOverlap_test_06",
+          "learned_method": "mixed_whisper",
+          "learned_cer": 0.153846,
+          "oracle_cer": 0.038462,
+          "gap": 0.115384
+        },
+        {
+          "sample_id": "SyntheticLightOverlap_test_07",
+          "learned_method": "mixed_whisper",
+          "learned_cer": 0.291667,
+          "oracle_cer": 0.291667,
+          "gap": 0.0
+        },
+        {
+          "sample_id": "SyntheticLightOverlap_test_08",
+          "learned_method": "separated_whisper",
+          "learned_cer": 0.0,
+          "oracle_cer": 0.0,
+          "gap": 0.0
+        },
+        {
+          "sample_id": "SyntheticLightOverlap_test_09",
+          "learned_method": "mixed_whisper",
+          "learned_cer": 0.409091,
+          "oracle_cer": 0.090909,
+          "gap": 0.318182
+        },
+        {
+          "sample_id": "SyntheticLightOverlap_test_10",
+          "learned_method": "separated_whisper",
+          "learned_cer": 0.0,
+          "oracle_cer": 0.0,
+          "gap": 0.0
+        },
+        {
+          "sample_id": "SyntheticMidOverlap_test_01",
+          "learned_method": "mixed_whisper",
+          "learned_cer": 0.228571,
+          "oracle_cer": 0.228571,
+          "gap": 0.0
+        },
+        {
+          "sample_id": "SyntheticMidOverlap_test_02",
+          "learned_method": "mixed_whisper",
+          "learned_cer": 0.12,
+          "oracle_cer": 0.12,
+          "gap": 0.0
+        },
+        {
+          "sample_id": "SyntheticMidOverlap_test_03",
+          "learned_method": "mixed_whisper",
+          "learned_cer": 0.4,
+          "oracle_cer": 0.0,
+          "gap": 0.4
+        },
+        {
+          "sample_id": "SyntheticMidOverlap_test_04",
+          "learned_method": "separated_whisper",
+          "learned_cer": 0.052632,
+          "oracle_cer": 0.052632,
+          "gap": 0.0
+        },
+        {
+          "sample_id": "SyntheticMidOverlap_test_05",
+          "learned_method": "separated_whisper",
+          "learned_cer": 0.0,
+          "oracle_cer": 0.0,
+          "gap": 0.0
+        },
+        {
+          "sample_id": "SyntheticMidOverlap_test_06",
+          "learned_method": "separated_whisper",
+          "learned_cer": 0.038462,
+          "oracle_cer": 0.038462,
+          "gap": 0.0
+        },
+        {
+          "sample_id": "SyntheticMidOverlap_test_07",
+          "learned_method": "separated_whisper",
+          "learned_cer": 0.291667,
+          "oracle_cer": 0.291667,
+          "gap": 0.0
+        },
+        {
+          "sample_id": "SyntheticMidOverlap_test_08",
+          "learned_method": "separated_whisper",
+          "learned_cer": 0.222222,
+          "oracle_cer": 0.222222,
+          "gap": 0.0
+        },
+        {
+          "sample_id": "SyntheticMidOverlap_test_09",
+          "learned_method": "separated_whisper",
+          "learned_cer": 0.0,
+          "oracle_cer": 0.0,
+          "gap": 0.0
+        },
+        {
+          "sample_id": "SyntheticMidOverlap_test_10",
+          "learned_method": "separated_whisper",
+          "learned_cer": 0.0,
+          "oracle_cer": 0.0,
+          "gap": 0.0
+        },
+        {
+          "sample_id": "SyntheticNoOverlap_test_01",
+          "learned_method": "mixed_whisper",
+          "learned_cer": 0.228571,
+          "oracle_cer": 0.228571,
+          "gap": 0.0
+        },
+        {
+          "sample_id": "SyntheticNoOverlap_test_02",
+          "learned_method": "mixed_whisper",
+          "learned_cer": 0.08,
+          "oracle_cer": 0.08,
+          "gap": 0.0
+        },
+        {
+          "sample_id": "SyntheticNoOverlap_test_03",
+          "learned_method": "mixed_whisper",
+          "learned_cer": 0.266667,
+          "oracle_cer": 0.033333,
+          "gap": 0.233334
+        },
+        {
+          "sample_id": "SyntheticNoOverlap_test_04",
+          "learned_method": "mixed_whisper",
+          "learned_cer": 0.052632,
+          "oracle_cer": 0.052632,
+          "gap": 0.0
+        },
+        {
+          "sample_id": "SyntheticNoOverlap_test_05",
+          "learned_method": "mixed_whisper",
+          "learned_cer": 0.4,
+          "oracle_cer": 0.2,
+          "gap": 0.2
+        },
+        {
+          "sample_id": "SyntheticNoOverlap_test_06",
+          "learned_method": "mixed_whisper",
+          "learned_cer": 0.423077,
+          "oracle_cer": 0.038462,
+          "gap": 0.384615
+        },
+        {
+          "sample_id": "SyntheticNoOverlap_test_07",
+          "learned_method": "separated_whisper",
+          "learned_cer": 0.291667,
+          "oracle_cer": 0.291667,
+          "gap": 0.0
+        },
+        {
+          "sample_id": "SyntheticNoOverlap_test_08",
+          "learned_method": "mixed_whisper",
+          "learned_cer": 0.222222,
+          "oracle_cer": 0.222222,
+          "gap": 0.0
+        },
+        {
+          "sample_id": "SyntheticNoOverlap_test_09",
+          "learned_method": "mixed_whisper",
+          "learned_cer": 0.272727,
+          "oracle_cer": 0.090909,
+          "gap": 0.181818
+        },
+        {
+          "sample_id": "SyntheticNoOverlap_test_10",
+          "learned_method": "separated_whisper",
+          "learned_cer": 0.0,
+          "oracle_cer": 0.0,
+          "gap": 0.0
+        },
+        {
+          "sample_id": "SyntheticOppositeOverlap_test_01",
+          "learned_method": "mixed_whisper",
+          "learned_cer": 0.457143,
+          "oracle_cer": 0.457143,
+          "gap": 0.0
+        },
+        {
+          "sample_id": "SyntheticOppositeOverlap_test_02",
+          "learned_method": "separated_whisper",
+          "learned_cer": 0.76,
+          "oracle_cer": 0.56,
+          "gap": 0.2
+        },
+        {
+          "sample_id": "SyntheticOppositeOverlap_test_03",
+          "learned_method": "separated_whisper",
+          "learned_cer": 0.066667,
+          "oracle_cer": 0.066667,
+          "gap": 0.0
+        },
+        {
+          "sample_id": "SyntheticOppositeOverlap_test_04",
+          "learned_method": "separated_whisper",
+          "learned_cer": 0.052632,
+          "oracle_cer": 0.052632,
+          "gap": 0.0
+        },
+        {
+          "sample_id": "SyntheticOppositeOverlap_test_05",
+          "learned_method": "separated_whisper",
+          "learned_cer": 0.0,
+          "oracle_cer": 0.0,
+          "gap": 0.0
+        },
+        {
+          "sample_id": "SyntheticOppositeOverlap_test_06",
+          "learned_method": "separated_whisper",
+          "learned_cer": 0.038462,
+          "oracle_cer": 0.038462,
+          "gap": 0.0
+        },
+        {
+          "sample_id": "SyntheticOppositeOverlap_test_07",
+          "learned_method": "separated_whisper",
+          "learned_cer": 0.291667,
+          "oracle_cer": 0.291667,
+          "gap": 0.0
+        },
+        {
+          "sample_id": "SyntheticOppositeOverlap_test_08",
+          "learned_method": "separated_whisper",
+          "learned_cer": 0.0,
+          "oracle_cer": 0.0,
+          "gap": 0.0
+        },
+        {
+          "sample_id": "SyntheticOppositeOverlap_test_09",
+          "learned_method": "separated_whisper",
+          "learned_cer": 0.090909,
+          "oracle_cer": 0.090909,
+          "gap": 0.0
+        },
+        {
+          "sample_id": "SyntheticOppositeOverlap_test_10",
+          "learned_method": "separated_whisper",
+          "learned_cer": 0.0,
+          "oracle_cer": 0.0,
+          "gap": 0.0
+        }
+      ]
+    }
+  },
+  "decision_tree": {
+    "model_name": "decision_tree",
+    "train_accuracy": 0.88,
+    "test_accuracy": 0.7,
+    "feature_names": [
+      "overlap_level",
+      "mixed_segments_count",
+      "separated_segments_count",
+      "cleaned_segments_count",
+      "mixed_text_length",
+      "separated_text_length",
+      "cleaned_text_length",
+      "text_length_ratio",
+      "runtime_ratio",
+      "duplicate_removed_count"
+    ],
+    "tree_text": "|--- mixed_text_length <= -0.02\n|   |--- overlap_level <= -1.06\n|   |   |--- runtime_ratio <= -0.31\n|   |   |   |--- class: 0\n|   |   |--- runtime_ratio >  -0.31\n|   |   |   |--- class: 1\n|   |--- overlap_level >  -1.06\n|   |   |--- separated_text_length <= -0.16\n|   |   |   |--- text_length_ratio <= -0.50\n|   |   |   |   |--- class: 1\n|   |   |   |--- text_length_ratio >  -0.50\n|   |   |   |   |--- class: 1\n|   |   |--- separated_text_length >  -0.16\n|   |   |   |--- class: 0\n|--- mixed_text_length >  -0.02\n|   |--- runtime_ratio <= -0.86\n|   |   |--- class: 1\n|   |--- runtime_ratio >  -0.86\n|   |   |--- overlap_level <= 1.06\n|   |   |   |--- text_length_ratio <= -0.59\n|   |   |   |   |--- class: 0\n|   |   |   |--- text_length_ratio >  -0.59\n|   |   |   |   |--- class: 0\n|   |   |--- overlap_level >  1.06\n|   |   |   |--- mixed_text_length <= 0.24\n|   |   |   |   |--- class: 1\n|   |   |   |--- mixed_text_length >  0.24\n|   |   |   |   |--- class: 1\n",
+    "cer_comparison": {
+      "split": "test",
+      "n_samples": 50,
+      "average_cer": {
+        "fixed_mixed_whisper": 0.44473,
+        "fixed_separated_whisper": 0.436666,
+        "fixed_separated_whisper_cleaned": 0.185238,
+        "oracle_best": 0.115181,
+        "rule_router_v2": 0.0,
+        "learned_router": 0.204239
+      },
+      "sample_details": [
+        {
+          "sample_id": "SyntheticHeavyOverlap_test_01",
+          "learned_method": "mixed_whisper",
+          "learned_cer": 0.342857,
+          "oracle_cer": 0.342857,
+          "gap": 0.0
+        },
+        {
+          "sample_id": "SyntheticHeavyOverlap_test_02",
+          "learned_method": "mixed_whisper",
+          "learned_cer": 0.44,
+          "oracle_cer": 0.44,
+          "gap": 0.0
+        },
+        {
+          "sample_id": "SyntheticHeavyOverlap_test_03",
+          "learned_method": "mixed_whisper",
+          "learned_cer": 0.8,
+          "oracle_cer": 0.0,
+          "gap": 0.8
+        },
+        {
+          "sample_id": "SyntheticHeavyOverlap_test_04",
+          "learned_method": "separated_whisper",
+          "learned_cer": 0.052632,
+          "oracle_cer": 0.052632,
+          "gap": 0.0
+        },
+        {
+          "sample_id": "SyntheticHeavyOverlap_test_05",
+          "learned_method": "separated_whisper",
+          "learned_cer": 0.0,
+          "oracle_cer": 0.0,
+          "gap": 0.0
+        },
+        {
+          "sample_id": "SyntheticHeavyOverlap_test_06",
+          "learned_method": "mixed_whisper",
+          "learned_cer": 0.307692,
+          "oracle_cer": 0.038462,
+          "gap": 0.26923
+        },
+        {
+          "sample_id": "SyntheticHeavyOverlap_test_07",
+          "learned_method": "separated_whisper",
+          "learned_cer": 0.291667,
+          "oracle_cer": 0.291667,
+          "gap": 0.0
+        },
+        {
+          "sample_id": "SyntheticHeavyOverlap_test_08",
+          "learned_method": "separated_whisper",
+          "learned_cer": 0.0,
+          "oracle_cer": 0.0,
+          "gap": 0.0
+        },
+        {
+          "sample_id": "SyntheticHeavyOverlap_test_09",
+          "learned_method": "separated_whisper",
+          "learned_cer": 0.090909,
+          "oracle_cer": 0.090909,
+          "gap": 0.0
+        },
+        {
+          "sample_id": "SyntheticHeavyOverlap_test_10",
+          "learned_method": "separated_whisper",
+          "learned_cer": 0.0,
+          "oracle_cer": 0.0,
+          "gap": 0.0
+        },
+        {
+          "sample_id": "SyntheticLightOverlap_test_01",
+          "learned_method": "mixed_whisper",
+          "learned_cer": 0.0,
+          "oracle_cer": 0.0,
+          "gap": 0.0
+        },
+        {
+          "sample_id": "SyntheticLightOverlap_test_02",
+          "learned_method": "mixed_whisper",
+          "learned_cer": 0.08,
+          "oracle_cer": 0.08,
+          "gap": 0.0
+        },
+        {
+          "sample_id": "SyntheticLightOverlap_test_03",
+          "learned_method": "mixed_whisper",
+          "learned_cer": 0.266667,
+          "oracle_cer": 0.0,
+          "gap": 0.266667
+        },
+        {
+          "sample_id": "SyntheticLightOverlap_test_04",
+          "learned_method": "separated_whisper",
+          "learned_cer": 0.052632,
+          "oracle_cer": 0.052632,
+          "gap": 0.0
+        },
+        {
+          "sample_id": "SyntheticLightOverlap_test_05",
+          "learned_method": "separated_whisper",
+          "learned_cer": 0.2,
+          "oracle_cer": 0.2,
+          "gap": 0.0
+        },
+        {
+          "sample_id": "SyntheticLightOverlap_test_06",
+          "learned_method": "mixed_whisper",
+          "learned_cer": 0.153846,
+          "oracle_cer": 0.038462,
+          "gap": 0.115384
+        },
+        {
+          "sample_id": "SyntheticLightOverlap_test_07",
+          "learned_method": "mixed_whisper",
+          "learned_cer": 0.291667,
+          "oracle_cer": 0.291667,
+          "gap": 0.0
+        },
+        {
+          "sample_id": "SyntheticLightOverlap_test_08",
+          "learned_method": "separated_whisper",
+          "learned_cer": 0.0,
+          "oracle_cer": 0.0,
+          "gap": 0.0
+        },
+        {
+          "sample_id": "SyntheticLightOverlap_test_09",
+          "learned_method": "mixed_whisper",
+          "learned_cer": 0.409091,
+          "oracle_cer": 0.090909,
+          "gap": 0.318182
+        },
+        {
+          "sample_id": "SyntheticLightOverlap_test_10",
+          "learned_method": "separated_whisper",
+          "learned_cer": 0.0,
+          "oracle_cer": 0.0,
+          "gap": 0.0
+        },
+        {
+          "sample_id": "SyntheticMidOverlap_test_01",
+          "learned_method": "mixed_whisper",
+          "learned_cer": 0.228571,
+          "oracle_cer": 0.228571,
+          "gap": 0.0
+        },
+        {
+          "sample_id": "SyntheticMidOverlap_test_02",
+          "learned_method": "mixed_whisper",
+          "learned_cer": 0.12,
+          "oracle_cer": 0.12,
+          "gap": 0.0
+        },
+        {
+          "sample_id": "SyntheticMidOverlap_test_03",
+          "learned_method": "mixed_whisper",
+          "learned_cer": 0.4,
+          "oracle_cer": 0.0,
+          "gap": 0.4
+        },
+        {
+          "sample_id": "SyntheticMidOverlap_test_04",
+          "learned_method": "separated_whisper",
+          "learned_cer": 0.052632,
+          "oracle_cer": 0.052632,
+          "gap": 0.0
+        },
+        {
+          "sample_id": "SyntheticMidOverlap_test_05",
+          "learned_method": "separated_whisper",
+          "learned_cer": 0.0,
+          "oracle_cer": 0.0,
+          "gap": 0.0
+        },
+        {
+          "sample_id": "SyntheticMidOverlap_test_06",
+          "learned_method": "mixed_whisper",
+          "learned_cer": 0.423077,
+          "oracle_cer": 0.038462,
+          "gap": 0.384615
+        },
+        {
+          "sample_id": "SyntheticMidOverlap_test_07",
+          "learned_method": "separated_whisper",
+          "learned_cer": 0.291667,
+          "oracle_cer": 0.291667,
+          "gap": 0.0
+        },
+        {
+          "sample_id": "SyntheticMidOverlap_test_08",
+          "learned_method": "separated_whisper",
+          "learned_cer": 0.222222,
+          "oracle_cer": 0.222222,
+          "gap": 0.0
+        },
+        {
+          "sample_id": "SyntheticMidOverlap_test_09",
+          "learned_method": "mixed_whisper",
+          "learned_cer": 0.409091,
+          "oracle_cer": 0.0,
+          "gap": 0.409091
+        },
+        {
+          "sample_id": "SyntheticMidOverlap_test_10",
+          "learned_method": "separated_whisper",
+          "learned_cer": 0.0,
+          "oracle_cer": 0.0,
+          "gap": 0.0
+        },
+        {
+          "sample_id": "SyntheticNoOverlap_test_01",
+          "learned_method": "mixed_whisper",
+          "learned_cer": 0.228571,
+          "oracle_cer": 0.228571,
+          "gap": 0.0
+        },
+        {
+          "sample_id": "SyntheticNoOverlap_test_02",
+          "learned_method": "mixed_whisper",
+          "learned_cer": 0.08,
+          "oracle_cer": 0.08,
+          "gap": 0.0
+        },
+        {
+          "sample_id": "SyntheticNoOverlap_test_03",
+          "learned_method": "mixed_whisper",
+          "learned_cer": 0.266667,
+          "oracle_cer": 0.033333,
+          "gap": 0.233334
+        },
+        {
+          "sample_id": "SyntheticNoOverlap_test_04",
+          "learned_method": "mixed_whisper",
+          "learned_cer": 0.052632,
+          "oracle_cer": 0.052632,
+          "gap": 0.0
+        },
+        {
+          "sample_id": "SyntheticNoOverlap_test_05",
+          "learned_method": "mixed_whisper",
+          "learned_cer": 0.4,
+          "oracle_cer": 0.2,
+          "gap": 0.2
+        },
+        {
+          "sample_id": "SyntheticNoOverlap_test_06",
+          "learned_method": "separated_whisper",
+          "learned_cer": 0.038462,
+          "oracle_cer": 0.038462,
+          "gap": 0.0
+        },
+        {
+          "sample_id": "SyntheticNoOverlap_test_07",
+          "learned_method": "separated_whisper",
+          "learned_cer": 0.291667,
+          "oracle_cer": 0.291667,
+          "gap": 0.0
+        },
+        {
+          "sample_id": "SyntheticNoOverlap_test_08",
+          "learned_method": "mixed_whisper",
+          "learned_cer": 0.222222,
+          "oracle_cer": 0.222222,
+          "gap": 0.0
+        },
+        {
+          "sample_id": "SyntheticNoOverlap_test_09",
+          "learned_method": "separated_whisper",
+          "learned_cer": 0.090909,
+          "oracle_cer": 0.090909,
+          "gap": 0.0
+        },
+        {
+          "sample_id": "SyntheticNoOverlap_test_10",
+          "learned_method": "separated_whisper",
+          "learned_cer": 0.0,
+          "oracle_cer": 0.0,
+          "gap": 0.0
+        },
+        {
+          "sample_id": "SyntheticOppositeOverlap_test_01",
+          "learned_method": "separated_whisper",
+          "learned_cer": 0.457143,
+          "oracle_cer": 0.457143,
+          "gap": 0.0
+        },
+        {
+          "sample_id": "SyntheticOppositeOverlap_test_02",
+          "learned_method": "separated_whisper",
+          "learned_cer": 0.76,
+          "oracle_cer": 0.56,
+          "gap": 0.2
+        },
+        {
+          "sample_id": "SyntheticOppositeOverlap_test_03",
+          "learned_method": "mixed_whisper",
+          "learned_cer": 0.5,
+          "oracle_cer": 0.066667,
+          "gap": 0.433333
+        },
+        {
+          "sample_id": "SyntheticOppositeOverlap_test_04",
+          "learned_method": "separated_whisper",
+          "learned_cer": 0.052632,
+          "oracle_cer": 0.052632,
+          "gap": 0.0
+        },
+        {
+          "sample_id": "SyntheticOppositeOverlap_test_05",
+          "learned_method": "separated_whisper",
+          "learned_cer": 0.0,
+          "oracle_cer": 0.0,
+          "gap": 0.0
+        },
+        {
+          "sample_id": "SyntheticOppositeOverlap_test_06",
+          "learned_method": "mixed_whisper",
+          "learned_cer": 0.461538,
+          "oracle_cer": 0.038462,
+          "gap": 0.423076
+        },
+        {
+          "sample_id": "SyntheticOppositeOverlap_test_07",
+          "learned_method": "separated_whisper",
+          "learned_cer": 0.291667,
+          "oracle_cer": 0.291667,
+          "gap": 0.0
+        },
+        {
+          "sample_id": "SyntheticOppositeOverlap_test_08",
+          "learned_method": "separated_whisper",
+          "learned_cer": 0.0,
+          "oracle_cer": 0.0,
+          "gap": 0.0
+        },
+        {
+          "sample_id": "SyntheticOppositeOverlap_test_09",
+          "learned_method": "separated_whisper",
+          "learned_cer": 0.090909,
+          "oracle_cer": 0.090909,
+          "gap": 0.0
+        },
+        {
+          "sample_id": "SyntheticOppositeOverlap_test_10",
+          "learned_method": "separated_whisper",
+          "learned_cer": 0.0,
+          "oracle_cer": 0.0,
+          "gap": 0.0
+        }
+      ]
+    }
+  }
+}

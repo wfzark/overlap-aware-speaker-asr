@@ -86,6 +86,43 @@ before any merge into stable claims.
 
 **模块：** `src/cascade_tiers.py`, `tests/test_cascade_tiers.py`.
 
+## 邵俊霖 / saayaya (23124001)
+
+**Role:** Separation Phase Diagram 修复；Learned Router 设计与实现；bugfix。
+
+**主要贡献：**
+
+### 1. Phase Diagram Bugfix
+- 修复 `separation_phase_diagram.py` 中因合并冲突导致的内容重复和
+  import 损坏问题（移除 374 行重复代码，修复 `collections.defaultdict` 
+  import）。
+- 创建缺失模块 `src/plot_phase_boundary.py`：
+  实现 `plot_enhanced_phase_diagram()`（带 crossover 标记和 CI 区域的
+  增强相图）和 `plot_bootstrap_probability_curve()`（bootstrap P(helps)
+  概率曲线+ΔCER双轴图）。
+- 补充 `tests/test_plot_phase_boundary.py`（5 项 smoke test，覆盖
+  有无 boundary_metadata 两种路径）。
+
+### 2. Learned Router（主要贡献）
+- 针对 REPORT.md §7 "router is entirely rule-based" 的局限性，设计并
+  实现了监督学习路由器 `src/learned_router.py`，替代手写规则 router_v2。
+- 使用 synthetic split 的 CER 表自动生成 oracle-best 标签，训练
+  Logistic Regression 和 Decision Tree 两种模型。
+- 特征完全基于可观测信号（overlap_level、text_length_ratio、
+  runtime_ratio、duplicate_removed_count 等 10 维特征），无 CER 泄露。
+- 评估结果：Logistic Regression 在 held-out test split 达到
+  **78% accuracy，平均 CER 0.168**（优于 cleaned baseline 0.185，
+  接近 oracle 0.115）。
+- Decision Tree 输出可解释规则树，可与 v2 手写规则直接对比。
+- 编写 `scripts/train_learned_router.py` 一键训练脚本，输出
+  `learned_router_evaluation.json/csv` 和 `learned_router_tree_rules.txt`。
+- 完成 `tests/test_learned_router.py` 共 11 项单元测试（全部通过）。
+- 标签: `experimental/frontier`。
+
+**模块：** `src/learned_router.py`, `src/plot_phase_boundary.py`,
+`src/separation_phase_diagram.py` (fix), `scripts/train_learned_router.py`,
+`tests/test_learned_router.py`, `tests/test_plot_phase_boundary.py`.
+
 ## Additional Contributors
 
 Additional team members can add concise contribution statements here before the
