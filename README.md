@@ -314,5 +314,3 @@ python -m src.router_feature_importance
 | Contributor | GitHub | Contributions |
 | --- | --- | --- |
 | 王景宏 | [@ceilf6](https://github.com/ceilf6) | Lead contributor spanning both project lines. **Stable baseline:** CER evaluation, adaptive router v1/v2, risk-aware selector, speaker-aware CER, and cpCER-lite. **Frontier exploration:** compute-aware cascade, MeetEval/cpWER compatibility, speaker-profile / voiceprint risk, external mini-validation, LLM critic, and the demo. **Cross-cutting:** the `project_harness` coordination backbone tying baseline and frontier together. Secondary: repository maintenance and the development Harness (Git hooks / knowledge-base contract / SDD / TDD) with repo-guard CR. |
-
-Additional contributors will be recorded here. See [CONTRIBUTIONS.md](CONTRIBUTIONS.md) for the role/module breakdown.
