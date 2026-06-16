@@ -105,15 +105,36 @@ See [docs/branch-audit.md](docs/branch-audit.md) for the branch cleanup policy.
 
 Historical planning and generated coordination records are indexed from [docs/archive/README.md](docs/archive/README.md).
 
-## Development Governance
+## Harness Engineering Loop
 
-The repository uses a lightweight harness inspired by code-tape:
+> Developed with reference to [code-tape](https://github.com/ceilf6/code-tape).
 
-- [Harness overview](docs/harness/README.md)
-- [Knowledge-base contract](docs/harness/knowledge_base_contract.md)
-- [SDD policy](docs/harness/sdd.md)
-- [TDD policy](docs/harness/tdd.md)
-- [ADR index](docs/adr/README.md)
+An always-on development harness keeps the stable baseline safe while frontier work continues. It has four pillars (full docs in [`docs/harness/`](docs/harness/README.md)):
+
+- **Git hooks** — `pre-commit` runs the fast test gate and `pre-push` runs the contract + full test gate, installed via `core.hooksPath`. Bootstrap once with `make agent-bootstrap`.
+- **Knowledge base** — GitNexus indexes the code graph so a change's cascade is visible before editing critical modules ([contract](docs/harness/knowledge_base_contract.md)).
+- **SDD** — an authority-document hierarchy plus [ADRs](docs/adr/README.md) anchor what agents treat as ground truth ([spec](docs/harness/sdd.md)).
+- **TDD** — the contract mechanically requires a paired test for every critical code change, red → green → refactor ([spec](docs/harness/tdd.md)).
+
+The full loop is `issue → PR → repo-guard CR → respond` ([workflow](docs/harness/workflow_spec.md)). code-tape's engineering-camp scoring and auto-merge automation is intentionally out of scope.
+
+## OpenClaw: Agentic Engineering Assistant
+
+> Illustrative tooling shown for context, not a benchmark result. Label: `qualitative/demo`.
+
+OpenClaw ("ceilf6's claw") is the agentic engineering assistant that drives the kind of workflow described in the Harness Engineering Loop above. Instead of living only in a terminal, it runs as chat 智能体 (agents) inside the IM tools a team already uses — 飞书 (Feishu) and 大象 — so issue triage, code review, and progress reporting happen in the conversation rather than in a separate dashboard.
+
+It exposes named agents driven by slash commands:
+
+- **`FrontAgent`** — reference-free code review that returns a risk summary (Blocker / Critical counts plus concrete fixes, e.g. flagging a dynamic-`RegExp` ReDoS in a test file) and `/progress-reporter` group updates that track each member's current issue, unclaimed work, recently merged PRs, and milestones.
+- **坤坤** — a conversational agent for handover notes, material organization, and message polishing.
+
+Agents call LLM backends (e.g. `gpt-5.5`) through a provider abstraction and follow the same `issue → PR → repo-guard CR → respond` loop documented above. OpenClaw is developed alongside [code-tape](https://github.com/ceilf6/code-tape).
+
+<p align="center">
+  <img src="assets/飞书中的OpenClaw-1.jpg" width="40%" alt="OpenClaw code review with risk scoring in Feishu" />
+  <img src="assets/大象中的OpenClaw.jpg" width="40%" alt="OpenClaw conversational agent 坤坤 in 大象" />
+</p>
 
 ## Contributors
 
