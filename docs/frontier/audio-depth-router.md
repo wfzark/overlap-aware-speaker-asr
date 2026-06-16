@@ -39,15 +39,34 @@ or fallback path is worth using?
 The research inspiration comes from RGB-D and depth-style visual recognition.
 RGB-D models do not treat depth as a replacement for RGB. They add another view
 of scene geometry so a model can reason about occlusion, distance, and object
-boundaries. AudioDepth applies the same spirit to multi-speaker ASR routing:
-the log-mel spectrogram is the acoustic "RGB" view, while depth-like channels
-encode overlap, dominance, uncertainty, or energy structure.
+boundaries. This pattern appears in early RGB-D object datasets and recognition
+systems that found color and depth to be complementary [1], in depth encodings
+such as HHA/geocentric depth maps for detection and segmentation [2], in
+two-stream RGB-D CNNs with late fusion [3], and in depth-aware CNN operators
+that inject geometric similarity into visual segmentation models [4].
+AudioDepth applies the same spirit to multi-speaker ASR routing: the log-mel
+spectrogram is the acoustic "RGB" view, while depth-like channels encode
+overlap, dominance, uncertainty, or energy structure.
 
 The analogy is useful but limited. Speech is not an image, and a depth-style
 audio map is not a physical depth sensor. The goal is not to claim a perfect
 visual-to-audio transfer. The goal is to create a readable acoustic
 representation that exposes overlap risk before Whisper or another ASR model
 has already produced an unstable transcript.
+
+References for the RGB-D analogy:
+
+1. Lai et al., "A Large-Scale Hierarchical Multi-View RGB-D Object Dataset,"
+   ICRA 2011.
+   <https://rse-lab.cs.washington.edu/papers/rgbd-dataset-icra-11.pdf>
+2. Gupta et al., "Learning Rich Features from RGB-D Images for Object Detection
+   and Segmentation," ECCV 2014.
+   <https://arxiv.org/abs/1407.5736>
+3. Eitel et al., "Multimodal Deep Learning for Robust RGB-D Object
+   Recognition," IROS 2015.
+   <https://arxiv.org/abs/1507.06821>
+4. Wang and Neumann, "Depth-aware CNN for RGB-D Segmentation," ECCV 2018.
+   <https://arxiv.org/abs/1803.06791>
 
 ## 3. System Question: When Should We Separate?
 
