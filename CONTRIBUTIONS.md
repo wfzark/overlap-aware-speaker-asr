@@ -266,9 +266,32 @@ Stage-2 fallback / review policy 仍需更多验证，AudioDepth 需要独立评
 - 完成 `tests/test_learned_router.py` 共 11 项单元测试（全部通过）。
 - 标签: `experimental/frontier`。
 
+### 3. LLM-ASR Collaborative Repair（本轮新增）
+
+- 实现 LLM-ASR 协作修复闭环 `src/llm_repair_loop.py`：以 ASR 输出为
+  起点，经风险检测 → RAG 检索 → LLM 纠错 → CER 评估迭代修复（最多三轮、
+  带收敛判定与回退保护），并提供离线 oracle 模式，在未运行完整 pipeline
+  时自动生成 synthetic ASR 输出以支持复现。
+- 实现 RAG 检索修复模块 `src/rag_repair.py`：基于已验证 reference
+  segments 构建知识库，使用字符 n-gram Jaccard 相似度检索 top-k 上下文，
+  为 LLM 修复提供领域提示。
+- 实现 Router 特征重要性分析 `src/router_feature_importance.py`：量化各
+  特征对 learned router 决策的贡献并输出可视化柱状图，支撑 routing 决策的
+  可解释性分析。
+- 修复 learned router 的 sklearn 兼容性问题（LogisticRegression
+  `multi_class` 参数与 `classification_report` 的 `target_names` 数量
+  不匹配），并将 `src/__init__.py` 中 router 可视化模块改为 lazy import，
+  避免可选依赖缺失导致整体导入失败。
+- 完善 `README.md` 的 LLM-ASR Collaborative Repair 章节（架构图、模块表、
+  使用方法、RAG 集成说明与设计理念），并配合 `demo/app.py` 整理 LLM-repair
+  与 router 模块在演示中的调用路径。
+
 **模块：** `src/learned_router.py`, `src/plot_phase_boundary.py`,
 `src/separation_phase_diagram.py` (fix), `scripts/train_learned_router.py`,
-`tests/test_learned_router.py`, `tests/test_plot_phase_boundary.py`.
+`tests/test_learned_router.py`, `tests/test_plot_phase_boundary.py`,
+`src/llm_repair_loop.py`, `src/rag_repair.py`,
+`src/router_feature_importance.py`, `src/__init__.py`, `README.md`,
+`demo/app.py`.
 
 ## 梁跃川 / liang-yuechuan
 
