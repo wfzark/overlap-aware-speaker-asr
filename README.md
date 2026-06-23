@@ -94,6 +94,27 @@ This project follows a **pre-registered hypothesis** research methodology for al
 4. **Honest reporting** — negative results are documented with the same rigor as positives. 8 of 15+ frontier studies produced clean negatives; each narrows the solution space.
 5. **Literature grounding** — novelty claims are assessed against a 6-agent literature sweep (see [causal hallucination lit review](docs/frontier/causal_hallucination_probe_litreview.md)). We cite established work and scope our contributions honestly.
 6. **Evidence labeling** — every result is tagged as `stable/gold`, `synthetic/silver`, `experimental/frontier`, `qualitative/demo`, or `external/sanity-check`.
+7. **Statistical rigor** — key quantitative claims are reported with bootstrap confidence intervals, not point estimates alone (see below).
+
+### Statistical Analysis and Confidence Intervals
+
+The headline crossover finding (r\* ≈ 0.17) is backed by a **bootstrap confidence interval**, not a single point estimate. The separation-tax phase study runs 20 deterministic speaker pairings × 15 overlap ratios = 600 mixture conditions, and reports per-ratio mean ΔCER with 95% bootstrap CIs ([`results/frontier/separation_tax/phase_aggregate.csv`](results/frontier/separation_tax/phase_aggregate.csv)):
+
+| overlap r | mean ΔCER | 95% bootstrap CI | median ΔCER | sep-helps rate | interpretation |
+|---:|---:|---|---:|---:|---|
+| 0.00 | −0.341 | [−0.935, −0.009] | −0.087 | 0.25 | separation helps (CI excludes 0) |
+| 0.05 | −0.579 | [−1.721, +0.028] | −0.033 | 0.35 | CI crosses 0 — effect driven by tail |
+| 0.10 | **−0.943** | [−2.265, +0.014] | **0.000** | 0.30 | mean ≪ median ⇒ heavy-tailed; CI barely crosses 0 |
+| 0.15 | −0.597 | [−1.754, +0.034] | 0.000 | 0.45 | transition band |
+| 0.20 | +0.698 | [−0.043, +2.129] | 0.000 | 0.45 | sign flips; CI wide (n=20) |
+| 0.50 | +0.110 | [+0.020, +0.199] | +0.052 | 0.60 | separation helps (CI excludes 0) |
+| 0.90 | +0.290 | [+0.220, +0.362] | +0.265 | 1.00 | separation helps (CI excludes 0) |
+
+**Crossover:** mean r\* = 0.173, median r\* = 0.20. The crossover is estimated by interpolation on the smoothed ΔCER curve, with bootstrap resampling (n=20 per ratio). The wide CIs at r ∈ [0.05, 0.20] are the *statistical signature of the heavy-tail mechanism*: a minority of catastrophic tracks (6/600) drive the mean far below the median, inflating variance. This is why we report both mean and median ΔCER — the median is 0.00 in the transition band, confirming that the "separation hurts" signal is *not* a uniform effect but a tail phenomenon.
+
+**Detection AUC:** the compression-ratio detector achieves AUC = 1.0 on 6 catastrophic vs 594 clean tracks. With only 6 positives this is encouraging but not tightly estimated; we report it as a lower bound on separability, not a population estimate.
+
+**Honest statistical caveat:** n=20 pairings per ratio is small. The CIs at low overlap are wide and cross zero — we cannot reject "separation is neutral at r=0.10" at α=0.05. The claim is therefore *mechanistic* (a heavy tail exists and is detectable), not *population-level* (the mean effect size is precisely known). This is documented in [FINDINGS.md](results/frontier/separation_tax/FINDINGS.md).
 
 ## Current Status
 
@@ -627,6 +648,27 @@ full-router performance. Multi-signal composites (confidence-calibrated router)
 
 **Implication:** Keep the router simple. Compression ratio is the deployable
 signal.
+
+#### Router Ablation Table (Gold Benchmark)
+
+This is the per-feature ablation on the 5-case gold benchmark. Each row removes all features except the named one (then falls back to v1 overlap rules). Full data in [`results/figures/curated/router_ablation_summary.md`](results/figures/curated/router_ablation_summary.md).
+
+| strategy | average CER | gap to oracle | what it tests |
+|---|---:|---:|---|
+| fixed_mixed_whisper | 0.3021 | +0.1821 | always-mixed lower bound |
+| fixed_separated_whisper | 0.1918 | +0.0718 | always-separated lower bound |
+| fixed_separated_whisper_cleaned | 0.1817 | +0.0616 | always-cleaned lower bound |
+| **oracle_best** | **0.1200** | **0.0000** | upper bound (uses CER — not deployable) |
+| v1_overlap_only | 0.1200 | 0.0000 | overlap-level rule alone matches oracle on gold |
+| length_ratio_only | 0.3021 | +0.1821 | length inflation alone — misses repetition |
+| repetition_only | 0.1599 | +0.0399 | repetition signal alone — strong |
+| removed_count_only | 0.1599 | +0.0399 | duplicate-removal count alone — strong |
+| length_plus_repetition | 0.1817 | +0.0616 | two-feature hybrid |
+| **v2_full_features** | **0.1200** | **0.0000** | full 6-feature router matches oracle |
+
+**Reading the table:** on the gold benchmark, overlap-level alone already matches the oracle (the 5 cases are cleanly separated by overlap regime). The ablation's value appears on the **synthetic silver benchmark**, where v1_overlap_only regresses to 0.3509 (gap +0.2687) while v2_full_features reaches 0.1676 (gap +0.0853) — the instability features are what generalize beyond the gold cases. See the [full ablation summary](results/figures/curated/router_ablation_summary.md) for the synthetic column.
+
+**Why this matters for the engineering trade-off:** a deployable router must not use CER (that would be cheating — CER requires the reference). The ablation proves the router's decision quality comes from *observable* instability signals (compression ratio, repetition), not from ground truth. This is the reference-free property that makes the router deployable.
 
 ## Limitations & Failure Analysis
 

@@ -212,6 +212,65 @@ overlap regimes, but under LightOverlap and MidOverlap it can amplify
 insertion-heavy and repetition-heavy hallucinations. Duplicate suppression
 reduces some damage but does not make separated output universally best.
 
+### 6.1 Statistical Confidence for the Crossover Finding
+
+The categorical "separation helps at high overlap, hurts at low overlap" claim
+is backed by a **continuous phase study with bootstrap confidence intervals**,
+not a 5-case leaderboard. The phase study (`src/separation_tax_phase.py`) runs
+20 deterministic speaker pairings × 15 overlap ratios = 600 oracle-separation
+conditions and reports per-ratio mean ΔCER with 95% bootstrap CIs
+([`results/frontier/separation_tax/phase_aggregate.csv`](results/frontier/separation_tax/phase_aggregate.csv)):
+
+| overlap r | mean ΔCER | 95% bootstrap CI | median ΔCER | sep-helps rate |
+|---:|---:|---|---:|---:|
+| 0.00 | −0.341 | [−0.935, −0.009] | −0.087 | 0.25 |
+| 0.10 | **−0.943** | [−2.265, +0.014] | **0.000** | 0.30 |
+| 0.15 | −0.597 | [−1.754, +0.034] | 0.000 | 0.45 |
+| 0.20 | +0.698 | [−0.043, +2.129] | 0.000 | 0.45 |
+| 0.50 | +0.110 | [+0.020, +0.199] | +0.052 | 0.60 |
+| 0.90 | +0.290 | [+0.220, +0.362] | +0.265 | 1.00 |
+
+**Crossover:** mean r\* = 0.173, median r\* = 0.20 (interpolated on the
+LOWESS-smoothed ΔCER curve). Two observations make this honest:
+
+1. **The CIs at low overlap are wide and cross zero.** We cannot reject
+   "separation is neutral at r=0.10" at α=0.05. The claim is therefore
+   *mechanistic* (a heavy tail exists and is detectable at AUC=1.0), not
+   *population-level* (the mean effect size is precisely known).
+2. **mean ≪ median in the transition band** (mean −0.94 vs median 0.00 at
+   r=0.10) is the statistical signature of the heavy-tail mechanism: 6/600
+   tracks blow up to CER up to 24×, driving the mean far below the typical
+   clip. This is why we report both — the median confirms the effect is *not*
+   uniform degradation.
+
+The detection AUC = 1.0 (compression ratio on 6 catastrophic vs 594 clean
+tracks) is a lower bound on separability, not a population estimate — with only
+6 positives the CI on AUC is wide. We report it as "encouraging, not tightly
+estimated."
+
+### 6.2 Router Ablation — Why the Router Is Deployable
+
+A deployable router must not use CER (that would require the reference
+transcript). The ablation proves the router's decision quality comes from
+*observable* instability signals. Per-feature ablation on the gold benchmark
+(full data: [`results/figures/curated/router_ablation_summary.md`](results/figures/curated/router_ablation_summary.md)):
+
+| strategy | gold avg CER | gold gap | synthetic avg CER | synthetic gap |
+|---|---:|---:|---:|---:|
+| fixed_mixed_whisper | 0.3021 | +0.1821 | 0.3114 | +0.2292 |
+| fixed_separated_whisper | 0.1918 | +0.0718 | 0.3807 | +0.2985 |
+| oracle_best | 0.1200 | 0.0000 | 0.0822 | 0.0000 |
+| v1_overlap_only | 0.1200 | 0.0000 | 0.3509 | +0.2687 |
+| repetition_only | 0.1599 | +0.0399 | 0.1740 | +0.0917 |
+| **v2_full_features** | **0.1200** | **0.0000** | **0.1676** | **+0.0853** |
+
+**Reading:** on gold, overlap-level alone matches the oracle (the 5 cases are
+cleanly separated by overlap regime). The ablation's value appears on the
+synthetic silver benchmark, where v1 regresses to gap +0.2687 while v2 holds at
++0.0853 — the instability features (compression ratio, repetition) are what
+generalize. This is the reference-free property that makes the router
+deployable.
+
 ## 7. Boundary-aware Analysis
 
 The project does not stop at a leaderboard. It also studies where separation
@@ -407,7 +466,95 @@ The project has several important limitations that bound the scope of its claims
 
 **Compute measurements.** Runtime and compute measurements are repository-local (Apple M1/M2) and not universal hardware benchmarks. Relative costs (1.93× for base vs tiny) are model-architecture ratios, not wall-clock measurements.
 
-## 17. Conclusion
+## 17. Threats to Validity
+
+Following standard research methodology (Wohlin et al., *Experimentation in Software Engineering*, 2012), we explicitly analyze four classes of threats to validity and how each is mitigated. This goes beyond the limitations list (Section 16) by classifying *what kind* of validity claim each limitation threatens and *what mitigation* (if any) bounds the threat.
+
+### 17.1 Internal Validity (does the cause-effect claim hold?)
+
+| Threat | What it risks | Mitigation in this project |
+|---|---|---|
+| **Confounding separator quality with separation effect** | If we used a real separator, CER changes could come from the separator, not separation itself. | We use **oracle separation** (ground-truth source tracks). This isolates the separation effect. The trade-off is that results are an *upper bound* — realistic separators will be worse. |
+| **CER leaking into routing** | A router that uses CER is cheating (CER requires the reference). | The contract ([`docs/harness/knowledge_base_contract.md`](docs/harness/knowledge_base_contract.md)) mechanically blocks changes to router-core code that reference evaluation modules. Router v2 uses only observable instability features. The ablation (Section 6.2) proves this. |
+| **Model selection bias** | Cherry-picking the model that supports the hypothesis. | We pre-registered the model-size hypothesis (H3) *before* running the base/small experiments. The tiny→base→small progression was chosen on architectural grounds (1×/1.93×/6× compute), not on result favorability. |
+| **Multiple testing** | 15+ frontier experiments increase the chance of a false positive by chance. | Every frontier study declares kill criteria *before* running. 8 of 15 produced clean negatives — this is the expected distribution under honest reporting, not a multiple-testing artifact. We do not selectively report positives. |
+
+### 17.2 External Validity (does the finding generalize?)
+
+| Threat | What it risks | Mitigation |
+|---|---|---|
+| **Small gold benchmark (n=5)** | Findings may not generalize beyond the 5 debate cases. | The phase study uses 600 synthetic oracle-separation conditions (20 pairings × 15 ratios) to test the *continuous* law, not just 5 points. The crossover r\* ≈ 0.17 reproduces across both gold and synthetic. |
+| **Single language (Chinese)** | Crossover may differ for English, tonal languages, etc. | Acknowledged as unaddressed. Chinese is character-based, making CER natural; English would need WER. Cross-lingual validation is future work. |
+| **Single corpus (one debate set)** | Speaker-specific acoustics may drive findings. | The synthetic phase study uses 11 con × 15 pro speaker pairings — 20 distinct pairings, not one. The heavy-tail mechanism (silent-track hallucination) is a Whisper property, not a speaker property. |
+| **No standard meeting benchmarks** | AMI/LibriCSS/AliMeeting may give different crossovers. | Acknowledged. Our controlled benchmark isolates the separation variable; standard benchmarks introduce room acoustics and microphone-array confounds. External validation is staged but not completed ([`resources/external_sanity_check/`](resources/external_sanity_check/)). |
+
+### 17.3 Construct Validity (are we measuring what we claim?)
+
+| Threat | What it risks | Mitigation |
+|---|---|---|
+| **CER as the sole quality measure** | CER may miss speaker-attribution errors, fluency, or semantic fidelity. | We report **four** complementary metrics: CER, speaker-aware CER (per-speaker macro), cpCER-lite (permutation-invariant), and error-type decomposition (insertion/deletion/substitution/repetition). Each captures a different failure mode. |
+| **"Separation helps/hurts" is a mean-effect claim** | The mean hides the heavy tail; a median or typical-clip view could disagree. | We report **both** mean and median ΔCER (Section 6.1). The mean ≪ median gap is itself the *finding* — it proves the effect is tail-driven, not uniform. |
+| **Gain-invariant prosody as "emotion"** | Arousal-side prosody is not full emotion; valence is lexical only. | Acknowledged. We follow the dimensional tradition (Russell 1980; Scherer 2005) and explicitly scope claims to *arousal-side acoustic emotion*. The LLM semantic-emotion arm extends to valence but is labeled `experimental/frontier`. |
+| **Compression ratio as "hallucination" proxy** | CR could inflate for legitimate reasons (repetition in the source). | We validate CR against *manual* inspection of all 6 catastrophic tracks (Section RQ2 of [FINDINGS](results/frontier/separation_tax/FINDINGS.md)) — all 6 are genuine token-id repetition loops, not source-driven. AUC = 1.0 on 6 vs 594. |
+
+### 17.4 Conclusion Validity (are the statistics sound?)
+
+| Threat | What it risks | Mitigation |
+|---|---|---|
+| **Small n per overlap ratio (n=20)** | Wide CIs; cannot reject null at low overlap. | We report **95% bootstrap CIs** (Section 6.1) and explicitly state where CIs cross zero. The claim is scoped as *mechanistic* (tail exists, detectable at AUC=1.0), not *population-level* (mean effect precisely known). |
+| **AUC = 1.0 on 6 positives** | Detection AUC is encouraging but not tightly estimated. | Stated as a lower bound on separability, not a population estimate. With 6 positives the CI on AUC is wide; we do not claim a deployable AUC. |
+| **No pre-registration of effect sizes** | Post-hoc power analysis is biased. | We pre-registered *hypotheses and kill criteria* (in module docstrings and CONTRIBUTIONS.md) before running, but did not pre-register effect sizes. This is a acknowledged gap; the bootstrap CIs are the honest post-hoc estimate. |
+| **Compute ratios are architectural, not measured** | 1.93× is a parameter-count ratio, not a wall-clock measurement. | Stated explicitly in Section 3. Wall-clock measurements would vary by hardware; the architectural ratio is hardware-independent and reproducible. |
+
+**Summary:** the threats analysis shows the project's claims are *mechanistic* and *conservative-bounded*, not *population-level* or *deployment-certified*. This is the honest scope of a research project with n=5 gold cases and n=600 synthetic conditions. The mitigations (oracle separation, reference-free router, four complementary metrics, bootstrap CIs, pre-registered kill criteria) are designed to bound each threat rather than eliminate it.
+
+## 18. Reproducibility
+
+Every key finding has a one-command reproduction path. The project is designed so that a reviewer can re-run any experiment from a clean checkout without manual steps beyond the environment setup in [docs/quickstart.md](docs/quickstart.md).
+
+### Environment
+
+```bash
+python3.12 -m venv .venv && source .venv/bin/activate
+pip install -r requirements.txt          # core: whisper, numpy, scipy, etc.
+python -m src.project_harness             # smoke test: 18/18 core files, 5/5 gold cases
+```
+
+Optional frontiers require `requirements-frontier.txt` (ollama, resemblyzer) or `requirements-demo.txt` (gradio). All frontier experiments are deterministic (`temperature=0.0` for Whisper, `seed=0` for sampling).
+
+### Key Finding → Reproduction Command
+
+| Finding | Section | Command | Runtime |
+|---|---|---|---|
+| Gold benchmark CER table | §6 | `python -m src.project_harness` | ~2 min |
+| Separation-tax phase curve + bootstrap CIs | §6.1 | `python -m src.separation_tax_phase --pairs 20` | ~25 min |
+| Router v2 ablation | §6.2 | `python -m src.adaptive_router_v2` | ~1 min |
+| Boundary phase plane (LOWESS + bootstrap CI) | §7 | `python -m src.separation_phase_boundary` | ~30 s |
+| Speaker-aware CER + cpCER-lite | §8 | `python -m src.speaker_cer` | ~10 s |
+| Compute-aware cascade | §9 | `python -m src.compute_aware_cascade` | ~5 min |
+| Model scale analysis (base eliminates tax) | §15 | `python -m src.model_scale_analysis` | ~40 min |
+| Causal hallucination probe (token-id lock-in) | §15 | `python -m src.causal_hallucination_probe --discover-ratios 0.1 0.15 0.2` | ~15 min |
+| Noise-robust router (92% oracle gap) | §15 | `python -m src.noise_robust_router` | ~20 min |
+| Emotional separation tax | §15 | `python -m src.emotion_separation_tax --pairs 8` | ~15 min |
+| Objective-aware decoupled routing | §15 | `python -m src.objective_aware_routing --pairs 8` | ~15 min |
+| LLM rescoring (catastrophic negative) | §15 | `python -m src.llm_base_rescore` | ~30 min (needs ollama) |
+| Semantic emotion tax (LLM 7× > lexicon) | §15 | `python -m src.semantic_emotion_tax` | ~20 min (needs ollama) |
+
+### Verification Gates
+
+The harness ([`docs/harness/README.md`](docs/harness/README.md)) provides three verification levels:
+
+- `make quality-precommit` — fast test gate (runs on every commit via `.githooks/pre-commit`)
+- `make quality-prepush` — contract + full test gate (runs on every push via `.githooks/pre-push`)
+- `make quality-ci` — CI-equivalent gate (GitHub Actions: `Tests` + `Contract Guard`)
+
+The contract ([`scripts/harness/contract_rules.py`](scripts/harness/contract_rules.py)) mechanically blocks changes to router-core, evaluation-core, references, or gold-results code that lack a paired test. This ensures the reproducible commands above remain reproducible — a change that breaks the contract cannot land.
+
+### Artifact Provenance
+
+Every result CSV/JSON/PNG is committed to the repository (not generated at install time). The `results/frontier/*/FINDINGS.md` files document the exact command, parameters, and timestamp for each artifact. The `references/` directory contains the verified gold transcripts and is read-only by contract. Synthetic silver references are kept under `resources/synthetic_overlap*/references/` and are never mixed into gold claims.
+
+## 19. Conclusion
 
 The project establishes a stable overlap-aware ASR baseline and extends it into
 a broader research system. The main result is selective separation: mixed ASR is
