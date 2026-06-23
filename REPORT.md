@@ -248,6 +248,17 @@ tracks) is a lower bound on separability, not a population estimate — with onl
 6 positives the CI on AUC is wide. We report it as "encouraging, not tightly
 estimated."
 
+![Separation tax waveform visualization](results/figures/report/fig5_separation_tax_waveform.png)
+
+**Figure:** The catastrophic case (pair=5, r=0.05) from the 600-condition phase
+study. (A) Mixed audio — Whisper transcribes both speakers correctly (CER=0.44).
+(B) Oracle-separated Speaker 1 — speech followed by trailing silence,
+transcribes OK (CER=0.44). (C) Oracle-separated Speaker 2 — **2.05s of leading
+silence** triggers a token-id repetition loop: the transcript is 24× longer than
+the reference (CER=24.25, CR=16.33). This is the heavy-tail mechanism
+visualized: the silent region is where Whisper enters the compression-seeking
+attractor (Viakhirev et al., 2026).
+
 ### 6.2 Router Ablation — Why the Router Is Deployable
 
 A deployable router must not use CER (that would require the reference
@@ -539,6 +550,7 @@ Optional frontiers require `requirements-frontier.txt` (ollama, resemblyzer) or 
 | Objective-aware decoupled routing | §15 | `python -m src.objective_aware_routing --pairs 8` | ~15 min |
 | LLM rescoring (catastrophic negative) | §15 | `python -m src.llm_base_rescore` | ~30 min (needs ollama) |
 | Semantic emotion tax (LLM 7× > lexicon) | §15 | `python -m src.semantic_emotion_tax` | ~20 min (needs ollama) |
+| Separation-tax waveform figure (fig5) | §6.1 | `python scripts/docs/make_separation_tax_waveform.py` | ~5 s |
 
 ### Verification Gates
 

@@ -310,6 +310,10 @@ In response to feedback about insufficient depth, justification, and supporting 
 
 25. **Reproducibility Section (this round)** — Added §18 to REPORT.md consolidating the one-command reproduction path for every key finding (13-row table mapping finding → section → command → runtime). Documents the three verification gates (`make quality-precommit/prepush/ci`), the contract's mechanical TDD enforcement, and artifact provenance (every CSV/JSON/PNG committed, not generated at install). This makes the project verifiable end-to-end by a reviewer.
 
+26. **Quick Results Summary CI Consistency (round 2)** — Updated the README Quick Results Summary table to include the 95% bootstrap CI for the crossover finding (r\*=0.173, CI at r=0.10: [−2.27, +0.01]) and the AUC sample-size caveat (n=6 positives — lower bound, not tightly estimated). This ensures the headline table is consistent with the detailed statistical analysis in the Research Methodology section.
+
+27. **Audio Waveform Visualization — fig5 (round 2)** — Generated a new figure (`results/figures/report/fig5_separation_tax_waveform.png`) that directly visualizes the separation-tax hallucination mechanism. The figure shows the catastrophic case (pair=5, r=0.05) from the 600-condition phase study: (A) mixed audio transcribes correctly (CER=0.44), (B) oracle-separated Speaker 1 transcribes OK (CER=0.44), (C) oracle-separated Speaker 2 has 2.05s of leading silence that triggers a token-id repetition loop (CER=24.25, CR=16.33 — transcript 24× longer than reference). This directly addresses the teacher's "audio examples, visualizations" criterion. Added to both README.md (Statistical Analysis section) and REPORT.md (§6.1). The visualization script is at `scripts/docs/make_separation_tax_waveform.py`.
+
 ### Summary of Research Contributions
 
 Across ~45 merged PRs and 36 frontier result directories, my contributions follow a consistent research methodology:
