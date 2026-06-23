@@ -34,10 +34,10 @@ Multi-speaker ASR is a practical problem in meeting transcription, call center a
 
 | Finding | Result | Evidence Level |
 |---|---|---|
-| Separation tax crossover | r* ≈ 0.17 (separation hurts below, helps above) | stable/gold |
+| Separation tax crossover | r\* = 0.173 (mean), 0.20 (median); 95% bootstrap CI at r=0.10: [−2.27, +0.01] — mechanistic, not population-level | stable/gold |
 | Router v2 average CER | 0.120 (matches oracle, no CER input) | stable/gold |
-| Hallucination mechanism | Heavy tail at low overlap (6/600 tracks blow up to CER 24×) | stable/gold |
-| Compression-ratio detection | AUC ≈ 1.0 for catastrophic hallucination | stable/gold |
+| Hallucination mechanism | Heavy tail at low overlap (6/600 tracks blow up to CER 24×; mean ≪ median) | stable/gold |
+| Compression-ratio detection | AUC ≈ 1.0 for catastrophic hallucination (n=6 positives — lower bound, not tightly estimated) | stable/gold |
 | Model scale finding | Whisper-base (1.93× compute) eliminates the tax entirely | experimental/frontier |
 | CER floor | 0.200 — not fixable by correction (0/26 LLM, 9.4% recurring patterns) | experimental/frontier |
 | Noise-robust router | Recovers ~92% of oracle gap under noise | experimental/frontier |
@@ -115,6 +115,15 @@ The headline crossover finding (r\* ≈ 0.17) is backed by a **bootstrap confide
 **Detection AUC:** the compression-ratio detector achieves AUC = 1.0 on 6 catastrophic vs 594 clean tracks. With only 6 positives this is encouraging but not tightly estimated; we report it as a lower bound on separability, not a population estimate.
 
 **Honest statistical caveat:** n=20 pairings per ratio is small. The CIs at low overlap are wide and cross zero — we cannot reject "separation is neutral at r=0.10" at α=0.05. The claim is therefore *mechanistic* (a heavy tail exists and is detectable), not *population-level* (the mean effect size is precisely known). This is documented in [FINDINGS.md](results/frontier/separation_tax/FINDINGS.md).
+
+### Audio Visualization: Why Separation Causes Hallucination
+
+The figure below visualizes the catastrophic case (pair=5, r=0.05) from the 600-condition phase study. It shows *why* oracle separation causes hallucination: at low overlap, the separated track has long silent regions where Whisper enters a token-id repetition loop.
+
+<p align="center">
+  <img src="results/figures/report/fig5_separation_tax_waveform.png" width="95%" alt="Waveform visualization of the separation tax: mixed audio transcribes correctly, but the oracle-separated Speaker 2 track has leading silence that triggers catastrophic hallucination (CER=24.25, CR=16.33)" />
+</p>
+<p align="center"><em>Figure: Separation tax waveform visualization. (A) Mixed audio at r=0.05 — Whisper transcribes both speakers correctly (CER=0.44). (B) Oracle-separated Speaker 1 — speech followed by trailing silence, transcribes OK (CER=0.44). (C) Oracle-separated Speaker 2 — <strong>2.05s of leading silence</strong> triggers a token-id repetition loop: the transcript is 24× longer than the reference (CER=24.25, CR=16.33). This is the heavy-tail mechanism: 6/600 tracks blow up this way, driving mean ΔCER far below the median.</em></p>
 
 ## Current Status
 
