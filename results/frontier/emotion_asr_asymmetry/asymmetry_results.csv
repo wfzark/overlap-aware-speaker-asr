@@ -1,0 +1,8 @@
+test,regime,alpha,n_low_overlap,n_text_hurt,mean_cer_benefit_when_hurt,mean_emotion_benefit_when_hurt,emotion_preserved_count,emotion_preserved_frac,speaker_count_preserved_count,speaker_count_preserved_frac,binary_usability_preserved_count,binary_usability_preserved_frac,mean_compression_ratio_catastrophic,mean_compression_ratio_clean,length_preserved_in_catastrophic,verdict,supported,overlap_ratio (pre-decode),"no_speech_prob (pre-decode, raw)","no_speech_prob (pre-decode, oracle-flipped)","avg_logprob (post-decode, flipped)","token_entropy (post-decode, flipped)",dominant_token_fraction (post-decode),compression_ratio (post-decode),pre_decode_overlap_only,pre_decode_nsp_only,pre_decode_overlap+nsp,pre_decode_overlap+(1-nsp),best_pre_decode_loo,best_pre_decode_ranking_in_sample,post_decode_cr_only,post_decode_cr+dom+logp+entropy,best_pre_decode_auc,best_pre_decode_ranking_auc_in_sample,threshold
+P2,alpha_0.0,0.0,16,4,-2.89393,0.176351,4,1.0,4,1.0,3,0.75,,,,,,,,,,,,,,,,,,,,,,,
+P2,alpha_0.15,0.15,16,14,-1.207332,0.116415,13,0.9286,14,1.0,9,0.6429,,,,,,,,,,,,,,,,,,,,,,,
+P2,utterance_length_bound,,,,,,,,,,,,17.9155,0.8104,False,,,,,,,,,,,,,,,,,,,,
+P2,verdict,,,,,,,,,,,,,,,SUPPORTED (moderate regime) / BOUNDED (catastrophic regime),True,,,,,,,,,,,,,,,,,,
+P3,single_feature_ranking_auc_in_sample,,,,,,,,,,,,,,,,,0.517308,0.333654,0.666346,0.848077,0.565865,0.703365,0.996154,,,,,,,,,,,
+P3,logistic_regression_loo_auc,,,,,,,,,,,,,,,,,,,,,,,,0.0,0.623077,0.5875,0.5875,0.623077,0.666346,0.846154,0.992308,,,
+P3,verdict,,,,,,,,,,,,,,,SUPPORTED,True,,,,,,,,,,,,,,,,0.623077,0.666346,0.6
