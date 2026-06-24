@@ -1,0 +1,123 @@
+{
+  "label": "experimental/frontier",
+  "issue": 883,
+  "rq": "RQ6",
+  "description": "Why does separation preserve prosody but inject text hallucination at low overlap? Tests P2 (dimensionality effect) and P3 (pre-decode predictability) via reanalysis of findings #14, #21, #18.",
+  "p2_dimensionality": {
+    "proposition": "P2",
+    "dimensionality_table": [
+      {
+        "feature_space": "prosody (acoustic arousal)",
+        "modality": "acoustic",
+        "effective_dim": 3,
+        "dim_note": "arousal, valence, dominance (continuous); #14 uses arousal-side",
+        "discrete": false
+      },
+      {
+        "feature_space": "text (ASR token sequence)",
+        "modality": "decoded",
+        "effective_dim": 50000,
+        "dim_note": "Whisper-zh vocab ~50k tokens; full sequence is high-dim discrete",
+        "discrete": true
+      },
+      {
+        "feature_space": "speaker count (text-derived)",
+        "modality": "decoded-meta",
+        "effective_dim": 1,
+        "dim_note": "single integer; ~1-2 bits",
+        "discrete": true
+      },
+      {
+        "feature_space": "binary transcript usability (text-derived)",
+        "modality": "decoded-meta",
+        "effective_dim": 1,
+        "dim_note": "1 bit: CER < 1.0 (transcript has some correct content)",
+        "discrete": true
+      },
+      {
+        "feature_space": "utterance length (text-derived)",
+        "modality": "decoded-meta",
+        "effective_dim": 1,
+        "dim_note": "token count / log-length; proxy = compression_ratio in #21",
+        "discrete": false
+      }
+    ],
+    "low_overlap_regime": {
+      "alpha_0.0": {
+        "alpha": 0.0,
+        "n_low_overlap": 16,
+        "n_text_hurt": 4,
+        "mean_cer_benefit_when_hurt": -2.89393,
+        "mean_emotion_benefit_when_hurt": 0.176351,
+        "emotion_preserved_count": 4,
+        "emotion_preserved_frac": 1.0,
+        "speaker_count_preserved_count": 4,
+        "speaker_count_preserved_frac": 1.0,
+        "binary_usability_preserved_count": 3,
+        "binary_usability_preserved_frac": 0.75
+      },
+      "alpha_0.15": {
+        "alpha": 0.15,
+        "n_low_overlap": 16,
+        "n_text_hurt": 14,
+        "mean_cer_benefit_when_hurt": -1.207332,
+        "mean_emotion_benefit_when_hurt": 0.116415,
+        "emotion_preserved_count": 13,
+        "emotion_preserved_frac": 0.9286,
+        "speaker_count_preserved_count": 14,
+        "speaker_count_preserved_frac": 1.0,
+        "binary_usability_preserved_count": 9,
+        "binary_usability_preserved_frac": 0.6429
+      }
+    },
+    "utterance_length_bound": {
+      "source": "#21 probe_rows.csv",
+      "n_catastrophic": 26,
+      "n_clean": 40,
+      "mean_compression_ratio_catastrophic": 17.9155,
+      "mean_compression_ratio_clean": 0.8104,
+      "length_preserved_in_catastrophic": false,
+      "interpretation": "In the catastrophic hallucination regime, utterance length (1-dim text feature proxied by compression_ratio) is NOT preserved (mean CR ~18x = massive length inflation). This BOUNDS P2: dimensionality protects low-dim features in the moderate low-overlap tax regime, but the extreme confident-attractor collapses even the 1-dim length feature."
+    },
+    "verdict": "SUPPORTED (moderate regime) / BOUNDED (catastrophic regime)",
+    "supported": true,
+    "evidence": "At alpha=0.15 low/mid overlap, separation hurts high-dim text (mean CER benefit -1.207 < 0) but preserves low-dim features: speaker count (frac 1.00, always 2), binary transcript usability (frac 0.64), emotion prosody (frac 0.93). This supports P2 in the moderate tax regime. However #21 shows that in the catastrophic confident-attractor regime, even the 1-dim utterance-length feature is NOT preserved (mean compression_ratio 17.9x), so P2 is bounded: dimensionality explains the moderate asymmetry but not the extreme hallucination collapse."
+  },
+  "p3_pre_decode_predictability": {
+    "proposition": "P3",
+    "n_conditions": 66,
+    "n_catastrophic": 26,
+    "n_clean": 40,
+    "pre_decode_features": [
+      "overlap_ratio",
+      "no_speech_prob"
+    ],
+    "pre_decode_feature_note": "overlap_ratio is an input property (truly pre-decode). no_speech_prob is Whisper's encoder-side no-speech token probability (max over segments; computed from encoder output at each segment start). Raw encoder embeddings are NOT stored in probe_rows.csv, so these are the best available pre-decode proxies.",
+    "single_feature_ranking_auc_in_sample": {
+      "overlap_ratio (pre-decode)": 0.517308,
+      "no_speech_prob (pre-decode, raw)": 0.333654,
+      "no_speech_prob (pre-decode, oracle-flipped)": 0.666346,
+      "avg_logprob (post-decode, flipped)": 0.848077,
+      "token_entropy (post-decode, flipped)": 0.565865,
+      "dominant_token_fraction (post-decode)": 0.703365,
+      "compression_ratio (post-decode)": 0.996154
+    },
+    "logistic_regression_loo_auc": {
+      "pre_decode_overlap_only": 0.0,
+      "pre_decode_nsp_only": 0.623077,
+      "pre_decode_overlap+nsp": 0.5875,
+      "pre_decode_overlap+(1-nsp)": 0.5875,
+      "best_pre_decode_loo": 0.623077,
+      "best_pre_decode_ranking_in_sample": 0.666346,
+      "post_decode_cr_only": 0.846154,
+      "post_decode_cr+dom+logp+entropy": 0.992308
+    },
+    "best_pre_decode_auc": 0.623077,
+    "best_pre_decode_ranking_auc_in_sample": 0.666346,
+    "threshold": 0.6,
+    "supported": true,
+    "verdict": "SUPPORTED",
+    "evidence": "Best pre-decode LOO classifier AUC = 0.623 (threshold 0.6, direction learned in-fold = proper out-of-sample test). Single-feature LOO: overlap_ratio 0.000, no_speech_prob 0.623; combined overlap+nsp 0.588. For reference, the in-sample ranking AUC with oracle direction is 0.666 (no_speech_prob flipped 0.666) \u2014 this is an optimistic ceiling, not the verdict metric. The proper out-of-sample LOO AUC is above the 0.6 threshold. By contrast, post-decode compression_ratio LOO AUC = 0.846 (ranking 0.996) and the full post-decode LOO AUC = 0.992. The attractor is far more detectable post-decode than predictable pre-decode from the encoder-side signals stored in #21's data."
+  },
+  "mechanism_synthesis": "P2 supported + P3 weakly supported (best pre-decode LOO AUC 0.623) yields a two-layer mechanism. LAYER 1 (dimensionality, the dominant explanation): in the moderate low-overlap tax regime, separation artifacts are additive perturbations that a low-dimensional continuous estimator (prosody ~3 dims) averages out, but a high-dimensional discrete decoder (text ~50k tokens) cannot \u2014 the same artifact that is noise to prosody is confusion at the token-decision boundary. This explains the #14 asymmetry: emotion benefit >= 0 while CER benefit < 0 at low/mid overlap, and why low-dim text-derived features (speaker count, binary usability) are also preserved there. LAYER 2 (pre-decode predictability): no_speech_prob (Whisper's encoder-side no-speech token probability) carries a WEAK pre-decode signal (LOO AUC 0.623, just above the 0.6 threshold; in-sample oracle-direction ceiling 0.666). The attractor onset is marginally predictable pre-decode but far more reliably detected post-decode (compression_ratio LOO AUC ~0.85, full post-decode set ~0.99). The catastrophic regime (#21 compression_ratio ~18x) bounds P2: there the collapse is severe enough to distort even 1-dim text features (length). Net: dimensionality is the primary cause of the moderate asymmetry; a weak encoder-side no-speech signal adds marginal pre-decode predictability, but post-decode detection remains the deployable cure. Operational implication (consistent with #18): keep the text route on the reference-free ASR router (overlap/compression-ratio signals, post-decode), and always read emotion from the separated track. Pre-decode prevention of the attractor is at best weakly supported by this data; post-decode detection (#21's compression-ratio + token-id lock-in union) remains the deployable cure."
+}
