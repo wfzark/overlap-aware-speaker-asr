@@ -63,6 +63,12 @@ Multi-speaker ASR is a practical problem in meeting transcription, call center a
 | Separator-failure detector (RQ22) | Per-speaker transcript structure catches 0% of Mode S at 90% specificity (H22a/b/c all NOT SUPPORTED) — structural confound reproduced: Mode S's per-speaker profile is the same as clean single-speaker non-hallucinated tracks | experimental/frontier |
 | Per-track mode classifier (RQ23) | LOO accuracy 95.7% > 80% (H23a SUPPORTED); mode-routed detector 81.1% on AISHELL-4 ≤ 90% (H23b NOT SUPPORTED) — dataset prior worth 13.5pp; Diverse↔Non-hallucinated is the load-bearing confusion (H23c SUPPORTED) | experimental/frontier |
 | CV bound tightening (RQ24) | CV binary-KL bound 0.639 < 0.729 (H24a SUPPORTED, tighter) but < 0.649 (H24b NOT SUPPORTED, invalid — overcorrects); convergence gap 0.130 > 0.10 (H24c NOT SUPPORTED); DV/Pinsker primary 0.729 remains the only valid ceiling | experimental/frontier |
+| Out-of-sample corrected router (RQ25) | Held-out cpWER 1.022 < 1.10 (H25a SUPPORTED); test sensitivity 100% (H25b SUPPORTED); threshold 0.010 outside [0.327, 0.491] — bimodal on small train splits (H25c NOT SUPPORTED) | experimental/frontier |
+| Mode distribution shift (RQ26) | chi2=305, p=5.4e-67, V=0.671 — distributions disjoint (H26a SUPPORTED); oracle mode-routed 100% gold + 94.6% AISHELL-4 (H26b SUPPORTED); lang-id overlap 8% < 30% — bottleneck is classifier accuracy (H26c NOT SUPPORTED) | experimental/frontier |
+| Bootstrap .632+ bound (RQ27) | .632+ 0.648 < 0.729 tighter (H27a SUPPORTED); 0.648 < 0.649 by 0.0007 invalid (H27b NOT SUPPORTED); 0.648 > 0.639 not tighter than CV (H27c NOT SUPPORTED) — DV/Pinsker 0.729 confirmed as only valid ceiling across CV/.632/.632+ | experimental/frontier |
+| Non-linear mode classifier (RQ28) | RF LOO accuracy 96.9% > 95.7% (H28a SUPPORTED); AISHELL-4 sensitivity 86.5% ≤ 90% (H28b NOT SUPPORTED); off-diagonal 21 > 14 (H28c NOT SUPPORTED) — Diverse↔Non-hallucinated confusion is FUNDAMENTAL: 17 errors identical to RQ23's linear classifier | experimental/frontier |
+| Hallucination severity regression (RQ29) | LOO R²=0.5952 > 0.5 (H29a SUPPORTED); Mode S not in top-3 highest-cpWER (H29b NOT SUPPORTED — premise was wrong); regression router cpWER 1.0433 < 1.10 (H29c SUPPORTED) — tied with RQ16's corrected router; the 1.043 ceiling is robust to modelling frame | experimental/frontier |
+| MeetEval cpWER compatibility (RQ30) | Aggregate cpWER matches MeetEval bit-for-bit (H30a SUPPORTED); per-window Spearman ρ=1.0 (H30b SUPPORTED); discrepancies explained (H30c SUPPORTED with severe caveat) — CRITICAL: project passes whole Chinese strings as single tokens, inflating separation tax ~80x; char-level cpWER preserves direction but scrambles per-window ordering (48% of routing decisions flip) | external/sanity-check |
 
 ## What This Project Does Not Claim
 
@@ -370,9 +376,12 @@ The project's 21+ frontier findings were subjected to academic-grade scrutiny: B
 | [Out-of-sample corrected router](results/frontier/out_of_sample_router/) (#929) | ✅ H25a SUPPORTED: held-out cpWER 1.022 < 1.10. ✅ H25b SUPPORTED: test sensitivity 100%. ❌ H25c KILLED: threshold 0.010 outside [0.327, 0.491] — bimodal on small train splits | `results/frontier/out_of_sample_router/` |
 | [Mode distribution shift](results/frontier/mode_distribution_shift/) (#930) | ✅ H26a SUPPORTED: chi2=305, p=5.4e-67, V=0.671 — distributions disjoint. ✅ H26b SUPPORTED: oracle mode-routed 100% gold + 94.6% AISHELL-4 — bottleneck is classifier, not routing. ❌ H26c KILLED: lang-id overlap 8% < 30% — confusion is from 5D features + class imbalance | `results/frontier/mode_distribution_shift/` |
 | [Bootstrap .632+ bound](results/frontier/bootstrap_632_bound/) (#931) | ✅ H27a SUPPORTED: .632+ 0.648 < 0.729 (tighter). ❌ H27b NOT SUPPORTED: 0.648 < 0.649 by 0.0007 (still invalid). ❌ H27c NOT SUPPORTED: .632+ 0.648 > CV 0.639. .632+ moves in the right direction but OOB FPR saturates — DV/Pinsker 0.729 remains the only valid ceiling | `results/frontier/bootstrap_632_bound/` |
+| [Non-linear mode classifier](results/frontier/nonlinear_mode_classifier/) (#937) | ✅ H28a SUPPORTED: RF LOO accuracy 96.9% > 95.7% (Wilson CIs overlap). ❌ H28b NOT SUPPORTED: AISHELL-4 sensitivity 86.5% ≤ 90%. ❌ H28c NOT SUPPORTED: off-diagonal 21 > 14. Key finding: Diverse↔Non-hallucinated confusion is FUNDAMENTAL — 17 errors identical to RQ23's linear classifier (delta = 0). The confusion is not a linear-classifier artifact; path to >90% sensitivity requires new features or dataset prior | `results/frontier/nonlinear_mode_classifier/` |
+| [Hallucination severity regression](results/frontier/hallucination_severity_regression/) (#936) | ✅ H29a SUPPORTED: LOO R²=0.5952 > 0.5. ❌ H29b NOT SUPPORTED: Mode S windows (22, 30) not in top-3 — premise was wrong (Mode S cpWER=2.0, but other windows reach 4.333). ✅ H29c SUPPORTED: regression router cpWER 1.0433 < 1.10, tied with RQ16's corrected router (1.0430). The 1.043 ceiling is robust to modelling frame; Mode S = 100% of gap to oracle | `results/frontier/hallucination_severity_regression/` |
+| [MeetEval cpWER compatibility](results/frontier/meeteval_cpwer_validation/) (#935) | ✅ H30a/b/c SUPPORTED with severe caveat. Project uses MeetEval directly so values match bit-for-bit (max diff 2.9e-07, ρ=1.0). CRITICAL: project passes whole Chinese strings as single tokens to MeetEval — each speaker's utterance = 1 token, not 1 character. Separation tax inflated ~80x (0.418 word vs 0.005 char). Per-window ordering scrambles (ρ≈0.1, 48% of routing decisions flip at char level). FINDINGS.md documentation fix needed | `results/frontier/meeteval_cpwer_validation/` |
 
 These are `experimental/frontier` (or `external/sanity-check` for AISHELL-4); they are not gold-benchmark
-claims. The honest headline: 17 hypotheses falsified (H1a, H3, H13b, H14a, H17a, H19a, H19b, H22a, H22b, H22c, H23b, H24b, H24c, H25c, H26c, H27b, H27c), 26 supported (P1, P2, H13a, H13c, H14b, H14c, H15a-c, H16a-c, H17b, H17c, H18a-c, H19c, H20a-c, H21a-c, H23a, H23c, H24a, H25a, H25b, H26a, H26b, H27a), 1 borderline (P3).
+claims. The honest headline: 20 hypotheses falsified (H1a, H3, H13b, H14a, H17a, H19a, H19b, H22a, H22b, H22c, H23b, H24b, H24c, H25c, H26c, H27b, H27c, H28b, H28c, H29b), 32 supported (P1, P2, H13a, H13c, H14b, H14c, H15a-c, H16a-c, H17b, H17c, H18a-c, H19c, H20a-c, H21a-c, H23a, H23c, H24a, H25a, H25b, H26a, H26b, H27a, H28a, H29a, H29c, H30a, H30b, H30c), 1 borderline (P3).
 The BH correction and AISHELL-4 negative bound the project's claims — 11 findings downgraded from
 "demonstrates" to "suggests", and the router does not generalize beyond the controlled debate corpus.
 The diverse hallucination detector (language-id entropy, 94.6% sensitivity), the corrected-router
@@ -382,9 +391,16 @@ tight at 0.8%), the Mode S residual analysis (transcript-only ceiling reached), 
 Donsker-Varadhan/Pinsker bound (72.9% valid ceiling), the gold-vs-AISHELL-4 detector comparison
 (dataset-aware switch 95.2%), the separator-failure detector (per-speaker structure also cannot catch
 Mode S — the confound is structural), the per-track mode classifier (95.7% LOO accuracy but the
-dataset prior is worth 13.5pp on AISHELL-4), and the CV bound tightening (overcorrects — DV/Pinsker
-0.729 remains the only valid ceiling) together establish both a deployable fix, a theoretical
-explanation for why the fix is needed, and a documented residual that no surface detector can close.
+dataset prior is worth 13.5pp on AISHELL-4), the CV bound tightening (overcorrects — DV/Pinsker
+0.729 remains the only valid ceiling), the non-linear mode classifier (random forest confirms the
+Diverse↔Non-hallucinated confusion is fundamental — 17 errors identical to the linear classifier),
+the hallucination severity regression (cpWER 1.043 ceiling robust to modelling frame — regression
+router tied with corrected router, Mode S = 100% of residual), and the MeetEval cpWER compatibility
+validation (CRITICAL: project's cpWER is utterance-level not character-level — separation tax
+inflated ~80x, 48% of per-window routing decisions would flip at character level) together
+establish both a deployable fix, a theoretical explanation for why the fix is needed, a documented
+residual that no surface detector can close, and an honest accounting of a metric semantic issue
+that affects every prior cpWER-based conclusion.
 
 ## Frontier Highlights — AudioDepth Router (frontier branch only)
 
