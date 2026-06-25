@@ -9,7 +9,7 @@ migration.
 
 **Role:** Frontier research lead; overlap-hallucination mechanism investigator; ASR×LLM×emotion axis explorer; research-entropy meta-analyst; engineering harness architect.
 
-**Scope summary:** ~65 merged PRs (#780–#872, #886–#894, #898–#900, #905–#907, #911–#913, #917–#919), 61+ issues, 61+ new modules, 51+ frontier result directories, 15+ experimental figures, 6-agent literature review. All frontier work labeled `experimental/frontier` or `external/sanity-check`; no gold tables or verified references touched.
+**Scope summary:** ~71 merged PRs (#780–#872, #886–#894, #898–#900, #905–#907, #911–#913, #917–#919, #923–#925, #929–#931), 67+ issues, 67+ new modules, 57+ frontier result directories, 15+ experimental figures, 6-agent literature review. All frontier work labeled `experimental/frontier` or `external/sanity-check`; no gold tables or verified references touched.
 
 ---
 
