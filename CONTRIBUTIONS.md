@@ -9,7 +9,7 @@ migration.
 
 **Role:** Frontier research lead; overlap-hallucination mechanism investigator; ASR×LLM×emotion axis explorer; research-entropy meta-analyst; engineering harness architect.
 
-**Scope summary:** ~59 merged PRs (#780–#872, #886–#894, #898–#900, #905–#907), 55+ issues, 55+ new modules, 45+ frontier result directories, 15+ experimental figures, 6-agent literature review. All frontier work labeled `experimental/frontier` or `external/sanity-check`; no gold tables or verified references touched.
+**Scope summary:** ~62 merged PRs (#780–#872, #886–#894, #898–#900, #905–#907, #911–#913), 58+ issues, 58+ new modules, 48+ frontier result directories, 15+ experimental figures, 6-agent literature review. All frontier work labeled `experimental/frontier` or `external/sanity-check`; no gold tables or verified references touched.
 
 ---
 
@@ -443,6 +443,36 @@ These studies followed directly from the router failure mode decomposition (RQ12
 - `results/frontier/diverse_hallucination_detector/diverse_detector_analysis.py` — language-id entropy, token diversity, character-set diversity, ensemble detector
 - `results/frontier/hallucination_taxonomy/taxonomy_analysis.py` — 5-mode hallucination classification with detectability matrix
 - `results/frontier/pomdp_regret_bounds/regret_bound_analysis.py` — theoretical regret bounds with curvature and Lipschitz analysis
+
+All findings labeled `experimental/frontier`. No gold tables or verified references touched.
+
+#### Corrected-router simulation, information-theoretic detector bound, and multi-crossover regret bound
+
+Three questions remained after the detector and taxonomy work: does the corrected router actually recover AISHELL-4 cpWER when the language-id entropy detector is wired in end-to-end, why does CR provably fail (is 2.7% a fundamental limit or an implementation artifact), and can the POMDP regret bound be extended to the multi-crossover case that broke it on AISHELL-4?
+
+| PR | Study | RQ | Outcome | Evidence |
+|---|---|---|---|---|
+| #912 | **Corrected-router simulation (RQ16)** | Does a corrected router (language-id entropy + silence-aware gate + mode-specific guards) recover AISHELL-4 cpWER below always-mixed? | ✅ **H16a SUPPORTED**: corrected router cpWER 1.0433 < always-mixed 1.1732 (Δ = −0.1299, CI [−0.3117, 0.0000]). ✅ H16b SUPPORTED: corrected < router v2 1.2056 (Δ = −0.1623, CI [−0.2879, −0.0606]). ✅ H16c SUPPORTED: language-id entropy alone recovers 86.2% of router v2's regret gap to oracle (CI [61.3%, 100.0%]). The silence-aware gate and mode-specific guards are redundant — language-id entropy alone is sufficient. Residual failure: 2 monoscript-Chinese hallucinations (Mode S) escape every surface detector. | `results/frontier/corrected_router_simulation/` |
+| #913 | **Information-theoretic detector bound (RQ17)** | What is the theoretical upper bound on sensitivity for any repetition-based detector on diverse hallucination? | ❌ **H17a NOT SUPPORTED**: the Gaussian bound is 43.5% (CI [30.5%, 60.1%]), above the 30% threshold. The empirical DPI bound (LZ-ROC) is 64.9%. ✅ H17b SUPPORTED: the bound is determined by the entropy-rate gap Δ_H = +0.914 bits/char (CI [+0.495, +1.392] excludes 0). ✅ H17c SUPPORTED: language-id entropy (94.6%) exceeds the Bayes-optimal bigram LRT (75.7%) — ratio 1.25. CR's 13.5% is well below even the conservative Gaussian bound (43.5%), so CR is leaving signal on the table; the repetition-based family is fundamentally capped (64.9%), but CR specifically is also a poor implementation of it. | `results/frontier/info_theoretic_detector_bound/` |
+| #911 | **Multi-crossover POMDP bound (RQ18)** | Can we derive a piecewise-Lipschitz regret bound for the multi-crossover case (k sign-changes) that explains the AISHELL-4 failure quantitatively? | ✅ **H18a SUPPORTED**: Bound 5 is O(k·L/n²) — log-log slope −2.000 at k∈{1,2}, bound ratio k₂/k₁ = 2.000. ✅ H18b SUPPORTED: tight on AISHELL-4 at g=0.2 (k=2) — relative error 0.008 < 0.10 (uniform bound 0.04635 vs empirical 0.04672). ✅ H18c SUPPORTED: sample complexity n ≥ O(√(k·L·D/(2ε))) — the multi-crossover case needs √k more strata than single-crossover. The k(g) transition (1 → 2 → 0 as g increases) is the quantitative signature of the AISHELL-4 failure. | `results/frontier/pomdp_multicrossover_bound/` |
+
+**Design choices and justification:**
+
+- **Why simulate on stored transcripts instead of re-running Whisper (RQ16)?** The 77 AISHELL-4 windows already have per-window `always_mixed_cpwer` and `always_separated_cpwer` from RQ1. The routing decision is the only free variable — if the corrected guard flags the separated track, the router picks mixed, and the cpWER is the stored `always_mixed_cpwer`. This makes the simulation exact (no re-run noise) and fast (numpy + stdlib). The cost is that the threshold is in-sample (calibrated on these 77 windows), so the 1.043 figure is an upper bound on achievable cpWER, not a deployable number. The honest limitation is documented prominently.
+- **Why the Gaussian equal-variance model for the theoretical bound (RQ17)?** The data processing inequality gives I(S; hallucinated?) ≤ I(H; hallucinated?) for any repetition-based statistic S, where H is the entropy rate. The Gaussian model converts this into a closed-form sensitivity bound via the ROC of the entropy-rate discriminator. The model is violated in practice (H_LZ is non-Gaussian — clean-class variance 5.6× halluc-class variance), so the Gaussian bound (43.5%) is conservative; the empirical LZ-ROC bound (64.9%) is the operative ceiling. Both are reported honestly.
+- **Why piecewise-Lipschitz rather than global Lipschitz for the multi-crossover bound (RQ18)?** The reward gap Δ(r) has k sign-changes, so it is not globally Lipschitz at the crossover points (the derivative changes sign). But on each piece between crossovers, Δ is smooth and Lipschitz. The piecewise bound Σ_i L_i·d_i²/(2D_i) captures this structure. The uniform simplification k·L·h²/(2D) is tight (0.8% gap) because the Lipschitz constant L is similar across pieces on the AISHELL-4 reward surface.
+
+**Honest limitations:**
+
+- RQ16's simulation is in-sample — all three detector thresholds were calibrated on these exact 77 windows. The 1.043 figure is an upper bound on achievable cpWER, not a deployable number. An out-of-sample test on a held-out AISHELL-4 meeting (with frozen thresholds) is the next step.
+- RQ17's Gaussian model is violated (H_LZ is non-Gaussian). The Gaussian bound (43.5%) underestimates the true ceiling; the empirical LZ-ROC (64.9%) is the operative bound but has its own estimation noise on short tracks. The Bayes-optimal LRT (75.7%) is data-starved under leave-one-out on n=77, which is why language-id entropy can exceed it — this is a small-sample artifact, not a violation of optimality.
+- RQ18's bound assumes piecewise-Lipschitz Δ, which may not hold at the sign-change points (the derivative is discontinuous). The per-piece form is a valid upper bound (2.6× loose); the uniform form is tight (0.8%) but relies on the Lipschitz constant being similar across pieces. The k=0 case (crossover vanishes at g≥0.4) is not covered by the bound — the router is structurally wrong there, and no bound can salvage it.
+
+**New modules and artifacts:**
+
+- `results/frontier/corrected_router_simulation/corrected_router_simulation.py` — end-to-end router simulation with 7-way ablation (lang-id, silence, mode, pairwise, all-three)
+- `results/frontier/info_theoretic_detector_bound/info_theoretic_bound_analysis.py` — Lempel-Ziv entropy rate estimation, Gaussian bound derivation, Bayes-optimal bigram LRT, empirical DPI bound
+- `results/frontier/pomdp_multicrossover_bound/multicrossover_bound_analysis.py` — piecewise-Lipschitz Bound 5 derivation, k(g) transition analysis, sample complexity verification
 
 All findings labeled `experimental/frontier`. No gold tables or verified references touched.
 

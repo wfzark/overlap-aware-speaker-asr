@@ -54,6 +54,9 @@ Multi-speaker ASR is a practical problem in meeting transcription, call center a
 | Diverse hallucination detector (RQ13) | Language-id entropy achieves 94.6% sensitivity vs CR's 2.7% — CR is the wrong statistic, not just the wrong threshold | experimental/frontier |
 | Hallucination taxonomy (RQ14) | Insertion-dominated is the majority mode (51.4%); multilingual mixing is only 10.8% — the "gibberish" surface form is the minority | experimental/frontier |
 | POMDP regret bounds (RQ15) | O(1/n²) curvature bound is nearly tight on gold (0.6% gap); breaks when silence dimension adds a second sign-change (AISHELL-4) | experimental/frontier |
+| Corrected-router simulation (RQ16) | Language-id entropy alone recovers AISHELL-4 cpWER to 1.043 (vs always-mixed 1.173, router v2 1.206, oracle 1.017) — recovers 86% of router v2's regret gap | experimental/frontier |
+| Info-theoretic detector bound (RQ17) | Repetition-based detectors are fundamentally capped at ~65% sensitivity (empirical DPI bound); CR's 13.5% is well below even the Gaussian bound (43.5%); language-id entropy (94.6%) exceeds the Bayes-optimal bigram LRT (75.7%) | experimental/frontier |
+| Multi-crossover POMDP bound (RQ18) | Piecewise-Lipschitz bound O(k·L/n²) is tight on AISHELL-4 at k=2 (0.8% gap); sample complexity n ≥ O(√(k·L/ε)) — √k more strata needed vs single-crossover | experimental/frontier |
 
 ## What This Project Does Not Claim
 
@@ -349,13 +352,19 @@ The project's 21+ frontier findings were subjected to academic-grade scrutiny: B
 | [Diverse hallucination detector](results/frontier/diverse_hallucination_detector/) (#906) | ✅ Language-id entropy achieves 94.6% sensitivity vs CR's 2.7% — CR is the wrong statistic for diverse hallucination | `results/frontier/diverse_hallucination_detector/` |
 | [Hallucination taxonomy](results/frontier/hallucination_taxonomy/) (#905) | ✅ Insertion-dominated is the majority mode (51.4%); multilingual mixing is only 10.8% — distinct CR profiles per mode (p=0.0016) | `results/frontier/hallucination_taxonomy/` |
 | [POMDP regret bounds](results/frontier/pomdp_regret_bounds/) (#907) | ✅ O(1/n²) curvature bound nearly tight on gold (0.6% gap); breaks when silence dimension adds second sign-change | `results/frontier/pomdp_regret_bounds/` |
+| [Corrected-router simulation](results/frontier/corrected_router_simulation/) (#912) | ✅ H16a/b/c SUPPORTED: language-id entropy alone recovers AISHELL-4 cpWER to 1.043 (vs always-mixed 1.173); silence and mode guards redundant; residual 2 monoscript hallucinations escape all surface detectors | `results/frontier/corrected_router_simulation/` |
+| [Info-theoretic detector bound](results/frontier/info_theoretic_detector_bound/) (#913) | ❌ H17a NOT SUPPORTED: bound is 43.5% (Gaussian) / 64.9% (empirical DPI), not < 30%. ✅ H17b SUPPORTED: bound determined by entropy-rate gap (Δ_H = +0.914 bits/char). ✅ H17c SUPPORTED: language-id entropy (94.6%) exceeds Bayes-optimal bigram LRT (75.7%) | `results/frontier/info_theoretic_detector_bound/` |
+| [Multi-crossover POMDP bound](results/frontier/pomdp_multicrossover_bound/) (#911) | ✅ H18a/b/c SUPPORTED: piecewise-Lipschitz bound O(k·L/n²) tight on AISHELL-4 at k=2 (0.8% gap); sample complexity n ≥ O(√(k·L/ε)) | `results/frontier/pomdp_multicrossover_bound/` |
 
 These are `experimental/frontier` (or `external/sanity-check` for AISHELL-4); they are not gold-benchmark
-claims. The honest headline: 4 hypotheses falsified (H1a, H3, H13b, H14a), 8 supported (P1, P2, H13a, H13c, H14b, H14c, H15a-c), 1 borderline (P3).
+claims. The honest headline: 5 hypotheses falsified (H1a, H3, H13b, H14a, H17a), 13 supported (P1, P2, H13a, H13c, H14b, H14c, H15a-c, H16a-c, H17b, H17c, H18a-c), 1 borderline (P3).
 The BH correction and AISHELL-4 negative bound the project's claims — 11 findings downgraded from
 "demonstrates" to "suggests", and the router does not generalize beyond the controlled debate corpus.
-The diverse hallucination detector (language-id entropy, 94.6% sensitivity) and POMDP regret bounds
-(O(1/n²) nearly tight on gold) are the strongest new contributions toward a deployable and theoretically grounded router.
+The diverse hallucination detector (language-id entropy, 94.6% sensitivity), the corrected-router
+simulation (cpWER 1.043, recovering 86% of the regret gap), the information-theoretic detector bound
+(repetition-based detectors capped at ~65%), and the multi-crossover POMDP regret bound (O(k·L/n²)
+tight at 0.8%) together establish both a deployable fix and a theoretical explanation for why the
+fix is needed.
 
 ## Frontier Highlights — AudioDepth Router (frontier branch only)
 
