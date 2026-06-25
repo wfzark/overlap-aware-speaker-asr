@@ -1,0 +1,8 @@
+bound_type,n,specificity,sensitivity_bound,is_valid,is_tighter_than_gaussian,note
+empirical_bernstein,37,0.925926,1.0,True,True,Maurer-Pontil 2009; upper confidence band on true sensitivity of the LZ-ROC at its operating point (binomial proportion).
+donsker_varadhan_kl_pinsker,64,0.9,0.729346,True,True,"Pinsker: TPR <= FPR + sqrt(D/2); D(P||Q) via Wang-Kulkarni-Verdu k-NN (k=3), positive-class-first. Distribution-free theoretical ceiling on the optimal discriminator at 90% specificity. PRIMARY DV bound -- valid (>= empirical) and within 10pp."
+donsker_varadhan_kl_pinsker_min,64,0.9,0.636448,False,True,"Tightest Pinsker (min of D(P||Q), D(Q||P) -- TV is symmetric). Bounds the TRUE de-optimised ceiling; can fall below the in-sample empirical LZ-ROC due to threshold-selection optimism."
+donsker_varadhan_kl_binary,64,0.9,0.555181,False,True,"Tight binary data-processing bound d(TPR||FPR) <= D(P||Q); bounds the TRUE de-optimised ceiling, which lies below the in-sample empirical LZ-ROC (threshold-selection optimism)."
+dkw,64,0.925926,1.0,True,True,DKW uniform CDF band; upper edge of the ROC confidence band at the empirical threshold (eps_P + eps_Q).
+gaussian_rq17_reference,64,0.9,0.435,False,False,RQ17 Gaussian equal-variance bound. INVALID here (below the empirical LZ-ROC) because H_LZ is non-Gaussian.
+empirical_lzroc_reference,64,0.925926,0.648649,True,True,RQ17 empirical DPI bound (the in-sample LZ-ROC operating point). Reference ceiling; optimistic due to threshold selection.
