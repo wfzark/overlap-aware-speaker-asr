@@ -9,7 +9,7 @@ migration.
 
 **Role:** Frontier research lead; overlap-hallucination mechanism investigator; ASR×LLM×emotion axis explorer; research-entropy meta-analyst; engineering harness architect.
 
-**Scope summary:** ~56 merged PRs (#780–#872, #886–#894, #898–#900), 50+ issues, 50+ new modules, 40+ frontier result directories, 15+ experimental figures, 6-agent literature review. All frontier work labeled `experimental/frontier` or `external/sanity-check`; no gold tables or verified references touched.
+**Scope summary:** ~59 merged PRs (#780–#872, #886–#894, #898–#900, #905–#907), 55+ issues, 55+ new modules, 45+ frontier result directories, 15+ experimental figures, 6-agent literature review. All frontier work labeled `experimental/frontier` or `external/sanity-check`; no gold tables or verified references touched.
 
 ---
 
@@ -323,24 +323,13 @@ A second motivation: router v2 failed to generalize to AISHELL-4 (RQ1, #881) —
 
 ---
 
-### Research Thread 6: A_framing/QiongQi Academic Research Framing (Issues #881–#892, PRs #886–#894)
+### Research Thread 6: Statistical Robustness, External Validation, and Decision-Theoretic Framework (Issues #881–#897, #902–#904, PRs #886–#894, #898–#900, #905–#907)
 
-**Grand RQ:** _Can a systematic academic research framing — using PICO/PEO/SPIDER+FINER frameworks, a 5-type gap taxonomy, hypothesis generation, theoretical framework mapping, contribution crafting, and venue analysis — convert the project's scattered frontier findings into a defensible academic contribution with honest statistical robustness and external validation?_
+**Grand RQ:** _Do the project's 21+ frontier findings survive academic-grade scrutiny — multiple-testing correction, external dataset validation, effect-size analysis, theoretical regret bounds — and can the empirical router be grounded in a decision-theoretic framework that predicts both its success on the gold benchmark and its failure on AISHELL-4?_
 
-This thread spans 7 PRs across two iterations of the A_framing (QiongQi) skill suite, orchestrated by repo-evolver-fast. It is the project's first systematic attempt to subject its findings to academic-grade scrutiny: multiple-testing correction, external dataset validation, theoretical framework mapping, and venue positioning.
+This thread spans 13 PRs and constitutes the project's systematic self-audit. The prior 5 research threads produced 21+ frontier findings, but they were reported with point estimates and no multiple-testing correction, validated only on the 5-case gold benchmark, and lacked a theoretical framework linking the routing decision to decision theory. This thread closes those gaps with pre-registered hypotheses, falsification criteria, and honest reporting of negatives.
 
-#### Motivation and methodological framing
-
-The prior 5 research threads produced 21+ frontier findings, but they were reported with point estimates and no multiple-testing correction, validated only on the 5-case gold benchmark, and lacked a theoretical framework linking the routing decision to decision theory. The A_framing/QiongQi suite applies a structured academic framing pipeline:
-
-- **PICO/PEO/SPIDER+FINER frameworks** — formalize each research question with population/intervention/comparator/outcome structure and FINER feasibility criteria.
-- **5-type gap taxonomy** — classify each contribution as (1) methodological, (2) empirical, (3) theoretical, (4) dataset, or (5) reproducibility gap.
-- **Hypothesis generation** — pre-register falsifiable hypotheses with explicit success/kill criteria before analysis.
-- **Theoretical framework mapping** — connect empirical findings to established theory (POMDP, emotion-ASR asymmetry).
-- **Contribution crafting** — articulate the novelty claim honestly against prior work.
-- **Venue analysis** — position the work against target venues' scope and acceptance criteria.
-
-#### Iteration 1: 5 PRs (Issues #881–#889)
+#### Statistical robustness and external validation
 
 | PR | Study | RQ | Outcome | Evidence |
 |---|---|---|---|---|
@@ -358,11 +347,11 @@ The prior 5 research threads produced 21+ frontier findings, but they were repor
 
 **Honest novelty assessment:** The BH correction and external validation are methodological hygiene, not novel contributions — any well-run academic study should do them. The genuinely new contributions are: (1) the **POMDP-optimal vs empirical-router divergence analysis** — no prior work maps overlap-aware routing to a POMDP and shows the empirical router approximates the optimal policy; (2) the **emotion-ASR asymmetry mechanism** — explaining _why_ separation preserves low-dim features (speaker count, prosody) while destroying high-dim text is a mechanistic claim not present in the GenSEC-LLM or R3 literature.
 
-#### Iteration 2: 2 PRs (Issues #891–#892)
+#### Report integration and silence-aware gate
 
 | PR | Study | RQ | Outcome | Evidence |
 |---|---|---|---|---|
-| #893 | **Report integration** | Integrate iteration 1 findings into REPORT.md | ✅ 5 new sections added (§18 Statistical Robustness, §19 External Validation, §20 Theoretical Framework, §21 Emotion-ASR Mechanism, §22 Venue Positioning). 8 claims downgraded from "demonstrates" to "suggests". Abstract updated with honest BH bounds. Findings #22–#26 added to project_state.md. | `REPORT.md` |
+| #893 | **Report integration** | Integrate statistical robustness findings into REPORT.md | ✅ 5 new sections added (§18 Statistical Robustness, §19 External Validation, §20 Theoretical Framework, §21 Emotion-ASR Mechanism, §22 Venue Positioning). 8 claims downgraded from "demonstrates" to "suggests". Abstract updated with honest BH bounds. Findings #22–#26 added to project_state.md. | `REPORT.md` |
 | #894 | **Silence-aware gate** | Can an energy-based VAD gate truncate interior silence and recover CER? | ◐ **H8 CONDITIONALLY SUPPORTED** by mechanism analysis: energy-based VAD truncates interior silence gaps >0.5s to 0.3s. cpWER validation pending Whisper install. | `results/frontier/silence_aware_gate/`, `src/silence_aware_gate.py` |
 
 **Design choices and justification (silence-aware gate):**
@@ -372,7 +361,7 @@ The prior 5 research threads produced 21+ frontier findings, but they were repor
 
 #### Honest reporting summary
 
-Across the 7 PRs, the A_framing iteration produced a balanced evidence profile:
+Across the 7 PRs, this body of work produced a balanced evidence profile:
 
 - **2 hypotheses FALSIFIED:** H1a (router generalizes to AISHELL-4 — it does not), H3 (all 21 findings survive BH — only 6/21 do).
 - **2 hypotheses SUPPORTED:** P1 (POMDP-optimal matches empirical router), P2 (emotion-ASR asymmetry in moderate regime).
@@ -389,17 +378,17 @@ The falsifications are the most valuable outputs: they bound the project's claim
 - `results/external_sanity_check/aishell4/` — AISHELL-4 external validation (labeled `external/sanity-check`)
 - `results/frontier/silence_aware_gate/` — silence-aware gate analysis
 - `src/silence_aware_gate.py` (604 lines) + 29 unit tests — energy-based VAD gate
-- `RESEARCH/overlap-aware-speaker-asr/framing/` — A_framing/QiongQi framing artifacts (PICO/PEO/SPIDER+FINER, gap taxonomy, venue analysis)
+- `RESEARCH/overlap-aware-speaker-asr/framing/` — research framing artifacts (PICO/PEO/SPIDER+FINER, gap taxonomy, venue analysis)
 - `RESEARCH/overlap-aware-speaker-asr/theoretical_framework.md` — POMDP theoretical framework document
-- `REPORT.md` — 5 new sections (§18–§22) integrating iteration 1 findings
+- `REPORT.md` — 5 new sections (§18–§22) integrating statistical robustness findings
 
 All new findings labeled `experimental/frontier` or `external/sanity-check`. No gold tables or verified references touched.
 
 **Literature grounding:** The BH correction follows Benjamini & Hochberg (1995). The POMDP framework follows Kaelbling, Littman & Cassandra (1998) and Spaan (2012, POMDP for speech applications). The emotion-ASR asymmetry connects to GenSEC-LLM (arXiv:2409.09785) and R3 (arXiv:2409.15551) — both study ASR×emotion coupling on clean audio; our contribution is the _mechanism_ under overlap+separation. The venue analysis references Interspeech 2026, ICASSP 2026, IEEE TASLP, and Speech Communication calls for papers.
 
-#### Iteration 3: 3 PRs (Issues #895–#897, PRs #898–#900)
+#### Effect sizes, per-utterance POMDP, and router failure mode decomposition
 
-Iteration 3 was dispatched in parallel from the 26-finding project state and addressed three gaps surfaced by iterations 1–2: (a) the BH survivors lacked effect-size and post-hoc power analysis, (b) the stratum-level POMDP could not represent within-stratum heterogeneity or the AISHELL-4 silence-gap failure, (c) the router v2 AISHELL-4 regret was not decomposed into failure modes.
+These studies addressed three gaps surfaced by the statistical robustness and external validation work: (a) the BH survivors lacked effect-size and post-hoc power analysis, (b) the stratum-level POMDP could not represent within-stratum heterogeneity or the AISHELL-4 silence-gap failure, (c) the router v2 AISHELL-4 regret was not decomposed into failure modes.
 
 | PR | Study | RQ | Outcome | Evidence |
 |---|---|---|---|---|
@@ -407,25 +396,55 @@ Iteration 3 was dispatched in parallel from the 26-finding project state and add
 | #899 | **Per-utterance POMDP (RQ10)** | Does lifting the POMDP to per-utterance continuous-state improve regret and predict the AISHELL-4 failure? | ✅ RQ10.2 SUPPORTED: P(mixed)=1.00 for silence-gap high-overlap windows (stratum-level POMDP: 0.00). ◐ RQ10.1 SUPPORTED but marginal (in-sample zero regret). ✅ RQ10.3 SUPPORTED at ov 0.1 (CV=0.97). See Thread 7 for full detail. | `results/frontier/decision_theoretic_routing/pomdp_per_utterance.py` |
 | #900 | **Router failure mode decomposition (RQ12)** | What failure modes drive router v2's AISHELL-4 regret, and does the CR guard catch them? | ✅ 100% of router v2's AISHELL-4 regret is hallucination-driven (separated tracks with CR > 3.0). ❌ CR guard misses 97% of hallucination regrets — the hallucinations are diverse (not repetitive), so the CR > 3.0 threshold catches only the catastrophic tail. The failure is _diverse hallucination_, not _repetitive hallucination_. | `results/frontier/router_failure_modes/failure_mode_analysis.py`, `failure_mode_results.csv/.json`, `FINDINGS.md` |
 
-**Design choices and justification (iteration 3):**
+**Design choices and justification:**
 
 - **Why Cohen's d and Hedges' g (RQ11)?** Cohen's d is the standard effect-size measure for pairwise comparisons; Hedges' g applies a small-sample bias correction (J factor), appropriate given our n=20 pairings per overlap ratio. We report both to be transparent about the correction's impact. Post-hoc power is computed via the noncentral t CDF (Gauss-Laguerre quadrature) rather than the normal approximation, because n=20 is small enough that the t-distribution's heavier tails matter.
 - **Why Gauss-Laguerre quadrature for the noncentral t CDF (RQ11)?** The noncentral t distribution has no closed-form CDF; numerical integration is required. Gauss-Laguerre quadrature (20 nodes) on the integral representation converges to <1e-6 error vs scipy's `nct.cdf`, and is deterministic (no Monte Carlo noise).
 - **Why decompose by CR > 3.0 threshold (RQ12)?** The CR > 3.0 threshold is the router v2 deployment threshold (compression-ratio guard). Decomposing regret by whether the guard _should_ have caught it (CR > 3.0) vs whether it _did_ catch it reveals the guard's coverage. The finding that 97% of regrets have CR < 3.0 (diverse hallucination) means the guard is calibrated for the wrong failure mode — it expects repetitive hallucination but AISHELL-4 produces diverse hallucination.
 
-**Honest limitations (iteration 3):**
+**Honest limitations:**
 
 - RQ11's effect sizes are computed on the same data that produced the original findings (no new data) — they characterize the existing evidence, not new evidence.
 - RQ10's silence penalty is calibrated, not measured (see Thread 7).
 - RQ12's failure mode decomposition is on AISHELL-4 only (n=8 utterances with regret) — the 97% miss rate is a point estimate with wide CI on n=8.
 
-**New modules and artifacts (iteration 3):**
+**New modules and artifacts:**
 
 - `results/frontier/statistical_robustness/effect_size_analysis.py` — Cohen's d, Hedges' g, post-hoc power via noncentral t CDF
 - `results/frontier/decision_theoretic_routing/pomdp_per_utterance.py` — per-utterance POMDP with silence-fraction state dimension
 - `results/frontier/router_failure_modes/failure_mode_analysis.py` — router v2 regret decomposition on AISHELL-4
 
-All iteration 3 findings labeled `experimental/frontier`. No gold tables or verified references touched.
+All findings labeled `experimental/frontier`. No gold tables or verified references touched.
+
+#### Diverse hallucination detection, hallucination taxonomy, and POMDP regret bounds
+
+These studies followed directly from the router failure mode decomposition (RQ12): if the CR guard misses 97% of AISHELL-4 hallucination because it is diverse rather than repetitive, then (a) what detector catches diverse hallucination, (b) what are the distinct hallucination modes, and (c) can a theoretical regret bound explain why the router generalizes on gold but fails on AISHELL-4?
+
+| PR | Study | RQ | Outcome | Evidence |
+|---|---|---|---|---|
+| #906 | **Diverse hallucination detector (RQ13)** | Can a language-id entropy detector catch what CR misses? | ✅ **H13a SUPPORTED**: language-id entropy achieves 94.6% sensitivity (CR: 2.7%). ❌ H13b NOT SUPPORTED: token-type diversity is degenerate (0% sensitivity at 90% specificity). ✅ H13c SUPPORTED: ensemble achieves 94.6% at 95% specificity, but adds little over language-id entropy alone. The CR statistic is the wrong detector for diverse hallucination, not just the wrong threshold. | `results/frontier/diverse_hallucination_detector/` |
+| #905 | **Hallucination taxonomy (RQ14)** | What are the distinct hallucination modes on AISHELL-4? | ❌ **H14a NOT SUPPORTED**: multilingual mixing is only 10.8% (not > 50%). The vivid "multilingual gibberish" is the minority. ✅ H14b SUPPORTED: repetition is 2.7% (< 10%). ✅ H14c SUPPORTED: distinct CR profiles per mode (permutation p=0.0016). The dominant mode is insertion-dominated (51.4%) — single-script hallucinated text inserted into silence gaps. Language-id entropy guard catches 81.1% vs CR's 2.7%. | `results/frontier/hallucination_taxonomy/` |
+| #907 | **POMDP regret bounds (RQ15)** | Can we derive theoretical regret bounds explaining router success on gold and failure on AISHELL-4? | ✅ **H15a SUPPORTED**: O(1/n²) curvature bound under sharp-crossover assumption (slope=-2.000), implying O(1/n). Bound is nearly tight: 0.00183 vs empirical 0.00182 (0.6% gap). ✅ H15b SUPPORTED: adding the silence dimension breaks the sharp-crossover assumption — second sign-change appears at g=0.2, crossover vanishes at g>=0.4. ✅ H15c SUPPORTED: L_g-Lipschitz silence reward (L_g=1.5) restores O(L_g/n²) bound for the per-utterance POMDP. | `results/frontier/pomdp_regret_bounds/` |
+
+**Design choices and justification:**
+
+- **Why language-id entropy over other diversity metrics (RQ13)?** The hallucination on AISHELL-4 is characterised by Unicode script mixing (Han + Latin + Hiragana + Hangul). Shannon entropy over script categories directly measures this mixing. Token-type diversity (TTR) failed because character-level tokenization (no Chinese segmenter under stdlib-only) saturates at TTR=1.0 for short clean tracks — a length confound. Language-id entropy has no such confound because clean Chinese meeting speech is monoscript (entropy = 0.00 bits).
+- **Why classify by precedence in the taxonomy (RQ14)?** The modes are not mutually exclusive in principle (a track can be both multilingual and insertion-dominated). We use precedence ordering (repetition > multilingual > insertion > substitution > semantic_drift) to ensure mutually exclusive classification. The precedence is chosen so that the most diagnostically specific mode wins — repetition (CR > 2.4) is the most specific, then multilingual mixing (>= 3 scripts), then insertion (length ratio > 2).
+- **Why the sharp-crossover assumption for the regret bound (RQ15)?** The gold benchmark's reward function has a single sign-change at r* ≈ 0.17 (the separation tax crossover). This is an empirical fact, not an assumption. The bound formalizes why the simple CR-threshold router is near-optimal: the reward curvature at the crossover is small, so the discretization error (stratum width)² × curvature is tiny. The bound breaks on AISHELL-4 because the silence dimension introduces a second sign-change — the assumption is violated, not the bound.
+
+**Honest limitations:**
+
+- RQ13's ensemble is fit in-sample (no cross-validation due to n=37). However, language-id entropy alone is a single threshold with no fitting, so the headline result (94.6% sensitivity) holds regardless of overfitting concerns.
+- RQ14's classification heuristics are approximate — "insertion-dominated" uses a length-ratio > 2 threshold, and "semantic drift" is a residual catch-all. The taxonomy is indicative, not definitive.
+- RQ15's bounds are upper bounds, not tight lower bounds. The 0.6% gap on gold is encouraging but may not hold for other reward functions. The Lipschitz constant L_g=1.5 is from the affine silence model, not measured.
+
+**New modules and artifacts:**
+
+- `results/frontier/diverse_hallucination_detector/diverse_detector_analysis.py` — language-id entropy, token diversity, character-set diversity, ensemble detector
+- `results/frontier/hallucination_taxonomy/taxonomy_analysis.py` — 5-mode hallucination classification with detectability matrix
+- `results/frontier/pomdp_regret_bounds/regret_bound_analysis.py` — theoretical regret bounds with curvature and Lipschitz analysis
+
+All findings labeled `experimental/frontier`. No gold tables or verified references touched.
 
 ---
 

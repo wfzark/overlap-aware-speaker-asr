@@ -51,6 +51,9 @@ Multi-speaker ASR is a practical problem in meeting transcription, call center a
 | POMDP decision-theoretic framework | Decision-theoretic POMDP matches router v2 (crossover 0.20 vs 0.17, divergence 0.03) | experimental/frontier |
 | Effect size & post-hoc power (RQ11) | 5/6 BH-survivors practically significant (Cohen's d > 0.5); 9/11 non-survivors genuinely small (not underpowered) | experimental/frontier |
 | Router failure modes (RQ12) | 100% of router v2's AISHELL-4 regret is hallucination-driven; CR guard misses 97% (diverse, not repetitive, hallucination) | experimental/frontier |
+| Diverse hallucination detector (RQ13) | Language-id entropy achieves 94.6% sensitivity vs CR's 2.7% — CR is the wrong statistic, not just the wrong threshold | experimental/frontier |
+| Hallucination taxonomy (RQ14) | Insertion-dominated is the majority mode (51.4%); multilingual mixing is only 10.8% — the "gibberish" surface form is the minority | experimental/frontier |
+| POMDP regret bounds (RQ15) | O(1/n²) curvature bound is nearly tight on gold (0.6% gap); breaks when silence dimension adds a second sign-change (AISHELL-4) | experimental/frontier |
 
 ## What This Project Does Not Claim
 
@@ -327,14 +330,9 @@ the Mode-R repetition tail, keep compression-ratio for the Mode-N non-repetition
 confident-loop mechanism extends (not discovers) the 2025–26 attractor line; the token-id lock-in
 trip-wire and the offline-router gain-decay-under-prefix-forcing analysis are the novel slots.
 
-## Frontier Highlights — Academic Research Framing (A_framing/QiongQi)
+## Frontier Highlights — Statistical Robustness, External Validation, and Decision-Theoretic Framework
 
-A 2026 academic-research-framing iteration (Issues #881–#892, PRs #886–#894) subjected the project's
-21+ frontier findings to academic-grade scrutiny: Benjamini-Hochberg multiple-testing correction,
-AISHELL-4 external validation, a POMDP decision-theoretic framework, an emotion-ASR asymmetry
-mechanism, and Interspeech 2026 venue positioning. Full framing artifacts:
-`RESEARCH/overlap-aware-speaker-asr/framing/` · theoretical framework:
-`RESEARCH/overlap-aware-speaker-asr/theoretical_framework.md`.
+The project's 21+ frontier findings were subjected to academic-grade scrutiny: Benjamini-Hochberg multiple-testing correction, AISHELL-4 external validation, a POMDP decision-theoretic framework, an emotion-ASR asymmetry mechanism, theoretical regret bounds, and Interspeech 2026 venue positioning. Full framing artifacts: `RESEARCH/overlap-aware-speaker-asr/framing/` · theoretical framework: `RESEARCH/overlap-aware-speaker-asr/theoretical_framework.md`.
 
 | Result | Outcome | Evidence |
 |---|---|---|
@@ -345,11 +343,19 @@ mechanism, and Interspeech 2026 venue positioning. Full framing artifacts:
 | [AISHELL-4 external validation](results/external_sanity_check/aishell4/) (#890) | ❌ H1a NOT SUPPORTED: router v2 cpWER 1.206 vs always-mixed 1.173 (router LOSES). ✅ H1b SUPPORTED: separation tax replicates | `results/external_sanity_check/aishell4/` |
 | [Report integration](REPORT.md) (#893) | ✅ 5 new sections added to REPORT.md (§18–§22); 8 claims downgraded; abstract updated with honest BH bounds | `REPORT.md` |
 | [Silence-aware gate](results/frontier/silence_aware_gate/) (#894) | ◐ H8 CONDITIONALLY SUPPORTED by mechanism analysis; cpWER validation pending Whisper install | `results/frontier/silence_aware_gate/` |
+| [Effect size & post-hoc power](results/frontier/statistical_robustness/) (#898) | ✅ 5/6 BH-survivors practically significant (Cohen's d > 0.5); 9/11 non-survivors genuinely small (not underpowered) | `results/frontier/statistical_robustness/` |
+| [Per-utterance POMDP](results/frontier/decision_theoretic_routing/) (#899) | ✅ P(mixed)=1.00 for silence-gap high-overlap windows — predicts AISHELL-4 failure that stratum-level POMDP cannot | `results/frontier/decision_theoretic_routing/` |
+| [Router failure modes](results/frontier/router_failure_modes/) (#900) | ✅ 100% of router v2's AISHELL-4 regret is hallucination-driven; CR guard misses 97% (diverse, not repetitive) | `results/frontier/router_failure_modes/` |
+| [Diverse hallucination detector](results/frontier/diverse_hallucination_detector/) (#906) | ✅ Language-id entropy achieves 94.6% sensitivity vs CR's 2.7% — CR is the wrong statistic for diverse hallucination | `results/frontier/diverse_hallucination_detector/` |
+| [Hallucination taxonomy](results/frontier/hallucination_taxonomy/) (#905) | ✅ Insertion-dominated is the majority mode (51.4%); multilingual mixing is only 10.8% — distinct CR profiles per mode (p=0.0016) | `results/frontier/hallucination_taxonomy/` |
+| [POMDP regret bounds](results/frontier/pomdp_regret_bounds/) (#907) | ✅ O(1/n²) curvature bound nearly tight on gold (0.6% gap); breaks when silence dimension adds second sign-change | `results/frontier/pomdp_regret_bounds/` |
 
 These are `experimental/frontier` (or `external/sanity-check` for AISHELL-4); they are not gold-benchmark
-claims. The honest headline: 2 hypotheses falsified (H1a, H3), 2 supported (P1, P2), 1 borderline (P3).
+claims. The honest headline: 4 hypotheses falsified (H1a, H3, H13b, H14a), 8 supported (P1, P2, H13a, H13c, H14b, H14c, H15a-c), 1 borderline (P3).
 The BH correction and AISHELL-4 negative bound the project's claims — 11 findings downgraded from
 "demonstrates" to "suggests", and the router does not generalize beyond the controlled debate corpus.
+The diverse hallucination detector (language-id entropy, 94.6% sensitivity) and POMDP regret bounds
+(O(1/n²) nearly tight on gold) are the strongest new contributions toward a deployable and theoretically grounded router.
 
 ## Frontier Highlights — AudioDepth Router (frontier branch only)
 
