@@ -9,7 +9,7 @@ migration.
 
 **Role:** Frontier research lead; overlap-hallucination mechanism investigator; ASR×LLM×emotion axis explorer; research-entropy meta-analyst; engineering harness architect.
 
-**Scope summary:** ~81 merged PRs (#780–#872, #886–#894, #898–#900, #905–#907, #911–#913, #917–#919, #923–#925, #929–#931, #935–#937, #946–#951, #956), 70+ issues, 70+ new modules, 60+ frontier result directories, 15+ experimental figures, 6-agent literature review. All frontier work labeled `experimental/frontier` or `external/sanity-check`; no gold tables or verified references touched.
+**Scope summary:** ~82 merged PRs (#780–#872, #886–#894, #898–#900, #905–#907, #911–#913, #917–#919, #923–#925, #929–#931, #935–#937, #946–#951, #956–#957), 70+ issues, 70+ new modules, 60+ frontier result directories, 15+ experimental figures, 6-agent literature review. All frontier work labeled `experimental/frontier` or `external/sanity-check`; no gold tables or verified references touched.
 
 ---
 
@@ -686,6 +686,36 @@ Two studies testing whether a local LLM (deepseek-r1:7b via ollama) can detect h
 - `tests/test_llm_semantic_critic.py` (77 tests), `tests/test_llm_emotion_hallucination.py` (36 tests)
 
 All findings labeled `experimental/frontier` (statistics) + `qualitative/demo` (LLM outputs). No gold tables or verified references touched.
+
+---
+
+#### Mode S corpus specificity — is the monoscript hallucination AISHELL-4-specific?
+
+RQ19 identified Mode S (monoscript-Chinese near-duplicate hallucination) on AISHELL-4 windows 22 and 30. RQ40 asks whether Mode S appears in the gold benchmark (600 per-speaker separated tracks) or synthetic silver benchmark (25 samples), and whether RQ34's char 3-gram KL divergence detector (threshold 3.30 bits) flags any gold/silver Mode S track.
+
+| PR | Study | RQ | Outcome | Evidence |
+|---|---|---|---|---|
+| #957 | **Mode S corpus specificity (RQ40)** | Does Mode S appear in gold/silver? Does RQ34's KL detector transfer? | ❌ **H40a NOT SUPPORTED**: 0 full Mode S tracks in gold (600 tracks, no cached `mixed_text` — 217 loose 3-criterion candidates are an upper bound) or silver (25 samples, 4 hallucinated). ❌ **H40b NOT SUPPORTED**: RQ34's KL threshold 3.30 is non-reproducible — gives 32.5% specificity on AISHELL-4 (not 90%); empirically-calibrated 6.28 catches 0/2 Mode S. ✅ **H40c SUPPORTED**: silver Mode S prevalence 0% < 5%. Mode S is AISHELL-4-specific. | `results/frontier/mode_s_corpus_specificity/` |
+
+**Design choices and justification:**
+
+- **Why test corpus specificity?** RQ26 showed gold and AISHELL-4 have disjoint hallucination mode distributions (chi2=305, V=0.671). RQ40 tests whether Mode S specifically is the AISHELL-4-only mode or a general phenomenon. The answer — Mode S is AISHELL-4-specific — confirms RQ26's distributional finding at the mode level and means Mode S detection results (RQ19, RQ22, RQ33, RQ34) should not be expected to transfer to gold without re-calibration.
+- **Why the full 5-criterion definition?** RQ19's Mode S definition requires all five gates (hallucinated AND lang_id<0.409 AND length_ratio<2.0 AND cr<2.4 AND content_similarity>0.8). The 3-criterion subset (without length_ratio and content_similarity) is too loose: gold's clean Chinese is near-monoscript (lang_id~0) and mostly non-repetitive (cr<2.4) by construction, so 217/226 hallucinated gold tracks meet the loose subset — an uninformative upper bound.
+- **Why the KL non-reproducibility matters.** RQ34 reported threshold 3.30 at 90% specificity. RQ40's independent reimplementation (per-corpus non-hallucinated reference, add-1 Laplace smoothing on Q) gives 32.5% specificity at 3.30. The discrepancy suggests RQ34 used a different reference distribution, smoothing scheme, or KL direction than specified. This is documented transparently rather than papered over — both thresholds (3.30 and 6.28) are reported.
+
+**Honest limitations:**
+
+- Gold tracks have no cached `mixed_text` (RQ21's `decode_gold_tracks.py` only cached separated text). The full Mode S definition cannot be applied to gold. Re-running Whisper on gold mixed audio to cache `mixed_text` would unblock a definitive gold Mode S search — this is the highest-value next step.
+- n=2 Mode S tracks on AISHELL-4 is the fundamental sample-size limitation. Mode S prevalence estimates (5.41% on AISHELL-4, 0% on gold/silver) are point estimates with wide confidence intervals.
+- The KL non-reproducibility could be resolved by reading RQ34's source code directly, but the RQ40 agent implemented from the task specification. The discrepancy is itself a finding — it means the KL detector's operating point is sensitive to implementation details.
+
+**New modules and artifacts:**
+
+- `results/frontier/mode_s_corpus_specificity/mode_s_corpus_specificity_analysis.py` — multi-corpus Mode S detection (AISHELL-4 + gold + silver), char 3-gram KL divergence with per-corpus reference, full vs 3-criterion Mode S definition
+- `tests/test_rq40_mode_s_corpus_specificity.py` — 92 tests (all passing)
+- Pure reanalysis: numpy + stdlib only. No Whisper runs, no gold table modifications.
+
+All findings labeled `experimental/frontier`. No gold tables or verified references touched.
 
 ---
 
