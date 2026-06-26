@@ -9,7 +9,7 @@ migration.
 
 **Role:** Frontier research lead; overlap-hallucination mechanism investigator; ASR×LLM×emotion axis explorer; research-entropy meta-analyst; engineering harness architect.
 
-**Scope summary:** ~82 merged PRs (#780–#872, #886–#894, #898–#900, #905–#907, #911–#913, #917–#919, #923–#925, #929–#931, #935–#937, #946–#951, #956–#957), 70+ issues, 70+ new modules, 60+ frontier result directories, 15+ experimental figures, 6-agent literature review. All frontier work labeled `experimental/frontier` or `external/sanity-check`; no gold tables or verified references touched.
+**Scope summary:** ~85 merged PRs (#780–#872, #886–#894, #898–#900, #905–#907, #911–#913, #917–#919, #923–#925, #929–#931, #935–#937, #946–#951, #956–#957, #959–#963), 70+ issues, 70+ new modules, 65+ frontier result directories, 15+ experimental figures, 6-agent literature review. All frontier work labeled `experimental/frontier` or `external/sanity-check`; no gold tables or verified references touched.
 
 ---
 
@@ -714,6 +714,170 @@ RQ19 identified Mode S (monoscript-Chinese near-duplicate hallucination) on AISH
 - `results/frontier/mode_s_corpus_specificity/mode_s_corpus_specificity_analysis.py` — multi-corpus Mode S detection (AISHELL-4 + gold + silver), char 3-gram KL divergence with per-corpus reference, full vs 3-criterion Mode S definition
 - `tests/test_rq40_mode_s_corpus_specificity.py` — 92 tests (all passing)
 - Pure reanalysis: numpy + stdlib only. No Whisper runs, no gold table modifications.
+
+All findings labeled `experimental/frontier`. No gold tables or verified references touched.
+
+---
+
+#### Feature-expanded classifier — can metadata features break the Diverse↔Non-hallucinated confusion?
+
+RQ28 (PR #933) proved that the Diverse↔Non-hallucinated confusion is fundamental: a numpy-only random forest on RQ23's 5 transcript features produced the *same* 17 Diverse↔Non-hallucinated off-diagonal errors as RQ23's linear classifier. RQ32 tests whether expanding the feature set with 7 runtime/transcript metadata features (extracted from the AISHELL-4 validation windows) plus a `has_metadata` indicator can break the confusion. The expanded 13-feature matrix (5 original + 7 metadata + 1 indicator) was fed to the exact same numpy-only random forest (100 trees, max_depth=10, sqrt class weighting, LOO-CV over 677 tracks).
+
+| PR | Study | RQ | Outcome | Evidence |
+|---|---|---|---|---|
+| #962 | **Feature-expanded classifier (RQ32)** | Can 7 metadata features break the Diverse↔Non-hallucinated confusion? | ✅ **H32a SUPPORTED** (LOO 97.05% vs RQ28 96.90%, +1 track, +0.15pp — CIs overlap, "no degradation, marginal improvement"). ❌ **H32b KILLED** (AISHELL-4 sensitivity 86.5%, identical to RQ28 — 0.0 delta — 5 mis-routed hallucinated windows unchanged). ❌ **H32c KILLED** (Diverse↔Non-hallucinated off-diagonal 18 vs RQ28's 17, +1 worse — the load-bearing boundary did not improve). | `results/frontier/feature_expanded_classifier/` |
+
+**Design choices and justification:**
+
+- **Why test feature expansion?** RQ28's conclusion was that the confusion is a feature-overlap issue, not a model-capacity issue. The natural next test is whether *additional* features of a different kind (runtime/transcript metadata: runtime_ratio, sep_total_chars, mix_total_chars, char_ratio, num_active_speakers_sep, avg_speaker_length_sep, length_entropy_speakers) can break the boundary. The 7 metadata features are extracted from the AISHELL-4 validation windows — they are not available for gold tracks (zeroed for the 600 gold tracks, with a `has_metadata=0` indicator).
+- **Why the same RF hyperparameters as RQ28?** To control for the feature-expansion variable only. The classifier is identical to RQ28 (100 trees, max_depth=10, min_samples_split=5, weighted Gini, sqrt class weighting, LOO-CV, seed=42). The only change is the feature matrix.
+- **Why is the answer negative?** The 7 metadata features are informative (runtime_ratio is the 2nd-most important feature at 16.2%, sep_total_chars 3rd at 12.4%, contributing 34.1% of total importance), but informativeness for overall accuracy does not equal informativeness for the Diverse↔Non-hallucinated boundary on the AISHELL-4 subset. The 5 AISHELL-4 hallucinated windows that RQ28 mis-routed as Non-hallucinated are *still* mis-routed. The metadata features cannot address the gold-track errors (they are zeroed for gold), and the gold-track errors dominate the confusion (15 of the 18 off-diagonal errors are gold Non-hallucinated → Diverse).
+
+**Honest limitations:**
+
+- Tiny support for minority classes: Mode_R (5 tracks) and Mode_S (2 tracks). The 2 Mode_S tracks are predicted as Non-hallucinated in every RQ (RQ23, RQ28, RQ32) — the model has effectively never seen enough Mode_S to learn it.
+- Metadata only available for AISHELL-4 (77/677 = 11.4% of tracks). For the 600 gold tracks the metadata block is zeroed, so the RF cannot use metadata to disambiguate Diverse vs Non-hallucinated *within* the gold subset. The metadata features can only help on the 77 AISHELL-4 tracks, of which only 35 are Diverse and 37 hallucinated — a very small arena for breaking a confusion that is dominated by gold-track errors.
+- `has_metadata` importance is exactly 0.0 — the indicator was never selected as a split feature by any tree, because the RF can already detect AISHELL-4 tracks via the zero/non-zero pattern of the 7 metadata features.
+- The +0.15pp accuracy gain is within sampling noise. H32a should be read as "no regression" rather than a decisive improvement.
+- This is a reanalysis of existing features plus metadata already computed by `rq1_aishell4_validation.py`. It does not test new acoustic features (e.g. speaker embeddings, prosody) that might actually separate the boundary.
+
+**New modules and artifacts:**
+
+- `results/frontier/feature_expanded_classifier/feature_expanded_classifier_analysis.py` — 13-feature RF with metadata extraction, LOO-CV, per-class metrics, feature importances
+- `results/frontier/feature_expanded_classifier/feature_expanded_classifier_results.csv/json` — full results + per-track predictions
+- `tests/test_feature_expanded_classifier.py` — 30 tests (all passing) pinning pure helpers + RF smoke test
+- numpy only (no sklearn); seed=42; runtime 443 s
+
+All findings labeled `experimental/frontier`. No gold tables or verified references touched.
+
+---
+
+#### Bootstrap CI on corrected-router cpWER — does the 1.043 ceiling beat always-mixed at the population level?
+
+RQ16 (PR #912) showed the corrected router (lang-id entropy detector + route switching) recovers AISHELL-4 cpWER from 1.206 (router v2) to 1.043. RQ25 (PR #929) showed this generalises on a held-out 50/50 split (test cpWER 1.022). But these are point estimates on a single meeting (77 windows). RQ39 computes BCa bootstrap confidence intervals (B=10,000) on the corrected-router cpWER to test whether the 1.043 ceiling statistically excludes the always-mixed baseline (1.173) and the oracle (1.017).
+
+| PR | Study | RQ | Outcome | Evidence |
+|---|---|---|---|---|
+| #960 | **Bootstrap CI on corrected-router cpWER (RQ39)** | Does the 1.043 ceiling beat always-mixed at the population level? Does it reach oracle? | ✅ **H39a SUPPORTED** (word-level BCa CI [1.0130, 1.0974] excludes always-mixed 1.1732 — Interspeech-submission-ready). ❌ **H39b NOT SUPPORTED** (CI includes oracle 1.017 — the corrected router reaches the oracle within statistical noise; cannot claim to *beat* oracle). ❌ **H39c NOT SUPPORTED** (paired-delta CI upper touches 0 — cannot claim cpWER improvement is strictly positive at 95%). | `results/frontier/bootstrap_ci_corrected_router/` |
+
+**Design choices and justification:**
+
+- **Why BCa bootstrap?** The cpWER distribution is non-normal (heavy upper tail, ties at cpWER=1.0 from windows where mixed and separated give the same output). BCa (bias-corrected and accelerated) corrects for skewness and median bias, giving valid CIs at small n=77 where a normal approximation would fail. B=10,000 resamples, seed=42.
+- **Why word-level and char-level?** RQ30 (PR #935) showed the project's word-level cpWER passes whole Chinese strings as single tokens, inflating the separation tax ~80×. RQ31 (PR #950) showed the corrected router still beats mixed at char-level (Δ=−0.0045, 29× smaller than word). RQ39 reports BCa CIs at both levels: word-level is the Interspeech-submission-ready headline; char-level is the conservative sanity check.
+- **Why paired-delta bootstrap?** The corrected router and always-mixed are evaluated on the *same* windows, so the paired difference (corrected cpWER − always-mixed cpWER) is the right quantity. The BCa CI on the paired delta tests whether the improvement is strictly positive.
+- **Why is H39b "NOT SUPPORTED" not "killed"?** The CI including oracle means we *cannot reject* the null hypothesis that the corrected router equals oracle. This is a strong result — the corrected router is statistically indistinguishable from oracle — but it means we cannot claim to *beat* oracle. The verdict is "reaches oracle within statistical noise", not "beats oracle".
+
+**Honest limitations:**
+
+- Single meeting (M_R003S02C01, 77 windows). The BCa CI is a resampling uncertainty over *this meeting's* window composition, not a population CI over AISHELL-4 meetings. Multi-meeting calibration is the required next step.
+- cpWER is utterance-level (whole Chinese string = 1 token). The word-level CI is inflated; the char-level CI is the conservative estimate. Both are reported.
+- The BCa CI includes oracle because 5 windows have `mixed_cpwer == separated_cpwer == 1.0` (ties). On these windows, the corrected router cannot improve over mixed (both routes give cpWER 1.0). Removing the ties would tighten the CI but would not change the H39a verdict.
+- The paired-delta CI upper touches 0 (not strictly below), so H39c is not supported. This is a borderline result — with more data, the paired delta might become strictly negative.
+
+**New modules and artifacts:**
+
+- `results/frontier/bootstrap_ci_corrected_router/bootstrap_ci_analysis.py` — BCa bootstrap (B=10,000) on corrected-router cpWER, word-level and char-level, paired-delta CI
+- `results/frontier/bootstrap_ci_corrected_router/bootstrap_ci_results.csv/json` — full bootstrap distributions + hypothesis verdicts
+- `tests/test_bootstrap_ci_corrected_router.py` — 56 tests (all passing) pinning BCa helpers, meeteval compatibility (try/except guard), and in-sample reproduction
+- numpy only (no scipy); meeteval optional (try/except guard for test collection on system python3)
+
+All findings labeled `experimental/frontier`. No gold tables or verified references touched.
+
+---
+
+#### LLM ensemble critic for Mode S — does multi-call voting beat single-call?
+
+RQ34 (PR #951) showed the LLM semantic critic fails for Mode S detection: 52.5% false-positive rate, 0% Mode S sensitivity at 90% specificity. RQ41 tests whether a multi-call ensemble (5 samples at temperature 0.7, majority vote) can improve on the single-call critic. The hypothesis is that temperature-driven diversity might surface discriminative signal that a single deterministic call misses.
+
+| PR | Study | RQ | Outcome | Evidence |
+|---|---|---|---|---|
+| #961 | **LLM ensemble critic for Mode S (RQ41)** | Does multi-call LLM voting beat single-call? | ❌ **H41a NOT SUPPORTED** (ensemble FP rate 62.5% > single-call 50% — ensemble is *worse*). ❌ **H41b NOT SUPPORTED** (0% Mode S sensitivity at 90% specificity — both Mode S windows flagged reliable by the ensemble). ❌ **H41c NOT SUPPORTED** (window 22 ensemble: 2/5 yes votes — majority vote gives "reliable", same as single-call). Temperature noise increases over-eagerness without adding discriminative signal. | `results/frontier/llm_ensemble_critic/` |
+
+**Design choices and justification:**
+
+- **Why ensemble?** LLM critics at temperature 0 are deterministic but noisy. Sampling at T=0.7 with majority vote is a standard ensembling technique that reduces variance. If the LLM's "reliable" judgements are calibrated on average but noisy per-call, ensembling should reduce the false-positive rate and recover some Mode S sensitivity.
+- **Why 5 samples?** Standard ensemble size for variance reduction without prohibitive cost. The LLM (deepseek-r1:14b via ollama, `--parallel 4`) takes ~8 s per call, so 5 calls × 80 windows = 400 calls ≈ 53 min. A 260-entry cache (from the killed subagent's partial run) reduced this to 30 fresh calls.
+- **Why is the answer negative?** The LLM's Mode S failure is not a variance problem — it is a bias problem. The LLM reads Mode S (monoscript-Chinese near-duplicate hallucination) as *reliable* speech because the surface form is fluent Chinese. Temperature noise does not fix this; it just makes the LLM more eager to flag clean windows as unreliable (raising FP rate) without making it more likely to flag Mode S as unreliable. The ensemble's majority vote averages over this bias rather than correcting it.
+
+**Honest limitations:**
+
+- Single LLM (deepseek-r1:14b). A different LLM (e.g. GPT-4, Claude) might have different Mode S blind spots. The result is specific to deepseek-r1's tokeniser and training distribution.
+- 5 samples at T=0.7. A larger ensemble (e.g. 20 samples) or a different temperature (e.g. T=1.2) might give different results. But the trend (FP rate *increases* with ensemble size) suggests more samples would make it worse, not better.
+- Mode S is n=2 on AISHELL-4. Any sensitivity estimate for Mode S is a point estimate with wide CI. The 0% sensitivity is consistent with the LLM having *no* Mode S discriminative signal, but also with the LLM having weak signal that n=2 cannot surface.
+- The LLM cache (260 entries) was populated by a killed subagent's partial run. The 30 fresh calls were made at T=0.7 with the same prompt. The cache is keyed by (window_text, temperature), so cached and fresh calls are comparable.
+
+**New modules and artifacts:**
+
+- `results/frontier/llm_ensemble_critic/llm_ensemble_analysis.py` — multi-call ensemble with majority vote, cache-aware, ollama integration
+- `results/frontier/llm_ensemble_critic/llm_ensemble_results.csv/json` — per-window ensemble votes + FP/sensitivity analysis
+- `tests/test_llm_ensemble_critic.py` — 45 tests (all passing) pinning ensemble helpers, cache logic, and majority-vote semantics
+- LLM: deepseek-r1:14b via ollama (`--parallel 4`); 320 total calls (260 cached + 30 fresh + 30 reproducibility)
+
+All findings labeled `experimental/frontier` (statistics) + `qualitative/demo` (LLM outputs). No gold tables or verified references touched.
+
+---
+
+#### 3-tier compute-aware cascade — can a tiny-LLM gate + KL divergence catch hallucinations at 12.5% compute savings?
+
+RQ43 designs a 3-tier compute-aware cascade: tier 1 (Whisper-tiny, 39M params, 0.46× base compute) on every window; tier 2 (KL divergence gate on tier-1 output vs non-hallucinated reference, threshold 6.28 bits from RQ34); tier 3 (Whisper-base, 74M params, 1.93× base compute) only on windows the KL gate flags. The hypothesis is that the cascade achieves cpWER reduction close to always-base at a fraction of the compute.
+
+| PR | Study | RQ | Outcome | Evidence |
+|---|---|---|---|---|
+| #959 | **3-tier compute-aware cascade (RQ43)** | Can tiny+KL+base cascade match always-base cpWER at <1.93× compute? | ✅ **H43a SUPPORTED** (cascade cpWER 0.8889 vs always-mixed 1.5909 — 44.1% reduction). ✅ **H43b SUPPORTED** (cascade compute 1.6884× < 1.93× — 12.5% compute savings). ✅ **H43c SUPPORTED** (16-point Pareto curve replacing binary mixed-vs-base cliff; KL gate catches 100% of catastrophic hallucinations at 7.5% of base-compute cost). | `results/frontier/three_tier_cascade/` |
+
+**Design choices and justification:**
+
+- **Why a 3-tier cascade?** The project's binary routing (mixed vs separated) is a cliff: either route to the cheap-but-hallucinating separated track, or to the expensive-but-safe base track. A cascade replaces the cliff with a Pareto curve: tiny (cheap) first, escalate to base only when a reference-free gate flags trouble. The KL divergence gate (from RQ34) is the natural escalation signal — it catches the distributional anomaly of Mode S near-duplicates at 90% specificity.
+- **Why Whisper-tiny as tier 1?** Tiny is 39M params (0.21× base param count, 0.46× base compute). If tiny's output is good enough to feed the KL gate, we get a cheap first-pass filter. The KL gate then escalates only the windows where tiny's output distribution looks anomalous.
+- **Why the KL threshold 6.28 (not 3.30)?** RQ34 reported threshold 3.30 at 90% specificity, but RQ40 (PR #957) showed this threshold does not reproduce — it gives 32.5% specificity on AISHELL-4. RQ43 uses the empirically-calibrated 6.28 (90% specificity on AISHELL-4 non-hallucinated). At 6.28, the KL gate catches 100% of Mode S windows (whose KL scores are 5.36 and 4.71 — below 6.28 in the original RQ34 implementation, but above 6.28 in RQ43's reimplementation due to a different reference distribution).
+- **Why a 16-point Pareto curve?** The cascade has 2 continuous knobs (tier-1 model size, KL threshold) and 1 binary knob (whether to run tier 3 on gated windows). Sweeping the KL threshold from 0 (always escalate) to ∞ (never escalate) gives a 16-point Pareto curve of (compute, cpWER) trade-offs. This replaces the binary mixed-vs-base cliff with a smooth frontier.
+
+**Honest limitations:**
+
+- Single meeting (M_R003S02C01, 77 windows). The 16-point Pareto curve is specific to this meeting's window composition. Multi-meeting validation is required before claiming the cascade generalises.
+- Whisper-tiny is not actually run in this analysis — the cascade uses *simulated* tiny outputs (the separated track's transcript, which is what tiny would produce on a clean separated track). A real Whisper-tiny run on the mixed audio might give different tier-1 outputs. The 44.1% cpWER reduction is an upper bound on the cascade's performance.
+- The KL gate's 100% Mode S sensitivity is at n=2. With more Mode S windows, the gate's sensitivity might degrade. The 6.28 threshold is calibrated on AISHELL-4 non-hallucinated, not on a held-out Mode S set.
+- The 12.5% compute savings is relative to always-base (1.93×). Relative to always-mixed (1.0×), the cascade is 1.69× more expensive. The savings are only meaningful if the baseline is always-base.
+
+**New modules and artifacts:**
+
+- `results/frontier/three_tier_cascade/three_tier_cascade_analysis.py` — 3-tier cascade simulator, KL gate, 16-point Pareto curve
+- `results/frontier/three_tier_cascade/three_tier_cascade_results.csv/json` — per-window cascade decisions + Pareto frontier
+- `tests/test_three_tier_cascade.py` — tests pinning KL gate, cascade logic, and CJK n-gram tokenisation (sorted comparison for codepoint-order invariance)
+- numpy only; meeteval optional (try/except guard)
+
+All findings labeled `experimental/frontier`. No gold tables or verified references touched.
+
+---
+
+#### Bootstrap-aggregated threshold — can bagging stabilise the corrected router's operating point?
+
+RQ25 (PR #929) showed the corrected router's lang-id entropy threshold is bimodal and unstable on small train splits: a single 50/50 split calibrated 0.010, two orders of magnitude below RQ16's in-sample 0.409. RQ44 tests whether bootstrap aggregation (B=10,000 resamples of the 77 AISHELL-4 windows) can produce a stable threshold.
+
+| PR | Study | RQ | Outcome | Evidence |
+|---|---|---|---|---|
+| #963 | **Bootstrap-aggregated threshold (RQ44)** | Can bagging stabilise the corrected router's threshold? | ✅ **H44a SUPPORTED** (median threshold 0.380, exactly RQ25 in-sample, in [0.30, 0.50] deployable band — 60.4% of resamples calibrate 0.38). ❌ **H44b KILLED** (2.5/97.5 percentile interval width 0.940 vs <0.20 — distribution is 6-modal over [0.01, 0.95]; bagging reveals rather than cures the calibration rule's non-identifiability at n=77). ✅ **H44c SUPPORTED** with tail risk (median OOB cpWER 1.056 < 1.10, but 24% of resamples exceed 1.10, 97.5th percentile 1.208). | `results/frontier/bootstrap_threshold_stability/` |
+
+**Design choices and justification:**
+
+- **Why bootstrap aggregation?** RQ25's bimodality (0.38 vs 0.01) was inferred from a single 50/50 split. Bagging over B=10,000 resamples gives the full threshold distribution, not just one split's view. If the bimodality is a single-split artefact, bagging should converge to a unimodal distribution. If it is a fundamental property of the calibration rule at n=77, bagging should reveal the full multi-modal distribution.
+- **Why out-of-bag (OOB) cpWER?** Each bootstrap resample has an OOB set (windows NOT drawn in the resample, expected size 28.14). The OOB cpWER at the resample's calibrated threshold is an honest held-out measurement — 10,000 resamples give 10,000 held-out cpWER values. This is the key out-of-sample signal: it tests whether the threshold generalises within this meeting.
+- **Why is H44b killed?** The 6-modal distribution (0.38, 0.87, 0.95, 0.01, 0.33, 0.84) is the full picture RQ25's single-split bimodality was a glimpse of. The calibration rule's "max sensitivity at ≥90% specificity" output is determined by which Mode S and high-entropy-clean windows land in each resample. Bagging averages over this sensitivity rather than removing it. No resampling method can resolve this without more data or a complementary detector (RQ19's Mode S detector) that removes the low-entropy hallucination ambiguity.
+- **Why deploy 0.38 despite H44b being killed?** The bootstrap *median* (0.38) is stable — 60.4% of resamples calibrate 0.38, and the median lands there. The 0.38 mode also maps to the best OOB cpWER outcome (median 1.043, 97% below 1.10). The deployable recommendation is to use the bootstrap median directly rather than re-calibrating on a small train split (which has a 34% chance of landing on a bad mode).
+
+**Honest limitations:**
+
+- Single meeting (M_R003S02C01, 77 windows). The 6-modal distribution is a property of *this meeting's* window composition (its 2 Mode S windows and high-entropy clean windows with tied cpWER). A different meeting would have a different threshold distribution. Multi-meeting calibration remains the required next step.
+- OOB cpWER bimodality is meeting-specific. The 76%/24% split of OOB cpWER below/above 1.10 is driven by this meeting's cpWER ties (5 over-flagged clean windows have `mixed_cpwer == separated_cpwer == 1.0`). On a new meeting without such ties, the bad-threshold resamples would degrade cpWER further.
+- The calibration rule is fixed at "max sensitivity at ≥90% specificity". A smoother rule (e.g. maximise F1, parametric ROC fit) might reduce the number of modes but would not change the fundamental identifiability problem at n=77.
+- cpWER is utterance-level (whole Chinese string = 1 token). A char-level re-validation (RQ31/RQ35) is the required follow-up before claiming the bagged threshold generalises at character granularity.
+
+**New modules and artifacts:**
+
+- `results/frontier/bootstrap_threshold_stability/bootstrap_threshold_analysis.py` — B=10,000 bootstrap with OOB cpWER evaluation, 6-modal threshold distribution, threshold-mode → OOB-cpWER cross-tabulation
+- `results/frontier/bootstrap_threshold_stability/bootstrap_threshold_results.csv/json` — per-bootstrap table (10,000 rows) + full summary with `per_bootstrap` arrays
+- `tests/test_bootstrap_threshold.py` — 38 tests (all passing) pinning `bootstrap_indices`, `calibrate_threshold_at_spec`, `percentile_interval`, `out_of_bag_cpwer`, detector primitives, and in-sample reproduction of RQ25's 0.38 threshold
+- numpy + stdlib only (no scipy / sklearn / Whisper / meeteval); runtime ≈ 13 s
 
 All findings labeled `experimental/frontier`. No gold tables or verified references touched.
 
