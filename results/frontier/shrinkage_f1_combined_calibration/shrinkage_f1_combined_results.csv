@@ -1,0 +1,6 @@
+lambda,in_sample_threshold,in_sample_expected_cpwer,in_sample_f1,thr_median,thr_p2_5,thr_p97_5,thr_interval_width,thr_n_unique,thr_n_modes_5pct,oob_cpwer_median,oob_cpwer_mean,oob_cpwer_p2_5,oob_cpwer_p97_5,oob_cpwer_interval_width,oob_frac_below_1_10,oob_frac_below_rq44,H66a_supported,H66b_supported,H66c_supported
+0.0,0.38,1.04329,0.933333,0.38,0.01,0.95,0.94,6,3,1.051724,1.061842,1.0,1.186762,0.186762,0.792,0.555,no,yes,yes
+0.01,0.38,1.04329,0.933333,0.38,0.14,0.87,0.73,5,2,1.05,1.060895,1.0,1.178161,0.178161,0.811,0.568,yes,yes,yes
+0.1,0.38,1.04329,0.933333,0.38,0.14,0.38,0.24,3,1,1.044444,1.048409,1.0,1.12965,0.12965,0.915,0.658,yes,yes,yes
+0.5,0.38,1.04329,0.933333,0.38,0.38,0.38,0.0,2,1,1.04,1.043014,1.0,1.101499,0.101499,0.965,0.707,yes,yes,yes
+1.0,0.38,1.04329,0.933333,0.38,0.38,0.38,0.0,1,1,1.04,1.042814,1.0,1.10119,0.10119,0.967,0.709,yes,yes,yes
