@@ -626,8 +626,9 @@ def main() -> None:
                             "ci_hi": float(p["cpwer_ci_hi"]),
                             "width": round(float(p["cpwer_ci_hi"]) - float(p["cpwer_ci_lo"]), 6)}
                 break
-    except (OSError, ValueError, KeyError):
-        pass
+    except (OSError, ValueError, KeyError) as exc:
+        print(f"[warn] RQ46 reference JSON unreadable ({exc}); "
+              f"falling back to hardcoded RQ46 anchors.", file=sys.stderr)
 
     # --- RQ54 F1 reference (read from RQ54 JSON for direct comparison)
     rq54_ref = {
@@ -645,8 +646,9 @@ def main() -> None:
         rq54_ref["f1_bca_width"] = float(rq54_data["bca_ci"]["width"])
         rq54_ref["f1_modes"] = int(
             rq54_data["bootstrap_threshold_distribution"]["n_modes_5pct"])
-    except (OSError, ValueError, KeyError):
-        pass
+    except (OSError, ValueError, KeyError) as exc:
+        print(f"[warn] RQ54 reference JSON unreadable ({exc}); "
+              f"falling back to hardcoded RQ54 anchors.", file=sys.stderr)
 
     summary: dict[str, Any] = {
         "label": "experimental/frontier",
