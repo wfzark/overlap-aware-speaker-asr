@@ -9,7 +9,7 @@ migration.
 
 **Role:** Frontier research lead; overlap-hallucination mechanism investigator; ASR×LLM×emotion axis explorer; research-entropy meta-analyst; engineering harness architect.
 
-**Scope summary:** ~105 merged PRs (#780–#872, #886–#894, #898–#900, #905–#907, #911–#913, #917–#919, #923–#925, #929–#931, #935–#937, #946–#951, #956–#993), 90+ issues, 90+ new modules, 85+ frontier result directories, 15+ experimental figures, 6-agent literature review. All frontier work labeled `experimental/frontier` or `external/sanity-check`; no gold tables or verified references touched.
+**Scope summary:** ~110 merged PRs (#780–#872, #886–#894, #898–#900, #905–#907, #911–#913, #917–#919, #923–#925, #929–#931, #935–#937, #946–#951, #956–#1003), 95+ issues, 95+ new modules, 90+ frontier result directories, 15+ experimental figures, 6-agent literature review. All frontier work labeled `experimental/frontier` or `external/sanity-check`; no gold tables or verified references touched.
 
 ---
 
@@ -1195,6 +1195,56 @@ RQ39 (word-level), RQ55 (char-level), and RQ58 (KL) all showed the corrected rou
 **Findings:** H64a SUPPORTED — at n=77 both BCa CIs include oracle (confirms RQ39/RQ55/RQ58). H64b KILLED — lang-id needs n=105 (1.36×), KL needs n=250 (3.25×); both < 770 (tractable!). H64c KILLED — effect sizes 0.026 (lang-id) and 0.013 (KL) are both > 0.01 (real, not negligible). **HEADLINE: the "corrected router reaches oracle within noise" verdict is a SAMPLE SIZE problem, not a real ceiling.** With ~105 windows (lang-id) or ~250 (KL), the BCa CI would EXCLUDE the oracle. KL needs more windows precisely because its effect is smaller (0.013 vs 0.026) — the usual small-effect / large-n trade-off. The KL exclusion at n=250 is genuinely tight: BCa lower bound 1.017333 vs oracle 1.017316 (margin 0.000017).
 
 **New modules:** `bootstrap_power_analysis.py`, `bootstrap_power_results.json`, `tests/test_bootstrap_power.py` (105 tests). numpy + stdlib only; runtime ≈ 15 s.
+
+#### Per-mode BCa CI decomposition — is "within noise" uniform or mode-driven?
+
+RQ55 (char-level) and RQ58 (KL) both found the corrected router's BCa CI includes the oracle. RQ70 asks: does the CI exclude oracle for some hallucination modes but not others? The 77 windows decompose into Mode S (2), Diverse hallucination (37), Non-hallucinated (38).
+
+**Method:** Classify each window per RQ14/RQ16 taxonomy. Compute BCa CI (B=10000, seed=42) on each mode subset. Compare to oracle (1.017 word / 0.877 char). Compute width ratio (max/min).
+
+**Findings:** H70a KILLED — non-Mode-S BCa CI includes oracle (at word-level, corrected == oracle on all 75/75 non-Mode-S windows, CI collapses to point 1.0). H70b KILLED — Mode S word CI [2.0, 2.0] excludes oracle from above (n=2, flagged unstable). H70c SUPPORTED — char-level width ratio 2.79 > 1.5. **HEADLINE: "within noise" is uniform in outcome but heterogeneous in mechanism.** Mode S is the SOLE source of word-level regret (100% of word-level gap to oracle), but has ZERO char-level regret. The char-level regret comes from 29 non-Mode-S windows. At word-level, dropping Mode S leaves zero regret; at char-level, dropping Mode S changes nothing.
+
+**New modules:** `analysis.py`, `per_mode_bca_results.json`, `tests/test_per_mode_bca.py` (103 tests). numpy + stdlib only; runtime ≈ 10 s.
+
+#### Shrinkage + F1 combined threshold calibration — the path to single-mode
+
+RQ61 predicted "shrinkage + smooth rule is the path to ≤2 modes." RQ48 showed F1 gives 2 modes (best single rule). RQ66 combines RQ61's Bayesian shrinkage prior with RQ48's F1 calibration rule.
+
+**Method:** Apply L1/Laplace shrinkage prior (Beta(2,2), λ=0.5) to the bootstrap threshold distribution, then apply F1 calibration rule (maximize F1 − λ·|t − 0.38|). Compute OOB cpWER (B=1000, n=77, seed=42), 2.5/97.5 width, and mode count via Hartigan's dip test.
+
+**Findings:** H66a SUPPORTED — 1 mode at 0.38 (99.4% of 1000 resamples), the cleanest modality outcome in the RQ44→RQ48→RQ61→RQ66 lineage. H66b SUPPORTED — OOB cpWER 1.040 < 1.056 (RQ44 baseline). H66c SUPPORTED — width 0.1015 < 0.2489 (RQ54 F1 width), 59% reduction. **All three hypotheses pass — the first clean sweep in the calibration thread.** Shrinkage kills the 0.01 "Mode S catch" mode (RQ61's finding), F1 kills the 0.84/0.87 specificity-constraint modes (RQ48's finding). The combination is strictly better than either alone.
+
+**New modules:** `shrinkage_f1_combined_analysis.py`, `shrinkage_f1_combined_results.json`, `tests/test_shrinkage_f1_combined.py` (85 tests). numpy + stdlib only; runtime ≈ 20 s.
+
+#### 3-gram KL detector — does higher-order n-gram change the ROC?
+
+RQ34's 2-gram KL detector catches Mode S at 100% sensitivity. RQ59 showed the KL ROC is "flat-topped." RQ67 tests whether a 3-gram KL detector changes the ROC shape and improves detection.
+
+**Method:** Compute 3-gram character distribution per speaker track. Compute KL divergence against corpus reference. Apply RQ34's threshold calibration (90% specificity). Compute ROC AUC (3-gram vs 2-gram). Route MIXED if KL > threshold, else SEPARATED. Compute cpWER via MeetEval 0.4.3.
+
+**Findings:** H67a KILLED — 3-gram AUC = 2-gram AUC = 0.9514 exactly (zero cross-class discordant pairs; 131 rank discordances are all within-class, discriminatively invisible to ROC). H67b SUPPORTED — 3-gram catches Mode S 100% at 90% spec. H67c KILLED — 3-gram cpWER = 2-gram cpWER = 1.030 exactly (byte-identical routing: 41 mixed / 36 separated). **The 2-gram already saturates the detector's between-class discriminative power.** Higher-order n-grams capture no additional between-class information for this hallucination-detection task. The negative result is precise — killed by exact equality, not degradation.
+
+**New modules:** `analysis.py`, `three_gram_kl_results.json`, `tests/test_three_gram_kl.py` (87 tests). numpy + stdlib only; runtime ≈ 15 s.
+
+#### Multi-meeting power simulation — verifying RQ64's sample-size verdict
+
+RQ64 showed the "includes oracle" verdict is a sample-size problem (lang-id needs n=105, KL needs n=250). RQ68 simulates the multi-meeting case via bootstrap extrapolation on the existing 77 windows.
+
+**Method:** Bootstrap-extrapolate 77 windows to n ∈ {105, 250, 500, 770, 1000} by resampling WITH replacement (treating each resample as a "new meeting window"). Compute BCa CI (B=10000, seed=42) at each n. Power = fraction of resamples where BCa CI excludes oracle. Find n* where power = 80%.
+
+**Findings:** H68a KILLED — simulated lang-id n=105 BCa CI includes oracle (power 0.495 ≈ coin flip; the seed-42 meeting landed on the "includes" side). H68b SUPPORTED — simulated KL n=250 BCa CI excludes oracle by 0.000017 (same margin as RQ64's extrapolated CI; power 0.410, so single-meeting artefact). H68c SUPPORTED — 80% power at n*=234 (lang-id) / n*=680 (KL), both < 770. **Confirms RQ64's sample-size-problem verdict under more realistic multi-meeting simulation.** The multi-meeting n* is consistently 2-3× higher than RQ64's extrapolated minimum-n because it accounts for meeting-to-meeting sampling variability in addition to within-meeting bootstrap variability.
+
+**New modules:** `analysis.py`, `multi_meeting_power_results.json`, `tests/test_multi_meeting_power.py` (137 tests). numpy + stdlib only; runtime ≈ 25 s.
+
+#### Cascade with shrinkage-calibrated KL gate — shrinkage kills the KL cascade
+
+RQ62's ensemble cascade escaped RQ59's 83.1% collapse (55.8% escalation) but OOB cpWER 0.942 > 0.889. RQ61 showed shrinkage eliminates the 0.01 Mode S mode. RQ69 tests whether shrinkage-calibrated KL gate improves the cascade.
+
+**Method:** Apply RQ61's shrinkage calibration (Beta(2,2) posterior mode) to the KL detector threshold. Build 3-tier cascade: tiny → shrinkage-KL gate → base (RQ43's framework). Compute OOB cpWER (B=1000, n=77, seed=42), escalation rate, and BCa CI (B=10000).
+
+**Findings:** H69a KILLED — OOB cpWER 1.5405 ≥ 0.889 (shrinkage collapses cascade). H69b SUPPORTED — 6.49% escalation < 83.1%. H69c KILLED — BCa width 0.5313 ≥ 0.283. **Shrinkage kills cpWER on the KL detector.** The ≥90% specificity floor is binding (forces threshold to 4.87, the only feasible grid point), so the shrinkage penalty is blocked and cannot move the threshold. Only 6.5% of windows escalate (vs RQ43's 74% at KL=3.30), leaving 36/37 hallucinations on the tiny tier and collapsing cascade cpWER to 1.55. This is the mirror image of RQ59's collapse. Shrinkage requires a detector whose prior is inside the feasible set (lang-id, RQ61), not one whose prior is below the spec-floor (KL).
+
+**New modules:** `shrinkage_kl_cascade_analysis.py`, `shrinkage_kl_cascade_results.json`, `tests/test_shrinkage_kl_cascade.py` (98 tests). numpy + stdlib only; runtime ≈ 30 s.
 
 All findings labeled `experimental/frontier`. No gold tables or verified references touched.
 
